@@ -1,0 +1,14 @@
+from fastapi import FastAPI
+
+app = FastAPI()
+
+
+@app.get("/")
+def root():
+    print("Hello from root")
+    message = "Hell from image-augmentation-service"
+    return {"message": message}
+
+
+if __name__ == "__main__":
+    main()
