@@ -100,3 +100,36 @@ def test_rotate_example_45_degrees():
                                    [0, 0, 0, 0]])
     calculated_output = rotate(input_image, 45)
     assert numpy.array_equal(calculated_output, expected_output)
+
+
+def test_rotate_example_90_degrees():
+    """
+    GIVEN a 11x11 matrix
+    AND the amount is 90 degrees
+    WHEN rotate is called
+    THEN the new matrix has the correct value
+    """
+    input_image = numpy.array([[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                               [0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                               [0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0],
+                               [0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0],
+                               [0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0],
+                               [0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0],
+                               [0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0],
+                               [0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0],
+                               [0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0],
+                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0],
+                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11]])
+    expected_output = numpy.array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11],
+                                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0],
+                                  [0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0],
+                                  [0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0],
+                                  [0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0],
+                                  [0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0],
+                                  [0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0],
+                                  [0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0],
+                                  [0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0],
+                                  [0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
+    calculated_output = rotate(input_image, 90)
+    assert numpy.array_equal(calculated_output, expected_output)
