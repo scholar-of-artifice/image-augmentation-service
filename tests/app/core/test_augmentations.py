@@ -1,6 +1,6 @@
 import numpy
 import pytest
-from app.core.augmentations import shift
+from app.core.augmentations import shift, rotate
 
 
 def test_shift_up():
@@ -80,4 +80,23 @@ def test_shift_right():
                                    [0, 3, 0, 0],
                                    [0, 0, 4, 0]])
     calculated_output = shift(input_image, 'right', 3)
+    assert numpy.array_equal(calculated_output, expected_output)
+
+
+def test_rotate_example_45_degrees():
+    """
+    GIVEN a 4x4 matrix
+    AND the amount is 45 degrees
+    WHEN rotate is called
+    THEN the new matrix has the correct value
+    """
+    input_image = numpy.array([[1, 0, 0, 0],
+                               [0, 2, 0, 0],
+                               [0, 0, 3, 0],
+                               [0, 0, 0, 4]])
+    expected_output = numpy.array([[0, 0, 0, 0],
+                                   [0, 1, 1, 1],
+                                   [0, 1, 1, 1],
+                                   [0, 0, 0, 0]])
+    calculated_output = rotate(input_image, 45)
     assert numpy.array_equal(calculated_output, expected_output)
