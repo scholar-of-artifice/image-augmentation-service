@@ -83,6 +83,26 @@ def test_shift_right():
     assert numpy.array_equal(calculated_output, expected_output)
 
 
+def test_shift_invalid_direction():
+    """
+    GIVEN a 4x4 matrix
+    AND the direction is not a valid direction
+    AND the distance is 3
+    WHEN shift is called
+    THEN the new matrix has the correct value
+    """
+    input_image = numpy.array([[1, 0, 0, 0],
+                               [0, 2, 0, 0],
+                               [0, 0, 3, 0],
+                               [0, 0, 0, 4]])
+    expected_output = numpy.array([[1, 0, 0, 0],
+                                   [0, 2, 0, 0],
+                                   [0, 0, 3, 0],
+                                   [0, 0, 0, 4]])
+    calculated_output = shift(input_image, 'whichaway', 3)
+    assert numpy.array_equal(calculated_output, expected_output)
+
+
 def test_rotate_example_45_degrees():
     """
     GIVEN a 4x4 matrix
