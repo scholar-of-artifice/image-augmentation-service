@@ -8,5 +8,5 @@ app.include_router(image.router, prefix="/image-api")
 @app.get("/")
 def root():
     print("Hello from root")
-    message = "Hell from image-augmentation-service"
+    message = "Hello from image-augmentation-service"
     return {"message": message}
