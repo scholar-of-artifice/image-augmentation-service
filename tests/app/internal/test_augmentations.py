@@ -1,6 +1,6 @@
 import numpy
 import pytest
-from app.core.augmentations import shift, rotate
+from app.internal.augmentations import shift, rotate
 
 
 def test_shift_up():
