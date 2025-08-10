@@ -1,4 +1,5 @@
 import numpy
+import scipy.ndimage
 
 
 def shift(image_data: numpy.ndarray, direction: str, distance: int) -> numpy.ndarray:
@@ -23,3 +24,16 @@ def shift(image_data: numpy.ndarray, direction: str, distance: int) -> numpy.nda
         return numpy.roll(image_data, distance, axis=1)
     else:
         return image_data  # do nothing
+
+
+def rotate(image_data: numpy.ndarray, amount: int) -> numpy.ndarray:
+    """
+    Rotates and image by a specified number of degrees.
+
+    Args:
+        image_data (numpy.array): the image data to process.
+        amount (int): value as degrees <example: 45º is 45>
+    Returns:
+        numpy.array: The newly processed image.
+    """
+    return scipy.ndimage.rotate(input=image_data, angle=amount, reshape=False)
