@@ -61,3 +61,23 @@ def test_shift_left():
                                    [0, 4, 0, 0]])
     calculated_output = shift(input_image, 'left', 2)
     assert numpy.array_equal(calculated_output, expected_output)
+
+
+def test_shift_right():
+    """
+    GIVEN a 4x4 matrix
+    AND the direction is right
+    AND the distance is 3
+    WHEN shift is called
+    THEN the new matrix has the correct value
+    """
+    input_image = numpy.array([[1, 0, 0, 0],
+                               [0, 2, 0, 0],
+                               [0, 0, 3, 0],
+                               [0, 0, 0, 4]])
+    expected_output = numpy.array([[0, 0, 0, 1],
+                                   [2, 0, 0, 0],
+                                   [0, 3, 0, 0],
+                                   [0, 0, 4, 0]])
+    calculated_output = shift(input_image, 'right', 3)
+    assert numpy.array_equal(calculated_output, expected_output)
