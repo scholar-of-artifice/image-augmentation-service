@@ -120,3 +120,13 @@ def test_UploadRequestBody_shift_with_ShiftArguments_is_valid():
     assert UploadRequestBody(**data).processing == "shift"
     assert UploadRequestBody(**data).arguments.direction == "up"
     assert UploadRequestBody(**data).arguments.distance == 10
+
+
+def test_UploadRequestBody_rotate_with_RotateArguments_is_valid():
+    # TODO: comment this better
+    data = {
+        "processing": ProcessingEnum.rotate,
+        "arguments": RotateArguments(amount=10)
+    }
+    assert UploadRequestBody(**data).processing == "rotate"
+    assert UploadRequestBody(**data).arguments.amount == 10
