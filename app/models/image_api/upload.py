@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Annotated
+from typing import Annotated, Union
 from pydantic import BaseModel, Field
 from pydantic.types import StringConstraints
 
@@ -36,4 +36,4 @@ class UploadRequestBody(BaseModel):
         /image-api/upload
     """
     processing: ProcessingEnum
-    arguments: ShiftArguments
+    arguments: Union[ShiftArguments, RotateArguments]
