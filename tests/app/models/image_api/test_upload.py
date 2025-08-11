@@ -94,3 +94,18 @@ def test_RotateArguments_valid_arguments_are_allowed():
         "amount": 359
     }
     assert RotateArguments(**data).amount == 359
+
+
+def test_RotateArguments_invalid_arguments_raise_ValidationError():
+    # TODO: comment this test
+    data = {
+        "amount": 0
+    }
+    with pytest.raises(ValidationError):
+        RotateArguments(**data)
+
+    data = {
+        "amount": 360
+    }
+    with pytest.raises(ValidationError):
+        RotateArguments(**data)
