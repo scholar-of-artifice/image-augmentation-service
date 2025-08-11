@@ -1,5 +1,5 @@
 import pytest
-
+from pydantic import ValidationError
 from app.models.image_api.upload import ProcessingEnum, ShiftArguments
 
 
@@ -37,3 +37,20 @@ def test_ShiftArguments_valid_arguments_are_allowed():
     }
     assert ShiftArguments(**data).direction == "right"
     assert ShiftArguments(**data).distance == 333
+
+
+def test_ShiftArguments_invalid_direction_raises_ValidationError():
+    # TODO: comment this test
+    data = {
+        "direction": "asdf",
+        "distance": 13,
+    }
+    with pytest.raises(ValidationError):
+        ShiftArguments(**data)
+
+    data = {
+        "direction": "diagonal",
+        "distance": 2,
+    }
+    with pytest.raises(ValidationError):
+        ShiftArguments(**data)
