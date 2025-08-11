@@ -25,6 +25,11 @@ class ShiftArguments(BaseModel):
     distance: Annotated[int, Field(strict=True, gt=0)]
 
 
+class RotateArguments(BaseModel):
+    # enforce integer range
+    amount: Annotated[int, Field(strict=True, gt=-181, lt=181)]
+
+
 class UploadRequestBody(BaseModel):
     """
     This is the request body for:
