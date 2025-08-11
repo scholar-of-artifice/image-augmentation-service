@@ -54,3 +54,20 @@ def test_ShiftArguments_invalid_direction_raises_ValidationError():
     }
     with pytest.raises(ValidationError):
         ShiftArguments(**data)
+
+
+def test_ShiftArguments_invalid_distance_raises_ValidationError():
+    # TODO: comment this test
+    data = {
+        "direction": "up",
+        "distance": 0,
+    }
+    with pytest.raises(ValidationError):
+        ShiftArguments(**data)
+
+    data = {
+        "direction": "down",
+        "distance": -123,
+    }
+    with pytest.raises(ValidationError):
+        ShiftArguments(**data)
