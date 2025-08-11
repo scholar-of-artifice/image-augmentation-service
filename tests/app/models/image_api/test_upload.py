@@ -130,3 +130,13 @@ def test_UploadRequestBody_rotate_with_RotateArguments_is_valid():
     }
     assert UploadRequestBody(**data).processing == "rotate"
     assert UploadRequestBody(**data).arguments.amount == 10
+
+
+def test_UploadRequestBody_shift_with_RotateArguments_raise_ValidationError():
+    # TODO: comment this better
+    data = {
+        "processing": ProcessingEnum.shift,
+        "arguments": RotateArguments(amount=10)
+    }
+    with pytest.raises(ValidationError):
+        UploadRequestBody(**data)
