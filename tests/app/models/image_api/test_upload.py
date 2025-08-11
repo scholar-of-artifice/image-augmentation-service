@@ -1,6 +1,6 @@
 import pytest
 from pydantic import ValidationError
-from app.models.image_api.upload import ProcessingEnum, ShiftArguments, RotateArguments
+from app.models.image_api.upload import ProcessingEnum, ShiftArguments, RotateArguments, UploadRequestBody
 
 
 def test_ProcessingEnum_has_correct_contents():
@@ -109,3 +109,14 @@ def test_RotateArguments_invalid_arguments_raise_ValidationError():
     }
     with pytest.raises(ValidationError):
         RotateArguments(**data)
+
+
+def test_UploadRequestBody_shift_with_ShiftArguments_is_valid():
+    # TODO: comment this better
+    data = {
+        "processing": ProcessingEnum.shift,
+        "arguments": ShiftArguments(direction="up", distance=10)
+    }
+    assert UploadRequestBody(**data).processing == "shift"
+    assert UploadRequestBody(**data).arguments.direction == "up"
+    assert UploadRequestBody(**data).arguments.distance == 10
