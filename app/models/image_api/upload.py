@@ -27,7 +27,7 @@ class ShiftArguments(BaseModel):
 
 class RotateArguments(BaseModel):
     # enforce integer range
-    amount: Annotated[int, Field(strict=True, gt=-181, lt=181)]
+    amount: Annotated[int, Field(strict=True, gt=0, lt=360)]
 
 
 class UploadRequestBody(BaseModel):
