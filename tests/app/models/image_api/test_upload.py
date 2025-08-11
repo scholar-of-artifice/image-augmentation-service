@@ -1,6 +1,6 @@
 import pytest
 from pydantic import ValidationError
-from app.models.image_api.upload import ProcessingEnum, ShiftArguments
+from app.models.image_api.upload import ProcessingEnum, ShiftArguments, RotateArguments
 
 
 def test_ProcessingEnum_has_correct_contents():
@@ -71,3 +71,26 @@ def test_ShiftArguments_invalid_distance_raises_ValidationError():
     }
     with pytest.raises(ValidationError):
         ShiftArguments(**data)
+
+
+def test_RotateArguments_valid_arguments_are_allowed():
+    # TODO: comment this test
+    data = {
+        "amount": 2
+    }
+    assert RotateArguments(**data).amount == 2
+
+    data = {
+        "amount": 82
+    }
+    assert RotateArguments(**data).amount == 82
+
+    data = {
+        "amount": 182
+    }
+    assert RotateArguments(**data).amount == 182
+
+    data = {
+        "amount": 359
+    }
+    assert RotateArguments(**data).amount == 359
