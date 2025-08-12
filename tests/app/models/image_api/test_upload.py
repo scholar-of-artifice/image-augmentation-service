@@ -14,44 +14,44 @@ def test_ProcessingEnum_has_rotate():
 def test_ShiftArguments_up_is_a_valid_direction():
     data = {
         "direction": "up",
-        "distance": 13,
+        "distance": 42,
     }
     assert ShiftArguments(**data).direction == "up"
-    assert ShiftArguments(**data).distance == 13
+    assert ShiftArguments(**data).distance == 42
 
 
 def test_ShiftArguments_down_is_a_valid_direction():
     data = {
         "direction": "down",
-        "distance": 10,
+        "distance": 42,
     }
     assert ShiftArguments(**data).direction == "down"
-    assert ShiftArguments(**data).distance == 10
+    assert ShiftArguments(**data).distance == 42
 
 
 def test_ShiftArguments_left_is_a_valid_direction():
     data = {
         "direction": "left",
-        "distance": 2,
+        "distance": 42,
     }
     assert ShiftArguments(**data).direction == "left"
-    assert ShiftArguments(**data).distance == 2
+    assert ShiftArguments(**data).distance == 42
 
 
 def test_ShiftArguments_right_is_a_valid_direction():
     data = {
         "direction": "right",
-        "distance": 333,
+        "distance": 42,
     }
     assert ShiftArguments(**data).direction == "right"
-    assert ShiftArguments(**data).distance == 333
+    assert ShiftArguments(**data).distance == 42
 
 
 def test_ShiftArguments_asdf_is_an_invalid_direction():
     # TODO: comment this test
     data = {
         "direction": "asdf",
-        "distance": 13,
+        "distance": 42,
     }
     with pytest.raises(ValidationError):
         ShiftArguments(**data)
@@ -60,7 +60,7 @@ def test_ShiftArguments_asdf_is_an_invalid_direction():
 def test_ShiftArguments_diagonal_is_an_invalid_direction():
     data = {
         "direction": "diagonal",
-        "distance": 2,
+        "distance": 42,
     }
     with pytest.raises(ValidationError):
         ShiftArguments(**data)
@@ -69,7 +69,7 @@ def test_ShiftArguments_diagonal_is_an_invalid_direction():
 def test_ShiftArguments_blank_string_is_an_invalid_direction():
     data = {
         "direction": "",
-        "distance": 2,
+        "distance": 42,
     }
     with pytest.raises(ValidationError):
         ShiftArguments(**data)
@@ -78,7 +78,7 @@ def test_ShiftArguments_blank_string_is_an_invalid_direction():
 def test_ShiftArguments_None_is_an_invalid_direction():
     data = {
         "direction": None,
-        "distance": 2,
+        "distance": 42,
     }
     with pytest.raises(ValidationError):
         ShiftArguments(**data)
