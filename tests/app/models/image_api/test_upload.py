@@ -104,7 +104,6 @@ def test_ShiftArguments_negative_value_is_an_invalid_distance():
 def test_RotateArguments_values_between_1_and_359_are_valid_amount():
     valid_amount = list(range(1, 360))
     for v in valid_amount:
-        # TODO: comment this test
         data = {
             "amount": v
         }
