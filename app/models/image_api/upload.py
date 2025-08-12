@@ -70,6 +70,6 @@ class UploadRequestBody(BaseModel):
             try:
                 RotateArguments.model_validate(arguments)
             except ValidationError as e:
-                raise ValueError(f"Arguments for rotate are invalid: {e}")
+                raise ValueError(f"Arguments for rotate are invalid. {e}")
         # return the data untouched
         return data
