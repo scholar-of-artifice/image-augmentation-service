@@ -66,6 +66,15 @@ def test_ShiftArguments_diagonal_is_an_invalid_direction():
         ShiftArguments(**data)
 
 
+def test_ShiftArguments_blank_string_is_an_invalid_direction():
+    data = {
+        "direction": "",
+        "distance": 2,
+    }
+    with pytest.raises(ValidationError):
+        ShiftArguments(**data)
+
+
 def test_ShiftArguments_invalid_distance_raises_ValidationError():
     # TODO: comment this test
     data = {
