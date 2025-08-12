@@ -2,7 +2,6 @@ import json
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from app.routers.image import router
-from app.models.image_api.upload import UploadRequestBody, ProcessingEnum, RotateArguments
 
 app = FastAPI()
 app.include_router(router)
@@ -18,9 +17,13 @@ def test_upload_is_successful_when_request_is_valid():
             "amount": 10
         }
     }
+    dummy_files = {
+        "file": ("test_image.jpg", b"dummy image content", "image/jpeg")
+    }
     response = client.post(
         url="/upload/",
-        json=json_data
+        data={"body": json.dumps(json_data)},
+        files=dummy_files
     )
     assert response.status_code == 200
     assert response.json() == {"filename": 'file.filename',
