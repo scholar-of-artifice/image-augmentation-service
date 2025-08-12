@@ -83,7 +83,7 @@ def test_ShiftArguments_None_is_an_invalid_direction():
         ShiftArguments(**data)
 
 
-def test_ShiftArguments_invalid_distance_raises_ValidationError():
+def test_ShiftArguments_0_is_an_invalid_distance():
     # TODO: comment this test
     data = {
         "direction": "up",
@@ -92,8 +92,10 @@ def test_ShiftArguments_invalid_distance_raises_ValidationError():
     with pytest.raises(ValidationError):
         ShiftArguments(**data)
 
+
+def test_ShiftArguments_negative_value_is_an_invalid_distance():
     data = {
-        "direction": "down",
+        "direction": "up",
         "distance": -123,
     }
     with pytest.raises(ValidationError):
