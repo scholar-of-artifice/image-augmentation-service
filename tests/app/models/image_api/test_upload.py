@@ -111,7 +111,6 @@ def test_RotateArguments_values_between_1_and_359_are_valid_amount():
 
 
 def test_RotateArguments_negative_number_is_invalid_amount():
-    # TODO: comment this test
     data = {
         "amount": -42
     }
@@ -120,7 +119,6 @@ def test_RotateArguments_negative_number_is_invalid_amount():
 
 
 def test_RotateArguments_0_is_invalid_amount():
-    # TODO: comment this test
     data = {
         "amount": 0
     }
