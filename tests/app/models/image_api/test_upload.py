@@ -3,8 +3,11 @@ from pydantic import ValidationError
 from app.models.image_api.upload import ProcessingEnum, ShiftArguments, RotateArguments, UploadRequestBody
 
 
-def test_ProcessingEnum_has_correct_contents():
+def test_ProcessingEnum_has_shift():
     assert ProcessingEnum.shift == "shift"
+
+
+def test_ProcessingEnum_has_rotate():
     assert ProcessingEnum.rotate == "rotate"
 
 
