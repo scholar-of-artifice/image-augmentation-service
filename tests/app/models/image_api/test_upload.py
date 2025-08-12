@@ -48,7 +48,6 @@ def test_ShiftArguments_right_is_a_valid_direction():
 
 
 def test_ShiftArguments_asdf_is_an_invalid_direction():
-    # TODO: comment this test
     data = {
         "direction": "asdf",
         "distance": 42,
