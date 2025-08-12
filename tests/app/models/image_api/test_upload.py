@@ -11,8 +11,7 @@ def test_ProcessingEnum_has_rotate():
     assert ProcessingEnum.rotate == "rotate"
 
 
-def test_ShiftArguments_valid_arguments_are_allowed():
-    # TODO: write better description and comments
+def test_ShiftArguments_up_is_a_valid_direction():
     data = {
         "direction": "up",
         "distance": 13,
@@ -20,6 +19,8 @@ def test_ShiftArguments_valid_arguments_are_allowed():
     assert ShiftArguments(**data).direction == "up"
     assert ShiftArguments(**data).distance == 13
 
+
+def test_ShiftArguments_down_is_a_valid_direction():
     data = {
         "direction": "down",
         "distance": 10,
@@ -27,6 +28,8 @@ def test_ShiftArguments_valid_arguments_are_allowed():
     assert ShiftArguments(**data).direction == "down"
     assert ShiftArguments(**data).distance == 10
 
+
+def test_ShiftArguments_left_is_a_valid_direction():
     data = {
         "direction": "left",
         "distance": 2,
@@ -34,6 +37,8 @@ def test_ShiftArguments_valid_arguments_are_allowed():
     assert ShiftArguments(**data).direction == "left"
     assert ShiftArguments(**data).distance == 2
 
+
+def test_ShiftArguments_right_is_a_valid_direction():
     data = {
         "direction": "right",
         "distance": 333,
