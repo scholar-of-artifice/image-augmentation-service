@@ -84,7 +84,6 @@ def test_ShiftArguments_None_is_an_invalid_direction():
 
 
 def test_ShiftArguments_0_is_an_invalid_distance():
-    # TODO: comment this test
     data = {
         "direction": "up",
         "distance": 0,
