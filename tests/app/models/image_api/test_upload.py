@@ -47,7 +47,7 @@ def test_ShiftArguments_right_is_a_valid_direction():
     assert ShiftArguments(**data).distance == 333
 
 
-def test_ShiftArguments_invalid_direction_raises_ValidationError():
+def test_ShiftArguments_asdf_is_an_invalid_direction():
     # TODO: comment this test
     data = {
         "direction": "asdf",
@@ -56,6 +56,8 @@ def test_ShiftArguments_invalid_direction_raises_ValidationError():
     with pytest.raises(ValidationError):
         ShiftArguments(**data)
 
+
+def test_ShiftArguments_diagonal_is_an_invalid_direction():
     data = {
         "direction": "diagonal",
         "distance": 2,
