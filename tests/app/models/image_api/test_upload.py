@@ -101,27 +101,14 @@ def test_ShiftArguments_negative_value_is_an_invalid_distance():
         ShiftArguments(**data)
 
 
-def test_RotateArguments_valid_arguments_are_allowed():
-    # TODO: comment this test
-    data = {
-        "amount": 2
-    }
-    assert RotateArguments(**data).amount == 2
-
-    data = {
-        "amount": 82
-    }
-    assert RotateArguments(**data).amount == 82
-
-    data = {
-        "amount": 182
-    }
-    assert RotateArguments(**data).amount == 182
-
-    data = {
-        "amount": 359
-    }
-    assert RotateArguments(**data).amount == 359
+def test_RotateArguments_values_between_1_and_359_are_valid_amount():
+    valid_amount = list(range(1, 360))
+    for v in valid_amount:
+        # TODO: comment this test
+        data = {
+            "amount": v
+        }
+        assert RotateArguments(**data).amount == v
 
 
 def test_RotateArguments_invalid_arguments_raise_ValidationError():
