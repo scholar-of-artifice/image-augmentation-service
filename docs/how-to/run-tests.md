@@ -6,3 +6,8 @@ From the root directory of this repository:
 ```
 pytest
 ```
+
+## run tests in specific directory
+```
+pytest tests/app/internal
+```
