@@ -2,9 +2,6 @@ from typing import Annotated, Union, Literal
 from pydantic import BaseModel, Field
 from pydantic.types import StringConstraints
 
-# TODO: there will be more functions listed here
-# TODO: handle parameters for each function
-
 
 class ShiftArguments(BaseModel):
     processing: Literal["shift"]
