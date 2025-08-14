@@ -12,8 +12,8 @@ client = TestClient(app)
 def test_upload_is_successful_when_request_is_valid():
     # TODO: make request body
     json_data = {
-        "processing": "rotate",
         "arguments": {
+            "processing": "rotate",
             "amount": 10
         }
     }
@@ -26,5 +26,5 @@ def test_upload_is_successful_when_request_is_valid():
         files=dummy_files
     )
     assert response.status_code == 200
-    assert response.json() == {"filename": 'file.filename',
+    assert response.json() == {"filename": "test_image.jpg",
                                "message": "Image processed successfully."}
