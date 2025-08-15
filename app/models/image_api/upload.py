@@ -8,7 +8,11 @@ class ShiftArguments(BaseModel):
         A data model for specifying a 'shift' operation.
 
         This model is used to define the parameters for shifting an image.
-        It includes the direction of the shift and the distance, both with specific constraints to ensure valid input.
+
+        Attributes:
+            processing (Literal["shift"]): The type of operation. This field is fixed.
+            direction (str): The direction of the shift. Must have a value of "up", "down", "left", or "right".
+            distance (int): The distance of the shift. Must be a positive integer and greater than 0.
     """
     # enforce specific value for processing field
     processing: Literal["shift"]
