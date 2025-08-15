@@ -51,6 +51,16 @@ def test_ShiftArguments_right_is_a_valid_direction():
     assert shift_args.distance == 42
 
 
+def test_ShiftArguments_mixed_case_right_is_an_invalid_direction():
+    data = {
+        "processing": "shift",
+        "direction": "RiGHt",
+        "distance": 42,
+    }
+    with pytest.raises(ValidationError):
+        ShiftArguments(**data)
+
+
 def test_ShiftArguments_rotate_is_an_invalid_processing_type():
     data = {
         "processing": "rotate",
