@@ -121,6 +121,16 @@ def test_ShiftArguments_None_is_an_invalid_distance():
         ShiftArguments(**data)
 
 
+def test_ShiftArguments_string_number_is_an_invalid_distance():
+    data = {
+        "processing": "shift",
+        "direction": "up",
+        "distance": "42",
+    }
+    with pytest.raises(ValidationError):
+        ShiftArguments(**data)
+
+
 def test_ShiftArguments_0_is_an_invalid_distance():
     data = {
         "processing": "shift",
