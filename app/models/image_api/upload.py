@@ -7,7 +7,7 @@ class ShiftArguments(BaseModel):
     """
         A data model for specifying a 'shift' operation.
 
-        This model is used to define the parameters for shifting a value.
+        This model is used to define the parameters for shifting an image.
         It includes the direction of the shift and the distance, both with specific constraints to ensure valid input.
     """
     # enforce specific value for processing field
