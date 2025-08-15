@@ -9,9 +9,10 @@ def test_ShiftArguments_up_is_a_valid_direction():
         "direction": "up",
         "distance": 42,
     }
-    assert ShiftArguments(**data).processing == "shift"
-    assert ShiftArguments(**data).direction == "up"
-    assert ShiftArguments(**data).distance == 42
+    shift_args = ShiftArguments(**data)
+    assert shift_args.processing == "shift"
+    assert shift_args.direction == "up"
+    assert shift_args.distance == 42
 
 
 def test_ShiftArguments_down_is_a_valid_direction():
@@ -20,9 +21,10 @@ def test_ShiftArguments_down_is_a_valid_direction():
         "direction": "down",
         "distance": 42,
     }
-    assert ShiftArguments(**data).processing == "shift"
-    assert ShiftArguments(**data).direction == "down"
-    assert ShiftArguments(**data).distance == 42
+    shift_args = ShiftArguments(**data)
+    assert shift_args.processing == "shift"
+    assert shift_args.direction == "down"
+    assert shift_args.distance == 42
 
 
 def test_ShiftArguments_left_is_a_valid_direction():
@@ -31,9 +33,10 @@ def test_ShiftArguments_left_is_a_valid_direction():
         "direction": "left",
         "distance": 42,
     }
-    assert ShiftArguments(**data).processing == "shift"
-    assert ShiftArguments(**data).direction == "left"
-    assert ShiftArguments(**data).distance == 42
+    shift_args = ShiftArguments(**data)
+    assert shift_args.processing == "shift"
+    assert shift_args.direction == "left"
+    assert shift_args.distance == 42
 
 
 def test_ShiftArguments_right_is_a_valid_direction():
@@ -42,9 +45,10 @@ def test_ShiftArguments_right_is_a_valid_direction():
         "direction": "right",
         "distance": 42,
     }
-    assert ShiftArguments(**data).processing == "shift"
-    assert ShiftArguments(**data).direction == "right"
-    assert ShiftArguments(**data).distance == 42
+    shift_args = ShiftArguments(**data)
+    assert shift_args.processing == "shift"
+    assert shift_args.direction == "right"
+    assert shift_args.distance == 42
 
 
 def test_ShiftArguments_rotate_is_an_invalid_processing_type():
