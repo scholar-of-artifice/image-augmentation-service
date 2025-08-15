@@ -151,6 +151,11 @@ def test_ShiftArguments_negative_value_is_an_invalid_distance():
         ShiftArguments(**data)
 
 
+def test_ShiftArguments_has_docstring():
+    assert ShiftArguments.__doc__ is not None
+    assert "A data model for specifying a 'shift' operation." in ShiftArguments.__doc__
+
+
 def test_RotateArguments_values_between_1_and_359_are_valid_amount():
     valid_amount = list(range(1, 360))
     for v in valid_amount:
