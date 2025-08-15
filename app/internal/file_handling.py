@@ -7,6 +7,7 @@ class InvalidImageFileError(ValueError):
     """
     Custom exception for invalid image file formats.
     """
+    # TODO: write tests?
     pass
 
 
@@ -15,6 +16,7 @@ def translate_file_to_numpy_array(content: bytes) -> numpy.ndarray:
         TODO: create docstring
     """
     # TODO: comment this code
+    # TODO: write tests
     image_stream = io.BytesIO(content)
     try:
         with Image.open(image_stream) as img:
