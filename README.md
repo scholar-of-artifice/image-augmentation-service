@@ -15,7 +15,8 @@ The documentation lives in `/docs`.
 
 Here are some useful articles for gettings started:
 
-- [How to run tests](docs/how-to/run-tests.md)
+- [How to try the application?](docs/how-to/try-the-application.md)
+- [How to run tests?](docs/how-to/run-tests.md)
 <!--TODO: create getting started documents-->
 
 Here are some useful articles for understanding the engineering decisions made on this project:
