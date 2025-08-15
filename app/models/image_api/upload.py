@@ -4,8 +4,15 @@ from pydantic.types import StringConstraints
 
 
 class ShiftArguments(BaseModel):
+    """
+        A data model for specifying a 'shift' operation.
+
+        This model is used to define the parameters for shifting a value.
+        It includes the direction of the shift and the distance, both with specific constraints to ensure valid input.
+    """
+    # enforce specific value for processing field
     processing: Literal["shift"]
-    # enforce specific string constraints
+    # enforce specific string constraints for direction
     direction: Annotated[str, StringConstraints(
         min_length=2,
         max_length=5,
