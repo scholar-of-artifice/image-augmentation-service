@@ -11,3 +11,17 @@ Then you need to go to:
 ```
 http://127.0.0.1:8000/docs
 ```
+
+## Example
+Try out the following endpoint:
+```
+/image-api/upload/
+```
+
+Then define the request body:
+- Choose a file
+- enter the following string for the `body` field:
+    ```
+        {"arguments": {"processing": "rotate", "amount": 45}}
+    ```
+    
