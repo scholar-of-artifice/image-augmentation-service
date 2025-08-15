@@ -215,6 +215,7 @@ dependencies = [
     { name = "fastapi", extra = ["standard"] },
     { name = "numpy" },
     { name = "pillow" },
+    { name = "python-multipart" },
     { name = "scipy" },
 ]
 
@@ -229,6 +230,7 @@ requires-dist = [
     { name = "fastapi", extras = ["standard"], specifier = ">=0.116.1" },
     { name = "numpy", specifier = ">=2.3.2" },
     { name = "pillow", specifier = ">=11.3.0" },
+    { name = "python-multipart", specifier = ">=0.0.20" },
     { name = "scipy", specifier = ">=1.16.1" },
 ]
 
