@@ -29,8 +29,10 @@ class RotateArguments(BaseModel):
         A data model for specifying a 'rotate' operation.
 
         This model is used to define the parameters for rotating an image.
-        It includes the amount of the rotation specificed as an integer.
-        Unit of measurement for 'amount' is in degrees and is limited to a range between 1 and 359.
+
+        Attributes:
+            processing (Literal["rotate"]): The name of the operation. This field is fixed.
+            amount (int): The amount of rotation in degrees. Must be a postive integer between 1 and 359.
     """
     # enforce specific value for processing field
     processing: Literal["rotate"]
