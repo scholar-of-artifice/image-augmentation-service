@@ -14,16 +14,18 @@ def shift(image_data: numpy.ndarray, direction: str, distance: int) -> numpy.nda
     Returns:
         numpy.array: The newly processed image.
     """
-    if direction == 'up':
-        return numpy.roll(image_data, -distance, axis=0)
-    elif direction == 'down':
-        return numpy.roll(image_data, distance, axis=0)
-    elif direction == 'left':
-        return numpy.roll(image_data, -distance, axis=1)
-    elif direction == 'right':
-        return numpy.roll(image_data, distance, axis=1)
-    else:
-        return image_data  # do nothing
+    direction_map = {
+        # direct -> (shift_direction, axis)
+        'up': (-1, 0),
+        'down': (1, 0),
+        'left': (-1, 1),
+        'right': (1, 1),
+    }
+    if direction not in direction_map:
+        raise ValueError(
+            f"Invalid direction: '{direction}'. Must be 'up', 'down', 'left' or 'right'.")
+    shift_direction, axis = direction_map[direction]
+    return numpy.roll(image_data, shift_direction * distance, axis=axis)
 
 
 def rotate(image_data: numpy.ndarray, angle: int) -> numpy.ndarray:
