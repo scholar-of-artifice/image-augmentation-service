@@ -62,3 +62,18 @@ def test_translate_file_to_numpy_array_raises_InvalidImageFileError():
     input_image_bytes = b'this is not a valid image bytes'
     with pytest.raises(InvalidImageFileError):
         translate_file_to_numpy_array(input_image_bytes)
+
+def test_write_numpy_array_to_image_file():
+    """
+    GIVEN a numpy array with valid image data
+    WHEN write_numpy_array_to_image_file is called
+    THEN a file_path_is_returned.
+    """
+    # setup preconditions
+    create_write_directory()
+    input_numpy_array = create_dummy_numpy_array()
+    #
+    calculated_file_path = write_numpy_array_to_image_file(data=input_numpy_array, file_name='wow_a_file' )
+    #
+    expected_file_path = 'app/_tmp/wow_a_file.png'
+    assert numpy.array_equal(expected_file_path, calculated_file_path)
