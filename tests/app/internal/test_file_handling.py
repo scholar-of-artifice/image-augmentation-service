@@ -2,8 +2,9 @@ import numpy
 import pytest
 from PIL import Image
 import io
+import os
 
-from app.internal.file_handling import translate_file_to_numpy_array, InvalidImageFileError
+from app.internal.file_handling import translate_file_to_numpy_array, write_numpy_array_to_image_file, InvalidImageFileError
 
 def create_dummy_image_bytes() -> bytes:
     """
@@ -33,6 +34,10 @@ def create_dummy_numpy_array() -> numpy.ndarray:
         [[0, 0, 255], [255, 0, 255], [255, 0, 0], [0, 0, 0]],
         [[0, 255, 255], [255, 255, 255], [0, 0, 0], [255, 255, 0]],
     ], dtype=numpy.uint8)
+
+def create_write_directory():
+    # ensure the target director exists...
+    os.makedirs('app/_tmp', exist_ok=True)
 
 def test_translate_file_to_numpy_array():
     """
