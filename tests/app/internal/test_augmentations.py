@@ -3,11 +3,28 @@ import pytest
 from app.internal.augmentations import shift, rotate
 
 
-def test_shift_up_produces_correct_result():
+@pytest.mark.parametrize("direction, distance, expected_output", [
+    ('up', 2, numpy.array([[0, 0, 3, 0,],
+                           [0, 0, 0, 4,],
+                           [1, 0, 0, 0,],
+                           [0, 2, 0, 0,]])),
+    ('down', 2, numpy.array([[0, 0, 3, 0],
+                             [0, 0, 0, 4],
+                             [1, 0, 0, 0],
+                             [0, 2, 0, 0]])),
+    ('left', 2, numpy.array([[0, 0, 1, 0],
+                             [0, 0, 0, 2],
+                             [3, 0, 0, 0],
+                             [0, 4, 0, 0]])),
+    ('right', 2, numpy.array([[0, 0, 1, 0],
+                              [0, 0, 0, 2],
+                              [3, 0, 0, 0],
+                              [0, 4, 0, 0]])),
+])
+def test_shift_produces_correct_results(direction, distance, expected_output):
     """
     GIVEN a 4x4 matrix
-    AND the direction is up
-    AND the distance is 2
+    AND the input arguments
     WHEN shift is called
     THEN the new matrix has the correct value
     """
@@ -15,71 +32,9 @@ def test_shift_up_produces_correct_result():
                                [0, 2, 0, 0],
                                [0, 0, 3, 0],
                                [0, 0, 0, 4]])
-    expected_output = numpy.array([[0, 0, 3, 0],
-                                   [0, 0, 0, 4],
-                                   [1, 0, 0, 0],
-                                   [0, 2, 0, 0]])
-    calculated_output = shift(input_image, 'up', 2)
-    assert numpy.array_equal(calculated_output, expected_output)
-
-
-def test_shift_down_produces_correct_result():
-    """
-    GIVEN a 4x4 matrix
-    AND the direction is down
-    AND the distance is 3
-    WHEN shift is called
-    THEN the new matrix has the correct value
-    """
-    input_image = numpy.array([[1, 0, 0, 0],
-                               [0, 2, 0, 0],
-                               [0, 0, 3, 0],
-                               [0, 0, 0, 4]])
-    expected_output = numpy.array([[0, 2, 0, 0],
-                                   [0, 0, 3, 0],
-                                   [0, 0, 0, 4],
-                                   [1, 0, 0, 0]])
-    calculated_output = shift(input_image, 'down', 3)
-    assert numpy.array_equal(calculated_output, expected_output)
-
-
-def test_shift_left_produces_correct_result():
-    """
-    GIVEN a 4x4 matrix
-    AND the direction is left
-    AND the distance is 2
-    WHEN shift is called
-    THEN the new matrix has the correct value
-    """
-    input_image = numpy.array([[1, 0, 0, 0],
-                               [0, 2, 0, 0],
-                               [0, 0, 3, 0],
-                               [0, 0, 0, 4]])
-    expected_output = numpy.array([[0, 0, 1, 0],
-                                   [0, 0, 0, 2],
-                                   [3, 0, 0, 0],
-                                   [0, 4, 0, 0]])
-    calculated_output = shift(input_image, 'left', 2)
-    assert numpy.array_equal(calculated_output, expected_output)
-
-
-def test_shift_right_produces_correct_result():
-    """
-    GIVEN a 4x4 matrix
-    AND the direction is right
-    AND the distance is 3
-    WHEN shift is called
-    THEN the new matrix has the correct value
-    """
-    input_image = numpy.array([[1, 0, 0, 0],
-                               [0, 2, 0, 0],
-                               [0, 0, 3, 0],
-                               [0, 0, 0, 4]])
-    expected_output = numpy.array([[0, 0, 0, 1],
-                                   [2, 0, 0, 0],
-                                   [0, 3, 0, 0],
-                                   [0, 0, 4, 0]])
-    calculated_output = shift(input_image, 'right', 3)
+    calculated_output = shift(image_data=input_image,
+                              direction=direction, distance=distance)
+    print(calculated_output)
     assert numpy.array_equal(calculated_output, expected_output)
 
 
