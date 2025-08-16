@@ -43,4 +43,6 @@ def rotate(image_data: numpy.ndarray, angle: int) -> numpy.ndarray:
             "image_data must be a numpy.ndarray with at least 2 dimensions.")
     if not isinstance(angle, int):
         raise TypeError("angle must be an integer")
+    if angle == 0:
+        return image_data
     return scipy.ndimage.rotate(input=image_data, angle=angle, reshape=False)
