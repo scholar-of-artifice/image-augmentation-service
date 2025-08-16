@@ -99,6 +99,22 @@ def test_shift_invalid_direction_raises_exception():
         shift(input_image, 'whichaway', 3)
 
 
+def test_shift_None_direction_raises_exception():
+    """
+    GIVEN a 4x4 matrix
+    AND the direction is None
+    AND the distance is 3
+    WHEN shift is called
+    THEN it raises a ValueError
+    """
+    input_image = numpy.array([[1, 0, 0, 0],
+                               [0, 2, 0, 0],
+                               [0, 0, 3, 0],
+                               [0, 0, 0, 4]])
+    with pytest.raises(ValueError):
+        shift(input_image, None, 3)
+
+
 def test_rotate_example_45_degrees():
     """
     GIVEN a 4x4 matrix
