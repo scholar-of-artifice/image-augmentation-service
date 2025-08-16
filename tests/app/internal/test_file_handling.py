@@ -20,3 +20,18 @@ def create_dummy_image_bytes() -> bytes:
     img.save(buffer, format='PNG')
     # return the byte content
     return buffer.getvalue()
+
+def test_translate_file_to_numpy_array():
+    """
+    GIVEN valid image bytes
+    WHEN translate_file_to_numpy_array is called
+    THEN the correct numpy array is returned.
+    """
+    input_image_bytes = create_dummy_image_bytes()
+    expected_output = numpy.array( [
+        [[255, 0, 0], [0,255, 0]],
+        [[0, 0, 255], [255, 0, 0]]
+    ], dtype=numpy.uint8)
+    calculated_output = translate_file_to_numpy_array(input_image_bytes)
+    assert numpy.array_equal(expected_output, calculated_output)
+
