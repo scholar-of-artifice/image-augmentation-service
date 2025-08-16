@@ -3,7 +3,7 @@ import pytest
 from app.internal.augmentations import shift, rotate
 
 
-def test_shift_up():
+def test_shift_up_produces_correct_result():
     """
     GIVEN a 4x4 matrix
     AND the direction is up
@@ -23,7 +23,7 @@ def test_shift_up():
     assert numpy.array_equal(calculated_output, expected_output)
 
 
-def test_shift_down():
+def test_shift_down_produces_correct_result():
     """
     GIVEN a 4x4 matrix
     AND the direction is down
@@ -43,7 +43,7 @@ def test_shift_down():
     assert numpy.array_equal(calculated_output, expected_output)
 
 
-def test_shift_left():
+def test_shift_left_produces_correct_result():
     """
     GIVEN a 4x4 matrix
     AND the direction is left
@@ -63,7 +63,7 @@ def test_shift_left():
     assert numpy.array_equal(calculated_output, expected_output)
 
 
-def test_shift_right():
+def test_shift_right_produces_correct_result():
     """
     GIVEN a 4x4 matrix
     AND the direction is right
@@ -83,24 +83,20 @@ def test_shift_right():
     assert numpy.array_equal(calculated_output, expected_output)
 
 
-def test_shift_invalid_direction():
+def test_shift_invalid_direction_raises_exception():
     """
     GIVEN a 4x4 matrix
     AND the direction is not a valid direction
     AND the distance is 3
     WHEN shift is called
-    THEN the new matrix has the correct value
+    THEN it raises a ValueError
     """
     input_image = numpy.array([[1, 0, 0, 0],
                                [0, 2, 0, 0],
                                [0, 0, 3, 0],
                                [0, 0, 0, 4]])
-    expected_output = numpy.array([[1, 0, 0, 0],
-                                   [0, 2, 0, 0],
-                                   [0, 0, 3, 0],
-                                   [0, 0, 0, 4]])
-    calculated_output = shift(input_image, 'whichaway', 3)
-    assert numpy.array_equal(calculated_output, expected_output)
+    with pytest.raises(ValueError):
+        shift(input_image, 'whichaway', 3)
 
 
 def test_rotate_example_45_degrees():
