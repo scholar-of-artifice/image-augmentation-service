@@ -1,6 +1,6 @@
 import numpy
 import io
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 
 
 class InvalidImageFileError(ValueError):
@@ -13,15 +13,25 @@ class InvalidImageFileError(ValueError):
 
 def translate_file_to_numpy_array(content: bytes) -> numpy.ndarray:
     """
-        TODO: create docstring
+        Converts the raw byte content of an image file into a numpy array.
+
+        Args:
+            content (bytes): The raw byte content of an image file. (example: JPEG, PNG)
+        Returns:
+            numpy.ndarray: The numpy array representation of the image file.
+        Raises:
+            InvalidImageFileError: The image file format is not supported.
     """
-    # TODO: comment this code
-    # TODO: write tests
+    # Wrap raw byte content to an in-memory binary stream.
+    # This allows Pillow to use it like a file without persisting to disk.
     image_stream = io.BytesIO(content)
     try:
+        # use a context to ensure the image is properly closed
         with Image.open(image_stream) as img:
+            # convert the image object to a numpy array
             return numpy.array(img)
-    except Exception as e:
+    except UnidentifiedImageError as e:
+        # Pillow cannot open the file (example: not a valid image format)
         raise InvalidImageFileError(f"failed to open or convert image {e}")
 
 
