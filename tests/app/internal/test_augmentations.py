@@ -131,6 +131,22 @@ def test_shift_blank_string_direction_raises_exception():
         shift(input_image, '', 3)
 
 
+def test_shift_float_distance_raises_exception():
+    """
+    GIVEN a 4x4 matrix
+    AND the direction is a blank string
+    AND the distance is 3.5
+    WHEN shift is called
+    THEN it raises a TypeError
+    """
+    input_image = numpy.array([[1, 0, 0, 0],
+                               [0, 2, 0, 0],
+                               [0, 0, 3, 0],
+                               [0, 0, 0, 4]])
+    with pytest.raises(TypeError):
+        shift(input_image, 'up', 3.5)
+
+
 def test_rotate_example_45_degrees():
     """
     GIVEN a 4x4 matrix
