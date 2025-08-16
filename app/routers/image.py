@@ -1,5 +1,5 @@
 import json
-from fastapi import APIRouter, Form, File, UploadFile
+from fastapi import APIRouter, Form, UploadFile
 from app.models.image_api.upload import UploadRequestBody
 from pydantic import ValidationError
 from app.internal.augmentations import shift, rotate
@@ -42,7 +42,3 @@ async def upload(file: UploadFile, body: str = Form(...)):
     except ValidationError as e:
         # this should happen when any validation fails
         return {"error": str(e)}
-    return {
-        "input_filename": file.filename,
-        "body": body
-    }
