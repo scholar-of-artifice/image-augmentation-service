@@ -37,12 +37,22 @@ def translate_file_to_numpy_array(content: bytes) -> numpy.ndarray:
 
 def write_numpy_array_to_image_file(data: numpy.ndarray, file_name: str) -> str:
     """
-        TODO: create docstring
+        Saves a NumPy array as a PNG image file.
+
+        This function take a NumPy array containing image data, converts it and save it int a Pillow Image object, and saves it to a specified location as a PNG file.
+
+        Args:
+            data (numpy.ndarray): The NumPy array representation of the image file.
+            file_name (str): The file name of the image file.
+
+        Returns:
+            str: The full file path of the image file.
     """
-    # TODO: comment this code
+    # convert the numpy array to a Pillow Image object.
     img_data = Image.fromarray(data)
-    # TODO: change write location
-    file_path = 'app/_tmp/' + file_name + '.png'
-    img_data.save('app/_tmp/' + file_name + '.png', 'PNG')
-    # TODO: change what is returned
+    # Define the full path for the output file, including the directory.
+    file_path = f'app/_tmp/{file_name}.png'
+    # save the image object to the save location in PNG format
+    img_data.save(file_path, 'PNG')
+    # return the path where the image was saved
     return file_path
