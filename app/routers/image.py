@@ -11,7 +11,15 @@ router = APIRouter()
 
 @router.post("/upload/")
 async def upload(file: UploadFile, body: str = Form(...)):
-    print('hello from upload')
+    """
+        Request processing of an image file.
+
+        Arguments:
+            file {UploadFile} -- Upload file
+            body {str} -- Image body
+        Returns:
+            dict -- Image body
+    """
     try:
         # get the json data
         json_data = json.loads(body)
