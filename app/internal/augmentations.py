@@ -14,6 +14,15 @@ def shift(image_data: numpy.ndarray, direction: str, distance: int) -> numpy.nda
     Returns:
         numpy.array: The newly processed image.
     """
+    if not isinstance(image_data, numpy.ndarray) or image_data.ndim < 2:
+        raise TypeError(
+            "image_data must be a numpy.ndarray with at least 2 dimensions.")
+    if not isinstance(direction, str):
+        raise TypeError(
+            "direction must be a string.")
+    if not isinstance(distance, int):
+        raise TypeError(
+            "distance must be an integer.")
     direction_map = {
         # direct -> (shift_direction, axis)
         'up': (-1, 0),
