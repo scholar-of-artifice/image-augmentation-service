@@ -22,6 +22,18 @@ def create_dummy_image_bytes() -> bytes:
     # return the byte content
     return buffer.getvalue()
 
+def create_dummy_numpy_array() -> numpy.ndarray:
+    """
+        Helper function that creates a dummy numpy array for testing.
+        Represents a potential image with RGB values.
+    """
+    return numpy.array([
+        [[255, 0, 0], [0,255, 0], [0,255, 0], [0,255, 0]],
+        [[0, 0, 0], [255, 0, 0], [255, 0, 0], [255, 0, 255]],
+        [[0, 0, 255], [255, 0, 255], [255, 0, 0], [0, 0, 0]],
+        [[0, 255, 255], [255, 255, 255], [0, 0, 0], [255, 255, 0]],
+    ], dtype=numpy.uint8)
+
 def test_translate_file_to_numpy_array():
     """
     GIVEN valid image bytes
@@ -45,4 +57,3 @@ def test_translate_file_to_numpy_array_raises_InvalidImageFileError():
     input_image_bytes = b'this is not a valid image bytes'
     with pytest.raises(InvalidImageFileError):
         translate_file_to_numpy_array(input_image_bytes)
-
