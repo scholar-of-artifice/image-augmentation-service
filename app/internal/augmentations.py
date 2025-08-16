@@ -26,14 +26,19 @@ def shift(image_data: numpy.ndarray, direction: str, distance: int) -> numpy.nda
         return image_data  # do nothing
 
 
-def rotate(image_data: numpy.ndarray, amount: int) -> numpy.ndarray:
+def rotate(image_data: numpy.ndarray, angle: int) -> numpy.ndarray:
     """
     Rotates and image by a specified number of degrees.
 
     Args:
         image_data (numpy.array): the image data to process.
-        amount (int): value as degrees <example: 45º is 45>
+        angle (int): value as degrees <example: 45º is 45>
     Returns:
         numpy.array: The newly processed image.
     """
-    return scipy.ndimage.rotate(input=image_data, angle=amount, reshape=False)
+    if not isinstance(image_data, numpy.ndarray) or image_data.ndim < 2:
+        raise TypeError(
+            "image_data must be a numpy.ndarray with at least 2 dimensions.")
+    if not isinstance(angle, int):
+        raise TypeError("angle must be an integer")
+    return scipy.ndimage.rotate(input=image_data, angle=angle, reshape=False)
