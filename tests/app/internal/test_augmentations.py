@@ -105,13 +105,13 @@ def test_shift_None_direction_raises_exception():
     AND the direction is None
     AND the distance is 3
     WHEN shift is called
-    THEN it raises a ValueError
+    THEN it raises a TypeError
     """
     input_image = numpy.array([[1, 0, 0, 0],
                                [0, 2, 0, 0],
                                [0, 0, 3, 0],
                                [0, 0, 0, 4]])
-    with pytest.raises(ValueError):
+    with pytest.raises(TypeError):
         shift(input_image, None, 3)
 
 
