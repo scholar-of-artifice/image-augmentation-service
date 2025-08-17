@@ -21,6 +21,14 @@ link: https://www.youtube.com/watch?v=YYXdXT2l-Gg
 ## How do I know/check Python is installed?
 
 To run this project, you must have Python3 or later.  Try the following command:
+### MacOS/Linux
 ```
 python3 --version
 ```
+
+### Windows
+```
+py --version
+python --version
+python3 --version
+``` 
