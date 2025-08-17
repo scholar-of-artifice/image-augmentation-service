@@ -22,6 +22,6 @@ Then define the request body:
 - Choose a file
 - enter the following string for the `body` field:
     ```
-        {"arguments": {"processing": "rotate", "amount": 45}}
+        {"arguments": {"processing": "rotate", "angle": 45}}
     ```
     
