@@ -208,3 +208,6 @@ __marimo__/
 
 # MacOS specific things
 .DS_Store
+
+# Project specific
+/app/_tmp/*.png
