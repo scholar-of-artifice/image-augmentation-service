@@ -5,9 +5,10 @@ These are some rough directions on how to install the Python programming languag
 📆 Last checked August 2025
 
 ## 🐍 Where can I find the Python programming language?
+
 site: https://www.python.org
 
-There are installation instructions on this webiste.
+There are installation instructions on this website. You will find releases for `Windows`, `MacOS` and `Linux`.
 
 ## Is there a video tutorial?
 I recommend Corey Schafer's video on getting started.
