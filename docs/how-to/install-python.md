@@ -17,3 +17,10 @@ Many Linux distributions have Python already installed.
 I recommend Corey Schafer's video on getting started.
 
 link: https://www.youtube.com/watch?v=YYXdXT2l-Gg
+
+## How do I know/check Python is installed?
+
+To run this project, you must have Python3 or later.  Try the following command:
+```
+python3 --version
+```
