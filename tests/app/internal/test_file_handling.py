@@ -89,3 +89,13 @@ def test_create_file_name_returns_a_non_empty_string():
     assert calculated_file_name is not None
     assert calculated_file_name is not ""
     assert isinstance(calculated_file_name, str) is True
+
+def test_create_file_name_returns_a_different_values_per_function_call():
+    """
+    GIVEN no arguments
+    WHEN create_file_name is called twice
+    THEN it should return different values
+    """
+    calculated_file_name_A = create_file_name()
+    calculated_file_name_B = create_file_name()
+    assert(calculated_file_name_A != calculated_file_name_B)
