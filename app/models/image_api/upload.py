@@ -2,6 +2,10 @@ from typing import Annotated, Union, Literal
 from pydantic import BaseModel, Field
 from pydantic.types import StringConstraints
 
+"""
+Models for: Inputs schema
+endpoint: .../image-api/upload
+"""
 
 class ShiftArguments(BaseModel):
     """
@@ -51,3 +55,9 @@ class UploadRequestBody(BaseModel):
     """
     arguments: Annotated[Union[ShiftArguments,
                                RotateArguments], Field(json_schema_extra={"descriminator": "processing"})]
+
+
+"""
+Models for: Output schema
+endpoint: .../image-api/upload
+"""
