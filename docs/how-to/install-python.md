@@ -10,6 +10,9 @@ site: https://www.python.org
 
 There are installation instructions on this website. You will find releases for `Windows`, `MacOS` and `Linux`.
 
+### For `Linux` users
+Many Linux distributions have Python already installed.
+
 ## Is there a video tutorial?
 I recommend Corey Schafer's video on getting started.
 
