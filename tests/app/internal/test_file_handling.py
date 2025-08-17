@@ -4,7 +4,7 @@ from PIL import Image
 import io
 import os
 
-from app.internal.file_handling import translate_file_to_numpy_array, write_numpy_array_to_image_file, InvalidImageFileError
+from app.internal.file_handling import translate_file_to_numpy_array, write_numpy_array_to_image_file, InvalidImageFileError, create_file_name
 
 def create_dummy_image_bytes() -> bytes:
     """
@@ -77,3 +77,15 @@ def test_write_numpy_array_to_image_file():
     #
     expected_file_path = 'app/_tmp/wow_a_file.png'
     assert numpy.array_equal(expected_file_path, calculated_file_path)
+
+def test_create_file_name_returns_a_non_empty_string():
+    """
+    GIVEN no arguments
+    WHEN create_file_name is called
+    THEN it should return a file name
+    """
+    calculated_file_name = create_file_name()
+    assert calculated_file_name != 'wow_a_file.png'
+    assert calculated_file_name is not None
+    assert calculated_file_name is not ""
+    assert isinstance(calculated_file_name, str) is True
