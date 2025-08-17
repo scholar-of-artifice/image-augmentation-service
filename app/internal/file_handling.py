@@ -1,7 +1,7 @@
 import numpy
 import io
 from PIL import Image, UnidentifiedImageError
-
+import uuid
 
 class InvalidImageFileError(ValueError):
     """
@@ -57,4 +57,8 @@ def write_numpy_array_to_image_file(data: numpy.ndarray, file_name: str) -> str:
     # return the path where the image was saved
     return file_path
 
-# TODO: create a function to name files automatically
+def create_file_name() -> str:
+    """
+    Generates a unique file name for the image file.
+    """
+    return str(uuid.uuid4())
