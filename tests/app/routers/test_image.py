@@ -45,7 +45,7 @@ def test_upload_is_not_successful_when_request_uses_invalid_JSON():
     """
     input_request_body = {
         "arguments": {
-            "processing": "rotate",
+            "processing": "shift",
             "direction": "left",
             "distance": 50
         }
