@@ -12,7 +12,7 @@ client = TestClient(app)
 TEST_DIR = Path(__file__).parent
 TEST_IMAGES_PATH = TEST_DIR.parent.parent / "data" / "basic_shapes_250x250.png"
 
-def test_upload_is_successful_when_request_is_valid_shift():
+def test_upload_is_successful_when_request_is_valid():
     """
     GIVEN a valid image_file
     WHEN .../upload is called
