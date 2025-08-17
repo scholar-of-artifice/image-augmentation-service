@@ -36,12 +36,12 @@ class RotateArguments(BaseModel):
 
         Attributes:
             processing (Literal["rotate"]): The name of the operation. This field is fixed.
-            amount (int): The amount of rotation in degrees. Must be a postive integer between 1 and 359.
+            angle (int): The amount of rotation in degrees. Must be a postive integer between 1 and 359.
     """
     # enforce specific value for processing field
     processing: Literal["rotate"]
     # enforce integer range
-    amount: Annotated[int, Field(strict=True, gt=0, lt=360)]
+    angle: Annotated[int, Field(strict=True, gt=0, lt=360)]
 
 
 class UploadRequestBody(BaseModel):
