@@ -1,6 +1,6 @@
 import pytest
 from pydantic import ValidationError
-from app.models.image_api.upload import ShiftArguments, RotateArguments, UploadRequestBody
+from app.models.image_api.upload import ShiftArguments, RotateArguments
 
 
 def test_ShiftArguments_up_is_a_valid_direction():
@@ -156,47 +156,47 @@ def test_ShiftArguments_has_docstring():
     assert "A data model for specifying a 'shift' operation." in ShiftArguments.__doc__
 
 
-def test_RotateArguments_values_between_1_and_359_are_valid_amount():
-    valid_amount = list(range(1, 360))
-    for v in valid_amount:
+def test_RotateArguments_values_between_1_and_359_are_valid_angle():
+    valid_angle = list(range(1, 360))
+    for v in valid_angle:
         data = {
             "processing": "rotate",
-            "amount": v
+            "angle": v
         }
-        assert RotateArguments(**data).amount == v
+        assert RotateArguments(**data).angle == v
 
 
 def test_RotateArguments_shift_is_an_invalid_processing_type():
     data = {
         "processing": "shift",
-        "amount": 42
+        "angle": 42
     }
     with pytest.raises(ValidationError):
         RotateArguments(**data)
 
 
-def test_RotateArguments_negative_number_is_invalid_amount():
+def test_RotateArguments_negative_number_is_invalid_angle():
     data = {
         "processing": "rotate",
-        "amount": -42
+        "angle": -42
     }
     with pytest.raises(ValidationError):
         RotateArguments(**data)
 
 
-def test_RotateArguments_0_is_invalid_amount():
+def test_RotateArguments_0_is_invalid_angle():
     data = {
         "processing": "rotate",
-        "amount": 0
+        "angle": 0
     }
     with pytest.raises(ValidationError):
         RotateArguments(**data)
 
 
-def test_RotateArguments_360_is_invalid_amount():
+def test_RotateArguments_360_is_invalid_angle():
     data = {
         "processing": "rotate",
-        "amount": 360
+        "angle": 360
     }
     with pytest.raises(ValidationError):
         RotateArguments(**data)
