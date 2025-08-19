@@ -1,0 +1,36 @@
+# --- Python specific ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+*.egg-info/
+
+# --- IDE and editor folders ---
+.vscode/
+.idea/
+*.swp
+
+# --- Environment files ---
+.env
+
+# --- Git folder ---
+.git/
+.gitignore
+
+# --- Docker specific ---
+Dockerfile
+.dockerignore
+
+# --- OS specific ---
+.DS_Store
+Thumbs.db
+
+# --- Repository specific ---
+/app/_tmp
+/docs/
+/tests/
+LICENSE
+.python-version
