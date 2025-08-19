@@ -17,3 +17,9 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 COPY ./app /image-augmentation-service/app
 # Run with uvicorn
 CMD ["uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+# TODO: Run as a Non-Root User to reduce security risks
+# TODO: Use a Multi-Stage Build to create smaller, more secure final images.
+# TODO: Harden the Production Server Command to handle real-world traffic.
+# TODO: Modernise the uv Installer to align with current best practices.
+# TODO: Add a HEALTHCHECK to allow Docker to monitor the container's status.
