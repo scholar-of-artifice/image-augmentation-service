@@ -17,3 +17,6 @@ services:
     container_name: image-augmentation-api
     ports:
       - "8000:8000"
+  # TODO: add a persistence layer
+  # TODO: add a PostgreSQL volume for transaction information
+  # TODO: add a Images Volume for augmented images
