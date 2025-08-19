@@ -36,7 +36,7 @@ async def upload(file: UploadFile, body: str = Form(...)):
                                  distance=validated_data.arguments.distance)
         elif validated_data.arguments.processing == "rotate":
             new_img_data = rotate(image_data=img_data,
-                                  amount=validated_data.arguments.amount)
+                                  angle=validated_data.arguments.angle)
         file_path = write_numpy_array_to_image_file(data=new_img_data,
                                                     file_name='i_hope_this_works')
         # tell me where you put the file?
