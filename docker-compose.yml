@@ -1,5 +1,11 @@
 version: '3.8'
 
+# Define the named volumes for persistent storage
+volumes:
+  transactions_data: # this is a database for storing information about data transactions
+  unprocessed_image_data: # use this for staging unprocessed/original files
+  processed_image_data: # use this for storing processed/augmented files
+
 services:
   # The FastAPI Application Service
   api:
