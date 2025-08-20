@@ -1,6 +1,6 @@
 import pytest
 from pydantic import ValidationError
-from app.models.healthcheck_api.healthcheck import HealthCheckResponse
+from app.models.health_api.healthcheck import HealthCheckResponse
 
 
 def test_HealthCheckResponse_has_correct_structure():
