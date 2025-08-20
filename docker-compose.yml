@@ -17,12 +17,12 @@ services:
       # The dot is a universal shorthand in command-line environments
       # for the current directory.
       context: .
+    ports:
+      - "8000:8000"
     # Give the built image a name
     image: image-augmentation-service-api:latest
     # Give the running container a name
     container_name: image-augmentation-api
-    ports:
-      - "8000:8000"
   # TODO: add a persistence layer
   # TODO: add a PostgreSQL volume for transaction information
   # TODO: add a Images Volume for augmented images
