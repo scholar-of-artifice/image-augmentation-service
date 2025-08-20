@@ -57,7 +57,7 @@ def write_numpy_array_to_image_file(data: numpy.ndarray, file_name: str, destina
             str: The full file path of the image file.
     """
     # look up the base path for the destination volume
-    base_path = VOLUME_PATHS[destination_volume]
+    base_path = VOLUME_PATHS.get(destination_volume)
     if not base_path:
         raise ValueError(f"Invalid destination volume: {destination_volume}")
     # ensure the destination directory exists
