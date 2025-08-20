@@ -2,6 +2,13 @@ import numpy
 import io
 from PIL import Image, UnidentifiedImageError
 import uuid
+from pathlib import Path
+
+# Define the mapping from volume names to the in-container paths
+VOLUME_PATHS = {
+    "unprocessed_image_data": Path("/app/images/unprocessed"),
+    "processed_image_data": Path("/app/images/processed"),
+}
 
 class InvalidImageFileError(ValueError):
     """
@@ -35,7 +42,7 @@ def translate_file_to_numpy_array(content: bytes) -> numpy.ndarray:
         raise InvalidImageFileError(f"failed to open or convert image {e}")
 
 
-def write_numpy_array_to_image_file(data: numpy.ndarray, file_name: str) -> str:
+def write_numpy_array_to_image_file(data: numpy.ndarray, file_name: str, destination_volume: str) -> str:
     """
         Saves a NumPy array as a PNG image file.
 
@@ -44,18 +51,25 @@ def write_numpy_array_to_image_file(data: numpy.ndarray, file_name: str) -> str:
         Args:
             data (numpy.ndarray): The NumPy array representation of the image file.
             file_name (str): The file name of the image file.
+            destination_volume (str): The volume where the image file will be saved. (example: unprocessed_image_data)
 
         Returns:
             str: The full file path of the image file.
     """
+    # look up the base path for the destination volume
+    base_path = VOLUME_PATHS[destination_volume]
+    if not base_path:
+        raise ValueError(f"Invalid destination volume: {destination_volume}")
+    # ensure the destination directory exists
+    base_path.mkdir(parents=True, exist_ok=True)
+    # define the full path for the output file, including the directory.
+    file_path = base_path / Path(file_name).with_suffix(".png")
     # convert the numpy array to a Pillow Image object.
     img_data = Image.fromarray(data)
-    # Define the full path for the output file, including the directory.
-    file_path = f'app/_tmp/{file_name}.png'
     # save the image object to the save location in PNG format
     img_data.save(file_path, 'PNG')
     # return the path where the image was saved
-    return file_path
+    return str(file_path)
 
 def create_file_name() -> str:
     """
