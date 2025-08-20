@@ -4,7 +4,9 @@ from PIL import Image
 import io
 import os
 
-from app.internal.file_handling import translate_file_to_numpy_array, write_numpy_array_to_image_file, InvalidImageFileError, create_file_name
+from app.internal.file_handling import translate_file_to_numpy_array, write_numpy_array_to_image_file, \
+    InvalidImageFileError, create_file_name, VOLUME_PATHS
+
 
 def create_dummy_image_bytes() -> bytes:
     """
@@ -63,20 +65,26 @@ def test_translate_file_to_numpy_array_raises_InvalidImageFileError():
     with pytest.raises(InvalidImageFileError):
         translate_file_to_numpy_array(input_image_bytes)
 
-def test_write_numpy_array_to_image_file():
+def test_write_numpy_array_to_image_file(tmp_path, monkeypatch):
     """
     GIVEN a numpy array with valid image data
     WHEN write_numpy_array_to_image_file is called
     THEN a file_path_is_returned.
     """
-    # setup preconditions
-    create_write_directory()
+    # create a temporary directory for the 'unprocessed' image
+    unprocessed_dir = tmp_path / "unprocessed"
+    unprocessed_dir.mkdir()
+    # temporarily point the volume name to the test directory
+    monkeypatch.setitem(VOLUME_PATHS, "unprocessed_image_data", unprocessed_dir)
+    # execute the test
     input_numpy_array = create_dummy_numpy_array()
+    file_name = 'test_image'
+    destination = 'unprocessed_image_data'
+    expected_file_path = (unprocessed_dir / f"{file_name}.png")
+    calculated_file_path = write_numpy_array_to_image_file(data=input_numpy_array, file_name=file_name, destination_volume=destination )
     #
-    calculated_file_path = write_numpy_array_to_image_file(data=input_numpy_array, file_name='wow_a_file' )
-    #
-    expected_file_path = 'app/_tmp/wow_a_file.png'
-    assert numpy.array_equal(expected_file_path, calculated_file_path)
+    assert str(expected_file_path) == str(calculated_file_path)
+    assert (expected_file_path).exists()
 
 def test_create_file_name_returns_a_non_empty_string():
     """
