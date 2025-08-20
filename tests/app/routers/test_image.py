@@ -69,7 +69,6 @@ def test_upload_is_not_successful_when_request_uses_invalid_request_model():
         }
     }
     input_request_str = json.dumps(input_request_body)
-    input_request_str = input_request_str[:-5]
     with open(file=TEST_IMAGES_PATH, mode="rb") as image_file:
         response = client.post("/upload",
                                data={"body": input_request_str},
