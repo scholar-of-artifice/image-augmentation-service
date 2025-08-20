@@ -3,8 +3,7 @@ from fastapi import (APIRouter, Form, UploadFile, HTTPException, status)
 from app.models.image_api.upload import UploadRequestBody
 from pydantic import ValidationError
 from app.internal.augmentations import shift, rotate
-from app.internal.file_handling import translate_file_to_numpy_array, write_numpy_array_to_image_file
-
+from app.internal.file_handling import (translate_file_to_numpy_array, write_numpy_array_to_image_file, create_file_name)
 
 router = APIRouter()
 
@@ -27,9 +26,11 @@ async def upload(file: UploadFile, body: str = Form(...)):
         # get image contents
         image_content = await file.read()
         img_data = translate_file_to_numpy_array(image_content)
+        write_numpy_array_to_image_file(data=img_data,
+                                        file_name=file.filename,
+                                        destination_volume='unprocessed_image_data')
         # process image based on requested algorithm
         new_img_data = img_data
-        file_path = ''
         if validated_data.arguments.processing == "shift":
             new_img_data = shift(image_data=img_data,
                                  direction=validated_data.arguments.direction,
@@ -38,7 +39,8 @@ async def upload(file: UploadFile, body: str = Form(...)):
             new_img_data = rotate(image_data=img_data,
                                   angle=validated_data.arguments.angle)
         file_path = write_numpy_array_to_image_file(data=new_img_data,
-                                                    file_name='i_hope_this_works')
+                                                    file_name=create_file_name(),
+                                                    destination_volume='processed_image_data')
         # tell me where you put the file?
         return {
             "output_file_path": file_path,
