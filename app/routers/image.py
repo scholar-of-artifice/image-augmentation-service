@@ -1,5 +1,5 @@
 import json
-from fastapi import APIRouter, Form, UploadFile
+from fastapi import (APIRouter, Form, UploadFile, HTTPException, status)
 from app.models.image_api.upload import UploadRequestBody
 from pydantic import ValidationError
 from app.internal.augmentations import shift, rotate
@@ -46,7 +46,18 @@ async def upload(file: UploadFile, body: str = Form(...)):
         }
     except json.JSONDecodeError:
         # this should only happen when json.loads has an issue
-        return {"error": "Invalid JSON format in the 'body' field"}
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid JSON format in the `body` field."
+        )
     except ValidationError as e:
+        error_message = []
+        for error in e.errors():
+            field = " -> ".join(map(str, error['loc']))
+            message = error['msg']
+            error_message.append(f"Error in {field}: {message}")
         # this should happen when any validation fails
-        return {"error": str(e)}
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="".join(error_message)
+        )
