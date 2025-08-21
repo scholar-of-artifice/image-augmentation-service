@@ -15,10 +15,10 @@ def test_HealthCheckResponse_has_correct_structure():
     obj = HealthCheckResponse(**data)
     assert obj.status == "OK"
 
-def test_HealthCheckResponse_validates_incorrect_structure():
+def test_HealthCheckResponse_validates_incorrect_status_string():
     """
     GIVEN a HealthCheckResponse model
-    WHEN a HealthCheckResponse is created with an incorrect structure
+    WHEN a HealthCheckResponse is created with an incorrect status string
     THEN a ValidationError is raised.
     """
     data = {
