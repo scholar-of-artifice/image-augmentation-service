@@ -9,10 +9,10 @@ client = TestClient(app)
 
 def test_healthcheck_is_successful_when_request_is_valid():
     """
-    GIVEN a client
-    AND an endpoint of /healthcheck
-    WHEN a get request is made to the endpoint
-    THEN the correct response is returned.
+        GIVEN a client
+        AND an endpoint of /healthcheck
+        WHEN a get request is made to the endpoint
+        THEN the correct response is returned.
     """
     response = client.get("/healthcheck")
     assert response.status_code == status.HTTP_200_OK
