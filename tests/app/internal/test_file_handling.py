@@ -100,9 +100,9 @@ def test_write_numpy_array_to_image_file(tmp_path, monkeypatch):
 
 def test_create_file_name_returns_a_non_empty_string():
     """
-    GIVEN no arguments
-    WHEN create_file_name is called
-    THEN it should return a file name
+        GIVEN no arguments
+        WHEN create_file_name is called
+        THEN it should return a file name
     """
     calculated_file_name = create_file_name()
     assert calculated_file_name != 'wow_a_file.png'
