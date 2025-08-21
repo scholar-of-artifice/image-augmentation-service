@@ -48,7 +48,7 @@ def create_write_directory():
     # ensure the target director exists...
     os.makedirs('app/_tmp', exist_ok=True)
 
-def test_translate_file_to_numpy_array():
+def test_translate_file_to_numpy_array_creates_correct_result_when_given_valid_image_data():
     """
         GIVEN valid image bytes
         WHEN translate_file_to_numpy_array is called
