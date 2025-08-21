@@ -63,15 +63,17 @@ def test_translate_file_to_numpy_array_creates_correct_result_when_given_valid_i
     calculated_output = translate_file_to_numpy_array( content= input_image_bytes )
     assert numpy.array_equal(expected_output, calculated_output)
 
-def test_translate_file_to_numpy_array_raises_InvalidImageFileError():
+def test_translate_file_to_numpy_array_raises_InvalidImageFileError_when_given_invalid_image_data():
     """
-    GIVEN an invalid image bytes
-    WHEN translate_file_to_numpy_array is called
-    THEN it should raise an error
+        GIVEN invalid image bytes
+        WHEN translate_file_to_numpy_array is called
+        THEN an exception is raised.
     """
+    # make bad data
     input_image_bytes = b'this is not a valid image bytes'
+    # assert that calling the function raises an error
     with pytest.raises(InvalidImageFileError):
-        translate_file_to_numpy_array(input_image_bytes)
+        translate_file_to_numpy_array( content= input_image_bytes )
 
 def test_write_numpy_array_to_image_file(tmp_path, monkeypatch):
     """
