@@ -112,9 +112,9 @@ def test_create_file_name_returns_a_non_empty_string():
 
 def test_create_file_name_returns_a_different_values_per_function_call():
     """
-    GIVEN no arguments
-    WHEN create_file_name is called twice
-    THEN it should return different values
+        GIVEN no arguments
+        WHEN create_file_name is called twice
+        THEN it should return different values
     """
     calculated_file_name_A = create_file_name()
     calculated_file_name_B = create_file_name()
