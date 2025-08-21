@@ -50,9 +50,9 @@ def create_write_directory():
 
 def test_translate_file_to_numpy_array():
     """
-    GIVEN valid image bytes
-    WHEN translate_file_to_numpy_array is called
-    THEN the correct numpy array is returned.
+        GIVEN valid image bytes
+        WHEN translate_file_to_numpy_array is called
+        THEN the correct numpy array is returned.
     """
     input_image_bytes = create_dummy_image_bytes()
     expected_output = numpy.array( [
