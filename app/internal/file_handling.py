@@ -63,11 +63,11 @@ def write_numpy_array_to_image_file(data: numpy.ndarray, file_name: str, destina
     # ensure the destination directory exists
     base_path.mkdir(parents=True, exist_ok=True)
     # define the full path for the output file, including the directory.
-    file_path = base_path / Path(file_name).with_suffix(".png")
+    file_path = base_path / Path(file_name).with_suffix(suffix= ".png")
     # convert the numpy array to a Pillow Image object.
     img_data = Image.fromarray(data)
     # save the image object to the save location in PNG format
-    img_data.save(file_path, 'PNG')
+    img_data.save(fp= file_path, format='PNG')
     # return the path where the image was saved
     return str(file_path)
 
