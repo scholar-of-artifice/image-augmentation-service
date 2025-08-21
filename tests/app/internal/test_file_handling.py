@@ -42,6 +42,9 @@ def create_dummy_numpy_array() -> numpy.ndarray:
     ], dtype=numpy.uint8)
 
 def create_write_directory():
+    """
+        Helper function that creates a dummy directory for testing.
+    """
     # ensure the target director exists...
     os.makedirs('app/_tmp', exist_ok=True)
 
