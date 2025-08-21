@@ -33,6 +33,9 @@ def create_dummy_numpy_array() -> numpy.ndarray:
     """
         Helper function that creates a dummy numpy array for testing.
         Represents a potential image with RGB values.
+
+        Returns:
+            numpy.ndarray: dummy numpy array
     """
     return numpy.array([
         [[255, 0, 0], [0,255, 0], [0,255, 0], [0,255, 0]],
