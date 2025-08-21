@@ -98,6 +98,14 @@ def test_write_numpy_array_to_image_file(tmp_path, monkeypatch):
     assert str(expected_file_path) == str(calculated_file_path)
     assert (expected_file_path).exists()
 
+def test_create_file_name_returns_a_string():
+    """
+        GIVEN no arguments
+        WHEN create_file_name is called
+        THEN it should return a string
+    """
+    assert isinstance(create_file_name(), str)
+
 def test_create_file_name_returns_a_non_empty_string():
     """
         GIVEN no arguments
