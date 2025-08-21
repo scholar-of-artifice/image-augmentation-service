@@ -117,6 +117,14 @@ def test_create_file_name_returns_a_non_empty_string():
     assert calculated_file_name is not None
     assert calculated_file_name != ""
     assert isinstance(calculated_file_name, str) is True
+def test_create_file_name_returns_a_nonspecific_string():
+    """
+        GIVEN no arguments
+        WHEN create_file_name is called
+        THEN it should return a non-empty string
+    """
+    calculated_file_name = create_file_name()
+    assert create_file_name() != 'wow_an_oddly_specific_filename.png'
 
 def test_create_file_name_returns_a_different_values_per_function_call():
     """
