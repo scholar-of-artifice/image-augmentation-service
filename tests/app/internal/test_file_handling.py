@@ -55,12 +55,12 @@ def test_translate_file_to_numpy_array():
         THEN the correct numpy array is returned.
     """
     input_image_bytes = create_dummy_image_bytes()
-    expected_output = numpy.array( [
+    expected_output = numpy.array( object= [
         [[255, 0, 0], [0,255, 0], [0, 0, 255]],
         [[255, 255, 255], [127, 127, 127], [0, 0, 0]],
         [[127, 0, 0], [0,127, 0], [0, 0, 127]],
-    ], dtype=numpy.uint8)
-    calculated_output = translate_file_to_numpy_array(input_image_bytes)
+    ], dtype=numpy.uint8 )
+    calculated_output = translate_file_to_numpy_array( content= input_image_bytes )
     assert numpy.array_equal(expected_output, calculated_output)
 
 def test_translate_file_to_numpy_array_raises_InvalidImageFileError():
