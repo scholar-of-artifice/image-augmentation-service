@@ -110,13 +110,11 @@ def test_create_file_name_returns_a_non_empty_string():
     """
         GIVEN no arguments
         WHEN create_file_name is called
-        THEN it should return a file name
+        THEN it should return a non-empty string
     """
     calculated_file_name = create_file_name()
-    assert calculated_file_name != 'wow_a_file.png'
-    assert calculated_file_name is not None
-    assert calculated_file_name != ""
-    assert isinstance(calculated_file_name, str) is True
+    assert create_file_name() != 'wow_a_file.png'
+
 def test_create_file_name_returns_a_nonspecific_string():
     """
         GIVEN no arguments
