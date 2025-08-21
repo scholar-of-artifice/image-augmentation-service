@@ -79,9 +79,9 @@ def test_translate_file_to_numpy_array_raises_InvalidImageFileError_when_given_i
 
 def test_write_numpy_array_to_image_file(tmp_path, monkeypatch):
     """
-    GIVEN a numpy array with valid image data
-    WHEN write_numpy_array_to_image_file is called
-    THEN a file_path_is_returned.
+        GIVEN a numpy array with valid image data
+        WHEN write_numpy_array_to_image_file is called
+        THEN a file_path_is_returned.
     """
     # create a temporary directory for the 'unprocessed' image
     unprocessed_dir = tmp_path / "unprocessed"
