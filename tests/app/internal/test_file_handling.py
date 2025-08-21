@@ -56,8 +56,9 @@ def test_translate_file_to_numpy_array():
     """
     input_image_bytes = create_dummy_image_bytes()
     expected_output = numpy.array( [
-        [[255, 0, 0], [0,255, 0]],
-        [[0, 0, 255], [255, 0, 0]]
+        [[255, 0, 0], [0,255, 0], [0, 0, 255]],
+        [[255, 255, 255], [127, 127, 127], [0, 0, 0]],
+        [[127, 0, 0], [0,127, 0], [0, 0, 127]],
     ], dtype=numpy.uint8)
     calculated_output = translate_file_to_numpy_array(input_image_bytes)
     assert numpy.array_equal(expected_output, calculated_output)
