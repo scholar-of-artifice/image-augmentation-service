@@ -26,3 +26,16 @@ def test_HealthCheckResponse_validates_incorrect_status_string():
     }
     with pytest.raises(ValidationError):
         HealthCheckResponse(**data)
+
+
+def test_HealthCheckResponse_validates_incorrect_structure():
+    """
+    GIVEN a HealthCheckResponse model
+    WHEN a HealthCheckResponse is created with an incorrect structure
+    THEN a ValidationError is raised.
+    """
+    data = {
+        "hello": "world",
+    }
+    with pytest.raises(ValidationError):
+        HealthCheckResponse(**data)
