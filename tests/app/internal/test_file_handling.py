@@ -45,13 +45,6 @@ def create_dummy_numpy_array() -> numpy.ndarray:
         [[127, 0, 0], [0,127, 0], [0, 0, 127]],
     ], dtype=numpy.uint8)
 
-def create_write_directory():
-    """
-        Helper function that creates a dummy directory for testing.
-    """
-    # ensure the target director exists...
-    os.makedirs('app/_tmp', exist_ok=True)
-
 def test_translate_file_to_numpy_array_creates_correct_result_when_given_valid_image_data():
     """
         GIVEN valid image bytes
