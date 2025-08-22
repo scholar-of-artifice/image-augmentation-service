@@ -206,3 +206,17 @@ def test_rotate_bad_input_dimensions_raises_exception():
     input_image = numpy.array([1, 0, 0, 0])
     with pytest.raises(TypeError):
         rotate(input_image, angle=45)
+
+def test_rotate_angle_of_string_raises_exception():
+    """
+    GIVEN a 4x4 matrix
+    AND the angle is a string
+    WHEN rotate is called
+    THEN it raises a TypeError
+    """
+    input_image = numpy.array([[1, 0, 0, 0],
+                               [0, 2, 0, 0],
+                               [0, 0, 3, 0],
+                               [0, 0, 0, 4]])
+    with pytest.raises(TypeError):
+        rotate(input_image, angle='45')
