@@ -2,11 +2,13 @@ import numpy
 import pytest
 from PIL import Image
 import io
-import os
-
-from app.internal.file_handling import translate_file_to_numpy_array, write_numpy_array_to_image_file, \
-    InvalidImageFileError, create_file_name, VOLUME_PATHS
-
+from app.internal.file_handling import (
+    translate_file_to_numpy_array,
+    write_numpy_array_to_image_file,
+    InvalidImageFileError,
+    create_file_name,
+    VOLUME_PATHS
+)
 
 def create_dummy_image_bytes() -> bytes:
     """
