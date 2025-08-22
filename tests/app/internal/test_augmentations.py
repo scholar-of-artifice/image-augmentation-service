@@ -164,6 +164,37 @@ def test_rotate_example_90_degrees():
     calculated_output = rotate(input_image, 90)
     assert numpy.array_equal(calculated_output, expected_output)
 
+def test_rotate_example_0_degrees():
+    """
+    GIVEN a 11x11 matrix
+    AND the amount is 0 degrees
+    WHEN rotate is called
+    THEN the new matrix has the correct value
+    """
+    input_image = numpy.array([[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                               [0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                               [0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0],
+                               [0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0],
+                               [0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0],
+                               [0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0],
+                               [0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0],
+                               [0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0],
+                               [0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0],
+                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0],
+                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11]])
+    expected_output = numpy.array([[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                               [0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                               [0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0],
+                               [0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0],
+                               [0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0],
+                               [0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0],
+                               [0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0],
+                               [0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0],
+                               [0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0],
+                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0],
+                               [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11]])
+    calculated_output = rotate(input_image, 0)
+    assert numpy.array_equal(calculated_output, expected_output)
 
 def test_rotate_bad_input_dimensions_raises_exception():
     """
