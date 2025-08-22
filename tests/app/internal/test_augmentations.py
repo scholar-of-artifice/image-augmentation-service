@@ -163,3 +163,15 @@ def test_rotate_example_90_degrees():
                                   [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
     calculated_output = rotate(input_image, 90)
     assert numpy.array_equal(calculated_output, expected_output)
+
+
+def test_rotate_bad_input_dimensions_raises_exception():
+    """
+    GIVEN a 4x4 matrix
+    AND the input dimensions are incorrect
+    WHEN rotate is called
+    THEN it raises a TypeError
+    """
+    input_image = numpy.array([1, 0, 0, 0])
+    with pytest.raises(TypeError):
+        rotate(input_image, angle=45)
