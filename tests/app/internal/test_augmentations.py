@@ -101,6 +101,17 @@ def test_shift_float_distance_raises_exception():
     with pytest.raises(TypeError):
         shift(input_image, 'up', 3.5)
 
+def test_shift_bad_input_dimensions_raises_exception():
+    """
+    GIVEN a 4x4 matrix
+    AND the input dimensions are incorrect
+    WHEN shift is called
+    THEN it raises a TypeError
+    """
+    input_image = numpy.array([1, 0, 0, 0])
+    with pytest.raises(TypeError):
+        shift(input_image, 'left', 3)
+
 
 def test_rotate_example_45_degrees():
     """
