@@ -17,7 +17,7 @@ async def upload(file: UploadFile, body: str = Form(...)):
             file {UploadFile} -- Upload file
             body {str} -- Image body
         Returns:
-            dict -- Image body
+            dict -- TODO: make a better validated return object
     """
     try:
         # get the json data
