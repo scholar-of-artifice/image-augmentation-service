@@ -4,7 +4,7 @@ from app.main import app
 
 client = TestClient(app)
 
-def app_includes_router_to_healthcheck_api_healthcheck_does_exist():
+def test_app_includes_router_to_healthcheck_api_healthcheck_does_exist():
     """
         GIVEN the app is running
         WHEN /api/healthcheck-api/healthcheck/ is called
