@@ -20,5 +20,5 @@ def test_app_includes_router_to_image_api_info_does_not_exist():
         THEN the app should respond with 404
     """
     # TODO: make this into a test for endpoint that exists...
-    response = client.get("/api/image-api/info/")
+    response = client.get("/image-api/info")
     assert response.status_code == status.HTTP_404_NOT_FOUND
