@@ -37,6 +37,11 @@ def shift(image_data: numpy.ndarray, direction: str, distance: int) -> numpy.nda
     if direction not in direction_map:
         raise ValueError(
             f"Invalid direction: '{direction}'. Must be 'up', 'down', 'left' or 'right'.")
+    log_data = LogEntry(
+        event="shift",
+        details="Processing shift.",
+    )
+    logger.info(log_data.model_dump_json())
     shift_direction, axis = direction_map[direction]
     return numpy.roll(image_data, shift_direction * distance, axis=axis)
 
