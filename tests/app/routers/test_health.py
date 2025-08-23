@@ -20,7 +20,7 @@ def test_healthcheck_is_successful_when_request_is_valid():
 def test_healthcheck_has_correct_response_when_request_is_valid():
     """
         GIVEN a client
-        AND an endpoint of /healthcheck
+        AND an endpoint of .../healthcheck
         WHEN a get request is made to the endpoint
         THEN the correct response is returned.
     """
