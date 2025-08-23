@@ -12,6 +12,8 @@ def setup_logging():
 
 setup_logging()
 app = FastAPI()
+logger = logging.getLogger(__name__)
+
 app.include_router(image.router, prefix="/image-api")
 app.include_router(health.router, prefix="/healthcheck-api")
 
