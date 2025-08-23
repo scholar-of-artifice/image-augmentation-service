@@ -6,9 +6,9 @@ client = TestClient(app)
 
 def app_includes_router_to_healthcheck_api_healthcheck_does_exist():
     """
-        GIVEN the app is up
+        GIVEN the app is running
         WHEN /api/healthcheck-api/healthcheck/ is called
-        THEN the app should respond with 404
+        THEN the app should respond with 200
     """
     response = client.get("/api/healthcheck-api/healthcheck/")
     assert response.status_code == status.HTTP_200_OK
