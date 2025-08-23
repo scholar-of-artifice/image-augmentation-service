@@ -1,6 +1,10 @@
 import numpy
 import scipy.ndimage
+from app.models.logging import LogEntry
+import logging
 
+# set up logging
+logger = logging.getLogger(__name__)
 
 def shift(image_data: numpy.ndarray, direction: str, distance: int) -> numpy.ndarray:
     """
