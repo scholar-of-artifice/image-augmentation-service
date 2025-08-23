@@ -2,6 +2,7 @@ import numpy
 import scipy.ndimage
 from app.models.logging import LogEntry
 import logging
+from datetime import datetime
 
 # set up logging
 logger = logging.getLogger(__name__)
@@ -38,6 +39,7 @@ def shift(image_data: numpy.ndarray, direction: str, distance: int) -> numpy.nda
         raise ValueError(
             f"Invalid direction: '{direction}'. Must be 'up', 'down', 'left' or 'right'.")
     log_data = LogEntry(
+        date_time=datetime.now(),
         event="shift",
         details="Processing shift.",
     )
@@ -64,6 +66,7 @@ def rotate(image_data: numpy.ndarray, angle: int) -> numpy.ndarray:
     if angle == 0:
         return image_data
     log_data = LogEntry(
+        date_time=datetime.now(),
         event="rotate",
         details="Processing rotate.",
     )
