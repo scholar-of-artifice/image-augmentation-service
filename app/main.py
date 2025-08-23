@@ -4,13 +4,13 @@ import logging.config
 import json
 from app.routers import image, health
 
-def setup_logging():
+def set_up_logging():
     config_file = Path(__file__).parent / "logging_config.json"
     with config_file.open(mode='r') as f:
         config = json.load(f)
     logging.config.dictConfig(config)
 
-setup_logging()
+set_up_logging()
 app = FastAPI()
 logger = logging.getLogger(__name__)
 
