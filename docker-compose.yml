@@ -1,5 +1,3 @@
-version: '3.8'
-
 # Define the named volumes for persistent storage
 volumes:
   transactions_data: # this is a database for storing information about data transactions
