@@ -1,7 +1,10 @@
 from fastapi import (APIRouter, status)
 from app.models.health_api.healthcheck import HealthCheckResponse
+import logging
 
 router = APIRouter()
+# set up logging
+logger = logging.getLogger(__name__)
 
 @router.get(path="/healthcheck",
          status_code=status.HTTP_200_OK)
