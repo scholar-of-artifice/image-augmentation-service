@@ -63,4 +63,9 @@ def rotate(image_data: numpy.ndarray, angle: int) -> numpy.ndarray:
         raise TypeError("angle must be an integer")
     if angle == 0:
         return image_data
+    log_data = LogEntry(
+        event="rotate",
+        details="Processing rotate.",
+    )
+    logger.info(log_data.model_dump_json())
     return scipy.ndimage.rotate(input=image_data, angle=angle, reshape=False)
