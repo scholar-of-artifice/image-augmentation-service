@@ -19,8 +19,8 @@ services:
     volumes:
       # Mount the image storage volume into the container
       # [source_of_data]:[some/file/path]
-      - unprocessed_image_data:/app/images/unprocessed
-      - processed_image_data:/app/images/processed
+      - unprocessed_image_data:/image-augmentation-service/data/images/unprocessed
+      - processed_image_data:/image-augmentation-service/data/images/processed
     # Give the built image a name
     image: image-augmentation-service-api:latest
     # Give the running container a name
