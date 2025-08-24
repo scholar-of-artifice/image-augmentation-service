@@ -3,12 +3,10 @@ import json
 from fastapi import FastAPI, status
 from fastapi.testclient import TestClient
 from tests.app.helperfunc.helperfunc import get_test_image
-
 from app.routers.image import router
 
 app = FastAPI()
 app.include_router(router)
-
 client = TestClient(app)
 
 def test_upload_with_bad_request_body_returns_unprocessable_entity():
