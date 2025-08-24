@@ -1,6 +1,9 @@
 import numpy
 from PIL import Image
 import io
+from pathlib import Path
+__current_directory = Path(__file__).parent
+TESTS_DIR = __current_directory.parent.parent
 
 def create_dummy_image_bytes() -> bytes:
     """
