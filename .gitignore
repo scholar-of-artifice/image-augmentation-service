@@ -211,3 +211,4 @@ __marimo__/
 
 # Project specific
 /app/_tmp/*.png
+/tests/coverage_report/
