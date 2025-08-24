@@ -1,5 +1,7 @@
 import enum
 from dataclasses import Field
+from datetime import datetime
+from typing import Optional
 from sqlmodel import SQLModel
 from sqlalchemy import Column
 from sqlalchemy.dialects.postgresql import JSONB
@@ -21,9 +23,9 @@ class ProcessingJob(SQLModel, table=True):
         Class representing a processing job in the database.
     """
     # which processing job is this?
-    id: int = Field(primary_key=True)
+    id: Optional[int] = Field(default=None, primary_key=True)
     # how is this processing jobs working out?
-    status: JobStatus = Field(JobStatus.PENDING)
+    status: JobStatus = Field(default=JobStatus.PENDING)
     # what was the user asking for?
     request_parameters: UploadRequestBody = Field(sa_column=Column(JSONB))
     # when was this request made?
