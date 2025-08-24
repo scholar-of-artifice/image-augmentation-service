@@ -21,10 +21,18 @@ services:
       # [source_of_data]:[some/file/path]
       - unprocessed_image_data:/image-augmentation-service/data/images/unprocessed
       - processed_image_data:/image-augmentation-service/data/images/processed
+    # Pass database credentials to the API service as environment variables
+    environment:
+      - DATABASE_HOSTNAME=db
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     # Give the built image a name
     image: image-augmentation-service-api:latest
     # Give the running container a name
     container_name: image-augmentation-api
+    depends_on:
+      - db # tells the api service to wait for the db to start
   db:
     # The PostgreSQL Database Service to store transaction information
     image: postgres:16-alpine # Use the official PostgreSQL image
