@@ -25,6 +25,19 @@ services:
     image: image-augmentation-service-api:latest
     # Give the running container a name
     container_name: image-augmentation-api
+  db:
+    # The PostgreSQL Database Service to store transaction information
+    image: postgres:16-alpine # Use the official PostgreSQL image
+    volumes:
+      # Mount the volume to persist the data
+      - transactions_data:/var/lib/postgresql/data
+    environment:
+      # use the variables from the .env file
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    restart: always
+    container_name: image-augmentation-transactions-db
   # TODO: add a persistence layer
   # TODO: add a PostgreSQL volume for transaction information
   # TODO: add a Images Volume for augmented images
