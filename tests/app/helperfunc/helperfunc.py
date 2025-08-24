@@ -2,6 +2,9 @@ import numpy
 from PIL import Image
 import io
 from pathlib import Path
+from typing import ContextManager
+from contextlib import contextmanager
+
 __current_directory = Path(__file__).parent
 TESTS_DIR = __current_directory.parent.parent
 
@@ -39,3 +42,12 @@ def create_dummy_numpy_array() -> numpy.ndarray:
         [[255, 255, 255], [127, 127, 127], [0, 0, 0]],
         [[127, 0, 0], [0,127, 0], [0, 0, 127]],
     ], dtype=numpy.uint8)
+
+def get_test_image_path() -> Path:
+    """
+        Helper function that returns the path to the test image file.
+
+        Returns:
+            Path: test image path
+    """
+    return TESTS_DIR / "data" / "test_image.png"
