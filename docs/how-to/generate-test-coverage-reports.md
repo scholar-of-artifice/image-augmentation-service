@@ -12,6 +12,17 @@ Use the following command:
 pytest --cov=. --cov-report=html:tests/coverage_report/web
 ```
 
+### Open the Web Page
+After you have run the command, just navigate to the page here:
+```terminaloutput
+.../image-augmentation-service/tests/coverage_report/web/*index.html
+```
+
+This is an image if you need guidance:
+
+![image](./../assets/images/navigate_to_web_test_coverage_report.png)
+
+
 ## JSON Version
 
 If you want to integrate with a CI/CD pipeline or make this part of a larger services integration test, then I recommend this as part of you approach.
