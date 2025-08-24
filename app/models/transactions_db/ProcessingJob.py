@@ -26,5 +26,11 @@ class ProcessingJob(SQLModel, table=True):
     status: JobStatus = Field(JobStatus.PENDING)
     # what was the user asking for?
     request_parameters: UploadRequestBody = Field(sa_column=Column(JSONB))
+    # when was this request made?
+    created_at: Optional[datetime] = Field(default=None)
+    # when was this job started?
+    started_at: Optional[datetime] = Field(default=None)
+    # when did this job finish?
+    finished_at: Optional[datetime] = Field(default=None)
 
 
