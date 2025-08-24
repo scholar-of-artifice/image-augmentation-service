@@ -14,7 +14,6 @@ class InvalidImageFileError(ValueError):
     """
     Custom exception for invalid image file formats.
     """
-    # TODO: write tests?
     pass
 
 
