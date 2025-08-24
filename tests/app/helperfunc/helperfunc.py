@@ -1,5 +1,5 @@
 import numpy
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 import io
 from pathlib import Path
 from typing import ContextManager
@@ -51,3 +51,27 @@ def get_test_image_path() -> Path:
             Path: test image path
     """
     return TESTS_DIR / "data" / "test_image.png"
+
+@contextmanager
+def get_test_image() -> ContextManager[bytes]:
+    """
+        Safely opens a test image and yields its raw byte content.
+
+        This function is a context manager that handles opening and closing the image file.
+
+        Raises:
+            FileNotFoundError: if test image file does not exist
+            ValueError: if the file cannot be identified as an valid image
+        Yields:
+
+    """
+    file_path = get_test_image_path()
+    try:
+        with Image.open(file_path) as img:
+            buffer = io.BytesIO()
+            img.save(buffer, format='PNG')
+            yield buffer.getvalue()
+    except FileNotFoundError:
+        raise FileNotFoundError("test image file does not exist")
+    except UnidentifiedImageError:
+        raise ValueError(f"{file_path} is not a valid image.")
