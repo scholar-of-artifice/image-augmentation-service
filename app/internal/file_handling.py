@@ -3,11 +3,12 @@ import io
 from PIL import Image, UnidentifiedImageError
 import uuid
 from pathlib import Path
+from ..config import settings
 
 # Define the mapping from volume names to the in-container paths
 VOLUME_PATHS = {
-    "unprocessed_image_data": Path("/app/images/unprocessed"),
-    "processed_image_data": Path("/app/images/processed"),
+    "unprocessed_image_data": settings.UNPROCESSED_IMAGE_PATH,
+    "processed_image_data": settings.PROCESSED_IMAGE_PATH,
 }
 
 class InvalidImageFileError(ValueError):
