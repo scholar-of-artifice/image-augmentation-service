@@ -10,6 +10,8 @@ class Settings(BaseSettings):
     # where are processed images stored?
     PROCESSED_IMAGE_PATH: Path = Path("/image-augmentation-service/data/images/processed")
     # This tells Pydantic to be case-insensitive when matching environment variables
-    model_config = SettingsConfigDict(case_sensitive=False)
+    model_config = SettingsConfigDict(
+        case_sensitive=False
+    )
 
 settings = Settings()
