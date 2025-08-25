@@ -37,6 +37,8 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-install-project
 # Copy the project into the image
 COPY ./app /image-augmentation-service/app
+# Copy the tests into the image
+COPY ./tests /image-augmentation-service/tests
 # Run with uvicorn
 CMD ["uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 
