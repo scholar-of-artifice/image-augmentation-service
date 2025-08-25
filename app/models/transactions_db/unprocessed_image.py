@@ -9,7 +9,7 @@ class UnprocessedImage(SQLModel, table=True):
     Class representing a unprocessed image in the database.
     """
     # which image is this?
-    id: Optional[int] = Field(primary_key=True, default=None)
+    id: int | None = Field(default=None, primary_key=True)
     # who wrote this image?
     author_id: int = Field(nullable=False, index=True)
     # what is the original name of this image?
