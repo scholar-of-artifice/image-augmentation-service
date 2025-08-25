@@ -17,13 +17,13 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /image-augmentation-service
 # Copies the 'uv' executable from a multi-stage build to install Python packages quickly.
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
-# Change the working directory to the `app` directory
-WORKDIR /image-augmentation-service
+# --- DEV STAGE ---
+FROM base AS dev
 # Install dependencies
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    uv sync --frozen --no-install-project
+    uv sync --all-extras
 # Copy the project into the image
 COPY ./app /image-augmentation-service/app
 # Run with uvicorn
