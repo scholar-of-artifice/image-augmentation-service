@@ -2,7 +2,7 @@
 # Sets a build-time variable for the Python version, making it easy to update.
 ARG PYTHON_VERSION=3.13.7
 # Specifies the official lightweight Python image as the base for our container.
-FROM python:${PYTHON_VERSION}-slim as base
+FROM python:${PYTHON_VERSION}-slim AS base
 # Adds metadata to the image, in this case, the author's name.
 LABEL authors="scholar-of-artifice"
 # PYTHONUNBUFFERED
