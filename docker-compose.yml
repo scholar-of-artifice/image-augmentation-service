@@ -76,6 +76,7 @@ services:
       - processed_image_data:/image-augmentation-service/data/images/processed
     profiles:
       - prod
+  # the PostgreSQL database service is shared by all environments
   db:
     build:
       # This specifies the build context, which is
