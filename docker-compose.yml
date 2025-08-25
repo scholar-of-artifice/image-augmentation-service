@@ -24,6 +24,7 @@ x-api-base: &api-base
   depends_on:
     # tells the api service to wait for the db to start
     - db
+# define the services to be built
 services:
   # The FastAPI Application Service
   # the service for testing
