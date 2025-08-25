@@ -1,18 +1,22 @@
 from dataclasses import Field
 from sqlmodel import SQLModel
 from datetime import datetime
+from datetime import datetime, timezone
+from typing import Optional
 
 class UnprocessedImage(SQLModel, table=True):
     """
     Class representing a unprocessed image in the database.
     """
     # which image is this?
-    id: int = Field(primary_key=True)
-    # what was this image named?
-    file_name: str
+    id: Optional[int] = Field(primary_key=True, default=None)
+    # who wrote this image?
+    author_id: int = Field(nullable=False, index=True)
+    # what is the original name of this image?
+    original_filename: str = Field(nullable=False)
+    # what is the uuid name of this image?
+    storage_filename: str = Field(unique=True, nullable=False)
     # where is this image stored?
-    file_path: str
+    storage_filepath: str = Field(unique=True, nullable=False)
     # when was this image created?
-    created_at: datetime
-    # when was this image last read?
-    last_accessed_at: datetime
+    created_at: Optional[datetime] = Field(default_factory=lambda: datetime.now(timezone.utc), nullable=False)
