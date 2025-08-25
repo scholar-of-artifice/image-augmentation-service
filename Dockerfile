@@ -1,9 +1,20 @@
+# --- BASE STAGE ---
 # Sets a build-time variable for the Python version, making it easy to update.
 ARG PYTHON_VERSION=3.13.7
 # Specifies the official lightweight Python image as the base for our container.
-FROM python:${PYTHON_VERSION}-slim
+FROM python:${PYTHON_VERSION}-slim as base
 # Adds metadata to the image, in this case, the author's name.
 LABEL authors="scholar-of-artifice"
+# PYTHONUNBUFFERED
+# This prevents Python from buffering the output.
+# It ensures that any print() statements or application logs are sent directly to the container's log stream in real-time.
+# Without this, you might not see your logs until the program finishes, which makes debugging difficult.
+# PYTHONDONTWRITEBYTECODE
+# This tells Python not to create .pyc files.
+ENV PYTHONUNBUFFERED=1
+    PYTHONDONTWRITEBYTECODE=1
+# Change the working directory to the `image-augmentation-service` directory
+WORKDIR /image-augmentation-service
 # Copies the 'uv' executable from a multi-stage build to install Python packages quickly.
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 # Change the working directory to the `app` directory
