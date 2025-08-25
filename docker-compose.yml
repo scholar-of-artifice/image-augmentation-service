@@ -54,7 +54,7 @@ services:
     build:
       context: .
       target: dev
-    command: pytest
+    command: uv run pytest
     profiles:
       - test
   # the service for production
