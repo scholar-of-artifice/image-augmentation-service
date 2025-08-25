@@ -3,6 +3,27 @@ volumes:
   transactions_data: # this is a database for storing information about data transactions
   unprocessed_image_data: # use this for staging unprocessed/original files
   processed_image_data: # use this for storing processed/augmented files
+# define a reusable block for the common api service settings
+x-api-base: &api-base
+  build:
+    context: .
+  # mount data volumes and source code live changes
+  volumes:
+    # Mount the image storage volume into the container
+    # [source_of_data]:[some/file/path]
+    - ./app:/image-augmentation-service/app
+    - ./tests:/image-augmentation-service/tests
+    - unprocessed_image_data:/image-augmentation-service/data/images/unprocessed
+    - processed_image_data:/image-augmentation-service/data/images/processed
+  # Pass database credentials to the API service as environment variables
+  environment:
+    - DATABASE_HOSTNAME=db
+    - POSTGRES_DB=${POSTGRES_DB}
+    - POSTGRES_USER=${POSTGRES_USER}
+    - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+  depends_on:
+    # tells the api service to wait for the db to start
+    - db
 services:
   # The FastAPI Application Service
   api:
