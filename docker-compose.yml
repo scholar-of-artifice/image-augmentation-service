@@ -78,34 +78,6 @@ services:
       - prod
   # the PostgreSQL database service is shared by all environments
   db:
-    build:
-      # This specifies the build context, which is
-      # the directory containing all the files and folders
-      # that will be sent to the Docker daemon for the build.
-      # This includes your source code and, most importantly, the Dockerfile.
-      # The dot is a universal shorthand in command-line environments
-      # for the current directory.
-      context: .
-    ports:
-      - "8000:8000"
-    volumes:
-      # Mount the image storage volume into the container
-      # [source_of_data]:[some/file/path]
-      - unprocessed_image_data:/image-augmentation-service/data/images/unprocessed
-      - processed_image_data:/image-augmentation-service/data/images/processed
-    # Pass database credentials to the API service as environment variables
-    environment:
-      - DATABASE_HOSTNAME=db
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    # Give the built image a name
-    image: image-augmentation-service-api:latest
-    # Give the running container a name
-    container_name: image-augmentation-api
-    depends_on:
-      - db # tells the api service to wait for the db to start
-  db:
     # The PostgreSQL Database Service to store transaction information
     image: postgres:16-alpine # Use the official PostgreSQL image
     volumes:
