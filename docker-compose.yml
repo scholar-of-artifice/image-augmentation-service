@@ -27,6 +27,22 @@ x-api-base: &api-base
 services:
   # The FastAPI Application Service
   api:
+  # the service for testing
+  api-dev:
+    # inherit all settings from our x-api-base block
+    <<: *api-base
+    # Give the built image a name and tag
+    image: image-augmentation-service-api:dev
+    # Give the running container a name
+    container_name: image-augmentation-api-dev
+    build:
+      context: .
+      target: dev
+    ports:
+      - "8000:8000"
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    profiles:
+      - dev
     build:
       # This specifies the build context, which is
       # the directory containing all the files and folders
