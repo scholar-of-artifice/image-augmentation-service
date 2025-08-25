@@ -72,6 +72,10 @@ services:
       target: prod
     ports:
       - "8000:8000"
+    # override the volume to remove the source code mounts
+    volumes:
+      - unprocessed_image_data:/image-augmentation-service/data/images/unprocessed
+      - processed_image_data:/image-augmentation-service/data/images/processed
     profiles:
       - prod
   db:
