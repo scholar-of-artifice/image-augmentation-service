@@ -1,6 +1,4 @@
-from dataclasses import Field
-from sqlmodel import SQLModel
-from datetime import datetime
+from sqlmodel import SQLModel, Field
 from datetime import datetime, timezone
 from typing import Optional
 
