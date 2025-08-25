@@ -11,7 +11,7 @@ LABEL authors="scholar-of-artifice"
 # Without this, you might not see your logs until the program finishes, which makes debugging difficult.
 # PYTHONDONTWRITEBYTECODE
 # This tells Python not to create .pyc files.
-ENV PYTHONUNBUFFERED=1
+ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
 # Change the working directory to the `image-augmentation-service` directory
 WORKDIR /image-augmentation-service
