@@ -20,5 +20,6 @@ dev = [
     "pytest>=8.4.1",
     "pytest-cov>=6.2.1",
     "pytest-mock>=3.14.1",
+    "pytest-postgresql>=7.0.2",
     "ruff>=0.12.8",
 ]
