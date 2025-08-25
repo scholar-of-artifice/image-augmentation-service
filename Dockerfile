@@ -17,6 +17,7 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /image-augmentation-service
 # Copies the 'uv' executable from a multi-stage build to install Python packages quickly.
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
 # --- DEV STAGE ---
 FROM base AS dev
 # Install dependencies
