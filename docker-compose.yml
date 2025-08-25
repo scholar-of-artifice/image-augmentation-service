@@ -26,7 +26,6 @@ x-api-base: &api-base
     - db
 services:
   # The FastAPI Application Service
-  api:
   # the service for testing
   api-dev:
     # inherit all settings from our x-api-base block
