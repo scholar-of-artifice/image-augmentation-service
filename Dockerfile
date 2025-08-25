@@ -26,6 +26,16 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --all-extras
 # Copy the project into the image
 COPY ./app /image-augmentation-service/app
+
+# --- PROD STAGE ---
+FROM base AS prod
+# Install dependencies
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --frozen --no-install-project
+# Copy the project into the image
+COPY ./app /image-augmentation-service/app
 # Run with uvicorn
 CMD ["uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 
