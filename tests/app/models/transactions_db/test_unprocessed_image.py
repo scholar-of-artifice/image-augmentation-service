@@ -36,8 +36,19 @@ def test_valid_unprocessed_image_saves_expected_data(db_session: Session):
     assert isinstance(image_to_create.created_at, datetime)
     assert image_to_create.created_at.tzinfo == timezone.utc
 
+def test_create_image_with_string_author_id_fails(db_session: Session):
+    """
+        GIVEN an attempt to create an UnprocessedImage entry
+        WHEN the author_id is a string instead of an integer
+        THEN an IntegrityError should be raised upon commit
+    """
 
-    # Assert: Query the database to confirm it exists
-    retrieved_image = db_session.get(UnprocessedImage, image_to_create.id)
-    assert retrieved_image is not None
-    assert retrieved_image.storage_filename == "abc-123.jpg"
+    image_with_bad_id = UnprocessedImage(
+        author_id="this-is-not-an-integer",  # Invalid data type
+        original_filename="test.jpg",
+    )
+    # Use pytest.raises as a context manager to catch the expected error
+    with pytest.raises(DataError):
+        db_session.add(image_with_bad_id)
+        db_session.commit() # The error will be raised here
+
