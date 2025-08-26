@@ -2,9 +2,9 @@ import uuid
 from sqlmodel import SQLModel, Field
 from datetime import datetime, timezone
 from typing import Optional
-from sqlalchemy import event
+from sqlalchemy import event, Column, DateTime
 import os
-from ...config import settings
+from app.config import settings
 
 class UnprocessedImage(SQLModel, table=True):
     """
