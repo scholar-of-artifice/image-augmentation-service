@@ -3,7 +3,7 @@ from sqlalchemy.exc import DataError
 from datetime import datetime, timezone
 import pytest
 import os
-from .....app.config import settings
+from app.config import settings
 from app.models.transactions_db.unprocessed_image import UnprocessedImage
 
 def test_valid_unprocessed_image_saves_expected_data(db_session: Session):
