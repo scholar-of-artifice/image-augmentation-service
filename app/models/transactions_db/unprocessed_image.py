@@ -13,7 +13,7 @@ class UnprocessedImage(SQLModel, table=True):
     # which image is this?
     id: int | None = Field(default=None, primary_key=True)
     # who wrote this image?
-    author_id: int = Field(nullable=False, index=True)
+    user_id: int = Field(foreign_key="users.id", nullable=False, index=True)
     # what is the original name of this image?
     original_filename: str = Field(nullable=False, max_length=40)
     # what is the uuid name of this image?
