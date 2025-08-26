@@ -2,9 +2,7 @@ import uuid
 from sqlmodel import SQLModel, Field
 from datetime import datetime, timezone
 from typing import Optional
-from sqlalchemy import event, Column, DateTime
-import os
-from app.config import settings
+from sqlalchemy import Column, DateTime
 
 class ProcessedImage(SQLModel, table=True):
     """
