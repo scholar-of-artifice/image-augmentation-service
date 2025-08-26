@@ -17,5 +17,16 @@ class UnprocessedImage(SQLModel, table=True):
     # where is this image stored?
     storage_filepath: str = Field(unique=True, nullable=False)
     storage_filename: str = Field(default_factory=lambda: f"{str(uuid.uuid4())}.png" , unique=True, nullable=False, max_length=40)
+    # where is this image stored? This field will be populated by the logic in __post_init__
+    storage_filepath: str = Field(unique=True, nullable=False, max_length=255)
     # when was this image created?
     created_at: Optional[datetime] = Field(default_factory=lambda: datetime.now(timezone.utc), nullable=False)
+
+@event.listens_for(UnprocessedImage, "before_insert")
+def generate_storage_filepath(mapper, connection, target):
+    """
+        Generate the storage_filepath after the model is initialized.
+    """
+    # This check is useful if you ever create an instance with the path already provided
+    if target.storage_filepath is None:
+        target.storage_filepath = str(os.path.join(settings.UNPROCESSED_IMAGE_PATH, target.storage_filename))
