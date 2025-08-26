@@ -17,12 +17,3 @@ class ProcessedImage(SQLModel, table=True):
         default_factory=lambda: datetime.now(timezone.utc),
         sa_column=Column(DateTime(timezone=True), nullable=False) # This tells SQLAlchemy to use a timezone-aware database column type
     )
-
-@event.listens_for(ProcessedImage, "before_insert")
-def generate_storage_filepath(mapper, connection, target):
-    """
-        Generate the storage_filepath after the model is initialized.
-    """
-    # This check is useful if you ever create an instance with the path already provided
-    if target.storage_filepath is None:
-        target.storage_filepath = str(os.path.join(settings.PROCESSED_IMAGE_PATH, target.storage_filename))
