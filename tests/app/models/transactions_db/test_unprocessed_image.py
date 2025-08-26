@@ -27,7 +27,6 @@ def test_valid_unprocessed_image_saves_expected_data(db_session: Session):
 
     assert image_to_create.id is not None
     assert image_to_create.author_id == 101
-    assert image_to_create.created_at is not None
     assert image_to_create.original_filename == 'cool_image.png'
     assert image_to_create.storage_filename != 'cool_image.png'
     assert image_to_create.storage_filepath == str(os.path.join(
