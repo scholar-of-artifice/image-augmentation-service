@@ -14,9 +14,7 @@ class UnprocessedImage(SQLModel, table=True):
     # what is the original name of this image?
     original_filename: str = Field(nullable=False, max_length=255)
     # what is the uuid name of this image?
-    storage_filename: str = Field(default_factory=lambda: f"{str(uuid.uuid4())}.png" , unique=True, nullable=False, max_length=40)
-    # where is this image stored? This field will be populated by the logic in __post_init__
-    storage_filepath: str = Field(unique=True, nullable=False, max_length=255)
+    storage_filename: str = Field(unique=True, nullable=False, max_length=255)
     # when was this image created?
     created_at: Optional[datetime] = Field(
         default_factory=lambda: datetime.now(timezone.utc),
