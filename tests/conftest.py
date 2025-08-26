@@ -9,6 +9,12 @@ def engine():
     """
     return create_engine(str(settings.DATABASE_URL))
 
+@pytest.fixture(scope="session")
+def setup_database(engine):
+    SQLModel.metadata.create_all(engine)
+    yield
+    SQLModel.metadata.drop_all(engine)
+
 @pytest.fixture(scope="function")
 def db_session(engine):
     """
