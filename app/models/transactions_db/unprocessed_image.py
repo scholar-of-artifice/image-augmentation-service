@@ -21,7 +21,10 @@ class UnprocessedImage(SQLModel, table=True):
     # where is this image stored? This field will be populated by the logic in __post_init__
     storage_filepath: str = Field(unique=True, nullable=False, max_length=255)
     # when was this image created?
-    created_at: Optional[datetime] = Field(default_factory=lambda: datetime.now(timezone.utc), nullable=False)
+    created_at: Optional[datetime] = Field(
+        default_factory=lambda: datetime.now(timezone.utc),
+        sa_column=Column(DateTime(timezone=True), nullable=False) # This tells SQLAlchemy to use a timezone-aware database column type
+    )
 
 @event.listens_for(UnprocessedImage, "before_insert")
 def generate_storage_filepath(mapper, connection, target):
