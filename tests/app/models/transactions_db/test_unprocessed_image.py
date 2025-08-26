@@ -1,27 +1,41 @@
 from sqlmodel import Session
+from sqlalchemy.exc import DataError
+from datetime import datetime, timezone
+import pytest
+import os
+from .....app.config import settings
 from app.models.transactions_db.unprocessed_image import UnprocessedImage
 
-def test_create_unprocessed_image_is_successful(db_session: Session):
+def test_valid_unprocessed_image_saves_expected_data(db_session: Session):
     """
-        Tests that a valid UnprocessedImage can be created and saved.
+        GIVEN a valid author_id UnprocessedImage entry
+        WHEN the entry is inserted into the database
+        THEN it should have an id
+        AND it should have the same author_id
+        AND it should have the same original_filename
+        AND it should have the correct storage_filepath
+        AND it should have a created_at with the correct format
     """
-    # Arrange: Create a new image instance
     image_to_create = UnprocessedImage(
-        author_id=101,
-        original_filename="cool_image.png",
-        storage_filename="abc-123.png",
-        storage_filepath="/path/to/storage/abc-123.png",
+        author_id= 101,
+        original_filename= "cool_image.png",
     )
 
-    # Act: Add to the session and commit
     db_session.add(image_to_create)
     db_session.commit()
     db_session.refresh(image_to_create)
 
-    # Assert: Check that the object was saved and has an ID
     assert image_to_create.id is not None
     assert image_to_create.author_id == 101
     assert image_to_create.created_at is not None
+    assert image_to_create.original_filename == 'cool_image.png'
+    assert image_to_create.storage_filename != 'cool_image.png'
+    assert image_to_create.storage_filepath == str(os.path.join(
+        settings.UNPROCESSED_IMAGE_PATH, image_to_create.storage_filename
+    ))
+    assert isinstance(image_to_create.created_at, datetime)
+    assert image_to_create.created_at.tzinfo == timezone.utc
+
 
     # Assert: Query the database to confirm it exists
     retrieved_image = db_session.get(UnprocessedImage, image_to_create.id)
