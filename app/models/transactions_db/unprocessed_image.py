@@ -1,6 +1,9 @@
 from sqlmodel import SQLModel, Field
 from datetime import datetime, timezone
 from typing import Optional
+from sqlalchemy import event
+import os
+from ...config import settings
 
 class UnprocessedImage(SQLModel, table=True):
     """
