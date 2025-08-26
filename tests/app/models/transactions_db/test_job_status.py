@@ -1,7 +1,7 @@
 import pytest
 from app.models.transactions_db.job_status import JobStatus
 
-def test_JobStatus_member_values(self):
+def test_JobStatus_member_values():
     """
         GIVEN a JobStatus
         WHEN accessing the value of each member
