@@ -6,7 +6,7 @@ from sqlalchemy import Column, DateTime
 
 class ProcessedImage(SQLModel, table=True):
     """
-    Class representing a processed image in the database.
+        Class representing a processed image in the database.
     """
     # which image is this?
     id: int | None = Field(default=None, primary_key=True)
