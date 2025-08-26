@@ -11,7 +11,7 @@ class UnprocessedImage(SQLModel, table=True):
     # who wrote this image?
     author_id: int = Field(nullable=False, index=True)
     # what is the original name of this image?
-    original_filename: str = Field(nullable=False)
+    original_filename: str = Field(nullable=False, max_length=40)
     # what is the uuid name of this image?
     storage_filename: str = Field(unique=True, nullable=False)
     # where is this image stored?
