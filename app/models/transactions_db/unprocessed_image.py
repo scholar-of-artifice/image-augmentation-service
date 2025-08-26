@@ -16,5 +16,6 @@ class UnprocessedImage(SQLModel, table=True):
     storage_filename: str = Field(unique=True, nullable=False)
     # where is this image stored?
     storage_filepath: str = Field(unique=True, nullable=False)
+    storage_filename: str = Field(default_factory=lambda: f"{str(uuid.uuid4())}.png" , unique=True, nullable=False, max_length=40)
     # when was this image created?
     created_at: Optional[datetime] = Field(default_factory=lambda: datetime.now(timezone.utc), nullable=False)
