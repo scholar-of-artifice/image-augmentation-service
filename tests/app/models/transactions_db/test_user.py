@@ -49,3 +49,20 @@ def test_a_user_with_a_duplicate_external_id_fails_to_persist(db_session: Sessio
     # This is how we test for database constraint violations
     with pytest.raises(IntegrityError):
         db_session.commit()
+
+def test_a_user_with_null_external_id_fails_to_persist(db_session: Session):
+    """
+        GIVEN a User model
+        AND external_id is null
+        WHEN that model is potentially persisted
+        THEN there are is an errors
+    """
+    user_to_create = User(external_id=None, name="Test User")
+
+    # Create the first user successfully
+    db_session.add(user_to_create)
+
+    # Assert that committing this change raises an IntegrityError
+    # This is how we test for database constraint violations
+    with pytest.raises(IntegrityError):
+        db_session.commit()
