@@ -1,8 +1,9 @@
 import uuid
 from sqlmodel import SQLModel, Field
 from datetime import datetime, timezone
-from typing import Optional
+from typing import Optional, Dict, Any
 from sqlalchemy import Column, DateTime
+from sqlalchemy.dialects.postgresql import JSONB
 
 class ProcessedImage(SQLModel, table=True):
     """
@@ -26,3 +27,7 @@ class ProcessedImage(SQLModel, table=True):
     # --- Table Associations ---
     # who wrote this image?
     user_id: uuid.UUID = Field(foreign_key="user.id", nullable=False, index=True)
+    # what is the original image?
+    # unprocessed_image_id: uuid.UUID = Field(foreign_key="unprocessed_image.id", nullable=False, index=True)
+    # what processing_job created this image?
+    # processing_job_id: uuid.UUID = Field(foreign_key="processing_job.id", nullable=False, index=True)
