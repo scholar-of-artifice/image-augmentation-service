@@ -1,7 +1,9 @@
 from sqlmodel import Session
 from datetime import datetime
 import uuid
+from sqlalchemy.exc import IntegrityError
 from app.models.transactions_db.user import User
+import pytest
 
 def test_valid_user_model_is_persisted(db_session: Session):
     """
