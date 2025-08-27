@@ -51,3 +51,36 @@ def test_create_image_with_string_author_id_fails(db_session: Session):
         db_session.add(image_with_bad_id)
         db_session.commit() # The error will be raised here
 
+def test_create_image_fails_when_storage_file_name_is_duplicated(db_session: Session):
+    """
+        GIVEN a UnprocessedImage model
+        AND storage_filename is duplicated
+        WHEN that model is potentially persisted
+        THEN there are is an error
+    """
+    user_to_create = User(external_id='some-1234-extr-0987-id45', name="Test User")
+    db_session.add(user_to_create)
+    db_session.commit()
+
+    image_A = UnprocessedImage(
+        user_id= user_to_create.id,
+        original_filename= "cool_image.png",
+        storage_filename="some_file_name.png"
+    )
+    # Create the first image successfully
+    db_session.add(image_A)
+    db_session.commit()
+
+    image_B = UnprocessedImage(
+        user_id= user_to_create.id,
+        original_filename= "cool_image.png",
+        storage_filename="some_file_name.png"
+    )
+
+    # Create a second user with the same external_id
+    db_session.add(image_B)
+
+    # Assert that committing this change raises an IntegrityError
+    # This is how we test for database constraint violations
+    with pytest.raises(IntegrityError):
+        db_session.commit()
