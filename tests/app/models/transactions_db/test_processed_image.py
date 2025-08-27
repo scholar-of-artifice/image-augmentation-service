@@ -29,10 +29,7 @@ def test_valid_processed_image_saves_expected_data(db_session: Session):
     db_session.refresh(image_to_create)
 
     assert image_to_create.id is not None
-    assert image_to_create.storage_filename != 'cool_image.png'
-    assert image_to_create.storage_filepath == str(os.path.join(
-        settings.PROCESSED_IMAGE_PATH, image_to_create.storage_filename
-    ))
+    assert image_to_create.storage_filename == 'some_file_name.png'
     assert isinstance(image_to_create.created_at, datetime)
     assert image_to_create.created_at.tzinfo == timezone.utc
 
