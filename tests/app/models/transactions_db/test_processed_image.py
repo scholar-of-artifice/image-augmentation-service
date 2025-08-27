@@ -14,7 +14,15 @@ def test_valid_processed_image_saves_expected_data(db_session: Session):
         AND it should have the correct storage_filepath
         AND it should have a created_at with the correct format
     """
-    image_to_create = ProcessedImage()
+
+    user_to_create = User(external_id='some-1234-extr-0987-id45', name="Test User")
+    db_session.add(user_to_create)
+    db_session.commit()
+
+    image_to_create = ProcessedImage(
+        user_id= user_to_create.id,
+        storage_filename='some_file_name.png',
+    )
 
     db_session.add(image_to_create)
     db_session.commit()
