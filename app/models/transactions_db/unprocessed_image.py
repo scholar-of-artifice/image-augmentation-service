@@ -17,7 +17,6 @@ class UnprocessedImage(SQLModel, table=True):
         primary_key=True,
         index=True,
         nullable=False,
-        unique=True,
     )
     # what is the original name of this image?
     original_filename: str = Field(nullable=False, max_length=255)
@@ -32,3 +31,6 @@ class UnprocessedImage(SQLModel, table=True):
     # --- Table Associations ---
     # who wrote this image?
     user_id: uuid.UUID = Field(foreign_key="user.id", nullable=False, index=True)
+    # --- Relationships ---
+    # This is the corresponding relationship attribute
+    user: "User" = Relationship(back_populates="unprocessed_images")
