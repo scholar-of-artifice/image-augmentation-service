@@ -9,9 +9,13 @@ class UnprocessedImage(SQLModel, table=True):
         Class representing an unprocessed image in the database.
     """
     # which image is this?
-    id: int | None = Field(default=None, primary_key=True)
-    # who wrote this image?
-    user_id: int = Field(foreign_key="users.id", nullable=False, index=True)
+    id: uuid.UUID | None = Field(
+        default_factory=lambda: uuid.uuid4(),
+        primary_key=True,
+        index=True,
+        nullable=False,
+        unique=True,
+    )
     # what is the original name of this image?
     original_filename: str = Field(nullable=False, max_length=255)
     # what is the uuid name of this image?
