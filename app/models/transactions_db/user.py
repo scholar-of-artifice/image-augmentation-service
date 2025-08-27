@@ -6,6 +6,8 @@ from sqlalchemy import Column, DateTime
 class User(SQLModel, table=True):
     """
         Class representing a user in the database.
+
+        NOTE: Authentication and Authorization are handled by an external service.
     """
     # which user is this?
     id: uuid.UUID | None = Field(
