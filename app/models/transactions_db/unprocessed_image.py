@@ -1,8 +1,11 @@
 import uuid
 from sqlmodel import SQLModel, Field, Relationship
 from datetime import datetime, timezone
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 from sqlalchemy import Column, DateTime
+
+if TYPE_CHECKING:
+    from .user import User
 
 class UnprocessedImage(SQLModel, table=True):
     """
