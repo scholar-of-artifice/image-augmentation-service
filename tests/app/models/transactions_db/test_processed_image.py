@@ -6,10 +6,12 @@ from app.models.transactions_db.processed_image import ProcessedImage
 
 def test_valid_processed_image_saves_expected_data(db_session: Session):
     """
-        GIVEN a valid author_id ProcessedImage entry
+        GIVEN a User exists in the database
+        AND a valid ProcessedImage entry
         WHEN the entry is inserted into the database
         THEN it should have an id
-        AND it should have the same author_id
+        AND it should have the same user_id
+        AND it should have the same original_filename
         AND it should have the correct storage_filepath
         AND it should have a created_at with the correct format
     """
