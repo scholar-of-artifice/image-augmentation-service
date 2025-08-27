@@ -9,7 +9,12 @@ class ProcessedImage(SQLModel, table=True):
         Class representing a processed image in the database.
     """
     # which image is this?
-    id: int | None = Field(default=None, primary_key=True)
+    id: uuid.UUID | None = Field(
+        default_factory=lambda: uuid.uuid4(),
+        primary_key=True,
+        index=True,
+        nullable=False
+    )
     # what is the uuid name of this image?
     storage_filename: str = Field(default_factory=lambda: f"{str(uuid.uuid4())}.png" , unique=True, nullable=False, max_length=40)
     # when was this image created?
