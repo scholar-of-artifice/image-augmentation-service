@@ -38,20 +38,21 @@ def test_valid_unprocessed_image_saves_expected_data(db_session: Session):
     assert isinstance(image_to_create.created_at, datetime)
     assert image_to_create.created_at.tzinfo == timezone.utc
 
-def test_create_image_with_string_author_id_fails(db_session: Session):
+def test_create_image_fails_when_user_does_not_exist(db_session: Session):
     """
         GIVEN an attempt to create an UnprocessedImage entry
-        WHEN the author_id is a string instead of an integer
+        WHEN the user_id does not exist
         THEN an IntegrityError should be raised upon commit
     """
 
-    image_with_bad_id = UnprocessedImage(
-        author_id="this-is-not-an-integer",  # Invalid data type
-        original_filename="test.jpg",
+    image_with_bad_original_filename = UnprocessedImage(
+        user_id= uuid.uuid4(),
+        original_filename= "cool_image.png",
+        storage_filename="some_file_name.png"
     )
+    db_session.add(image_with_bad_original_filename)
     # Use pytest.raises as a context manager to catch the expected error
-    with pytest.raises(DataError):
-        db_session.add(image_with_bad_id)
+    with pytest.raises(IntegrityError):
         db_session.commit() # The error will be raised here
 
 def test_create_image_fails_when_storage_file_name_is_duplicated(db_session: Session):
