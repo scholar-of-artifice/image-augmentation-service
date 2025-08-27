@@ -1,10 +1,10 @@
 from sqlmodel import Session
-from sqlalchemy.exc import DataError
+from sqlalchemy.exc import IntegrityError
 from datetime import datetime, timezone
 import pytest
-import os
-from app.config import settings
+import uuid
 from app.models.transactions_db.unprocessed_image import UnprocessedImage
+from app.models.transactions_db.user import User
 
 def test_valid_unprocessed_image_saves_expected_data(db_session: Session):
     """
