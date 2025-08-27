@@ -13,7 +13,7 @@ def test_valid_user_model_is_persisted(db_session: Session):
         THEN there are no errors
         AND the data is correct
     """
-    user_to_create = User(external_id='some-1234-extr-0987-id45', name="Test User")
+    user_to_create = User(external_id='some-1234-extr-0987-id45')
 
     db_session.add(user_to_create)
     db_session.commit()
@@ -35,8 +35,8 @@ def test_a_user_with_a_duplicate_external_id_fails_to_persist(db_session: Sessio
         WHEN that model is potentially persisted
         THEN there are is an errors
     """
-    user_to_create_A = User(external_id='some-1234-extr-0987-id45', name="Test User")
-    user_to_create_B = User(external_id='some-1234-extr-0987-id45', name="Test User")
+    user_to_create_A = User(external_id='some-1234-extr-0987-id45')
+    user_to_create_B = User(external_id='some-1234-extr-0987-id45')
 
     # Create the first user successfully
     db_session.add(user_to_create_A)
@@ -57,7 +57,7 @@ def test_a_user_with_null_external_id_fails_to_persist(db_session: Session):
         WHEN that model is potentially persisted
         THEN there are is an errors
     """
-    user_to_create = User(external_id=None, name="Test User")
+    user_to_create = User(external_id=None)
 
     # Create the first user successfully
     db_session.add(user_to_create)
