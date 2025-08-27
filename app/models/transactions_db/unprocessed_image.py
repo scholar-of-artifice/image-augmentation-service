@@ -23,5 +23,6 @@ class UnprocessedImage(SQLModel, table=True):
     # when was this image created?
     created_at: Optional[datetime] = Field(
         default_factory=lambda: datetime.now(timezone.utc),
-        sa_column=Column(DateTime(timezone=True), nullable=False) # This tells SQLAlchemy to use a timezone-aware database column type
+        # This tells SQLAlchemy to use a timezone-aware database column type
+        sa_column=Column(DateTime(timezone=True), nullable=False)
     )
