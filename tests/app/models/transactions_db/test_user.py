@@ -5,7 +5,11 @@ from app.models.transactions_db.user import User
 
 def test_create_user_is_successful(db_session: Session):
     """
-    Tests successful creation of a User with valid data.
+        GIVEN a User model
+        AND all input data is valid
+        WHEN that model is persisted
+        THEN there are no errors
+        AND the data is correct
     """
     user_to_create = User(external_id='some-1234-extr-0987-id45', name="Test User")
 
