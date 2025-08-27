@@ -1,8 +1,7 @@
 from sqlmodel import Session
 from datetime import datetime, timezone
-import os
-from app.config import settings
 from app.models.transactions_db.processed_image import ProcessedImage
+from app.models.transactions_db.user import User
 
 def test_valid_processed_image_saves_expected_data(db_session: Session):
     """
