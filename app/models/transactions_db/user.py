@@ -8,7 +8,13 @@ class User(SQLModel, table=True):
         Class representing a user in the database.
     """
     # which user is this?
-    id: int | None = Field(default=None, primary_key=True)
+    id: uuid.UUID | None = Field(
+        default_factory=lambda: uuid.uuid4(),
+        primary_key=True,
+        index=True,
+        nullable=False,
+        unique=True,
+    )
     # What is the user's unique id?
     # The unique id from the external authentication provider (e.g., the 'sub' claim in a JWT)
     external_id: str = Field(unique=True, index=True, nullable=False)
