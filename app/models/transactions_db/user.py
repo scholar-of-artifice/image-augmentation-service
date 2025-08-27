@@ -15,8 +15,7 @@ class User(SQLModel, table=True):
         default_factory=lambda: uuid.uuid4(),
         primary_key=True,
         index=True,
-        nullable=False,
-        unique=True,
+        nullable=False
     )
     # What is the user's unique id?
     # The unique id from the external authentication provider (e.g., the 'sub' claim in a JWT)
