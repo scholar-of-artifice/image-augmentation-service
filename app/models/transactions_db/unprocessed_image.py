@@ -5,7 +5,7 @@ from sqlalchemy import Column, DateTime
 
 class UnprocessedImage(SQLModel, table=True):
     """
-    Class representing a unprocessed image in the database.
+        Class representing an unprocessed image in the database.
     """
     # which image is this?
     id: int | None = Field(default=None, primary_key=True)
