@@ -23,3 +23,6 @@ class ProcessedImage(SQLModel, table=True):
         # This tells SQLAlchemy to use a timezone-aware database column type
         sa_column=Column(DateTime(timezone=True), nullable=False)
     )
+    # --- Table Associations ---
+    # who wrote this image?
+    user_id: uuid.UUID = Field(foreign_key="user.id", nullable=False, index=True)
