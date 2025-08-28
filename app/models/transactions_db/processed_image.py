@@ -1,5 +1,5 @@
 import uuid
-from sqlmodel import SQLModel, Field
+from sqlmodel import SQLModel, Field,  Relationship
 from datetime import datetime, timezone
 from typing import Optional, Dict, Any
 from sqlalchemy import Column, DateTime
