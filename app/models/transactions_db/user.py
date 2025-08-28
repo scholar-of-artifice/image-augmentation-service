@@ -32,3 +32,5 @@ class User(SQLModel, table=True):
     # --- Relationships ---
     # defines the one->many link to the images uploaded by this user
     unprocessed_images: List["UnprocessedImage"] = Relationship(back_populates="user")
+    # defines the one->many link to the processed images made by this user
+    processed_images: List["ProcessedImage"] = Relationship(back_populates="user")
