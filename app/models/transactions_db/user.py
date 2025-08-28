@@ -1,11 +1,8 @@
 import uuid
 from sqlmodel import SQLModel, Field, Relationship
 from datetime import datetime, timezone
-from typing import Optional, List, TYPE_CHECKING
+from typing import Optional, List
 from sqlalchemy import Column, DateTime
-
-if TYPE_CHECKING:
-    from .unprocessed_image import UnprocessedImage
 
 class User(SQLModel, table=True):
     """
@@ -13,24 +10,45 @@ class User(SQLModel, table=True):
 
         NOTE: Authentication and Authorization are handled by an external service.
     """
-    # which user is this?
+    # Question: who is this user?
+    # the unique identifier for this user in the database
     id: uuid.UUID | None = Field(
+        # provides a function to generate a default value for new records
         default_factory=lambda: uuid.uuid4(),
+        # marks this column as the primary key of this table
         primary_key=True,
+        # tells the database to create an index on this column
         index=True,
+        # is a constraint that ensures every user MUST have an ID
         nullable=False
     )
-    # What is the user's unique id?
+    # Question: What is the user's unique id?
     # The unique id from the external authentication provider (e.g., the 'sub' claim in a JWT)
-    external_id: str = Field(unique=True, index=True, nullable=False)
-    # when was this user created?
-    created_at: Optional[datetime] = Field(
-        default_factory=lambda: datetime.now(timezone.utc),
-        # This tells SQLAlchemy to use a timezone-aware database column type
-        sa_column=Column(DateTime(timezone=True), nullable=False)
+    # This links our internal user record to the external authentication system.
+    external_id: str = Field(
+        # is a constraint that ensures no 2 users can have the same external_id
+        unique=True,
+        # tells the database to create an index on this column.
+        index=True,
+        # is a constraint that ensures every user MUST have an external ID
+        nullable=False
     )
-    # --- Table Associations ---
-    # defines the one->many link to the images uploaded by this user
+    # Question: when was this user created?
+    created_at: Optional[datetime] = Field(
+        # automatically sets the creation time to the current time in UTC when a new user is added
+        default_factory=lambda: datetime.now(timezone.utc),
+        # tells SQLAlchemy to use a timezone-aware database column type
+        sa_column=Column(
+            # this ensures the database stores the date, time and timezone
+            DateTime(timezone=True),
+            # is a constraint that ensures every user MUST have a time they were inserted into this database
+            nullable=False
+        )
+    )
+    # --- Table Relationships ---
+    # A User can have many UnprocessedImage records.
+    # 'back_populates' links this relationship to the 'user' field on the UnprocessedImage model.
     unprocessed_images: List["UnprocessedImage"] = Relationship(back_populates="user")
-    # defines the one->many link to the processed images made by this user
+    # A User can also have many ProcessedImage records.
+    # 'back_populates' links this relationship to the 'user' field on the ProcessedImage model.
     processed_images: List["ProcessedImage"] = Relationship(back_populates="user")
