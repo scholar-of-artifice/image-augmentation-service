@@ -27,6 +27,9 @@ class ProcessedImage(SQLModel, table=True):
     # --- Table Associations ---
     # who wrote this image?
     user_id: uuid.UUID = Field(foreign_key="user.id", nullable=False, index=True)
+    # --- Relationships ---
+    # This is the corresponding relationship attribute
+    user: "User" = Relationship(back_populates="processed_images")
     # what is the original image?
     # unprocessed_image_id: uuid.UUID = Field(foreign_key="unprocessed_image.id", nullable=False, index=True)
     # what processing_job created this image?
