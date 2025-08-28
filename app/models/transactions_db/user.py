@@ -29,7 +29,7 @@ class User(SQLModel, table=True):
         # This tells SQLAlchemy to use a timezone-aware database column type
         sa_column=Column(DateTime(timezone=True), nullable=False)
     )
-    # --- Relationships ---
+    # --- Table Associations ---
     # defines the one->many link to the images uploaded by this user
     unprocessed_images: List["UnprocessedImage"] = Relationship(back_populates="user")
     # defines the one->many link to the processed images made by this user
