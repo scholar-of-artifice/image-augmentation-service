@@ -13,20 +13,20 @@ def test_user_valid_model_is_persisted(db_session: Session):
         THEN there are no errors
         AND the data is correct
     """
-    user_to_create = User(external_id='some-1234-extr-0987-id45')
-
-    db_session.add(user_to_create)
+    # create a user
+    user = User(external_id='some-1234-extr-0987-id45')
+    db_session.add(user)
     db_session.commit()
-    db_session.refresh(user_to_create)
-
+    db_session.refresh(user)
     # Assert that the database populated the fields correctly
-    assert user_to_create.id is not None
-    assert isinstance(user_to_create.id, uuid.UUID)
-    assert user_to_create.external_id == 'some-1234-extr-0987-id45'
-    assert user_to_create.created_at is not None
-    assert isinstance(user_to_create.created_at, datetime)
-    # Check that the timezone info was correctly stored
-    assert user_to_create.created_at.tzinfo is not None
+    assert isinstance(user.id, uuid.UUID)
+    assert user.id is not None
+    assert user.external_id == 'some-1234-extr-0987-id45'
+    assert user.external_id is not None
+    assert isinstance(user.created_at, datetime)
+    assert user.created_at is not None
+    assert user.created_at.tzinfo is not None
+    assert user.created_at.tzinfo == timezone.utc
 
 def test_user_IntegrityError_when_external_id_is_duplicate(db_session: Session):
     """
