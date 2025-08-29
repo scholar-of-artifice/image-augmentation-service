@@ -47,7 +47,7 @@ def test_user_IntegrityError_when_external_id_is_duplicate(db_session: Session):
     with pytest.raises(IntegrityError):
         db_session.commit()
 
-def test_a_user_with_null_external_id_fails_to_persist(db_session: Session):
+def test_user_IntegrityError_when_external_id_is_null(db_session: Session):
     """
         GIVEN a User model
         AND external_id is null
