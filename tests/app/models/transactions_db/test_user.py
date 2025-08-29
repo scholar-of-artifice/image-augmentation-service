@@ -139,6 +139,32 @@ def test_read_only_fields_are_not_updated(db_session: Session):
     # assert that the values have reverted to their original state
     assert user.id == original_id
     assert user.created_at == original_created_at
+
+def test_external_id_can_be_updated(db_session: Session):
+    """
+        GIVEN a User exists in the database
+        WHEN mutable-only fields ('external_id') are changed on the object
+        AND the session is committed
+        THEN the original values in the database is changed
+    """
+    # create a user
+    user = User(external_id="some_external_id")
+    db_session.add(user)
+    db_session.commit()
+    db_session.refresh(user)
+    # store the original value
+    original_some_external_id = user.external_id
+    # change the read-only fields in memory
+    user.external_id = 'oh_wow_this_is_some_external_id'
+    # commit the session.
+    # SQLAlchemy will see the object is "dirty"
+    # but should ignore changes to the primary key and non-writable fields
+    db_session.commit()
+    # refresh the object to get the true state from the database
+    db_session.refresh(user)
+    # assert that the values have reverted to their original state
+    assert user.external_id != original_some_external_id
+
 # TODO: Test deleting a user and verifying it's no longer in the database.
 # TODO: Test what happens when trying to delete a user that doesn't exist.
 # TODO: Test creating a user with an empty string for external_id.
