@@ -23,8 +23,8 @@ class User(SQLModel, table=True):
         nullable=False
     )
     # Question: What is the user's unique id?
-    # The unique id from the external authentication provider (e.g., the 'sub' claim in a JWT)
-    # This links our internal user record to the external authentication system.
+    # the unique id from the external authentication provider (e.g., the 'sub' claim in a JWT)
+    # this links our internal user record to the external authentication system.
     external_id: str = Field(
         # is a constraint that ensures no 2 users can have the same external_id
         unique=True,
