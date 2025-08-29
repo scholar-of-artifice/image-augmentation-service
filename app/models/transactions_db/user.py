@@ -23,8 +23,8 @@ class User(SQLModel, table=True):
         # is a constraint that ensures every user MUST have an ID
         nullable=False
     )
-    # Question: What is the user's unique id?
-    # the unique id from the external authentication provider (e.g., the 'sub' claim in a JWT)
+    # Question: What is the user's external id?
+    # the external id from the external authentication provider (e.g., the 'sub' claim in a JWT)
     # this links our internal user record to the external authentication system.
     external_id: str = Field(
         # is a constraint that ensures no 2 users can have the same external_id
