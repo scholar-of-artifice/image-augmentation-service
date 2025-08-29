@@ -6,7 +6,7 @@ import uuid
 from app.models.transactions_db.unprocessed_image import UnprocessedImage
 from app.models.transactions_db.user import User
 
-def test_valid_unprocessed_image_saves_expected_data(db_session: Session):
+def test_unprocessed_image_is_valid(db_session: Session):
     """
         GIVEN a User exists in the database
         AND a valid UnprocessedImage entry
