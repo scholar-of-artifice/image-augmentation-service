@@ -65,9 +65,13 @@ def test_unprocessed_image_IntegrityError_when_original_filename_is_blank_string
         WHEN the entry is committed
         THEN an IntegrityError should be raised
     """
+    # create a user
+    user = User(external_id='some-1234-extr-0987-id45', name="Test User")
+    db_session.add(user)
+    db_session.commit()
     # create an unprocessed_image
     unprocessed_image = UnprocessedImage(
-        user_id= None,
+        user_id= user.id,
         original_filename= "",
         storage_filename= 'some_file_name.png'
     )
