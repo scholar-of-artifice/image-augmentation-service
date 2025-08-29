@@ -131,7 +131,6 @@ def test_get_unprocessed_image_by_primary_key_not_found(db_session: Session):
 # TODO: Test accessing the parent user object from an image instance (image.user).
 # TODO: Test that a user's 'unprocessed_images' list is correctly populated.
 # TODO: Test fetching all images belonging to a specific user.
-# TODO: Test that querying for a non-existent image returns None.
 # TODO: Test deleting an image and confirming it's removed from the database.
 # TODO: Test that deleting a User with associated images raises an IntegrityError.
 # TODO: Test that creating an image with a null user_id raises an IntegrityError.
