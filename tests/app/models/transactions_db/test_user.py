@@ -112,11 +112,6 @@ def test_get_user_by_external_id(db_session: Session):
     assert retrieved_user.external_id == target_external_id
     assert retrieved_user.id == user_in_db.id
 
-# TODO: Test fetching a user by their primary key (id).
-# TODO: Test fetching a user by their unique external_id.
-# TODO: Test that querying for a non-existent user returns None.
-# TODO: Test updating a user's attribute (e.g., a new 'display_name' field).
-# TODO: Test that read-only fields like 'id' and 'created_at' are not changed on commit.
 def test_read_only_fields_are_not_updated(db_session: Session):
     """
         GIVEN a User exists in the database
