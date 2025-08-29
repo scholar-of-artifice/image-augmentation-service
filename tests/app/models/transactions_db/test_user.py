@@ -93,6 +93,25 @@ def test_get_user_by_primary_key_not_found(db_session: Session):
     # the result is None
     assert retrieved_user is None
 
+def test_get_user_by_external_id(db_session: Session):
+    """
+        GIVEN a User exists in the database
+        WHEN a query is made for the User by the external_id
+        THEN the correct User is returned
+    """
+    # make a user with a known external_id
+    target_external_id = "some_external_id"
+    user_in_db = User(external_id=target_external_id)
+    db_session.add(user_in_db)
+    db_session.commit()
+    # query for the user by that external_id
+    statement = select(User).where(User.external_id == target_external_id)
+    retrieved_user = db_session.exec(statement).first()
+    # the retrieved user should be the right one
+    assert retrieved_user is not None
+    assert retrieved_user.external_id == target_external_id
+    assert retrieved_user.id == user_in_db.id
+
 # TODO: Test fetching a user by their primary key (id).
 # TODO: Test fetching a user by their unique external_id.
 # TODO: Test that querying for a non-existent user returns None.
