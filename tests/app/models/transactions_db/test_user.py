@@ -28,25 +28,22 @@ def test_valid_user_model_is_persisted(db_session: Session):
     # Check that the timezone info was correctly stored
     assert user_to_create.created_at.tzinfo is not None
 
-def test_a_user_with_a_duplicate_external_id_fails_to_persist(db_session: Session):
+def test_user_IntegrityError_when_external_id_is_duplicate(db_session: Session):
     """
-        GIVEN a User model
-        AND external_id is duplicated
-        WHEN that model is potentially persisted
-        THEN there are is an errors
+        GIVEN a User already exists
+        AND a new User is created
+        AND both Users have the same external ID
+        WHEN a new User model is committed
+        THEN an IntegrityError is raised
     """
+    # create 2 users with same external_id
     user_to_create_A = User(external_id='some-1234-extr-0987-id45')
     user_to_create_B = User(external_id='some-1234-extr-0987-id45')
-
-    # Create the first user successfully
+    # commit only the first user
     db_session.add(user_to_create_A)
     db_session.commit()
-
-    # Create a second user with the same external_id
+    # attempt to commit the second user
     db_session.add(user_to_create_B)
-
-    # Assert that committing this change raises an IntegrityError
-    # This is how we test for database constraint violations
     with pytest.raises(IntegrityError):
         db_session.commit()
 
