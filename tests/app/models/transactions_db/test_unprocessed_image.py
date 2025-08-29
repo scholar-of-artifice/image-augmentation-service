@@ -15,7 +15,7 @@ def test_unprocessed_image_is_valid(db_session: Session):
     """
     # create a user
     user = User(external_id='some-1234-extr-0987-id45', name="Test User")
-    db_session.add(user_to_create)
+    db_session.add(user)
     db_session.commit()
     # create an unprocessed_image
     unprocessed_image = UnprocessedImage(
