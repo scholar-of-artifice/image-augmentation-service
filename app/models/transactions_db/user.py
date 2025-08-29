@@ -30,9 +30,11 @@ class User(SQLModel, table=True):
         unique=True,
         # tells the database to create an index on this column.
         index=True,
-        # sets a maximum length for the filename
+        # sets a minimum length for the external id
+        min_length=1,
+        # sets a maximum length for the external id
         max_length=255,
-        # is a constraint that ensures every user MUST have an external ID
+        # is a constraint that ensures every user MUST have an external id
         nullable=False
     )
     # Question: when was this user created?
