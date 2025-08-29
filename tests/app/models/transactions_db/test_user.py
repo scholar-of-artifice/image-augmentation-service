@@ -63,3 +63,14 @@ def test_a_user_with_null_external_id_fails_to_persist(db_session: Session):
     # This is how we test for database constraint violations
     with pytest.raises(IntegrityError):
         db_session.commit()
+
+# TODO: Test fetching a user by their primary key (id).
+# TODO: Test fetching a user by their unique external_id.
+# TODO: Test that querying for a non-existent user returns None.
+# TODO: Test updating a user's attribute (e.g., a new 'display_name' field).
+# TODO: Test that read-only fields like 'id' and 'created_at' are not changed on commit.
+# TODO: Test deleting a user and verifying it's no longer in the database.
+# TODO: Test what happens when trying to delete a user that doesn't exist.
+# TODO: Test creating a user with an empty string for external_id.
+# TODO: Test how the database handles an external_id that is unusually long.
+# TODO: Test querying with an invalid UUID format to ensure it fails gracefully.
