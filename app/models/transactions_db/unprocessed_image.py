@@ -25,14 +25,18 @@ class UnprocessedImage(SQLModel, table=True):
     original_filename: str = Field(
         # the image record must include the original filename.
         nullable=False,
+        # sets a minimum length for the filename
+        min_length=1,
         # sets a maximum length for the filename
-        max_length=255
+        max_length=255,
     )
     # Question: what is the uuid name of this image?
     # the new, unique filename assigned to the image when saved in storage.
     storage_filename: str = Field(
         # enforces that every image must have a unique storage filename.
         unique=True,
+        # sets a minimum length for the filename
+        min_length=1,
         # sets a maximum length for the filename
         max_length=255,
         # the image record must include a storage filename
