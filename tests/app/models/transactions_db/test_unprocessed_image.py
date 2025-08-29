@@ -59,27 +59,23 @@ def test_unprocessed_image_IntegrityError_when_original_filename_is_null(db_sess
     with pytest.raises(IntegrityError):
         db_session.commit()
 
-def test_unprocessed_image_IntegrityError_when_original_filename_is_blank_string(db_session: Session):
+def test_unprocessed_image_ValidationError_when_original_filename_is_blank_string(db_session: Session):
     """
         GIVEN an attempt to create an UnprocessedImage entry
         AND the original_filename is a blank string
         WHEN the entry is committed
-        THEN an IntegrityError should be raised
+        THEN an ValidationError should be raised
     """
     # create a user
-    user = User(external_id='some-1234-extr-0987-id45', name="Test User")
+    user = User(external_id='some-1234-extr-0987-id45')
     db_session.add(user)
     db_session.commit()
-    # create an unprocessed_image
-    unprocessed_image = UnprocessedImage(
-        user_id= user.id,
-        original_filename= "",
-        storage_filename= 'some_file_name.png'
-    )
-    # attempt to save the data
-    db_session.add(unprocessed_image)
-    with pytest.raises(IntegrityError):
-        db_session.commit()
+    with pytest.raises(ValidationError):
+        UnprocessedImage(
+            user_id=user.id,
+            original_filename='',
+            storage_filename='some_file_name.png'
+        )
 
 def test_unprocessed_image_IntegrityError_when_storage_filename_is_null(db_session: Session):
     """
