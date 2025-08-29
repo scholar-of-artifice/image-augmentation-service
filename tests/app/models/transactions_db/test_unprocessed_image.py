@@ -128,6 +128,36 @@ def test_get_unprocessed_image_by_primary_key_not_found(db_session: Session):
     # the result is None
     assert retrieved_unprocessed_image is None
 
+def test_delete_unprocessed_image(db_session: Session):
+    """
+        GIVEN a UnprocessedImage exists in the database
+        WHEN the UnprocessedImage is deleted
+        THEN it can no longer be retrieved from the database
+    """
+    # create a user
+    user = User( external_id='some_external_id' )
+    db_session.add(user)
+    db_session.commit()
+    # create a user
+    unprocessed_image = UnprocessedImage(
+        user_id= user.id,
+        original_filename= "cool_image.png",
+        storage_filename="some_file_name.png"
+    )
+    db_session.add(unprocessed_image)
+    db_session.commit()
+    db_session.refresh(unprocessed_image)
+    # store its ID so we can look for it later
+    unprocessed_image_id = unprocessed_image.id
+    # confirm it's in the database before deleting
+    assert db_session.get(UnprocessedImage, unprocessed_image_id) is not None
+    # delete the image
+    db_session.delete(unprocessed_image)
+    db_session.commit()
+    # the image cannot be found by its primary key
+    retrieved_image = db_session.get(UnprocessedImage, unprocessed_image_id)
+    assert retrieved_image is None
+
 # TODO: Test accessing the parent user object from an image instance (image.user).
 # TODO: Test that a user's 'unprocessed_images' list is correctly populated.
 # TODO: Test fetching all images belonging to a specific user.
