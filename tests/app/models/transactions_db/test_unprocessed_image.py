@@ -217,7 +217,7 @@ def test_unprocessed_image_is_IntegrityError_when_storage_file_name_is_duplicate
     unprocessed_image_A = UnprocessedImage(
         user_id= user.id,
         original_filename= "cool_image.png",
-        storage_filename="some_file_name.png"
+        storage_filename= "some_file_name.png"
     )
     # save the data
     db_session.add(unprocessed_image_A)
@@ -226,7 +226,7 @@ def test_unprocessed_image_is_IntegrityError_when_storage_file_name_is_duplicate
     unprocessed_image_B = UnprocessedImage(
         user_id= user.id,
         original_filename= "cool_image.png",
-        storage_filename="some_file_name.png"
+        storage_filename= "some_file_name.png"
     )
     # attempt to save the data
     db_session.add(unprocessed_image_B)
