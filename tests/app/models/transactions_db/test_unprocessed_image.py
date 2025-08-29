@@ -142,6 +142,28 @@ def test_unprocessed_image_IntegrityError_when_user_id_is_null(db_session: Sessi
     with pytest.raises(IntegrityError):
         db_session.commit()
 
+def test_unprocessed_image_DataError_when_original_filename_is_to_long(db_session: Session):
+    """
+        GIVEN an attempt to create an UnprocessedImage entry
+        AND the original_filename is too long
+        WHEN the entry is committed
+        THEN a DataError should be raised
+    """
+    # create a user
+    user = User(external_id='some-1234-extr-0987-id45', name="Test User")
+    db_session.add(user)
+    db_session.commit()
+    # create an unprocessed_image
+    unprocessed_image = UnprocessedImage(
+        user_id= user.id,
+        original_filename= "a"*300,
+        storage_filename="some_file_name.png"
+    )
+    # attempt to save the data
+    db_session.add(unprocessed_image)
+    with pytest.raises(DataError):
+        db_session.commit()
+
 def test_unprocessed_image_IntegrityError_when_user_id_does_not_exist(db_session: Session):
     """
         GIVEN an attempt to create an UnprocessedImage entry
