@@ -1,6 +1,7 @@
 from sqlmodel import Session
 from sqlalchemy.exc import IntegrityError, DataError
 from datetime import datetime, timezone
+from pydantic import ValidationError
 import pytest
 import uuid
 from app.models.transactions_db.unprocessed_image import UnprocessedImage
