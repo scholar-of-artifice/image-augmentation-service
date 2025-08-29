@@ -1,4 +1,4 @@
-from sqlmodel import Session
+from sqlmodel import Session, select
 from datetime import datetime, timezone
 import uuid
 from sqlalchemy.exc import IntegrityError
