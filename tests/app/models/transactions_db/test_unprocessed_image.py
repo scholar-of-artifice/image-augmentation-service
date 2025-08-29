@@ -36,6 +36,24 @@ def test_unprocessed_image_is_valid(db_session: Session):
     assert isinstance(unprocessed_image.created_at, datetime)
     assert unprocessed_image.created_at.tzinfo == timezone.utc
 
+def test_unprocessed_image_IntegrityError_when_original_filename_is_null(db_session: Session):
+    """
+        GIVEN an attempt to create an UnprocessedImage entry
+        AND the original_filename is None
+        WHEN the entry is committed
+        THEN an IntegrityError should be raised
+    """
+    # create an unprocessed_image
+    unprocessed_image = UnprocessedImage(
+        user_id= None,
+        original_filename= None,
+        storage_filename= 'some_file_name.png'
+    )
+    # attempt to save the data
+    db_session.add(unprocessed_image)
+    with pytest.raises(IntegrityError):
+        db_session.commit()
+
 def test_unprocessed_image_IntegrityError_when_storage_filename_is_null(db_session: Session):
     """
         GIVEN an attempt to create an UnprocessedImage entry
@@ -48,6 +66,24 @@ def test_unprocessed_image_IntegrityError_when_storage_filename_is_null(db_sessi
         user_id= None,
         original_filename= "cool_image.png",
         storage_filename=None
+    )
+    # attempt to save the data
+    db_session.add(unprocessed_image)
+    with pytest.raises(IntegrityError):
+        db_session.commit()
+
+def test_unprocessed_image_IntegrityError_when_storage_filename_is_blank_string(db_session: Session):
+    """
+        GIVEN an attempt to create an UnprocessedImage entry
+        AND the storage_filename is a blank string
+        WHEN the entry is committed
+        THEN an IntegrityError should be raised
+    """
+    # create an unprocessed_image
+    unprocessed_image = UnprocessedImage(
+        user_id= None,
+        original_filename= "cool_image.png",
+        storage_filename= "None"
     )
     # attempt to save the data
     db_session.add(unprocessed_image)
