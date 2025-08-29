@@ -54,7 +54,7 @@ def test_unprocessed_image_IntegrityError_when_user_id_does_not_exist(db_session
     with pytest.raises(IntegrityError):
         db_session.commit()
 
-def test_create_image_fails_when_storage_file_name_is_duplicated(db_session: Session):
+def test_unprocessed_image_is_IntegrityError_when_storage_file_name_is_duplicated(db_session: Session):
     """
         GIVEN a UnprocessedImage model
         AND storage_filename is duplicated
