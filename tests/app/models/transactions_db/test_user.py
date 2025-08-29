@@ -1,7 +1,7 @@
 from sqlmodel import Session, select
 from datetime import datetime, timezone, timedelta
 import uuid
-from sqlalchemy.exc import IntegrityError, InvalidRequestError
+from sqlalchemy.exc import IntegrityError, InvalidRequestError, DataError
 from app.models.transactions_db.user import User
 import pytest
 
@@ -80,13 +80,13 @@ def test_user_IntegrityError_when_external_id_is_too_long(db_session: Session):
         GIVEN a User model
         AND external_id is too long
         WHEN User model is committed
-        THEN an IntegrityError is raised
+        THEN an DataError is raised
     """
     # create a user
-    user_to_create = User(external_id='3478yhtuibefsg87t3iuh4eor9ghiuq34wgo98hiuqt3w4oe8y7hiuq23we8y7fahiur3twe8y7hiutw3eo87ahiuwt3o78yaihtu3w7a8owiut3twe78oyihuat3wyeo87ahituwe8yathiu4ey8aiwtuyo8atiutwye89tw3y9atw8itye89ait33y89eaihtaewty89ih')
+    user_to_create = User(external_id="a"*300)
     # attempt to commit the user
     db_session.add(user_to_create)
-    with pytest.raises(IntegrityError):
+    with pytest.raises(DataError):
         db_session.commit()
 
 def test_get_user_by_primary_key(db_session: Session):
