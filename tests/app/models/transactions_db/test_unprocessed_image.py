@@ -85,6 +85,36 @@ def test_unprocessed_image_is_IntegrityError_when_storage_file_name_is_duplicate
     db_session.add(unprocessed_image_B)
     with pytest.raises(IntegrityError):
         db_session.commit()
+
+def test_get_unprocessed_image_by_primary_key(db_session: Session):
+    """
+        GIVEN a UnprocessedImage model
+        AND it is persisted in the database
+        WHEN UnprocessedImage model is retrieved by primary key
+        THEN the data is correct
+    """
+    # create a user
+    user = User( external_id='some_external_id' )
+    db_session.add(user)
+    db_session.commit()
+    # create a user
+    unprocessed_image = UnprocessedImage(
+        user_id= user.id,
+        original_filename= "cool_image.png",
+        storage_filename="some_file_name.png"
+    )
+    db_session.add(unprocessed_image)
+    db_session.commit()
+    db_session.refresh(unprocessed_image)
+    # get the unprocessed_image by id
+    retrieved_image = db_session.get(UnprocessedImage, unprocessed_image.id)
+    # assert that the images are the same
+    assert retrieved_image.id is not None
+    assert isinstance(retrieved_image.id, uuid.UUID)
+    assert retrieved_image.user_id == user.id
+    assert retrieved_image.original_filename == 'cool_image.png'
+    assert retrieved_image.storage_filename == 'some_file_name.png'
+
 # TODO: Test accessing the parent user object from an image instance (image.user).
 # TODO: Test that a user's 'unprocessed_images' list is correctly populated.
 # TODO: Test fetching an image by its primary key (id).
@@ -95,3 +125,5 @@ def test_unprocessed_image_is_IntegrityError_when_storage_file_name_is_duplicate
 # TODO: Test that creating an image with a null user_id raises an IntegrityError.
 # TODO: Test creating an image with a null original_filename raises an IntegrityError.
 # TODO: Test if providing a filename longer than max_length raises a DataError.
+
+
