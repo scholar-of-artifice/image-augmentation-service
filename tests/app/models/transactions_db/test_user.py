@@ -2,6 +2,7 @@ from sqlmodel import Session, select
 from datetime import datetime, timezone, timedelta
 import uuid
 from sqlalchemy.exc import IntegrityError, InvalidRequestError, DataError
+from pydantic import ValidationError
 from app.models.transactions_db.user import User
 import pytest
 
