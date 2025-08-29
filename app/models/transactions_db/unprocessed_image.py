@@ -35,8 +35,6 @@ class UnprocessedImage(SQLModel, table=True):
     storage_filename: str = Field(
         # enforces that every image must have a unique storage filename.
         unique=True,
-        # sets a minimum length for the filename
-        min_length=1,
         # sets a maximum length for the filename
         max_length=255,
         # the image record must include a storage filename
@@ -65,6 +63,15 @@ class UnprocessedImage(SQLModel, table=True):
         # add a database index to speed up queries that filter images by user
         index=True
     )
+    # TODO: this validator is necessary because a min_length specification for storage_filename fails to evaluate
+    # this custom validator ensures the field is never blank
+    @field_validator("storage_filename")
+    @classmethod
+    def validate_storage_filename_is_not_blank(cls, v: str) -> str:
+        # We use .strip() to also catch strings containing only whitespace
+        if not v.strip():
+            raise ValueError("storage_filename cannot be a blank string")
+        return v
     # --- Table Relationships ---
     # an unprocessed image is related to a single user
     user: "User" = Relationship(back_populates="unprocessed_images")
