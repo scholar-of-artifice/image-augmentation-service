@@ -5,7 +5,7 @@ from sqlalchemy.exc import IntegrityError
 from app.models.transactions_db.user import User
 import pytest
 
-def test_valid_user_model_is_persisted(db_session: Session):
+def test_user_valid_model_is_persisted(db_session: Session):
     """
         GIVEN a User model
         AND all input data is valid
