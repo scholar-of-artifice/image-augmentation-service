@@ -75,6 +75,11 @@ def test_user_IntegrityError_when_external_id_is_blank_string(db_session: Sessio
     with pytest.raises(IntegrityError):
         db_session.commit()
 
+    # attempt to commit the user
+    db_session.add(user_to_create)
+    with pytest.raises(IntegrityError):
+        db_session.commit()
+
 def test_get_user_by_primary_key(db_session: Session):
     """
         GIVEN a User model
