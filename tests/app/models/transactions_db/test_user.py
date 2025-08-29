@@ -206,6 +206,28 @@ def test_external_id_can_be_updated(db_session: Session):
     # assert that the values have reverted to their original state
     assert user.external_id != original_some_external_id
 
+def test_delete_user(db_session: Session):
+    """
+        GIVEN a User exists in the database
+        WHEN the User is deleted
+        THEN it can no longer be retrieved from the database
+    """
+    # create a user
+    user_to_delete = User(external_id="some_external_id")
+    db_session.add(user_to_delete)
+    db_session.commit()
+    db_session.refresh(user_to_delete)
+    # store its ID so we can look for it later
+    user_id = user_to_delete.id
+    # confirm it's in the database before deleting
+    assert db_session.get(User, user_id) is not None
+    # delete the user
+    db_session.delete(user_to_delete)
+    db_session.commit()
+    # the user cannot be found by its primary key
+    retrieved_user = db_session.get(User, user_id)
+    assert retrieved_user is None
+
 # TODO: Test deleting a user and verifying it's no longer in the database.
 # TODO: Test what happens when trying to delete a user that doesn't exist.
 # TODO: Test how the database handles an external_id that is unusually long.
