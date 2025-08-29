@@ -169,7 +169,7 @@ def test_unprocessed_image_DataError_when_storage_filename_is_to_long(db_session
         THEN a DataError should be raised
     """
     # create a user
-    user = User(external_id='some-1234-extr-0987-id45', name="Test User")
+    user = User(external_id='some-1234-extr-0987-id45' )
     db_session.add(user)
     db_session.commit()
     # create an unprocessed_image
