@@ -62,19 +62,15 @@ def test_user_IntegrityError_when_external_id_is_null(db_session: Session):
     with pytest.raises(IntegrityError):
         db_session.commit()
 
-def test_user_IntegrityError_when_external_id_is_blank_string(db_session: Session):
+def test_user_ValidationError_when_external_id_is_blank_string(db_session: Session):
     """
         GIVEN a User model
         AND external_id is a blank string
-        WHEN User model is committed
-        THEN an IntegrityError is raised
+        WHEN User model is made
+        THEN an ValidationError is raised
     """
-    # create a user
-    user_to_create = User(external_id='')
-    # attempt to commit the user
-    db_session.add(user_to_create)
-    with pytest.raises(IntegrityError):
-        db_session.commit()
+    with pytest.raises(ValidationError):
+        User(external_id='')
 
 def test_user_IntegrityError_when_external_id_is_too_long(db_session: Session):
     """
