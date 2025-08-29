@@ -61,6 +61,26 @@ def test_user_IntegrityError_when_external_id_is_null(db_session: Session):
     with pytest.raises(IntegrityError):
         db_session.commit()
 
+def test_get_user_by_primary_key(db_session: Session):
+    """
+        GIVEN a User model
+        AND all input data is valid
+        WHEN User model is retrieved by primary key
+        THEN the data is correct
+    """
+    # create a user
+    user = User(external_id='this_is_some_external_id')
+    db_session.add(user)
+    db_session.commit()
+    db_session.refresh(user)
+    # get the user by id
+    retrieved_user = db_session.get(User, user.id)
+    # assert that the users are the same
+    assert retrieved_user is not None
+    assert retrieved_user.id == user.id
+    assert retrieved_user.external_id == 'this_is_some_external_id'
+
+
 # TODO: Test fetching a user by their primary key (id).
 # TODO: Test fetching a user by their unique external_id.
 # TODO: Test that querying for a non-existent user returns None.
