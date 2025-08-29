@@ -64,7 +64,7 @@ def test_user_IntegrityError_when_external_id_is_null(db_session: Session):
 def test_user_IntegrityError_when_external_id_is_blank_string(db_session: Session):
     """
         GIVEN a User model
-        AND external_id is null
+        AND external_id is a blank string
         WHEN User model is committed
         THEN an IntegrityError is raised
     """
