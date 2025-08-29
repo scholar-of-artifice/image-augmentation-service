@@ -80,6 +80,18 @@ def test_get_user_by_primary_key(db_session: Session):
     assert retrieved_user.id == user.id
     assert retrieved_user.external_id == 'this_is_some_external_id'
 
+def test_get_user_by_primary_key_not_found(db_session: Session):
+    """
+        GIVEN no User exists with a specific ID
+        WHEN a User is retrieved by that ID
+        THEN the result is None
+    """
+    # make some UUID
+    non_existent_id = uuid.uuid4()
+    # try to get a user with that ID
+    retrieved_user = db_session.get(User, non_existent_id)
+    # the result is None
+    assert retrieved_user is None
 
 # TODO: Test fetching a user by their primary key (id).
 # TODO: Test fetching a user by their unique external_id.
