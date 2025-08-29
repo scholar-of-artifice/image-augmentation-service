@@ -180,7 +180,6 @@ def test_delete_unprocessed_image(db_session: Session):
 # TODO: Test that a user's 'unprocessed_images' list is correctly populated.
 # TODO: Test fetching all images belonging to a specific user.
 # TODO: Test that deleting a User with associated images raises an IntegrityError.
-# TODO: Test that creating an image with a null user_id raises an IntegrityError.
 # TODO: Test creating an image with a null original_filename raises an IntegrityError.
 # TODO: Test if providing a filename longer than max_length raises a DataError.
 
