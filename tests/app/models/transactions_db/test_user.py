@@ -113,6 +113,7 @@ def test_get_user_by_external_id(db_session: Session):
     assert retrieved_user.id == user_in_db.id
 
 def test_read_only_fields_are_not_updated(db_session: Session):
+    # TODO: this test fails
     """
         GIVEN a User exists in the database
         WHEN read-only fields ('id', 'created_at') are changed on the object
