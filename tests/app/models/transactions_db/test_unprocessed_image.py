@@ -85,3 +85,13 @@ def test_unprocessed_image_is_IntegrityError_when_storage_file_name_is_duplicate
     db_session.add(unprocessed_image_B)
     with pytest.raises(IntegrityError):
         db_session.commit()
+# TODO: Test accessing the parent user object from an image instance (image.user).
+# TODO: Test that a user's 'unprocessed_images' list is correctly populated.
+# TODO: Test fetching an image by its primary key (id).
+# TODO: Test fetching all images belonging to a specific user.
+# TODO: Test that querying for a non-existent image returns None.
+# TODO: Test deleting an image and confirming it's removed from the database.
+# TODO: Test that deleting a User with associated images raises an IntegrityError.
+# TODO: Test that creating an image with a null user_id raises an IntegrityError.
+# TODO: Test creating an image with a null original_filename raises an IntegrityError.
+# TODO: Test if providing a filename longer than max_length raises a DataError.
