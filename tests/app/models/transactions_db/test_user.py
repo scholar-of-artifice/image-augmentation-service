@@ -51,16 +51,13 @@ def test_user_IntegrityError_when_external_id_is_null(db_session: Session):
     """
         GIVEN a User model
         AND external_id is null
-        WHEN that model is potentially persisted
-        THEN there are is an errors
+        WHEN User model is committed
+        THEN an IntegrityError is raised
     """
+    # create a user
     user_to_create = User(external_id=None)
-
-    # Create the first user successfully
+    # attempt to commit the user
     db_session.add(user_to_create)
-
-    # Assert that committing this change raises an IntegrityError
-    # This is how we test for database constraint violations
     with pytest.raises(IntegrityError):
         db_session.commit()
 
