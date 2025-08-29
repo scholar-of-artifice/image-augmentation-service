@@ -47,15 +47,13 @@ class User(SQLModel, table=True):
         )
     )
     # --- Table Relationships ---
-    # A User can have many UnprocessedImage records.
-    # 'back_populates' links this relationship to the 'user' field on the UnprocessedImage model.
-    unprocessed_images: List["UnprocessedImage"] = Relationship(back_populates="user")
-    # A User can also have many ProcessedImage records.
-    # 'back_populates' links this relationship to the 'user' field on the ProcessedImage model.
-    processed_images: List["ProcessedImage"] = Relationship(back_populates="user")
+    # a User can have many UnprocessedImage records.
     unprocessed_images: List["UnprocessedImage"] = Relationship(
+        # 'back_populates' links this relationship to the 'user' field on the UnprocessedImage model.
         back_populates="user"
     )
+    # a User can also have many ProcessedImage records.
     processed_images: List["ProcessedImage"] = Relationship(
+        # 'back_populates' links this relationship to the 'user' field on the ProcessedImage model.
         back_populates="user"
     )
