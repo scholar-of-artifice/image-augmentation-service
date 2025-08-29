@@ -17,22 +17,22 @@ def test_unprocessed_image_is_valid(db_session: Session):
     db_session.add(user_to_create)
     db_session.commit()
 
-    image_to_create = UnprocessedImage(
+    unprocessed_image = UnprocessedImage(
         user_id= user_to_create.id,
         original_filename= "cool_image.png",
         storage_filename="some_file_name.png"
     )
 
-    db_session.add(image_to_create)
+    db_session.add(unprocessed_image)
     db_session.commit()
-    db_session.refresh(image_to_create)
+    db_session.refresh(unprocessed_image)
 
-    assert image_to_create.id is not None
-    assert image_to_create.user_id == user_to_create.id
-    assert image_to_create.original_filename == 'cool_image.png'
-    assert image_to_create.storage_filename == 'some_file_name.png'
-    assert isinstance(image_to_create.created_at, datetime)
-    assert image_to_create.created_at.tzinfo == timezone.utc
+    assert unprocessed_image.id is not None
+    assert unprocessed_image.user_id == user_to_create.id
+    assert unprocessed_image.original_filename == 'cool_image.png'
+    assert unprocessed_image.storage_filename == 'some_file_name.png'
+    assert isinstance(unprocessed_image.created_at, datetime)
+    assert unprocessed_image.created_at.tzinfo == timezone.utc
 
 def test_create_image_fails_when_user_does_not_exist(db_session: Session):
     """
