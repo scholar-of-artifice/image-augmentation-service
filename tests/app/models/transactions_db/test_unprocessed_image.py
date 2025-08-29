@@ -1,5 +1,5 @@
 from sqlmodel import Session
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, DataError
 from datetime import datetime, timezone
 import pytest
 import uuid
