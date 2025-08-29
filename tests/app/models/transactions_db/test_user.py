@@ -1,7 +1,7 @@
 from sqlmodel import Session, select
 from datetime import datetime, timezone, timedelta
 import uuid
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, InvalidRequestError
 from app.models.transactions_db.user import User
 import pytest
 
@@ -228,7 +228,21 @@ def test_delete_user(db_session: Session):
     retrieved_user = db_session.get(User, user_id)
     assert retrieved_user is None
 
-# TODO: Test deleting a user and verifying it's no longer in the database.
-# TODO: Test what happens when trying to delete a user that doesn't exist.
+
+def test_delete_user_that_does_not_exist(db_session: Session):
+    """
+        GIVEN a User does not exist in the database
+        WHEN the User is deleted
+        THEN an InvalidRequestError is raised
+    """
+    # create a user
+    user_not_in_db = User(external_id="some-id")
+    # check that it has an ID from the default_factory
+    assert user_not_in_db.id is not None
+    # delete raises an error
+    # because this instance is not tracked by the session.
+    with pytest.raises(InvalidRequestError):
+        db_session.delete(user_not_in_db)
+
 # TODO: Test how the database handles an external_id that is unusually long.
 # TODO: Test querying with an invalid UUID format to ensure it fails gracefully.
