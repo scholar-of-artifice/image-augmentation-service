@@ -1,5 +1,5 @@
 from sqlmodel import Session
-from datetime import datetime
+from datetime import datetime, timezone
 import uuid
 from sqlalchemy.exc import IntegrityError
 from app.models.transactions_db.user import User
