@@ -194,7 +194,7 @@ def test_unprocessed_image_IntegrityError_when_user_id_does_not_exist(db_session
     unprocessed_image = UnprocessedImage(
         user_id= uuid.uuid4(),
         original_filename= "cool_image.png",
-        storage_filename="some_file_name.png"
+        storage_filename= "some_file_name.png"
     )
     # attempt to save the data
     db_session.add(unprocessed_image)
