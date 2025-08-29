@@ -258,5 +258,4 @@ def test_delete_user_that_does_not_exist(db_session: Session):
     with pytest.raises(InvalidRequestError):
         db_session.delete(user_not_in_db)
 
-# TODO: Test how the database handles an external_id that is unusually long.
 # TODO: Test querying with an invalid UUID format to ensure it fails gracefully.
