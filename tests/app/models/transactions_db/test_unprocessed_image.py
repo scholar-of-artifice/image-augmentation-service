@@ -115,9 +115,21 @@ def test_get_unprocessed_image_by_primary_key(db_session: Session):
     assert retrieved_image.original_filename == 'cool_image.png'
     assert retrieved_image.storage_filename == 'some_file_name.png'
 
+def test_get_unprocessed_image_by_primary_key_not_found(db_session: Session):
+    """
+        GIVEN no UnprocessedImage exists with a specific ID
+        WHEN a UnprocessedImage is retrieved by that ID
+        THEN the result is None
+    """
+    # make some UUID
+    non_existent_id = uuid.uuid4()
+    # try to get a user with that ID
+    retrieved_unprocessed_image = db_session.get(UnprocessedImage, non_existent_id)
+    # the result is None
+    assert retrieved_unprocessed_image is None
+
 # TODO: Test accessing the parent user object from an image instance (image.user).
 # TODO: Test that a user's 'unprocessed_images' list is correctly populated.
-# TODO: Test fetching an image by its primary key (id).
 # TODO: Test fetching all images belonging to a specific user.
 # TODO: Test that querying for a non-existent image returns None.
 # TODO: Test deleting an image and confirming it's removed from the database.
