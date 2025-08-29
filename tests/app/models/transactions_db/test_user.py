@@ -117,6 +117,33 @@ def test_get_user_by_external_id(db_session: Session):
 # TODO: Test that querying for a non-existent user returns None.
 # TODO: Test updating a user's attribute (e.g., a new 'display_name' field).
 # TODO: Test that read-only fields like 'id' and 'created_at' are not changed on commit.
+def test_read_only_fields_are_not_updated(db_session: Session):
+    """
+        GIVEN a User exists in the database
+        WHEN read-only fields ('id', 'created_at') are changed on the object
+        AND the session is committed
+        THEN the original values in the database remain unchanged
+    """
+    # create a user
+    user = User(external_id="some_external_id")
+    db_session.add(user)
+    db_session.commit()
+    db_session.refresh(user)
+    # store the original, correct values
+    original_id = user.id
+    original_created_at = user.created_at
+    # change the read-only fields in memory
+    user.id = uuid.uuid4() # assign a new, random UUID
+    user.created_at = datetime.now(timezone.utc) + timedelta(days=1)
+    # commit the session.
+    # SQLAlchemy will see the object is "dirty"
+    # but should ignore changes to the primary key and non-writable fields
+    db_session.commit()
+    # refresh the object to get the true state from the database
+    db_session.refresh(user)
+    # assert that the values have reverted to their original state
+    assert user.id == original_id
+    assert user.created_at == original_created_at
 # TODO: Test deleting a user and verifying it's no longer in the database.
 # TODO: Test what happens when trying to delete a user that doesn't exist.
 # TODO: Test creating a user with an empty string for external_id.
