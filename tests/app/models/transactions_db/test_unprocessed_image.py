@@ -10,25 +10,27 @@ def test_unprocessed_image_is_valid(db_session: Session):
     """
         GIVEN a User exists in the database
         AND a valid UnprocessedImage entry
-        WHEN the entry is inserted into the database
+        WHEN the UnprocessedImage is inserted into the database
         THEN it persist correctly
     """
-    user_to_create = User(external_id='some-1234-extr-0987-id45', name="Test User")
+    # create a user
+    user = User(external_id='some-1234-extr-0987-id45', name="Test User")
     db_session.add(user_to_create)
     db_session.commit()
-
+    # create an unprocessed_image
     unprocessed_image = UnprocessedImage(
-        user_id= user_to_create.id,
+        user_id= user.id,
         original_filename= "cool_image.png",
         storage_filename="some_file_name.png"
     )
-
+    # save the unprocessed_image
     db_session.add(unprocessed_image)
     db_session.commit()
     db_session.refresh(unprocessed_image)
-
+    # test the unprocessed_image
     assert unprocessed_image.id is not None
-    assert unprocessed_image.user_id == user_to_create.id
+    assert isinstance(unprocessed_image.id, uuid.UUID)
+    assert unprocessed_image.user_id == user.id
     assert unprocessed_image.original_filename == 'cool_image.png'
     assert unprocessed_image.storage_filename == 'some_file_name.png'
     assert isinstance(unprocessed_image.created_at, datetime)
