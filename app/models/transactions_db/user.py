@@ -34,6 +34,7 @@ class User(SQLModel, table=True):
         nullable=False
     )
     # Question: when was this user created?
+    # the timestamp for when this user was created
     created_at: Optional[datetime] = Field(
         # automatically sets the creation time to the current time in UTC when a new user is added
         default_factory=lambda: datetime.now(timezone.utc),
