@@ -11,7 +11,7 @@ def test_unprocessed_image_is_valid(db_session: Session):
         GIVEN a User exists in the database
         AND a valid UnprocessedImage entry
         WHEN the UnprocessedImage is inserted into the database
-        THEN it persist correctly
+        THEN it persists correctly
     """
     # create a user
     user = User(external_id='some-1234-extr-0987-id45', name="Test User")
