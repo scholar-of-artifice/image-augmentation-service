@@ -62,29 +62,26 @@ def test_unprocessed_image_is_IntegrityError_when_storage_file_name_is_duplicate
         WHEN that B is committed
         THEN an IntegrityError is raised
     """
-    user_to_create = User(external_id='some-1234-extr-0987-id45', name="Test User")
-    db_session.add(user_to_create)
+    # create a user
+    user = User( external_id='some_external_id' )
+    db_session.add(user)
     db_session.commit()
-
-    image_A = UnprocessedImage(
-        user_id= user_to_create.id,
+    # create an image
+    unprocessed_image_A = UnprocessedImage(
+        user_id= user.id,
         original_filename= "cool_image.png",
         storage_filename="some_file_name.png"
     )
-    # Create the first image successfully
-    db_session.add(image_A)
+    # save the data
+    db_session.add(unprocessed_image_A)
     db_session.commit()
-
-    image_B = UnprocessedImage(
-        user_id= user_to_create.id,
+    # create another image
+    unprocessed_image_B = UnprocessedImage(
+        user_id= user.id,
         original_filename= "cool_image.png",
         storage_filename="some_file_name.png"
     )
-
-    # Create a second user with the same external_id
-    db_session.add(image_B)
-
-    # Assert that committing this change raises an IntegrityError
-    # This is how we test for database constraint violations
+    # attempt to save the data
+    db_session.add(unprocessed_image_B)
     with pytest.raises(IntegrityError):
         db_session.commit()
