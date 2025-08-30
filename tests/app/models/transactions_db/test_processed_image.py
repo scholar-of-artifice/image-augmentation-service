@@ -35,7 +35,24 @@ def test_processed_image_is_valid(db_session: Session):
     assert isinstance(processed_image.created_at, datetime)
     assert processed_image.created_at.tzinfo == timezone.utc
 
-# TODO: user_id is nil
+def test_processed_image_IntegrityError_when_user_id_is_null(db_session: Session):
+    """
+        GIVEN no user_id
+        AND a ProcessedImage entry is created
+        WHEN the ProcessedImage is inserted into the database
+        THEN it raises an IntegrityError
+    """
+    # create an unprocessed_image
+    processed_image = ProcessedImage(
+        user_id= None,
+        storage_filename="some_file_name.png"
+    )
+    # attempt to save the data
+    db_session.add(processed_image)
+    db_session.add(processed_image)
+    with pytest.raises(IntegrityError):
+        db_session.commit()
+
 # TODO: user_id does not exist
 # TODO: storage_filename is nil
 # TODO: storage_filename is blank string
