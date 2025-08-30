@@ -2,6 +2,9 @@ from sqlmodel import Session
 from datetime import datetime, timezone
 from app.models.transactions_db.processed_image import ProcessedImage
 from app.models.transactions_db.user import User
+from pydantic import ValidationError
+from sqlalchemy.exc import IntegrityError, DataError
+import pytest
 import uuid
 
 def test_processed_image_is_valid(db_session: Session):
