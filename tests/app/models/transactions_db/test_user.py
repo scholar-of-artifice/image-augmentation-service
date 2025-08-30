@@ -63,6 +63,7 @@ def test_user_IntegrityError_when_external_id_is_null(db_session: Session):
         db_session.commit()
 
 def test_user_ValidationError_when_external_id_is_blank_string(db_session: Session):
+    # TODO: test fails and validation in pydantic not working as expected. take out for now.
     """
         GIVEN a User model
         AND external_id is a blank string
