@@ -63,15 +63,6 @@ class UnprocessedImage(SQLModel, table=True):
         # add a database index to speed up queries that filter images by user
         index=True
     )
-    # TODO: this validator is necessary because a min_length specification for storage_filename fails to evaluate
-    # this custom validator ensures the field is never blank
-    @field_validator("storage_filename")
-    @classmethod
-    def validate_storage_filename_is_not_blank(cls, v: str) -> str:
-        # We use .strip() to also catch strings containing only whitespace
-        if not v.strip():
-            raise ValueError("storage_filename cannot be a blank string")
-        return v
     # --- Table Relationships ---
     # an unprocessed image is related to a single user
     user: "User" = Relationship(back_populates="unprocessed_images")
