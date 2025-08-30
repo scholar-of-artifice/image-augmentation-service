@@ -329,7 +329,7 @@ dependencies = [
     { name = "sqlmodel" },
 ]
 
-[package.dev-dependencies]
+[package.optional-dependencies]
 dev = [
     { name = "pytest" },
     { name = "pytest-cov" },
@@ -347,20 +347,17 @@ requires-dist = [
     { name = "psycopg", extras = ["binary"], specifier = ">=3.2.9" },
     { name = "psycopg2-binary", specifier = ">=2.9.10" },
     { name = "pydantic-settings", specifier = ">=2.10.1" },
+    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.4.1" },
+    { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=6.2.1" },
+    { name = "pytest-docker", marker = "extra == 'dev'", specifier = ">=3.2.3" },
+    { name = "pytest-mock", marker = "extra == 'dev'", specifier = ">=3.14.1" },
+    { name = "pytest-postgresql", marker = "extra == 'dev'", specifier = ">=7.0.2" },
     { name = "python-multipart", specifier = ">=0.0.20" },
+    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.12.8" },
     { name = "scipy", specifier = ">=1.16.1" },
     { name = "sqlmodel", specifier = ">=0.0.24" },
 ]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "pytest", specifier = ">=8.4.1" },
-    { name = "pytest-cov", specifier = ">=6.2.1" },
-    { name = "pytest-docker", specifier = ">=3.2.3" },
-    { name = "pytest-mock", specifier = ">=3.14.1" },
-    { name = "pytest-postgresql", specifier = ">=7.0.2" },
-    { name = "ruff", specifier = ">=0.12.8" },
-]
+provides-extras = ["dev"]
 
 [[package]]
 name = "iniconfig"
