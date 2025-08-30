@@ -120,8 +120,17 @@ def test_processed_image_IntegrityError_when_storage_filename_is_nil(db_session:
     db_session.add(user)
     db_session.commit()
     # create an unprocessed_image
+    unprocessed_image = UnprocessedImage(
+        user_id= user.id,
+        original_filename='cool_image.png',
+        storage_filename="some_file_name.png"
+    )
+    db_session.add(unprocessed_image)
+    db_session.commit()
+    # create a processed_image
     processed_image = ProcessedImage(
         user_id= user.id,
+        unprocessed_image_id=unprocessed_image.id,
         storage_filename=None
     )
     # save the processed_image
