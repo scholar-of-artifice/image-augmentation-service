@@ -63,7 +63,7 @@ class ProcessedImage(SQLModel, table=True):
         index=True
     )
     # --- Table Relationships ---
-    # This is the corresponding relationship attribute
+    # This is the corresponding relationship attribute to User
     user: "User" = Relationship(
         # 'back_populates' links this relationship to the 'processed_images' field on the User model.
         back_populates="processed_images"
