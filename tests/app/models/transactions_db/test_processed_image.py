@@ -53,6 +53,24 @@ def test_processed_image_IntegrityError_when_user_id_is_null(db_session: Session
     with pytest.raises(IntegrityError):
         db_session.commit()
 
+def test_processed_image_IntegrityError_when_user_id_does_not_exist(db_session: Session):
+    """
+        GIVEN a user_id that does not exist
+        AND a ProcessedImage entry is created
+        WHEN the ProcessedImage is inserted into the database
+        THEN it raises an IntegrityError
+    """
+    # create an unprocessed_image
+    processed_image = ProcessedImage(
+        user_id= uuid.uuid4(),
+        storage_filename="some_file_name.png"
+    )
+    # attempt to save the data
+    db_session.add(processed_image)
+    db_session.add(processed_image)
+    with pytest.raises(IntegrityError):
+        db_session.commit()
+
 # TODO: user_id does not exist
 # TODO: storage_filename is nil
 # TODO: storage_filename is blank string
