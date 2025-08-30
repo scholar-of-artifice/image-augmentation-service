@@ -116,5 +116,26 @@ def no_test_processed_image_IntegrityError_when_storage_filename_is_blank_string
     with pytest.raises(IntegrityError):
         db_session.commit()
 
-# TODO: storage_filename is too long
+def test_processed_image_DataError_when_storage_filename_is_too_long(db_session: Session):
+    # TODO: remove this test from suite. pydantic validation not working as intended
+    """
+        GIVEN a User exists in the database
+        AND a ProcessedImage entry
+        AND the storage_filename is too long
+        WHEN the ProcessedImage is inserted into the database
+        THEN it raises an DataError
+    """
+    # create a user
+    user = User(external_id='some-1234-extr-0987-id45')
+    db_session.add(user)
+    db_session.commit()
+    # create an unprocessed_image
+    processed_image = ProcessedImage(
+        user_id= user.id,
+        storage_filename="a"*300
+    )
+    # save the processed_image
+    db_session.add(processed_image)
+    with pytest.raises(DataError):
+        db_session.commit()
 #
