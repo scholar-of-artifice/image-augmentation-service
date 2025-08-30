@@ -55,7 +55,7 @@ services:
     build:
       context: .
       target: test
-    command: uv run pytest
+    command: uv run pytest --cov=. --cov-report=html:tests/coverage_report/web
     profiles:
       - test
   # the service for production
