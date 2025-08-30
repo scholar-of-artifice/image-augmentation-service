@@ -54,7 +54,7 @@ services:
     container_name: image-augmentation-api-test
     build:
       context: .
-      target: dev
+      target: test
     command: uv run pytest
     profiles:
       - test
