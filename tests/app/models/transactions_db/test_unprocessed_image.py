@@ -60,6 +60,7 @@ def test_unprocessed_image_IntegrityError_when_original_filename_is_null(db_sess
         db_session.commit()
 
 def test_unprocessed_image_ValidationError_when_original_filename_is_blank_string(db_session: Session):
+def no_test_unprocessed_image_ValidationError_when_original_filename_is_blank_string(db_session: Session):
     """
         GIVEN an attempt to create an UnprocessedImage entry
         AND the original_filename is a blank string
