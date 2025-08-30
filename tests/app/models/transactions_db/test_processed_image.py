@@ -1,6 +1,7 @@
 from sqlmodel import Session
 from datetime import datetime, timezone
 from app.models.transactions_db.processed_image import ProcessedImage
+from app.models.transactions_db.unprocessed_image import UnprocessedImage
 from app.models.transactions_db.user import User
 from pydantic import ValidationError
 from sqlalchemy.exc import IntegrityError, DataError
@@ -19,8 +20,17 @@ def test_processed_image_is_valid(db_session: Session):
     db_session.add(user)
     db_session.commit()
     # create an unprocessed_image
+    unprocessed_image = UnprocessedImage(
+        user_id= user.id,
+        original_filename='cool_image.png',
+        storage_filename="some_file_name.png"
+    )
+    db_session.add(unprocessed_image)
+    db_session.commit()
+    # create a processed_image
     processed_image = ProcessedImage(
         user_id= user.id,
+        unprocessed_image_id=unprocessed_image.id,
         storage_filename="some_file_name.png"
     )
     # save the processed_image
