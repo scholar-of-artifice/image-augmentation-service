@@ -32,4 +32,9 @@ def test_processed_image_is_valid(db_session: Session):
     assert isinstance(processed_image.created_at, datetime)
     assert processed_image.created_at.tzinfo == timezone.utc
 
-
+# TODO: user_id is nil
+# TODO: user_id does not exist
+# TODO: storage_filename is nil
+# TODO: storage_filename is blank string
+# TODO: storage_filename is too long
+#
