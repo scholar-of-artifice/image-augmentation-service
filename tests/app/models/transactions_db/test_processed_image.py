@@ -11,23 +11,25 @@ def test_processed_image_is_valid(db_session: Session):
         WHEN the ProcessedImage is inserted into the database
         THEN it persists correctly
     """
-
-    user_to_create = User(external_id='some-1234-extr-0987-id45', name="Test User")
-    db_session.add(user_to_create)
+    # create a user
+    user = User(external_id='some-1234-extr-0987-id45', name="Test User")
+    db_session.add(user)
     db_session.commit()
-
-    image_to_create = ProcessedImage(
-        user_id= user_to_create.id,
-        storage_filename='some_file_name.png',
+    # create an unprocessed_image
+    processed_image = ProcessedImage(
+        user_id= user.id,
+        storage_filename="some_file_name.png"
     )
-
-    db_session.add(image_to_create)
+    # save the processed_image
+    db_session.add(processed_image)
     db_session.commit()
-    db_session.refresh(image_to_create)
-
-    assert image_to_create.id is not None
-    assert image_to_create.storage_filename == 'some_file_name.png'
-    assert isinstance(image_to_create.created_at, datetime)
-    assert image_to_create.created_at.tzinfo == timezone.utc
+    db_session.refresh(processed_image)
+    # test the processed_image
+    assert processed_image.id is not None
+    assert isinstance(processed_image.id, uuid.UUID)
+    assert processed_image.user_id == user.id
+    assert processed_image.storage_filename == 'some_file_name.png'
+    assert isinstance(processed_image.created_at, datetime)
+    assert processed_image.created_at.tzinfo == timezone.utc
 
 
