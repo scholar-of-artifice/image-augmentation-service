@@ -65,4 +65,7 @@ class UnprocessedImage(SQLModel, table=True):
     )
     # --- Table Relationships ---
     # an unprocessed image is related to a single user
-    user: "User" = Relationship(back_populates="unprocessed_images")
+    user: "User" = Relationship(
+        # 'back_populates' links this relationship to the 'unprocessed_images' field on the User model.
+        back_populates="unprocessed_images"
+    )
