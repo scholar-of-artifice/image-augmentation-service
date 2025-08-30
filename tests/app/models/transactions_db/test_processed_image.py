@@ -8,12 +8,8 @@ def test_processed_image_is_valid(db_session: Session):
     """
         GIVEN a User exists in the database
         AND a valid ProcessedImage entry
-        WHEN the entry is inserted into the database
-        THEN it should have an id
-        AND it should have the same user_id
-        AND it should have the same original_filename
-        AND it should have the correct storage_filepath
-        AND it should have a created_at with the correct format
+        WHEN the ProcessedImage is inserted into the database
+        THEN it persists correctly
     """
 
     user_to_create = User(external_id='some-1234-extr-0987-id45', name="Test User")
