@@ -4,3 +4,4 @@
 
 from .user import User
 from .unprocessed_image import UnprocessedImage
+from .job_status import JobStatus
