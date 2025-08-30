@@ -93,12 +93,12 @@ def test_processed_image_IntegrityError_when_storage_filename_is_nil(db_session:
     with pytest.raises(IntegrityError):
         db_session.commit()
 
-def no_test_processed_image_IntegrityError_when_storage_filename_is_nil(db_session: Session):
+def no_test_processed_image_IntegrityError_when_storage_filename_is_blank_string(db_session: Session):
     # TODO: remove this test from suite. pydantic validation not working as inteneded
     """
         GIVEN a User exists in the database
         AND a ProcessedImage entry
-        AND the storage_filename is nil
+        AND the storage_filename is a blank string
         WHEN the ProcessedImage is inserted into the database
         THEN it raises an IntegrityError
     """
