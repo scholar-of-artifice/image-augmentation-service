@@ -14,7 +14,35 @@ from app.models.transactions_db.unprocessed_image import UnprocessedImage
 
 # TODO: write a test which enforces the relationship between ProcessingJob and ProcessedImage
 
-# TODO: Test that creating an image with a valid user_id correctly populates the relationship attributes.
+def test_UnprocessedImage_creation_populates_user_relationship(db_session: Session):
+    """
+        GIVEN a User exists in the database
+        AND a UnprocessedImage is created with that User.id
+        WHEN the UnprocessedImage is committed.
+        THEN the UnprocessedImage 'user' attribute is the correct User object.
+    """
+    # create a user
+    user = User(external_id='some-1234-extr-0987-id45')
+    # save the user
+    db_session.add(user)
+    db_session.commit()
+    db_session.refresh(user)
+    # create an unprocessed_image
+    unprocessed_image = UnprocessedImage(
+        user_id= user.id,
+        original_filename= "cool_image.png",
+        storage_filename="some_file_name.png"
+    )
+    # save the unprocessed_image
+    db_session.add(unprocessed_image)
+    db_session.commit()
+    db_session.refresh(unprocessed_image)
+    # Assert that the ORM relationship attribute has been populated
+    assert unprocessed_image.user is not None
+    assert isinstance(unprocessed_image.user, User)
+    # Assert that it's the correct user by comparing primary keys and another unique field
+    assert unprocessed_image.user.id == user.id
+    assert unprocessed_image.user.external_id == user.external_id
 
 # TODO: Test that after creating an image, the user's list of images is correctly updated.
 
