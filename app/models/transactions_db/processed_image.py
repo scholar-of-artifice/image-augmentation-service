@@ -53,6 +53,15 @@ class ProcessedImage(SQLModel, table=True):
         # add a database index to speed up queries that filter images by user
         index=True
     )
+    # Question: which UnprocessedImage does this image derive from?
+    unprocessed_image_id: uuid.UUID = Field(
+        # establishes the link the id column in user
+        foreign_key="unprocessedimage.id",
+        # ensure that every processed_image must associate with a unprocessed_image
+        nullable=False,
+        # add a database index to speed up queries that filter images by unprocessed_image
+        index=True
+    )
     # --- Table Relationships ---
     # This is the corresponding relationship attribute
     user: "User" = Relationship(
