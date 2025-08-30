@@ -52,10 +52,23 @@ def test_processed_image_IntegrityError_when_user_id_is_null(db_session: Session
         WHEN the ProcessedImage is inserted into the database
         THEN it raises an IntegrityError
     """
+    # create a user
+    user = User(external_id='some-1234-extr-0987-id45')
+    db_session.add(user)
+    db_session.commit()
     # create an unprocessed_image
+    unprocessed_image = UnprocessedImage(
+        user_id= user.id,
+        original_filename='cool_image.png',
+        storage_filename="some_file_name.png"
+    )
+    db_session.add(unprocessed_image)
+    db_session.commit()
+    # create a processed_image
     processed_image = ProcessedImage(
         user_id= None,
-        storage_filename="some_file_name.png"
+        unprocessed_image_id=unprocessed_image.id,
+        storage_filename="some_new_file_name.png"
     )
     # attempt to save the data
     db_session.add(processed_image)
