@@ -15,7 +15,7 @@ def test_unprocessed_image_is_valid(db_session: Session):
         THEN it persists correctly
     """
     # create a user
-    user = User(external_id='some-1234-extr-0987-id45', name="Test User")
+    user = User(external_id='some-1234-extr-0987-id45')
     db_session.add(user)
     db_session.commit()
     # create an unprocessed_image
@@ -45,7 +45,7 @@ def test_unprocessed_image_IntegrityError_when_original_filename_is_null(db_sess
         THEN an IntegrityError should be raised
     """
     # create a user
-    user = User(external_id='some-1234-extr-0987-id45', name="Test User")
+    user = User(external_id='some-1234-extr-0987-id45')
     db_session.add(user)
     db_session.commit()
     # create an unprocessed_image
