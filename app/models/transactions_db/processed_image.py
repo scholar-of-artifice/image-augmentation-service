@@ -44,7 +44,6 @@ class ProcessedImage(SQLModel, table=True):
             nullable=False
         )
     )
-    # --- Table Associations ---
     # Question: who wrote this image?
     user_id: uuid.UUID = Field(
         # establishes the link the id column in user
