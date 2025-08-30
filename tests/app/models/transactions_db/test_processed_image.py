@@ -31,7 +31,7 @@ def test_processed_image_is_valid(db_session: Session):
     processed_image = ProcessedImage(
         user_id= user.id,
         unprocessed_image_id=unprocessed_image.id,
-        storage_filename="some_file_name.png"
+        storage_filename="some_new_file_name.png"
     )
     # save the processed_image
     db_session.add(processed_image)
