@@ -31,6 +31,5 @@ Thumbs.db
 # --- Repository specific ---
 /app/_tmp
 /docs/
-/tests/
 LICENSE
 .python-version
