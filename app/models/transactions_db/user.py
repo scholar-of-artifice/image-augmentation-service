@@ -49,6 +49,8 @@ class User(SQLModel, table=True):
             nullable=False
         )
     )
+    # Question: when was this user's record last updated?
+    # TODO: consider writing updated_at
     # --- Table Relationships ---
     # a User can have many UnprocessedImage records.
     unprocessed_images: List["UnprocessedImage"] = Relationship(
