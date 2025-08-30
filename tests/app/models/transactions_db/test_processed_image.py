@@ -71,7 +71,6 @@ def test_processed_image_IntegrityError_when_user_id_does_not_exist(db_session: 
     with pytest.raises(IntegrityError):
         db_session.commit()
 
-# TODO: user_id does not exist
 # TODO: storage_filename is nil
 # TODO: storage_filename is blank string
 # TODO: storage_filename is too long
