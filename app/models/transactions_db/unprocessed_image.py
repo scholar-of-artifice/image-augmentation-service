@@ -1,7 +1,7 @@
 import uuid
 from sqlmodel import SQLModel, Field, Relationship
 from datetime import datetime, timezone
-from typing import Optional
+from typing import Optional, List
 from sqlalchemy import Column, DateTime
 
 class UnprocessedImage(SQLModel, table=True):
