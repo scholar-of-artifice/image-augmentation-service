@@ -44,7 +44,36 @@ def test_UnprocessedImage_creation_populates_user_relationship(db_session: Sessi
     assert unprocessed_image.user.id == user.id
     assert unprocessed_image.user.external_id == user.external_id
 
-# TODO: Test that after creating an image, the user's list of images is correctly updated.
+def test_user_image_list_is_updated_after_image_creation(db_session: Session):
+    """
+        GIVEN a User exists
+        AND an UnprocessedImage is created for that user
+        WHEN the User object is refreshed from the database
+        THEN the 'unprocessed_images' list should contain the new image
+    """
+    # create a user
+    user = User(external_id='some-1234-extr-0987-id45')
+    db_session.add(user)
+    db_session.commit()
+    db_session.refresh(user) # Ensure we have the user's ID
+    # create and unprocessed_image
+    unprocessed_image = UnprocessedImage(
+        user_id=user.id,
+        original_filename="mountain_view-california.png",
+        storage_filename="unique_storage_name.png"
+    )
+    db_session.add(unprocessed_image)
+    db_session.commit()
+    # refresh to see what was written in db
+    db_session.refresh(user)
+    # is relationship list is populated correctly?
+    assert user.unprocessed_images is not None
+    assert len(user.unprocessed_images) == 1
+    # verify the image in the list is the right one
+    image_from_list = user.unprocessed_images[0]
+    assert isinstance(image_from_list, UnprocessedImage)
+    assert image_from_list.id == unprocessed_image.id
+    assert image_from_list.storage_filename == "unique_storage_name.png"
 
 # TODO: Test linking by assigning the parent object directly, instead of using the foreign key ID.
 
