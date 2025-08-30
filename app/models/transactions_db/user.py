@@ -49,15 +49,6 @@ class User(SQLModel, table=True):
             nullable=False
         )
     )
-    # TODO: this validator is necessary because a min_length specification for external_id fails to evaluate
-    # this custom validator ensures the field is never blank
-    @field_validator("external_id")
-    @classmethod
-    def validate_external_id_is_not_blank(cls, v: str) -> str:
-        # We use .strip() to also catch strings containing only whitespace
-        if not v.strip():
-            raise ValueError("external_id cannot be a blank string")
-        return v
     # --- Table Relationships ---
     # a User can have many UnprocessedImage records.
     unprocessed_images: List["UnprocessedImage"] = Relationship(
