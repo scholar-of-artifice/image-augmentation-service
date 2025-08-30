@@ -1,3 +1,7 @@
+from sqlmodel import Session
+from app.models.transactions_db.user import User
+from app.models.transactions_db.unprocessed_image import UnprocessedImage
+
 # TODO: write a test which enforces the relationship between User and UnprocessedImage
 
 # TODO: write a test which enforces the relationship between User and ProcessedImage
