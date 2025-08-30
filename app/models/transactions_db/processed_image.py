@@ -48,7 +48,7 @@ class ProcessedImage(SQLModel, table=True):
     user_id: uuid.UUID = Field(
         # establishes the link the id column in user
         foreign_key="user.id",
-        # ensure that every unprocessed model must associate with a user
+        # ensure that every processed model must associate with a user
         nullable=False,
         # add a database index to speed up queries that filter images by user
         index=True
