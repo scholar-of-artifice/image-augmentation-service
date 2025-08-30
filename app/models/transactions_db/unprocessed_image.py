@@ -69,3 +69,9 @@ class UnprocessedImage(SQLModel, table=True):
         # 'back_populates' links this relationship to the 'unprocessed_images' field on the User model.
         back_populates="unprocessed_images"
     )
+    # an unprocessed image is related to multiple processed_images
+    processed_images: List["ProcessedImage"] = Relationship(
+        # 'back_populates' links this relationship to the 'unprocessed_image' field on the ProcessedImage model.
+        back_populates="unprocessed_image"
+    )
+    # TODO: relationship
