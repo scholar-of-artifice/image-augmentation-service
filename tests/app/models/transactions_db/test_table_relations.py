@@ -131,7 +131,33 @@ def test_deleting_user_cascades_to_delete_images(db_session: Session):
     deleted_image = db_session.get(UnprocessedImage, image_id)
     assert deleted_image is None
 
-# TODO: Test linking by assigning the parent object directly, instead of using the foreign key ID.
+def test_linking_by_parent_object_populates_foreign_key(db_session: Session):
+    """
+        GIVEN a User exists in the database
+        WHEN an UnprocessedImage is created by assigning the User object directly
+        to the 'user' relationship attribute
+        THEN the 'user_id' foreign key field is automatically populated upon commit
+    """
+    # create a user
+    user = User(external_id='user-for-object-linking')
+    db_session.add(user)
+    db_session.commit()
+    db_session.refresh(user)
+    # create an image by assigning the parent object directly
+    unprocessed_image = UnprocessedImage(
+        original_filename="linked_by_object.png",
+        storage_filename="storage_name_linked_by_object.png",
+        user=user  # Link via the relationship object, not the user_id
+    )
+    db_session.add(unprocessed_image)
+    db_session.commit()
+    # refresh the image to get its state from the database
+    db_session.refresh(unprocessed_image)
+    # the user_id foreign key should be correctly populated
+    assert unprocessed_image.user_id is not None
+    assert unprocessed_image.user_id == user.id
+    # and the relationship should still be valid
+    assert unprocessed_image.user.external_id == 'user-for-object-linking'
 
 # TODO: Test linking by appending an image to the user's list of images.
 
