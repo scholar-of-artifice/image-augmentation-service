@@ -75,6 +75,34 @@ def test_user_image_list_is_updated_after_image_creation(db_session: Session):
     assert image_from_list.id == unprocessed_image.id
     assert image_from_list.storage_filename == "unique_storage_name.png"
 
+def test_deleting_image_removes_it_from_user_list(db_session: Session):
+    """
+        GIVEN a User with one UnprocessedImage
+        WHEN the UnprocessedImage is deleted from the database
+        THEN the User's 'unprocessed_images' list becomes empty
+    """
+    # create a user with an unprocessed_image
+    user = User(external_id='user-to-be-deleted-from')
+    unprocessed_image = UnprocessedImage(
+        user=user,
+        original_filename="image_to_delete.jpg",
+        storage_filename="storage_name_to_delete.jpg"
+    )
+    db_session.add(user)
+    db_session.add(unprocessed_image)
+    db_session.commit()
+    db_session.refresh(user)
+    # ensure this was saved correctly
+    assert len(user.unprocessed_images) == 1
+    # delete the image
+    db_session.delete(unprocessed_image)
+    db_session.commit()
+    # refresh the user to get the latest state from the database
+    db_session.refresh(user)
+    # this user has an empty unprocessed_images list
+    assert len(user.unprocessed_images) == 0
+
+
 # TODO: Test linking by assigning the parent object directly, instead of using the foreign key ID.
 
 # TODO: Test linking by appending an image to the user's list of images.
