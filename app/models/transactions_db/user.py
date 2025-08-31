@@ -62,7 +62,13 @@ class User(SQLModel, table=True):
     # a User can have many UnprocessedImage records.
     unprocessed_images: List["UnprocessedImage"] = Relationship(
         # 'back_populates' links this relationship to the 'user' field on the UnprocessedImage model.
-        back_populates="user"
+        back_populates="user",
+        # These kwargs are passed to the underlying SQLAlchemy relationship
+        sa_relationship_kwargs={
+            # This ensures that if a User is deleted, all their associated
+            # unprocessed_images are automatically deleted as well.
+            "cascade": "all, delete-orphan"
+        }
     )
     # a User can also have many ProcessedImage records.
     processed_images: List["ProcessedImage"] = Relationship(
