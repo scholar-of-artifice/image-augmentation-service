@@ -3,7 +3,6 @@ from sqlmodel import SQLModel, Field, Relationship
 from datetime import datetime, timezone
 from typing import Optional, List
 from sqlalchemy import func, Column, DateTime
-from pydantic import field_validator
 
 class User(SQLModel, table=True):
     """
