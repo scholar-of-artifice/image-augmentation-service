@@ -189,6 +189,36 @@ def test_linking_by_appending_to_parent_list(db_session: Session):
     assert image_from_db.user_id == user.id
     assert image_from_db.original_filename == "appended_image.jpg"
 
-# --- TODOs for Constraint & Deletion Violations ---
-
-# TODO: Test that deleting an image does not affect its parent user.
+def test_deleting_image_does_not_delete_associated_user(db_session: Session):
+    """
+        GIVEN a User exists
+        AND there is an associated UnprocessedImage
+        WHEN the UnprocessedImage is deleted from the database
+        THEN the User object remains in the database
+    """
+    # create a user with an image, both committed to the database
+    user = User(external_id='user-who-should-survive')
+    unprocessed_image = UnprocessedImage(
+        user=user,
+        original_filename="image_to_be_deleted.jpg",
+        storage_filename="transient_image.jpg"
+    )
+    db_session.add(unprocessed_image) # Adding the child cascades the add to the parent
+    db_session.commit()
+    # store IDs to query for them after the deletion
+    user_id = user.id
+    image_id = unprocessed_image.id
+    # ensure both were committed
+    assert db_session.get(User, user_id) is not None
+    assert db_session.get(UnprocessedImage, image_id) is not None
+    # delete the image
+    db_session.delete(unprocessed_image)
+    db_session.commit()
+    # the image is gone, but the user remains
+    image_in_db = db_session.get(UnprocessedImage, image_id)
+    user_in_db = db_session.get(User, user_id)
+    assert image_in_db is None
+    assert user_in_db is not None
+    # Verify it's the correct user
+    assert user_in_db.id == user_id
+    assert user_in_db.external_id == 'user-who-should-survive'
