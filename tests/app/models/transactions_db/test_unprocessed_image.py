@@ -152,7 +152,7 @@ def test_unprocessed_image_IntegrityError_when_user_id_is_null(db_session: Sessi
     # to ensure the session is clean for any subsequent tests.
     db_session.rollback()
 
-def test_unprocessed_image_DataError_when_original_filename_is_to_long(db_session: Session):
+def test_unprocessed_image_DataError_when_original_filename_is_too_long(db_session: Session):
     """
         GIVEN an attempt to create an UnprocessedImage entry
         AND the original_filename is too long
