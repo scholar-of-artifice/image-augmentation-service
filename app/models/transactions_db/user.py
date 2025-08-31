@@ -49,8 +49,15 @@ class User(SQLModel, table=True):
             nullable=False
         )
     )
-    # Question: when was this user's record last updated?
-    # TODO: consider writing updated_at
+    # Question: when was this record last updated?
+    updated_at: datetime | None = Field(
+        default=None,
+        sa_column=Column(
+            DateTime(timezone=True),
+            # This tells the DB to update the field to the current time on any change
+            onupdate=func.now()
+        )
+    )
     # --- Table Relationships ---
     # a User can have many UnprocessedImage records.
     unprocessed_images: List["UnprocessedImage"] = Relationship(
