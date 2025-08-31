@@ -102,6 +102,34 @@ def test_deleting_image_removes_it_from_user_list(db_session: Session):
     # this user has an empty unprocessed_images list
     assert len(user.unprocessed_images) == 0
 
+def test_deleting_user_cascades_to_delete_images(db_session: Session):
+    """
+        GIVEN a User with an UnprocessedImage
+        WHEN the User is deleted
+        THEN the associated UnprocessedImage is also deleted from the database
+    """
+    # create a user with an image
+    user = User(external_id='cascading-delete-user')
+    db_session.add(user)
+    db_session.commit()
+    db_session.refresh(user)
+    unprocessed_image = UnprocessedImage(
+        user_id=user.id,
+        original_filename="image_that_should_be_deleted.png",
+        storage_filename="cascade_delete_storage.png"
+    )
+    db_session.add(unprocessed_image)
+    db_session.commit()
+    # store the ID to check for its existence later
+    image_id = unprocessed_image.id
+    # ensure the image is in the database
+    assert db_session.get(UnprocessedImage, image_id) is not None
+    # delete the user
+    db_session.delete(user)
+    db_session.commit()
+    # the associated image should no longer exist in the database
+    deleted_image = db_session.get(UnprocessedImage, image_id)
+    assert deleted_image is None
 
 # TODO: Test linking by assigning the parent object directly, instead of using the foreign key ID.
 
