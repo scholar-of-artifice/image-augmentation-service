@@ -213,7 +213,6 @@ def test_processed_image_DataError_when_storage_filename_is_too_long(db_session:
     db_session.add(processed_image)
     with pytest.raises(DataError):
         db_session.commit()
-#
     # It's good practice to roll back the session after a failed transaction
     # to ensure the session is clean for any subsequent tests.
     db_session.rollback()
