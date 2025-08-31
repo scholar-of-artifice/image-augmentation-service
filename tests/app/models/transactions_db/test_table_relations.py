@@ -159,7 +159,35 @@ def test_linking_by_parent_object_populates_foreign_key(db_session: Session):
     # and the relationship should still be valid
     assert unprocessed_image.user.external_id == 'user-for-object-linking'
 
-# TODO: Test linking by appending an image to the user's list of images.
+def test_linking_by_appending_to_parent_list(db_session: Session):
+    """
+        GIVEN a User exists in the database
+        WHEN a new UnprocessedImage is appended to the user.unprocessed_images list
+        AND the session is committed
+        THEN the image is saved and its 'user_id' foreign key is correctly set
+    """
+    # create a user that is already saved in the database
+    user = User(external_id='user-for-list-append')
+    db_session.add(user)
+    db_session.commit()
+    db_session.refresh(user)
+    # create a new unprocessed_images and append to the user's relationship list
+    new_image = UnprocessedImage(
+        original_filename="appended_image.jpg",
+        storage_filename="storage_name_appended.jpg"
+    )
+    user.unprocessed_images.append(new_image)
+    # add the user to the session again to register the change to the list
+    db_session.add(user)
+    db_session.commit()
+    # refresh the user to load the newly added image from the DB
+    db_session.refresh(user)
+    # the image should be in the user's list and have the correct foreign key
+    assert len(user.unprocessed_images) == 1
+    image_from_db = user.unprocessed_images[0]
+    assert image_from_db.user_id is not None
+    assert image_from_db.user_id == user.id
+    assert image_from_db.original_filename == "appended_image.jpg"
 
 # --- TODOs for Constraint & Deletion Violations ---
 
