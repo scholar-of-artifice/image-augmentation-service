@@ -1,9 +1,8 @@
 import uuid
 from sqlmodel import SQLModel, Field,  Relationship
 from datetime import datetime, timezone
-from typing import Optional, Dict, Any
+from typing import Optional
 from sqlalchemy import Column, DateTime
-from sqlalchemy.dialects.postgresql import JSONB
 
 class ProcessedImage(SQLModel, table=True):
     """
