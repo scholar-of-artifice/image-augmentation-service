@@ -191,6 +191,4 @@ def test_linking_by_appending_to_parent_list(db_session: Session):
 
 # --- TODOs for Constraint & Deletion Violations ---
 
-# TODO: Test that the database prevents a user from being deleted if they still have images.
-
 # TODO: Test that deleting an image does not affect its parent user.
