@@ -47,6 +47,9 @@ def test_user_IntegrityError_when_external_id_is_duplicate(db_session: Session):
     db_session.add(user_B)
     with pytest.raises(IntegrityError):
         db_session.commit()
+    # It's good practice to roll back the session after a failed transaction
+    # to ensure the session is clean for any subsequent tests.
+    db_session.rollback()
 
 def test_user_IntegrityError_when_external_id_is_null(db_session: Session):
     """
@@ -61,6 +64,9 @@ def test_user_IntegrityError_when_external_id_is_null(db_session: Session):
     db_session.add(user_to_create)
     with pytest.raises(IntegrityError):
         db_session.commit()
+    # It's good practice to roll back the session after a failed transaction
+    # to ensure the session is clean for any subsequent tests.
+    db_session.rollback()
 
 def no_test_user_ValidationError_when_external_id_is_blank_string(db_session: Session):
     # TODO: test fails and validation in pydantic not working as expected. take out for now.
@@ -72,6 +78,9 @@ def no_test_user_ValidationError_when_external_id_is_blank_string(db_session: Se
     """
     with pytest.raises(ValidationError):
         User(external_id='')
+    # It's good practice to roll back the session after a failed transaction
+    # to ensure the session is clean for any subsequent tests.
+    db_session.rollback()
 
 def test_user_IntegrityError_when_external_id_is_too_long(db_session: Session):
     """
@@ -86,6 +95,9 @@ def test_user_IntegrityError_when_external_id_is_too_long(db_session: Session):
     db_session.add(user_to_create)
     with pytest.raises(DataError):
         db_session.commit()
+    # It's good practice to roll back the session after a failed transaction
+    # to ensure the session is clean for any subsequent tests.
+    db_session.rollback()
 
 def test_get_user_by_primary_key(db_session: Session):
     """
@@ -255,5 +267,8 @@ def test_delete_user_that_does_not_exist(db_session: Session):
     # because this instance is not tracked by the session.
     with pytest.raises(InvalidRequestError):
         db_session.delete(user_not_in_db)
+    # It's good practice to roll back the session after a failed transaction
+    # to ensure the session is clean for any subsequent tests.
+    db_session.rollback()
 
 # TODO: Test querying with an invalid UUID format to ensure it fails gracefully.
