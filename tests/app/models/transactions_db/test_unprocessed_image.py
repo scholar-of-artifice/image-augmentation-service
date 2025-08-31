@@ -58,6 +58,9 @@ def test_unprocessed_image_IntegrityError_when_original_filename_is_null(db_sess
     db_session.add(unprocessed_image)
     with pytest.raises(IntegrityError):
         db_session.commit()
+    # It's good practice to roll back the session after a failed transaction
+    # to ensure the session is clean for any subsequent tests.
+    db_session.rollback()
 
 def no_test_unprocessed_image_ValidationError_when_original_filename_is_blank_string(db_session: Session):
     # TODO: remove test from suite. validation not working as expected
@@ -99,6 +102,9 @@ def test_unprocessed_image_IntegrityError_when_storage_filename_is_null(db_sessi
     db_session.add(unprocessed_image)
     with pytest.raises(IntegrityError):
         db_session.commit()
+    # It's good practice to roll back the session after a failed transaction
+    # to ensure the session is clean for any subsequent tests.
+    db_session.rollback()
 
 def no_test_unprocessed_image_ValidationError_when_storage_filename_is_blank_string(db_session: Session):
     # TODO: remove test from suite. validation not working as expected
@@ -136,6 +142,9 @@ def test_unprocessed_image_IntegrityError_when_user_id_is_null(db_session: Sessi
     db_session.add(unprocessed_image)
     with pytest.raises(IntegrityError):
         db_session.commit()
+    # It's good practice to roll back the session after a failed transaction
+    # to ensure the session is clean for any subsequent tests.
+    db_session.rollback()
 
 def test_unprocessed_image_DataError_when_original_filename_is_to_long(db_session: Session):
     """
@@ -158,6 +167,9 @@ def test_unprocessed_image_DataError_when_original_filename_is_to_long(db_sessio
     db_session.add(unprocessed_image)
     with pytest.raises(DataError):
         db_session.commit()
+    # It's good practice to roll back the session after a failed transaction
+    # to ensure the session is clean for any subsequent tests.
+    db_session.rollback()
 
 def test_unprocessed_image_DataError_when_storage_filename_is_to_long(db_session: Session):
     """
@@ -180,6 +192,9 @@ def test_unprocessed_image_DataError_when_storage_filename_is_to_long(db_session
     db_session.add(unprocessed_image)
     with pytest.raises(DataError):
         db_session.commit()
+    # It's good practice to roll back the session after a failed transaction
+    # to ensure the session is clean for any subsequent tests.
+    db_session.rollback()
 
 def test_unprocessed_image_IntegrityError_when_user_id_does_not_exist(db_session: Session):
     """
@@ -198,6 +213,9 @@ def test_unprocessed_image_IntegrityError_when_user_id_does_not_exist(db_session
     db_session.add(unprocessed_image)
     with pytest.raises(IntegrityError):
         db_session.commit()
+    # It's good practice to roll back the session after a failed transaction
+    # to ensure the session is clean for any subsequent tests.
+    db_session.rollback()
 
 def test_unprocessed_image_is_IntegrityError_when_storage_file_name_is_duplicated(db_session: Session):
     """
@@ -230,6 +248,9 @@ def test_unprocessed_image_is_IntegrityError_when_storage_file_name_is_duplicate
     db_session.add(unprocessed_image_B)
     with pytest.raises(IntegrityError):
         db_session.commit()
+    # It's good practice to roll back the session after a failed transaction
+    # to ensure the session is clean for any subsequent tests.
+    db_session.rollback()
 
 def test_get_unprocessed_image_by_primary_key(db_session: Session):
     """
