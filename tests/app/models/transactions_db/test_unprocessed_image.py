@@ -80,6 +80,9 @@ def no_test_unprocessed_image_ValidationError_when_original_filename_is_blank_st
             original_filename='',
             storage_filename='some_file_name.png'
         )
+    # It's good practice to roll back the session after a failed transaction
+    # to ensure the session is clean for any subsequent tests.
+    db_session.rollback()
 
 def test_unprocessed_image_IntegrityError_when_storage_filename_is_null(db_session: Session):
     """
@@ -124,6 +127,9 @@ def no_test_unprocessed_image_ValidationError_when_storage_filename_is_blank_str
             original_filename="cool_image.png",
             storage_filename=''
         )
+    # It's good practice to roll back the session after a failed transaction
+    # to ensure the session is clean for any subsequent tests.
+    db_session.rollback()
 
 def test_unprocessed_image_IntegrityError_when_user_id_is_null(db_session: Session):
     """
