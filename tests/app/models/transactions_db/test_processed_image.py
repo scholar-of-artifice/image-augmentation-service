@@ -75,6 +75,9 @@ def test_processed_image_IntegrityError_when_user_id_is_null(db_session: Session
     db_session.add(processed_image)
     with pytest.raises(IntegrityError):
         db_session.commit()
+    # It's good practice to roll back the session after a failed transaction
+    # to ensure the session is clean for any subsequent tests.
+    db_session.rollback()
 
 def test_processed_image_IntegrityError_when_user_id_does_not_exist(db_session: Session):
     """
@@ -106,6 +109,9 @@ def test_processed_image_IntegrityError_when_user_id_does_not_exist(db_session: 
     db_session.add(processed_image)
     with pytest.raises(IntegrityError):
         db_session.commit()
+    # It's good practice to roll back the session after a failed transaction
+    # to ensure the session is clean for any subsequent tests.
+    db_session.rollback()
 
 def test_processed_image_IntegrityError_when_storage_filename_is_nil(db_session: Session):
     """
@@ -137,6 +143,9 @@ def test_processed_image_IntegrityError_when_storage_filename_is_nil(db_session:
     db_session.add(processed_image)
     with pytest.raises(IntegrityError):
         db_session.commit()
+    # It's good practice to roll back the session after a failed transaction
+    # to ensure the session is clean for any subsequent tests.
+    db_session.rollback()
 
 def no_test_processed_image_IntegrityError_when_storage_filename_is_blank_string(db_session: Session):
     # TODO: remove this test from suite. pydantic validation not working as inteneded
@@ -169,6 +178,9 @@ def no_test_processed_image_IntegrityError_when_storage_filename_is_blank_string
     db_session.add(processed_image)
     with pytest.raises(IntegrityError):
         db_session.commit()
+    # It's good practice to roll back the session after a failed transaction
+    # to ensure the session is clean for any subsequent tests.
+    db_session.rollback()
 
 def test_processed_image_DataError_when_storage_filename_is_too_long(db_session: Session):
     # TODO: remove this test from suite. pydantic validation not working as intended
@@ -202,3 +214,7 @@ def test_processed_image_DataError_when_storage_filename_is_too_long(db_session:
     with pytest.raises(DataError):
         db_session.commit()
 #
+    # It's good practice to roll back the session after a failed transaction
+    # to ensure the session is clean for any subsequent tests.
+    db_session.rollback()
+
