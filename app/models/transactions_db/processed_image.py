@@ -24,8 +24,6 @@ class ProcessedImage(SQLModel, table=True):
     # Question: what is the uuid name of this image?
     # this is the storage filename of this image
     storage_filename: str = Field(
-        # enforces that every image must have a unique storage filename.
-        unique=True,
         # sets a maximum length for the filename
         max_length=255,
         # the image record must include a storage filename
