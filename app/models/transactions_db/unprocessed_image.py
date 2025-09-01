@@ -74,4 +74,7 @@ class UnprocessedImage(SQLModel, table=True):
         # 'back_populates' links this relationship to the 'unprocessed_image' field on the ProcessedImage model.
         back_populates="unprocessed_image"
     )
-    # TODO: relationship
+    # an unprocessed image may relate to a processing_job if the image has been created
+    job: Optional["ProcessingJob"] = Relationship(
+        back_populates="unprocessed_image"
+    )
