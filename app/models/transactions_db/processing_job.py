@@ -23,6 +23,7 @@ class ProcessingJob(SQLModel, table=True):
         # is a constraint that ensures every ProcessingJob MUST have an ID
         nullable=False,
     )
+    # Keep this code together... --->
     # Question: who requested this?
     user_id: uuid.UUID = Field(
         # establishes the link the id column in user
@@ -32,6 +33,12 @@ class ProcessingJob(SQLModel, table=True):
         # is a constraint that ensures every ProcessingJob MUST have an associated user
         nullable=False,
     )
+    # n processing_job is related to a single user
+    user: "User" = Relationship(
+        # 'back_populates' links this relationship to the 'unprocessed_images' field on the User model.
+        back_populates="jobs"
+    )
+    # <--- ...Keep this code together
     # Question: what was the request?
     upload_request_body: Dict[str, Any] = Field(
         sa_column=Column(
@@ -42,6 +49,7 @@ class ProcessingJob(SQLModel, table=True):
             nullable=False
         )
     )
+    # Keep this code together... --->
     # Question: what image needs to be processed?
     unprocessed_image_id: uuid.UUID = Field(
         # establishes the link the id column in unprocessed_images
@@ -49,6 +57,13 @@ class ProcessingJob(SQLModel, table=True):
         # is a constraint that ensures every ProcessingJob MUST have an associated unprocessed_images
         nullable=False
     )
+    # a processing_job is related to a single unprocessed_image
+    unprocessed_image: "UnprocessedImage" = Relationship(
+        # 'back_populates' links this relationship to the 'unprocessed_image' field on the UnprocessedImage model.
+        back_populates="job"
+    )
+    # <--- ...Keep this code together
+    # Keep this code together... --->
     # Question: what image was created?
     processed_image_id: Optional[uuid.UUID] = Field(
         # establishes the link the id column in processed_images
@@ -56,6 +71,12 @@ class ProcessingJob(SQLModel, table=True):
         # is a constraint that ensures every ProcessingJob MUST have an associated processed_images
         nullable=True
     )
+    # processing_job is related to a single processed_image
+    processed_image: Optional["ProcessedImage"] = Relationship(
+        # 'back_populates' links this relationship to the 'processed_image' field on the ProcessedImage model.
+        back_populates="job"
+    )
+    # <--- ...Keep this code together
     # Question: what is the status of this job?
     job_status: JobStatus = Field(
         sa_column=Column(
@@ -95,18 +116,3 @@ class ProcessingJob(SQLModel, table=True):
         )
     )
     # --- Table Relationships ---
-    # n processing_job is related to a single user
-    user: "User" = Relationship(
-        # 'back_populates' links this relationship to the 'unprocessed_images' field on the User model.
-        back_populates="jobs"
-    )
-    # a processing_job is related to a single unprocessed_image
-    unprocessed_image: "UnprocessedImage" = Relationship(
-        # 'back_populates' links this relationship to the 'unprocessed_image' field on the UnprocessedImage model.
-        back_populates="job"
-    )
-    # processing_job is related to a single processed_image
-    processed_image: Optional["ProcessedImage"] = Relationship(
-        # 'back_populates' links this relationship to the 'processed_image' field on the ProcessedImage model.
-        back_populates="job"
-    )
