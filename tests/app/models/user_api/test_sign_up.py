@@ -1,6 +1,7 @@
 import uuid
 from datetime import datetime
 from app.models.user_api.sign_up import UserRead
+import pytest
 
 def test_user_read_successful_creation():
     """
