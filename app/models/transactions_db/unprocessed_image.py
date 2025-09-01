@@ -53,6 +53,7 @@ class UnprocessedImage(SQLModel, table=True):
             nullable=False
         )
     )
+    # Keep this code together... --->
     # Question: who wrote this image?
     # the foreign key linking this image to a record in the 'user' table.
     user_id: uuid.UUID = Field(
@@ -63,12 +64,13 @@ class UnprocessedImage(SQLModel, table=True):
         # add a database index to speed up queries that filter images by user
         index=True
     )
-    # --- Table Relationships ---
     # an unprocessed image is related to a single user
     user: "User" = Relationship(
         # 'back_populates' links this relationship to the 'unprocessed_images' field on the User model.
         back_populates="unprocessed_images"
     )
+    # <--- ...Keep this code together
+    # --- Table Relationships ---
     # an unprocessed image is related to multiple processed_images
     processed_images: List["ProcessedImage"] = Relationship(
         # 'back_populates' links this relationship to the 'unprocessed_image' field on the ProcessedImage model.
