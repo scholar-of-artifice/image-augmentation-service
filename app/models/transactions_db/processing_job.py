@@ -11,17 +11,6 @@ class ProcessingJob(SQLModel, table=True):
     """
         Class representing a ProcessingJob in the database.
     """
-    # which processing is this?
-    id: int | None = Field(default=None, primary_key=True)
-    # who requested this?
-    user_id: int = Field(foreign_key="users.id", nullable=False, index=True)
-    # what was the request?
-    upload_request_body: Dict[str, Any] = Field(sa_column=Column(JSONB, nullable=False))
-    # what image needs to be processed?
-    unprocessed_image_id: int = Field(foreign_key="unprocessed_images.id", nullable=False)
-    # what image was created?
-    processed_image_id: int = Field(foreign_key="processed_images.id", nullable=True)
-    # what is the status of this job?
     # Question: which processing is this?
     # the unique identifier for this specific image record.
     id: uuid.UUID | None = Field(
@@ -67,6 +56,7 @@ class ProcessingJob(SQLModel, table=True):
         # is a constraint that ensures every ProcessingJob MUST have an associated processed_images
         nullable=True
     )
+    # Question: what is the status of this job?
     job_status: JobStatus = Field(
         sa_column=Column(
             # use the JobStatus enum to define what the job status can be
