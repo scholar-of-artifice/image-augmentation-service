@@ -41,21 +41,6 @@ class ProcessedImage(SQLModel, table=True):
             nullable=False
         )
     )
-    # Keep this code together... --->
-    # Question: who wrote this image?
-    user_id: uuid.UUID = Field(
-        # establishes the link the id column in user
-        foreign_key="user.id",
-        # ensure that every processed model must associate with a user
-        nullable=False,
-        # add a database index to speed up queries that filter images by user
-        index=True
-    )
-    # This is the corresponding relationship attribute to User
-    user: "User" = Relationship(
-        # 'back_populates' links this relationship to the 'processed_images' field on the User model.
-        back_populates="processed_images"
-    )
     # <--- ...Keep this code together
     # Keep this code together... --->
     # Question: which UnprocessedImage does this image derive from?
