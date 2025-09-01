@@ -69,7 +69,3 @@ class User(SQLModel, table=True):
             "cascade": "all, delete-orphan"
         }
     )
-    # a User can have many ProcessingJob records.
-    jobs: List["ProcessingJob"] = Relationship(
-        back_populates="user"
-    )

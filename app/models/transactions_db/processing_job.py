@@ -73,22 +73,6 @@ class ProcessingJob(SQLModel, table=True):
     )
     # --- Table Relationships ---
     # Keep this code together... --->
-    # Question: who requested this?
-    user_id: uuid.UUID = Field(
-        # establishes the link the id column in user
-        foreign_key="user.id",
-        # tells the database to create an index on this column
-        index=True,
-        # is a constraint that ensures every ProcessingJob MUST have an associated user
-        nullable=False,
-    )
-    # n processing_job is related to a single user
-    user: "User" = Relationship(
-        # 'back_populates' links this relationship to the 'unprocessed_images' field on the User model.
-        back_populates="jobs"
-    )
-    # <--- ...Keep this code together
-    # Keep this code together... --->
     # Question: what image needs to be processed?
     unprocessed_image_id: uuid.UUID = Field(
         # establishes the link the id column in unprocessed_images
