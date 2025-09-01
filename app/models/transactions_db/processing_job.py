@@ -51,7 +51,12 @@ class ProcessingJob(SQLModel, table=True):
         nullable=False
     )
     job_status: JobStatus = Field(
-        sa_column=Column(Enum(JobStatus), nullable=False),
+        sa_column=Column(
+            # use the JobStatus enum to define what the job status can be
+            Enum(JobStatus),
+            # is a constraint that ensures every ProcessingJob MUST have an associated job_status
+            nullable=False
+        ),
         default=JobStatus.PENDING
     )
     # when was this request made?
