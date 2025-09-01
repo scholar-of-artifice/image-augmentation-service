@@ -22,6 +22,18 @@ class ProcessingJob(SQLModel, table=True):
     # what image was created?
     processed_image_id: int = Field(foreign_key="processed_images.id", nullable=True)
     # what is the status of this job?
+    # Question: which processing is this?
+    # the unique identifier for this specific image record.
+    id: uuid.UUID | None = Field(
+        # generates a unique ID for each image upon creation.
+        default_factory=lambda: uuid.uuid4(),
+        # marks this column as the primary key of this table
+        primary_key=True,
+        # tells the database to create an index on this column
+        index=True,
+        # is a constraint that ensures every ProcessingJob MUST have an ID
+        nullable=False,
+    )
     job_status: JobStatus = Field(
         sa_column=Column(Enum(JobStatus), nullable=False),
         default=JobStatus.PENDING
