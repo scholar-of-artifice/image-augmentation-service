@@ -1,5 +1,6 @@
 import uuid
 from datetime import datetime
+from pydantic import ValidationError
 from app.models.user_api.sign_up import UserRead
 import pytest
 
