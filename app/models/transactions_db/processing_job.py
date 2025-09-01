@@ -43,6 +43,16 @@ class ProcessingJob(SQLModel, table=True):
         # is a constraint that ensures every ProcessingJob MUST have an associated user
         nullable=False,
     )
+    # Question: what was the request?
+    upload_request_body: Dict[str, Any] = Field(
+        sa_column=Column(
+            # postgres has a jsonb string
+            # reference: https://www.postgresql.org/docs/current/datatype-json.html
+            JSONB,
+            # is a constraint that ensures we store the request for how to process a particular image
+            nullable=False
+        )
+    )
     # Question: what image needs to be processed?
     unprocessed_image_id: uuid.UUID = Field(
         # establishes the link the id column in unprocessed_images
