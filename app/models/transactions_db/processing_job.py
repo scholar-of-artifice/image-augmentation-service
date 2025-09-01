@@ -59,11 +59,17 @@ class ProcessingJob(SQLModel, table=True):
         ),
         default=JobStatus.PENDING
     )
-    # when was this request made?
+    # Question: when was this request made?
     requested_at: Optional[datetime] = Field(
         default_factory=lambda: datetime.now(timezone.utc),
-        sa_column=Column(DateTime(timezone=True), nullable=False) # This tells SQLAlchemy to use a timezone-aware database column type
+        sa_column=Column(
+            # this tells SQLAlchemy to use a timezone-aware database column type
+            DateTime(timezone=True),
+            # is a constraint that ensures every ProcessingJob MUST have an associated requested_at
+            nullable=False
+        )
     )
+    # Question: when did the processing for this image start?
     started_at: Optional[datetime] = Field(
         sa_column=Column(DateTime(timezone=True)) # This tells SQLAlchemy to use a timezone-aware database column type
     )
