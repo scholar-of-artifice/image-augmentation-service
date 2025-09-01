@@ -71,8 +71,14 @@ class ProcessingJob(SQLModel, table=True):
     )
     # Question: when did the processing for this image start?
     started_at: Optional[datetime] = Field(
-        sa_column=Column(DateTime(timezone=True)) # This tells SQLAlchemy to use a timezone-aware database column type
+        sa_column=Column(
+            # this tells SQLAlchemy to use a timezone-aware database column type
+            DateTime(timezone=True),
+            # is a constraint that ensures every ProcessingJob does not have an associated started_at until defined by the application
+            nullable=True
+        )
     )
+    # Question: when did the processing for this image complete?
     completed_at: Optional[datetime] = Field(
         sa_column=Column(DateTime(timezone=True)) # This tells SQLAlchemy to use a timezone-aware database column type
     )
