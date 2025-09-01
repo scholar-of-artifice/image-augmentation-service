@@ -5,4 +5,5 @@
 from .user import User
 from .unprocessed_image import UnprocessedImage
 from .processed_image import ProcessedImage
+from .processing_job import ProcessingJob
 from .job_status import JobStatus
