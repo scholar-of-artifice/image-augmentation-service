@@ -60,6 +60,13 @@ class ProcessingJob(SQLModel, table=True):
         # is a constraint that ensures every ProcessingJob MUST have an associated unprocessed_images
         nullable=False
     )
+    # Question: what image was created?
+    processed_image_id: Optional[uuid.UUID] = Field(
+        # establishes the link the id column in processed_images
+        foreign_key="processedimage.id",
+        # is a constraint that ensures every ProcessingJob MUST have an associated processed_images
+        nullable=True
+    )
     job_status: JobStatus = Field(
         sa_column=Column(
             # use the JobStatus enum to define what the job status can be
