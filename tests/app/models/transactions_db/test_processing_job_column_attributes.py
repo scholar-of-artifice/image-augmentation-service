@@ -29,7 +29,6 @@ def test_processing_job_is_valid(db_session: Session):
     db_session.commit()
     # create a processing_job
     job = ProcessingJob(
-        user_id=user.id,
         unprocessed_image_id=unprocessed_image.id,
         upload_request_body={"filter": "sepia", "intensity": 0.8},
     )
@@ -39,7 +38,6 @@ def test_processing_job_is_valid(db_session: Session):
     # test the processing_job
     assert job.id is not None
     assert isinstance(job.id, uuid.UUID)
-    assert job.user_id == user.id
     assert job.unprocessed_image_id == unprocessed_image.id
     assert job.upload_request_body["filter"] == "sepia"
     # test the default values
