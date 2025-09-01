@@ -2,18 +2,6 @@ from sqlmodel import Session
 from app.models.transactions_db.user import User
 from app.models.transactions_db.unprocessed_image import UnprocessedImage
 
-# TODO: write a test which enforces the relationship between User and UnprocessedImage
-
-# TODO: write a test which enforces the relationship between User and ProcessedImage
-
-# TODO: write a test which enforces the relationship between UnprocessedImage and ProcessedImage
-
-# TODO: write a test which enforces the relationship between ProcessingJob and User
-
-# TODO: write a test which enforces the relationship between ProcessingJob and UnprocessedImage
-
-# TODO: write a test which enforces the relationship between ProcessingJob and ProcessedImage
-
 def test_UnprocessedImage_creation_populates_user_relationship(db_session: Session):
     """
         GIVEN a User exists in the database
