@@ -41,6 +41,7 @@ class ProcessedImage(SQLModel, table=True):
             nullable=False
         )
     )
+    # Keep this code together... --->
     # Question: who wrote this image?
     user_id: uuid.UUID = Field(
         # establishes the link the id column in user
@@ -50,6 +51,13 @@ class ProcessedImage(SQLModel, table=True):
         # add a database index to speed up queries that filter images by user
         index=True
     )
+    # This is the corresponding relationship attribute to User
+    user: "User" = Relationship(
+        # 'back_populates' links this relationship to the 'processed_images' field on the User model.
+        back_populates="processed_images"
+    )
+    # <--- ...Keep this code together
+    # Keep this code together... --->
     # Question: which UnprocessedImage does this image derive from?
     unprocessed_image_id: uuid.UUID = Field(
         # establishes the link the id column in user
@@ -59,17 +67,13 @@ class ProcessedImage(SQLModel, table=True):
         # add a database index to speed up queries that filter images by unprocessed_image
         index=True
     )
-    # --- Table Relationships ---
-    # This is the corresponding relationship attribute to User
-    user: "User" = Relationship(
-        # 'back_populates' links this relationship to the 'processed_images' field on the User model.
-        back_populates="processed_images"
-    )
     # This is the corresponding relationship attribute to UnprocessedImage
     unprocessed_image: "UnprocessedImage" = Relationship(
         # 'back_populates' links this relationship to the 'unprocessed_image' field on the UnprocessedImage model.
         back_populates="processed_images"
     )
+    # <--- ...Keep this code together
+    # --- Table Relationships ---
     # This is the corresponding relationship attribute to ProcessingJob
     job: Optional["ProcessingJob"] = Relationship(
         # 'back_populates' links this relationship to the 'processed_image' field on the ProcessingJob model.
