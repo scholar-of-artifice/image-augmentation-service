@@ -34,6 +34,15 @@ class ProcessingJob(SQLModel, table=True):
         # is a constraint that ensures every ProcessingJob MUST have an ID
         nullable=False,
     )
+    # Question: who requested this?
+    user_id: uuid.UUID = Field(
+        # establishes the link the id column in user
+        foreign_key="user.id",
+        # tells the database to create an index on this column
+        index=True,
+        # is a constraint that ensures every ProcessingJob MUST have an associated user
+        nullable=False,
+    )
     job_status: JobStatus = Field(
         sa_column=Column(Enum(JobStatus), nullable=False),
         default=JobStatus.PENDING
