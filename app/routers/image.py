@@ -27,26 +27,33 @@ async def upload(file: UploadFile, body: str = Form(...)):
         # convert the raw image bytes into a numpy array
         img_data = translate_file_to_numpy_array(image_content)
         # save a copy of the original unprocessed image to the 'unprocessed_image_data' volume.
-        original_stored_file_path = write_numpy_array_to_image_file(data=img_data,
-                                        file_name=file.filename,
-                                        destination_volume='unprocessed_image_data')
+        original_stored_file_path = write_numpy_array_to_image_file(
+            data=img_data,
+            file_name=file.filename,
+            destination_volume='unprocessed_image_data'
+        )
         # initialize a new variables for the processed image data
         new_img_data = img_data
         # check the processing argument from the request to determine which action to take
         if validated_data.arguments.processing == "shift":
             # apply shift
-            new_img_data = shift(image_data=img_data,
-                                 direction=validated_data.arguments.direction,
-                                 distance=validated_data.arguments.distance)
+            new_img_data = shift(
+                image_data=img_data,
+                direction=validated_data.arguments.direction,
+                distance=validated_data.arguments.distance
+            )
         elif validated_data.arguments.processing == "rotate":
             # appy rotate
-            new_img_data = rotate(image_data=img_data,
-                                  angle=validated_data.arguments.angle)
-
-        # save a the processed image to the 'processed_image_data' volume.
-        new_stored_file_path = write_numpy_array_to_image_file(data=new_img_data,
-                                                    file_name=create_file_name(),
-                                                    destination_volume='processed_image_data')
+            new_img_data = rotate(
+                image_data=img_data,
+                angle=validated_data.arguments.angle
+            )
+        # save the processed image to the 'processed_image_data' volume.
+        new_stored_file_path = write_numpy_array_to_image_file(
+            data=new_img_data,
+            file_name=create_file_name(),
+            destination_volume='processed_image_data'
+        )
         # return the file paths for both the original and unprocessed images
         return {
             "original_stored_file_path": original_stored_file_path,
