@@ -43,6 +43,13 @@ class ProcessingJob(SQLModel, table=True):
         # is a constraint that ensures every ProcessingJob MUST have an associated user
         nullable=False,
     )
+    # Question: what image needs to be processed?
+    unprocessed_image_id: uuid.UUID = Field(
+        # establishes the link the id column in unprocessed_images
+        foreign_key="unprocessedimage.id",
+        # is a constraint that ensures every ProcessingJob MUST have an associated unprocessed_images
+        nullable=False
+    )
     job_status: JobStatus = Field(
         sa_column=Column(Enum(JobStatus), nullable=False),
         default=JobStatus.PENDING
