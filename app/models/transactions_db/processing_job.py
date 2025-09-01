@@ -94,4 +94,19 @@ class ProcessingJob(SQLModel, table=True):
             nullable=True
         )
     )
+    # --- Table Relationships ---
+    # n processing_job is related to a single user
+    user: "User" = Relationship(
+        # 'back_populates' links this relationship to the 'unprocessed_images' field on the User model.
+        back_populates="jobs"
+    )
+    # a processing_job is related to a single unprocessed_image
+    unprocessed_image: "UnprocessedImage" = Relationship(
+        # 'back_populates' links this relationship to the 'unprocessed_image' field on the UnprocessedImage model.
+        back_populates="job"
+    )
+    # processing_job is related to a single processed_image
+    processed_image: Optional["ProcessedImage"] = Relationship(
+        # 'back_populates' links this relationship to the 'processed_image' field on the ProcessedImage model.
+        back_populates="job"
     )
