@@ -1,4 +1,4 @@
-`# Unprocessed Image
+# Unprocessed Image
 
 This article is about the `UnprocessedImage` table in the `transactions_db`.
 In this article, you will learn:
