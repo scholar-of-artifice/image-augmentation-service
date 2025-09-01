@@ -24,3 +24,26 @@ def test_user_read_successful_creation():
     assert user.id == user_id
     assert user.external_id == external_id
     assert user.created_at == time_created
+
+def test_ValidationError_when_user_read_is_missing_user_id():
+    """
+        GIVEN no uuid
+        AND a time
+        AND an external_id
+        WHEN a UserRead is created
+        THEN it raises an ValidationError
+    """
+    # input variables
+    user_id = None
+    time_created = datetime.now()
+    external_id = "auth0|some_unique_id_123"
+    # create an instance of the model
+    user = UserRead(
+        id=user_id,
+        external_id=external_id,
+        created_at=time_created,
+    )
+    # assert that the fields were set correctly
+    assert user.id == user_id
+    assert user.external_id == external_id
+    assert user.created_at == time_created
