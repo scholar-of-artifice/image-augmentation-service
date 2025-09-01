@@ -4,7 +4,8 @@ from datetime import datetime, timezone
 from typing import Optional, Dict, Any
 from sqlalchemy import Column, DateTime, Enum
 from sqlalchemy.dialects.postgresql import JSONB
-from job_status import JobStatus
+from .job_status import JobStatus
+import uuid
 
 class ProcessingJob(SQLModel, table=True):
     """
