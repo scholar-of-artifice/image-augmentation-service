@@ -28,7 +28,6 @@ def test_processed_image_is_valid(db_session: Session):
     db_session.commit()
     # create a processed_image
     processed_image = ProcessedImage(
-        user_id= user.id,
         unprocessed_image_id=unprocessed_image.id,
         storage_filename="some_new_file_name.png"
     )
@@ -39,7 +38,6 @@ def test_processed_image_is_valid(db_session: Session):
     # test the processed_image
     assert processed_image.id is not None
     assert isinstance(processed_image.id, uuid.UUID)
-    assert processed_image.user_id == user.id
     assert processed_image.storage_filename == 'some_new_file_name.png'
     assert isinstance(processed_image.created_at, datetime)
     assert processed_image.created_at.tzinfo == timezone.utc
