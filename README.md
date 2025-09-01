@@ -17,7 +17,8 @@ Here are some useful articles for gettings started:
 
 - [How to try the application?](docs/how-to/try-the-application.md)
 - [How to run tests?](docs/how-to/run-tests.md)
-<!--TODO: create getting started documents-->
 
-Here are some useful articles for understanding the engineering decisions made on this project:
-<!--TODO: create engineering documents-->
+### 🧠 Want to know more about the `engineering`?
+- [Storing Image Data](docs/engineering/image_storage/storing_images.md)
+- [PostgreSQL Database Design](docs/engineering/transactions_database/transactions_database.md)
+- [How tests are structured](docs/engineering/testing/_testing.md)
