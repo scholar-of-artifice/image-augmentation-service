@@ -6,6 +6,63 @@ In this article, you will learn:
 - the purpose of the different fields
 - the `normal form` of this table
 
+## Fields
+
+This section describes each field and its purpose.
+
+## `id`
+
+This field is the primary key for the table, defined as a universally unique identifier (UUID).
+
+### Constraints
+
+- `Primary Key`: Uniquely identifies each row in the table.
+- `Not Nullable`: Every user record must have an ID.
+- `Indexed`: The database creates an index on this column to speed up lookups and joins from other tables that reference `user_id`.
+
+### Justification
+Using a UUID instead of a sequential integer is a security best practice.
+It prevents bad actors from guessing user IDs and enumerating users.
+It also simplifies merging data across different environments (e.g., development and production).
+
+## `external_id`
+
+This field is a string that stores the unique identifier from an external authentication provider (e.g., the sub claim in a JWT).
+
+### Constraints
+
+- `Unique`: Enforces a one-to-one relationship between an external identity and an internal user record. No two users can share the same `external_id`.
+- `Not Nullable`: Every user must be linked to an external identity.
+- `Indexed`: This is crucial for performance, as users will typically be looked up by this ID after authenticating.
+
+### Justification
+This field decouples the application's internal user management from the external authentication system, providing a stable link between the two.
+
+## `created_at`
+
+This field is a timezone-aware datetime that automatically records when a user record is first created.
+
+### Constraints
+
+- `Not Nullable`: A record must have a creation timestamp.
+- `Default Value`: The application automatically sets this value to the current time in UTC `(datetime.now(timezone.utc)) `when a new user is inserted.
+
+### Justification
+Storing a creation timestamp is essential for auditing, tracking user sign-up metrics, and debugging.
+Using a timezone-aware datetime stored in UTC is a best practice that prevents ambiguity.
+
+## `updated_at`
+
+This field is a timezone-aware datetime that automatically records when a user record was last modified.
+
+### Constraints
+
+- `Database-Managed Updates`: This field uses a database-level trigger `(onupdate=func.now())` to automatically update its value to the current timestamp whenever the row is changed.
+
+### Justification
+This provides a reliable and efficient way to track changes to user data for auditing, cache invalidation, and debugging purposes.
+Offloading this logic to the database is more robust than handling it in the application code.
+
 ## Table Form Normalization
 The User table is in `Boyce-Codd Normal Form` (BCNF).
 Read ahead if you want to know more.
