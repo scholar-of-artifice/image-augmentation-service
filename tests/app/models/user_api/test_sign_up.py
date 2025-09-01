@@ -25,7 +25,7 @@ def test_user_read_successful_creation():
     assert user.external_id == external_id
     assert user.created_at == time_created
 
-def test_ValidationError_when_user_read_is_missing_user_id():
+def test_ValidationError_when_user_read_is_missing_id():
     """
         GIVEN no uuid
         AND a time
