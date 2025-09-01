@@ -70,5 +70,8 @@ class ProcessedImage(SQLModel, table=True):
         # 'back_populates' links this relationship to the 'unprocessed_image' field on the UnprocessedImage model.
         back_populates="processed_images"
     )
-    # what processing_job created this image?
-    # processing_job_id: uuid.UUID = Field(foreign_key="processing_job.id", nullable=False, index=True)
+    # This is the corresponding relationship attribute to ProcessingJob
+    job: Optional["ProcessingJob"] = Relationship(
+        # 'back_populates' links this relationship to the 'processed_image' field on the ProcessingJob model.
+        back_populates="processed_image"
+    )
