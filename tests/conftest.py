@@ -21,6 +21,7 @@ def setup_database(engine):
 @pytest.fixture(scope="function")
 def db_session(engine):
     """
+        --- FIXTURE FOR TESTING DATABASE MODELS ---
         Provides a SQLAlchemy session to the test database.
         This fixture will be created once per test session.
     """
