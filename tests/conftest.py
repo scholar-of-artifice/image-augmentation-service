@@ -11,6 +11,9 @@ def engine():
 
 @pytest.fixture(scope="session")
 def setup_database(engine):
+    """
+        Create and drop all tables once for the entire test session.
+    """
     SQLModel.metadata.create_all(engine)
     yield
     SQLModel.metadata.drop_all(engine)
