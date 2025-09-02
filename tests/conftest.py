@@ -1,6 +1,9 @@
 import pytest
 from sqlmodel import Session, SQLModel, create_engine
 from app.config import settings
+from fastapi.testclient import TestClient
+from app.main import app
+from app.internal.database import get_session
 
 @pytest.fixture(scope="session")
 def engine():
