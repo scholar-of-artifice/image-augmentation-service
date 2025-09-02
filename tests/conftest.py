@@ -38,3 +38,31 @@ def db_session(engine):
         connection.close()
     # Drop all tables after the test session is done
     SQLModel.metadata.drop_all(bind=engine)
+
+@pytest.fixture(scope="function")
+def client(engine):
+    """
+        --- FIXTURE FOR TESTING API ---
+        A fixture that provides a TestClient with a transactional database session.
+        This ensures each test is isolated.
+    """
+
+    SQLModel.metadata.create_all(bind=engine)
+    connection = engine.connect()
+    transaction = connection.begin()
+
+    def override_get_session():
+        """
+            A dependency override that provides a session for one test.
+        """
+        with Session(connection) as session:
+            yield session
+
+    app.dependency_overrides[get_session] = override_get_session
+    yield TestClient(app)
+    # Clean up after the test
+    transaction.rollback()
+    connection.close()
+    app.dependency_overrides.clear()
+    # Drop all tables after the test session is done
+    SQLModel.metadata.drop_all(bind=engine)
