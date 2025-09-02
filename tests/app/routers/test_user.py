@@ -1,5 +1,6 @@
 from app.routers.user import router
 from fastapi.testclient import TestClient
+from fastapi import status
 
 def test_create_user_success(client: TestClient):
     """
