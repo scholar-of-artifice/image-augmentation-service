@@ -46,3 +46,18 @@ async def test_get_current_external_user_id_raise_HTTPException_when_external_id
         await get_current_external_user_id(external_id=test_external_id)
     assert exc.value.status_code == status.HTTP_401_UNAUTHORIZED
     assert "Missing X-External-User-ID header" in str(exc.value.detail)
+
+async def test_get_current_external_user_id_raise_HTTPException_when_external_id_is_a_blank_string():
+    """
+        GIVEN a user_id is a blank string
+        WHEN get_current_external_user_id
+        THEN it raises an HTTPException
+        AND has particular details
+    """
+    # define a sample external ID.
+    test_external_id = ""
+    with pytest.raises(HTTPException) as exc:
+        # call the dependency function directly, passing the test ID.
+        await get_current_external_user_id(external_id=test_external_id)
+    assert exc.value.status_code == status.HTTP_401_UNAUTHORIZED
+    assert "Missing X-External-User-ID header" in str(exc.value.detail)
