@@ -18,7 +18,7 @@ def test_create_user_success(client: TestClient):
         headers=headers
     )
     # check the results
-    assert response.status_code == 201
+    assert response.status_code == status.HTTP_201_CREATED
     data = response.json()
     assert data["external_id"] == "new-user-123"
     assert "id" in data
