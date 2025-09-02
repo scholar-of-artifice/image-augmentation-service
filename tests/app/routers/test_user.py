@@ -2,6 +2,8 @@ from app.routers.user import router
 from fastapi.testclient import TestClient
 from fastapi import status
 
+# CREATE USER
+
 def test_create_user_success(client: TestClient):
     """
         GIVEN an external_user_id
@@ -64,3 +66,5 @@ def test_create_user_raises_unauthorized_when_user_is_not_authorized(client: Tes
     # check the failure
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
     assert response.json() == {'detail': 'Missing X-External-User-ID header'}
+
+# DELETE USER
