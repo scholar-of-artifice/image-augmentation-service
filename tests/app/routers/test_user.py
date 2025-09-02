@@ -47,3 +47,20 @@ def test_create_user_raises_conflict_when_user_already_exists(client: TestClient
     assert response.json() == {
         "detail": "User with external_id 'existing-user-456' already exists."
     }
+
+def test_create_user_raises_unauthorized_when_user_is_not_authorized(client: TestClient):
+    """
+        GIVEN an external_id
+        AND a user with the same external_id already exists
+        WHEN the POST request is made to create a new user
+        THEN it returns 401
+    """
+    # create a user
+    headers = {
+        "X-External-User-ID": ""
+    }
+    # make the request
+    response = client.post("/users-api/users", headers=headers)
+    # check the failure
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+    assert response.json() == {'detail': 'Missing X-External-User-ID header'}
