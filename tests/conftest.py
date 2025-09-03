@@ -45,11 +45,6 @@ def client(db_session):
         --- FIXTURE FOR TESTING API ---
         A fixture that provides a TestClient with a transactional database session.
     """
-
-    SQLModel.metadata.create_all(bind=engine)
-    connection = engine.connect()
-    transaction = connection.begin()
-
     def override_get_session():
         """
             A dependency override that provides a session for one test.
@@ -63,5 +58,4 @@ def client(db_session):
     transaction.rollback()
     connection.close()
     app.dependency_overrides.clear()
-    # Drop all tables after the test session is done
-    SQLModel.metadata.drop_all(bind=engine)
+    return
