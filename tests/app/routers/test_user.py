@@ -70,6 +70,28 @@ def test_create_user_raises_unauthorized_when_user_is_not_authorized(client: Tes
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
     assert response.json() == {'detail': 'Missing X-External-User-ID header'}
 
+# SIGN IN USER
+def test_sign_in_success(client: TestClient, db_session: Session):
+    """
+        GIVEN an active user exists in the database
+        WHEN a POST request is made to /sign-in with the same external_id
+        THEN it returns 200 OK with the users details
+    """
+    # create an active user in the database
+    external_id = "auth|active-user-123"
+    active_user = User(external_id=external_id)
+    db_session.add(active_user)
+    db_session.commit()
+    db_session.refresh(active_user)
+    # makes a request to sign in
+    headers = {"X-External-User-ID": external_id}
+    response = client.post(url="/users-api/sign-in", headers=headers)
+    # check for a successful response and correct data
+    assert response.status_code == status.HTTP_200_OK
+    data = response.json()
+    assert data["id"] == str(active_user.id)
+    assert data["external_id"] == external_id
+
 # DELETE USER
 
 def test_delete_user_success(client: TestClient, db_session: Session):
