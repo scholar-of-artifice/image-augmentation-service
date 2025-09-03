@@ -84,10 +84,7 @@ def test_user_IntegrityError_when_external_id_is_too_long(db_session: Session):
     # attempt to commit the user
     db_session.add(user_to_create)
     with pytest.raises(DataError):
-        db_session.commit()
-    # It's good practice to roll back the session after a failed transaction
-    # to ensure the session is clean for any subsequent tests.
-    db_session.rollback()
+        db_session.flush()
 
 def test_get_user_by_primary_key(db_session: Session):
     """
@@ -231,8 +228,5 @@ def test_delete_user_that_does_not_exist(db_session: Session):
     # because this instance is not tracked by the session.
     with pytest.raises(InvalidRequestError):
         db_session.delete(user_not_in_db)
-    # It's good practice to roll back the session after a failed transaction
-    # to ensure the session is clean for any subsequent tests.
-    db_session.rollback()
 
 # TODO: Test querying with an invalid UUID format to ensure it fails gracefully.
