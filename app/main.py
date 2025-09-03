@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from pathlib import Path
 import logging.config
 import json
-from app.routers import image, health
+from app.routers import image, health, user
 
 def set_up_logging():
     config_file = Path(__file__).parent / "logging_config.json"
@@ -16,4 +16,5 @@ logger = logging.getLogger(__name__)
 
 app.include_router(image.router, prefix="/image-api")
 app.include_router(health.router, prefix="/healthcheck-api")
+app.include_router(user.router, prefix="/users-api")
 
