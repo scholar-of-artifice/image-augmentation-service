@@ -92,6 +92,21 @@ def test_sign_in_success(client: TestClient, db_session: Session):
     assert data["id"] == str(active_user.id)
     assert data["external_id"] == external_id
 
+def test_sign_in_user_is_not_found_if_external_id_does_not_exist(client: TestClient, db_session: Session):
+    """
+        GIVEN an active user exists in the database
+        WHEN a POST request is made to /sign-in with the same external_id
+        THEN it returns 200 OK with the users details
+    """
+    # create an active user in the database
+    external_id = "auth|active-user-123"
+    # makes a request to sign in
+    headers = {"X-External-User-ID": external_id}
+    response = client.post(url="/users-api/sign-in", headers=headers)
+    # check for a successful response and correct data
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+    assert response.json() == { "detail": "User not found. Please create an account first." }
+
 # DELETE USER
 
 def test_delete_user_success(client: TestClient, db_session: Session):
