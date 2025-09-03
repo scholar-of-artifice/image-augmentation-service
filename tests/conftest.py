@@ -30,7 +30,7 @@ def db_session(engine, setup_database):
     """
     connection = engine.connect()
     transaction = connection.begin()
-    session = Session(bind=engine)
+    session = Session(bind=connection)
     try:
         yield session
     finally:
