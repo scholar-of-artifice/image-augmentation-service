@@ -34,8 +34,8 @@ def db_session(engine, setup_database):
     try:
         yield session
     finally:
-        session.close()
         transaction.rollback()
+        session.close()
         connection.close()
 
 @pytest.fixture(scope="function")
