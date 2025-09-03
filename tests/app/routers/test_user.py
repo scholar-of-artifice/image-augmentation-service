@@ -1,6 +1,7 @@
 from app.routers.user import router
 from fastapi.testclient import TestClient
 from app.models.transactions_db.user import User
+from sqlmodel import Session
 from fastapi import status
 
 # CREATE USER
