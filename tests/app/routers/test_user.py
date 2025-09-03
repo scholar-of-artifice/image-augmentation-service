@@ -98,3 +98,24 @@ def test_delete_user_success(client: TestClient, db_session: Session):
     # verify the user is no longer in the database.
     user_in_db = db_session.get(User, user_id_to_delete)
     assert user_in_db is None
+
+def test_delete_user_not_found(client: TestClient, db_session: Session):
+    """
+        GIVEN a user does not exist in the database
+        AND a request to delete a user_id with an external_id
+        WHEN the DELETE request is made
+        THEN it returns 404
+    """
+    external_id = "auth|user_to_delete_123"
+    user_id_to_delete = uuid.uuid4()
+    # craft the request
+    headers = {"X-External-User-ID": "auth|user_to_delete_123"}
+    # make the authorized DELETE request.
+    response = client.delete(
+        url=f"/users-api/users/{user_id_to_delete}",
+        headers=headers
+    )
+    # check for a 404 response.
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+    # check the detail message for clarity.
+    assert response.json()["detail"] == f"User with id '{user_id_to_delete}' not found."
