@@ -119,3 +119,39 @@ def test_delete_user_not_found(client: TestClient, db_session: Session):
     assert response.status_code == status.HTTP_404_NOT_FOUND
     # check the detail message for clarity.
     assert response.json()["detail"] == f"User with id '{user_id_to_delete}' not found."
+
+def test_delete_user_forbidden(client: TestClient, db_session: Session):
+    """
+        GIVEN a user A does exist in the database
+        AND a user B does exist in the database
+        WHEN B requests to DELETE A
+        THEN it returns 403
+    """
+    # create user A
+    user_a = User(external_id="auth|user_to_delete_123")
+    db_session.add(user_a)
+    db_session.commit()
+    db_session.refresh(user_a)
+    # create user B
+    user_b = User(external_id="auth|user_to_keep_456")
+    db_session.add(user_b)
+    db_session.commit()
+    db_session.refresh(user_b)
+    # craft the request
+    headers = {"X-External-User-ID": "auth|user_to_keep_456"}
+    # make the authorized DELETE request.
+    response = client.delete(
+        url=f"/users-api/users/{user_a.id}",
+        headers=headers
+    )
+    # check for a 404 response.
+    assert response.status_code == status.HTTP_403_FORBIDDEN
+    # check the detail message for clarity.
+    assert response.json()["detail"] == "You do not have permission to delete this user."
+    # verify the users are not deleted from the database.
+    user_in_db = db_session.get(User, user_a.id)
+    assert user_in_db is not None
+    assert user_in_db.external_id == "auth|user_to_delete_123"
+    user_in_db = db_session.get(User, user_b.id)
+    assert user_in_db is not None
+    assert user_in_db.external_id == "auth|user_to_keep_456"
