@@ -44,7 +44,6 @@ def client(db_session):
     """
         --- FIXTURE FOR TESTING API ---
         A fixture that provides a TestClient with a transactional database session.
-        This ensures each test is isolated.
     """
 
     SQLModel.metadata.create_all(bind=engine)
