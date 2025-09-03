@@ -28,8 +28,6 @@ def db_session(engine):
         Provides a SQLAlchemy session to the test database.
         This fixture will be created once per test function.
     """
-    # Create the tables if they don't exist
-    SQLModel.metadata.create_all(bind=engine)
     connection = engine.connect()
     transaction = connection.begin()
     session = Session(bind=engine)
@@ -39,8 +37,6 @@ def db_session(engine):
         session.close()
         transaction.rollback()
         connection.close()
-    # Drop all tables after the test session is done
-    SQLModel.metadata.drop_all(bind=engine)
 
 @pytest.fixture(scope="function")
 def client(engine):
