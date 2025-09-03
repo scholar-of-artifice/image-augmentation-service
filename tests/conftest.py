@@ -26,7 +26,7 @@ def db_session(engine):
     """
         --- FIXTURE FOR TESTING DATABASE MODELS ---
         Provides a SQLAlchemy session to the test database.
-        This fixture will be created once per test session.
+        This fixture will be created once per test function.
     """
     # Create the tables if they don't exist
     SQLModel.metadata.create_all(bind=engine)
