@@ -5,6 +5,7 @@ from app.internal.database import get_session
 from app.models.transactions_db.user import User
 from app.models.user_api.create import UserRead
 from app.dependency import get_current_external_user_id
+import uuid
 
 router = APIRouter()
 # set up logging
