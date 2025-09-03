@@ -71,9 +71,6 @@ def no_test_user_ValidationError_when_external_id_is_blank_string(db_session: Se
     """
     with pytest.raises(ValidationError):
         User(external_id='')
-    # It's good practice to roll back the session after a failed transaction
-    # to ensure the session is clean for any subsequent tests.
-    db_session.rollback()
 
 def test_user_IntegrityError_when_external_id_is_too_long(db_session: Session):
     """
