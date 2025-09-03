@@ -70,3 +70,30 @@ def test_create_user_raises_unauthorized_when_user_is_not_authorized(client: Tes
     assert response.json() == {'detail': 'Missing X-External-User-ID header'}
 
 # DELETE USER
+
+def test_delete_user_success(client: TestClient, db_session: Session):
+    """
+        GIVEN a user exists in the database
+        AND a request to delete a user_id with a matching external_id
+        WHEN the DELETE request is made
+        THEN it returns 204
+    """
+    # create a user in the database to get a valid user_id
+    external_id = "auth|user_to_delete_123"
+    test_user = User(external_id=external_id)
+    db_session.add(test_user)
+    db_session.flush()
+    db_session.refresh(test_user)
+    # craft the request
+    user_id_to_delete = test_user.id
+    headers = {"X-External-User-ID": "auth|user_to_delete_123"}
+    # make the authorized DELETE request.
+    response = client.delete(
+        url=f"/users-api/users/{user_id_to_delete}",
+        headers=headers
+    )
+    # check for a successful response and confirm deletion.
+    assert response.status_code == status.HTTP_204_NO_CONTENT
+    # verify the user is no longer in the database.
+    user_in_db = db_session.get(User, user_id_to_delete)
+    assert user_in_db is None
