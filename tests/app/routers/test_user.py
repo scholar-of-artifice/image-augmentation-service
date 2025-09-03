@@ -3,6 +3,7 @@ from fastapi.testclient import TestClient
 from app.models.transactions_db.user import User
 from sqlmodel import Session
 from fastapi import status
+import uuid
 
 # CREATE USER
 
