@@ -1,5 +1,5 @@
 import logging
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Path
 from typing import Annotated
 from sqlmodel import Session, select
 from app.internal.database import get_session
