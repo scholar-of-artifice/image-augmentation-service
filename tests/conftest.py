@@ -40,7 +40,7 @@ def db_session(engine, setup_database):
         connection.close()
 
 @pytest.fixture(scope="function")
-def client(engine):
+def client(db_session):
     """
         --- FIXTURE FOR TESTING API ---
         A fixture that provides a TestClient with a transactional database session.
