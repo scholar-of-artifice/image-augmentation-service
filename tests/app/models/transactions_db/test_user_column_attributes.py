@@ -40,16 +40,12 @@ def test_user_IntegrityError_when_external_id_is_duplicate(db_session: Session):
     # create 2 users with same external_id
     user_A = User(external_id='some-1234-extr-0987-id45')
     user_B = User(external_id='some-1234-extr-0987-id45')
-    # commit only the first user
+    # add the entries to the session
     db_session.add(user_A)
-    db_session.commit()
-    # attempt to commit the second user
     db_session.add(user_B)
+    # attempt commit them
     with pytest.raises(IntegrityError):
-        db_session.commit()
-    # It's good practice to roll back the session after a failed transaction
-    # to ensure the session is clean for any subsequent tests.
-    db_session.rollback()
+        db_session.flush()
 
 def test_user_IntegrityError_when_external_id_is_null(db_session: Session):
     """
