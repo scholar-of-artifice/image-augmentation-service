@@ -39,11 +39,11 @@ def test_create_user_raises_conflict_when_user_already_exists(client: TestClient
     headers = {
         "X-External-User-ID": "existing-user-456"
     }
-    response = client.post("/users-api/users", headers=headers)
+    response = client.post(url= "/users-api/users", headers=headers)
     # this first call should succeed
     assert response.status_code == status.HTTP_201_CREATED
     # attempt to create the same user again
-    response = client.post("/users-api/users", headers=headers)
+    response = client.post(url= "/users-api/users", headers=headers)
     # check for the conflict error
     assert response.status_code == status.HTTP_409_CONFLICT
     assert response.json() == {
@@ -62,7 +62,7 @@ def test_create_user_raises_unauthorized_when_user_is_not_authorized(client: Tes
         "X-External-User-ID": ""
     }
     # make the request
-    response = client.post("/users-api/users", headers=headers)
+    response = client.post(url= "/users-api/users", headers=headers)
     # check the failure
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
     assert response.json() == {'detail': 'Missing X-External-User-ID header'}
