@@ -22,7 +22,7 @@ def setup_database(engine):
     SQLModel.metadata.drop_all(engine)
 
 @pytest.fixture(scope="function")
-def db_session(engine):
+def db_session(engine, setup_database):
     """
         --- FIXTURE FOR TESTING DATABASE MODELS ---
         Provides a SQLAlchemy session to the test database.
