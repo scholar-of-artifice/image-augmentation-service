@@ -56,3 +56,46 @@ def create_user(
     # convert the SQLModel object to your Pydantic UserRead schema
     # this only works because UserRead has `from_attributes=True` and SQLModel is Pydantic-compatible.
     return UserRead.model_validate(db_user)
+
+@router.delete(
+    path="/users/{user_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+def delete_user(
+    *,
+    session: Session = Depends(get_session),
+    external_id: str = Depends(get_current_external_user_id),
+    user_id: Annotated[uuid.UUID, Path(title="The ID of the item to destroy")],
+):
+    """
+        Deletes a user from the database.
+
+        A user can only delete their own account. This is verified by ensuring
+        the `external_id` from the authentication token matches the `external_id`
+        of the user record being deleted.
+
+        params:
+           *: Enforces that all subsequent parameters must be specified by keyword.
+            session: The database session, injected by the `get_session` dependency.
+            external_id: The user's external ID, from the security dependency.
+            user_id: The unique ID of the user to be deleted, from the URL path.
+    """
+    # find the user record by its primary key.
+    user_to_delete = session.get(User, user_id)
+    # if the user doesn't exist, return a 404 error.
+    if not user_to_delete:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"User with id '{user_id}' not found."
+        )
+    # check if the authenticated user owns this record.
+    if user_to_delete.external_id != external_id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You do not have permission to delete this user."
+        )
+    # delete the user and commit the transaction.
+    session.delete(user_to_delete)
+    session.commit()
+    # according to HTTP standards, a successful DELETE should return 204 No Content.
+    return None
