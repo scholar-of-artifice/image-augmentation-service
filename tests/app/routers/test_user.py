@@ -71,7 +71,8 @@ def test_create_user_raises_unauthorized_when_user_is_not_authorized(client: Tes
     assert response.json() == {'detail': 'Missing X-External-User-ID header'}
 
 # SIGN IN USER
-def test_sign_in_success(client: TestClient, db_session: Session):
+
+def test_sign_in_user_success(client: TestClient, db_session: Session):
     """
         GIVEN an active user exists in the database
         WHEN a POST request is made to /sign-in with the same external_id
