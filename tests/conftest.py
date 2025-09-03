@@ -49,13 +49,9 @@ def client(db_session):
         """
             A dependency override that provides a session for one test.
         """
-        with Session(connection) as session:
-            yield session
+        yield db_session
 
     app.dependency_overrides[get_session] = override_get_session
     yield TestClient(app)
-    # Clean up after the test
-    transaction.rollback()
-    connection.close()
     app.dependency_overrides.clear()
     return
