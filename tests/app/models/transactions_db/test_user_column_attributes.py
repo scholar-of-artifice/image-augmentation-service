@@ -59,10 +59,7 @@ def test_user_IntegrityError_when_external_id_is_null(db_session: Session):
     # attempt to commit the user
     db_session.add(user_to_create)
     with pytest.raises(IntegrityError):
-        db_session.commit()
-    # It's good practice to roll back the session after a failed transaction
-    # to ensure the session is clean for any subsequent tests.
-    db_session.rollback()
+        db_session.flush()
 
 def no_test_user_ValidationError_when_external_id_is_blank_string(db_session: Session):
     # TODO: test fails and validation in pydantic not working as expected. take out for now.
