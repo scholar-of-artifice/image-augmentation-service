@@ -107,6 +107,18 @@ def test_sign_in_user_is_not_found_if_external_id_does_not_exist(client: TestCli
     assert response.status_code == status.HTTP_404_NOT_FOUND
     assert response.json() == { "detail": "User not found. Please create an account first." }
 
+def test_sign_in_user_unauthorized_missing_header(client: TestClient):
+    """
+        GIVEN no authentication header is provided
+        WHEN a POST request is made to /sign-in
+        THEN it returns 401 Unauthorized
+    """
+    # make a request with no headers
+    response = client.post(url="/users-api/sign-in")
+    # check for the 401 error from the security dependency
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+    assert response.json() == {'detail': 'Missing X-External-User-ID header'}
+
 # DELETE USER
 
 def test_delete_user_success(client: TestClient, db_session: Session):
