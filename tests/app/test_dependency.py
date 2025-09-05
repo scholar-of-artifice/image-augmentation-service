@@ -1,8 +1,8 @@
 import pytest
 import uuid
 from fastapi import HTTPException, status
-from app.dependency import get_current_external_user_id
 import json
+from app.models.image_api.upload import UploadRequestBody, RotateArguments
 
 pytestmark = pytest.mark.asyncio
 
