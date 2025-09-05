@@ -233,3 +233,5 @@ def test_RotateArguments_360_is_invalid_angle():
     }
     with pytest.raises(ValidationError):
         RotateArguments(**data)
+
+# --- UploadRequestBody ---
