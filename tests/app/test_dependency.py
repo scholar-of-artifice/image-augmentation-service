@@ -5,6 +5,8 @@ from app.dependency import get_current_external_user_id
 
 pytestmark = pytest.mark.asyncio
 
+# --- get_current_external_user_id ---
+
 async def test_get_current_external_user_id_success_when_external_id_is_present():
     """
         GIVEN an external_id is in the header
