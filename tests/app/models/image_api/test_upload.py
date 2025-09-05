@@ -161,6 +161,7 @@ def test_ShiftArguments_has_docstring():
     assert ShiftArguments.__doc__ is not None
     assert "A data model for specifying a 'shift' operation." in ShiftArguments.__doc__
 
+# --- RotateArguments ---
 
 def test_RotateArguments_values_between_1_and_359_are_valid_angle():
     """
