@@ -63,3 +63,5 @@ async def test_get_current_external_user_id_raise_HTTPException_when_external_id
         await get_current_external_user_id(external_id=test_external_id)
     assert exc.value.status_code == status.HTTP_401_UNAUTHORIZED
     assert "Missing X-External-User-ID header" in str(exc.value.detail)
+
+# get_body_as_model
