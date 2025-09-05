@@ -68,6 +68,22 @@ async def test_get_current_external_user_id_raise_HTTPException_when_external_id
 
 # get_body_as_model
 
+async def test_get_body_as_model_returns_correct_body():
+    """
+        GIVEN the input body is a valid request
+        WHEN get_body_as_model is called
+        THEN it returns the correct model
+        AND it raises no exceptions
+    """
+    valid_model_string = json.dumps({
+        "arguments": {
+            "processing": "rotate",
+            "angle": 20
+        }
+    })
+    expected_result = UploadRequestBody( arguments= RotateArguments( processing="rotate", angle=20 ) )
+    calculated_result = await get_body_as_model(body=valid_model_string)
+    assert calculated_result == expected_result
 
 async def test_get_body_as_model_raises_bad_request_when_not_valid_json():
     """
