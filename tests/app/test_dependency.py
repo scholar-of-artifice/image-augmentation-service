@@ -65,3 +65,15 @@ async def test_get_current_external_user_id_raise_HTTPException_when_external_id
     assert "Missing X-External-User-ID header" in str(exc.value.detail)
 
 # get_body_as_model
+
+
+async def test_get_body_as_model_raises_bad_request_when_not_valid_json():
+    """
+        GIVEN the input body is not a valid json string
+        WHEN get_body_as_model is called
+        THEN it raises an unprocessable entity exception
+    """
+    not_a_valid_json_string = "not_a_valid_json_string"
+    with pytest.raises(HTTPException) as exc:
+        result = await get_body_as_model(body=not_a_valid_json_string)
+        assert result.status_code == status.HTTP_400_BAD_REQUEST
