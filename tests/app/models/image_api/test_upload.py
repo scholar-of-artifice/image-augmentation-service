@@ -236,6 +236,28 @@ def test_RotateArguments_360_is_invalid_angle():
 
 # --- UploadRequestBody ---
 
+def test_UploadRequestBody_is_valid_when_arguments_are_for_shift():
+    """
+        GIVEN a valid dictionary for shift
+        WHEN an UploadRequestBody is constructed
+        THEN the expected data is stored
+    """
+    # a valid dictionary representing the request body
+    data = {
+        "arguments": {
+            "processing": "shift",
+            "direction": "up",
+            "distance": 42
+        }
+    }
+    # the UploadRequestBody is constructed from the dictionary
+    result = UploadRequestBody(**data)
+    # the model contains the correct data and types
+    assert isinstance(result, UploadRequestBody)
+    assert isinstance(result.arguments, ShiftArguments)
+    assert result.arguments.processing == "shift"
+    assert result.arguments.direction == "up"
+    assert result.arguments.distance == 42
 
 def test_UploadRequestBody_is_valid_when_arguments_are_for_rotate():
     """
