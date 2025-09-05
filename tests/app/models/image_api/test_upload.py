@@ -257,3 +257,18 @@ def test_UploadRequestBody_is_valid_when_arguments_are_for_rotate():
     assert isinstance(result.arguments, RotateArguments)
     assert result.arguments.processing == "rotate"
     assert result.arguments.angle == 42
+
+def test_UploadRequestBody_is_invalid_when_arguments_not_part_of_any_model():
+    """
+        GIVEN an invalid dictionary for any argument is created
+        WHEN an UploadRequestBody is constructed
+        THEN an exception is raised
+    """
+    data = {
+        "arguments": {
+            "what?": "goblins",
+            "there->": 30.235
+        }
+    }
+    with pytest.raises(ValidationError):
+        UploadRequestBody(**data)
