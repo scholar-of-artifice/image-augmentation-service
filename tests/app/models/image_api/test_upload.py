@@ -1,6 +1,6 @@
 import pytest
 from pydantic import ValidationError
-from app.models.image_api.upload import ShiftArguments, RotateArguments
+from app.models.image_api.upload import ShiftArguments, RotateArguments, UploadRequestBody
 
 
 def test_ShiftArguments_up_is_a_valid_direction():
