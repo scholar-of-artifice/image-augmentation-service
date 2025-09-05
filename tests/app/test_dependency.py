@@ -77,3 +77,15 @@ async def test_get_body_as_model_raises_bad_request_when_not_valid_json():
     with pytest.raises(HTTPException) as exc:
         result = await get_body_as_model(body=not_a_valid_json_string)
         assert result.status_code == status.HTTP_400_BAD_REQUEST
+
+async def test_get_body_as_model_raises_unprocessable_entity_when_model_not_correct():
+    """
+        GIVEN the input body is not a valid model
+        WHEN get_body_as_model is called
+        THEN it raises an unprocessable entity exception
+    """
+    valid_json_string = json.dumps({"foo": "bar"})
+    with pytest.raises(HTTPException) as exc:
+        result = await get_body_as_model(body=valid_json_string)
+        assert result.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+
