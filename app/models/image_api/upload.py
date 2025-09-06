@@ -53,8 +53,17 @@ class UploadRequestBody(BaseModel):
     This is the request body for:
         /image-api/upload
     """
-    arguments: Annotated[Union[ShiftArguments,
-                               RotateArguments], Field(json_schema_extra={"descriminator": "processing"})]
+    arguments: Annotated[
+        Union[
+            ShiftArguments,
+            RotateArguments
+        ],
+        Field(
+            json_schema_extra={
+                "descriminator": "processing"
+            }
+        )
+    ]
 
 class ImageProcessResponse(BaseModel):
     """
