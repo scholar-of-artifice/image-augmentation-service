@@ -296,3 +296,28 @@ def test_UploadRequestBody_is_invalid_when_arguments_not_part_of_any_model():
         UploadRequestBody(**data)
 
 # --- ImageProcessResponse ---
+
+def test_ImageProcessResponse_is_valid_with_shift_arguments():
+    """
+        GIVEN a valid UploadRequestBody with ShiftArguments
+        AND a valid original_stored_file_path
+        AND a valid new_stored_file_path
+        WHEN an ImageProcessResponse is constructed
+        THEN the expected data is stored correctly
+    """
+    # create valid input data with ShiftArguments
+    original_path = "/unprocessed_data/image.jpg"
+    new_path = "/processed_data/new_image.png"
+    shift_args = ShiftArguments(processing="shift", direction="right", distance=50)
+    upload_request_body = UploadRequestBody(arguments=shift_args)
+    # construct the ImageProcessResponse object
+    response = ImageProcessResponse(
+        original_stored_file_path=original_path,
+        new_stored_file_path=new_path,
+        body=upload_request_body
+    )
+    # check that the data is stored correctly
+    assert response.original_stored_file_path == original_path
+    assert response.new_stored_file_path == new_path
+    assert response.body == upload_request_body
+    assert isinstance(response.body.arguments, ShiftArguments)
