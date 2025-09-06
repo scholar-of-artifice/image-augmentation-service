@@ -56,8 +56,10 @@ class UploadRequestBody(BaseModel):
     arguments: Annotated[Union[ShiftArguments,
                                RotateArguments], Field(json_schema_extra={"descriminator": "processing"})]
 
-
-"""
-Models for: Output schema
-endpoint: .../image-api/upload
-"""
+class ImageProcessResponse(BaseModel):
+    """
+        This is the response body for `/image-api/upload` when the request is successful.
+    """
+    original_stored_file_path: str  # TODO: I will be changing this later
+    new_stored_file_path: str       # TODO: I will be changing this later
+    body: UploadRequestBody
