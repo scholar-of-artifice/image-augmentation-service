@@ -85,7 +85,7 @@ async def test_get_body_as_model_returns_correct_body():
     calculated_result = await get_body_as_model(body=valid_model_string)
     assert calculated_result == expected_result
 
-async def test_get_body_as_model_raises_bad_request_when_not_valid_json():
+async def test_get_body_as_model_raises_unprocessable_entity_when_not_valid_json():
     """
         GIVEN the input body is not a valid json string
         WHEN get_body_as_model is called
