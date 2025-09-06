@@ -104,6 +104,8 @@ async def test_get_body_as_model_raises_unprocessable_entity_when_model_not_corr
     """
     valid_json_string = json.dumps({"foo": "bar"})
     with pytest.raises(HTTPException) as exc:
-        result = await get_body_as_model(body=valid_json_string)
-        assert result.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+        await get_body_as_model(body=valid_json_string)
+    assert exc.value.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+    assert isinstance(exc.value.detail, list)
+    assert len(exc.value.detail) > 0
 
