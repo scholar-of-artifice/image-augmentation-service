@@ -321,3 +321,28 @@ def test_ImageProcessResponse_is_valid_with_shift_arguments():
     assert response.new_stored_file_path == new_path
     assert response.body == upload_request_body
     assert isinstance(response.body.arguments, ShiftArguments)
+
+def test_ImageProcessResponse_is_valid_with_rotate_arguments():
+    """
+        GIVEN a valid UploadRequestBody with RotateArguments
+        AND a valid original_stored_file_path
+        AND a valid new_stored_file_path
+        WHEN an ImageProcessResponse is constructed
+        THEN the expected data is stored correctly
+    """
+    # create valid input data with RotateArguments
+    original_path = "/unprocessed_data/image.jpg"
+    new_path = "/processed_data/new_image.png"
+    rotate_args = RotateArguments(processing="rotate", angle=90)
+    upload_request_body = UploadRequestBody(arguments=rotate_args)
+    # construct the ImageProcessResponse object
+    response = ImageProcessResponse(
+        original_stored_file_path=original_path,
+        new_stored_file_path=new_path,
+        body=upload_request_body
+    )
+    # check that the data is stored correctly
+    assert response.original_stored_file_path == original_path
+    assert response.new_stored_file_path == new_path
+    assert response.body == upload_request_body
+    assert isinstance(response.body.arguments, RotateArguments)
