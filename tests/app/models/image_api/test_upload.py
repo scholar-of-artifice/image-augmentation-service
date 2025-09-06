@@ -294,3 +294,5 @@ def test_UploadRequestBody_is_invalid_when_arguments_not_part_of_any_model():
     }
     with pytest.raises(ValidationError):
         UploadRequestBody(**data)
+
+# --- ImageProcessResponse ---
