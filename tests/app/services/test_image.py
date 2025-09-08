@@ -1,6 +1,6 @@
 from app.models.image_api.upload import UploadRequestBody, ShiftArguments, RotateArguments
 from app.services.image import process_and_save_image
-
+from fastapi import UploadFile
 import pytest
 
 pytestmark = pytest.mark.asyncio
@@ -21,3 +21,7 @@ async def test_process_and_save_image_with_shift_arguments_succeeds(mocker):
     mock_filename_creator = mocker.MagicMock(return_value="new_filename.jpg")
     mock_shift_processor = mocker.MagicMock(return_value="shifted_numpy_array")
     mock_rotate_processor = mocker.MagicMock()
+    # create mock input data for the service function
+    mock_file = mocker.MagicMock(spec=UploadFile)
+    mock_file.filename = "test.jpg"
+    
