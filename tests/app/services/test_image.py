@@ -48,3 +48,7 @@ async def test_process_and_save_image_with_shift_arguments_succeeds(mocker):
     )
     mock_rotate_processor.assert_not_called()
     assert mock_file_writer.call_count == 2
+    # assert the results were correct
+    assert result.original_stored_file_path == "/path/original.jpg"
+    assert result.new_stored_file_path == "/path/shifted.jpg"
+    assert result.body == validated_data
