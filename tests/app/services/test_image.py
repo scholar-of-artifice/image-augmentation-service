@@ -125,3 +125,32 @@ async def test_process_and_save_image_raises_error_on_invalid_file(mocker):
             validated_data=validated_data,
             file_translator=mock_file_translator
         )
+
+async def test_process_and_save_image_raises_error_on_write_failure(mocker):
+    """
+        GIVEN a valid image file
+        AND a valid upload request body
+        AND the file_writer is mocked to raise a write failure
+        WHEN the process_and_save_image service is called
+        THEN an InvalidImageFileError is raised
+    """
+    # mock the dependencies
+    mock_file_translator = mocker.MagicMock(return_value="numpy_array_data")
+    mock_file_writer = mocker.MagicMock(side_effect=OSError('Disk full'))
+    # do not need to mock the other dependencies as the function should fail early
+    # create mock input data for the service function
+    mock_file = mocker.MagicMock(spec=UploadFile)
+    mock_file.filename = 'some_image_data.png'
+    # mock the async read method
+    mocker.patch.object(mock_file, "read", return_value=b"this_is_not_a_valid_image_file")
+    # inputs for process_and_save_image
+    rotate_args = RotateArguments(processing="rotate", angle=100)
+    validated_data = UploadRequestBody(arguments=rotate_args)
+    # call the service with injected dependencies
+    with pytest.raises(OSError):
+        await process_and_save_image(
+            file=mock_file,
+            validated_data=validated_data,
+            file_translator=mock_file_translator,
+            file_writer=mock_file_writer
+        )
