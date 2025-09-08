@@ -4,3 +4,14 @@ from app.services.image import process_and_save_image
 import pytest
 
 pytestmark = pytest.mark.asyncio
+
+async def test_process_and_save_image_with_shift_arguments_succeeds(mocker):
+    """
+        GIVEN a valid UploadFile and a UploadRequestBody with 'shift' arguments
+        AND all helper functions (dependencies) are mocked
+        WHEN the process_and_save_image service is called
+        THEN the shift_processor is called with the correct arguments
+        AND the file_writer is called twice
+        AND the rotate_processor is NOT called
+        AND a valid ImageProcessResponse is returned
+    """
