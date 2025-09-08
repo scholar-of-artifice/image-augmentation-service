@@ -1,3 +1,4 @@
+from app.internal.file_handling import InvalidImageFileError
 from app.models.image_api.upload import UploadRequestBody, ShiftArguments, RotateArguments
 from app.services.image import process_and_save_image
 from fastapi import UploadFile
@@ -99,3 +100,28 @@ async def test_process_and_save_image_with_rotate_arguments_succeeds(mocker):
     assert result.original_stored_file_path == "/path/original.jpg"
     assert result.new_stored_file_path == "/path/rotated.jpg"
     assert result.body == validated_data
+
+async def test_process_and_save_image_raises_error_on_invalid_file(mocker):
+    """
+        GIVEN an upload file that is not a valid image
+        AND the file_translator is mocked to raise an InvalidImageFileError
+        WHEN the process_and_save_image service is called
+        THEN an InvalidImageFileError is raised
+    """
+    # mock the dependencies
+    mock_file_translator = mocker.MagicMock(side_effect=InvalidImageFileError('Bad file'))
+    # do not need to mock the other dependencies as the function should fail early
+    # create mock input data for the service function
+    mock_file = mocker.MagicMock(spec=UploadFile)
+    # mock the async read method
+    mocker.patch.object(mock_file, "read", return_value=b"this_is_not_a_valid_image_file")
+    # inputs for process_and_save_image
+    rotate_args = RotateArguments(processing="rotate", angle=100)
+    validated_data = UploadRequestBody(arguments=rotate_args)
+    # call the service with injected dependencies
+    with pytest.raises(InvalidImageFileError):
+        await process_and_save_image(
+            file=mock_file,
+            validated_data=validated_data,
+            file_translator=mock_file_translator
+        )
