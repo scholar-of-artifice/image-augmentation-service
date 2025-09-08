@@ -29,3 +29,13 @@ async def test_process_and_save_image_with_shift_arguments_succeeds(mocker):
     # inputs for process_and_save_image
     shift_args = ShiftArguments(processing="shift", direction="up", distance=100)
     validated_data = UploadRequestBody(arguments=shift_args)
+    # call the service with injected dependencies
+    result = await process_and_save_image(
+        file=mock_file,
+        validated_data=validated_data,
+        file_translator=mock_file_translator,
+        file_writer=mock_file_writer,
+        filename_creator=mock_filename_creator,
+        shift_processor=mock_shift_processor,
+        rotate_processor=mock_rotate_processor
+    )
