@@ -26,3 +26,6 @@ async def test_process_and_save_image_with_shift_arguments_succeeds(mocker):
     mock_file.filename = "test.jpg"
     # mock the async read method
     mocker.patch.object(mock_file, "read", return_value=b"fake_image_bytes")
+    # inputs for process_and_save_image
+    shift_args = ShiftArguments(processing="shift", direction="up", distance=100)
+    validated_data = UploadRequestBody(arguments=shift_args)
