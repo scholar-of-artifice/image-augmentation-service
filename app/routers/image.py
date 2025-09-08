@@ -1,4 +1,3 @@
-import json
 from fastapi import (APIRouter, Depends, UploadFile)
 from app.models.image_api.upload import UploadRequestBody
 from app.dependency import get_body_as_model
