@@ -24,4 +24,5 @@ async def test_process_and_save_image_with_shift_arguments_succeeds(mocker):
     # create mock input data for the service function
     mock_file = mocker.MagicMock(spec=UploadFile)
     mock_file.filename = "test.jpg"
-    
+    # mock the async read method
+    mocker.patch.object(mock_file, "read", return_value=b"fake_image_bytes")
