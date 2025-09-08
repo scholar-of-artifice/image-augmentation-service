@@ -1,12 +1,15 @@
 from fastapi import (APIRouter, Depends, UploadFile)
-from app.models.image_api.upload import UploadRequestBody
+from app.models.image_api.upload import UploadRequestBody, ImageProcessResponse
 from app.dependency import get_body_as_model
 from app.services.image import process_and_save_image
 
 router = APIRouter()
 
 
-@router.post("/upload/")
+@router.post(
+    path="/upload/",
+    response_model=ImageProcessResponse
+)
 async def upload(
         file: UploadFile,
         validated_data: UploadRequestBody = Depends(get_body_as_model)):
