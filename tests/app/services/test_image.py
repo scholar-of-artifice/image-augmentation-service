@@ -39,3 +39,12 @@ async def test_process_and_save_image_with_shift_arguments_succeeds(mocker):
         shift_processor=mock_shift_processor,
         rotate_processor=mock_rotate_processor
     )
+    # assert the correct functions were called
+    mock_file_translator.assert_called_once_with(b"fake_image_bytes")
+    mock_shift_processor.assert_called_once_with(
+        image_data="numpy_array_data",
+        direction="up",
+        distance=100
+    )
+    mock_rotate_processor.assert_not_called()
+    assert mock_file_writer.call_count == 2
