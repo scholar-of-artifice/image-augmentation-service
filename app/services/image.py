@@ -1,4 +1,4 @@
-from app.schemas.image_api.upload import UploadRequestBody, ImageProcessResponse
+from app.schemas.image_api.image import UploadRequestBody, ImageProcessResponse
 from fastapi import UploadFile
 from typing import Callable
 from app.internal.file_handling import translate_file_to_numpy_array, write_numpy_array_to_image_file, create_file_name

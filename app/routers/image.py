@@ -1,5 +1,5 @@
 from fastapi import (APIRouter, Depends, UploadFile)
-from app.schemas.image_api.upload import UploadRequestBody, ImageProcessResponse
+from app.schemas.image_api.image import UploadRequestBody, ImageProcessResponse
 from app.dependency import get_body_as_model
 from app.services.image import process_and_save_image
 

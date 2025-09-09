@@ -1,5 +1,5 @@
 from app.internal.file_handling import InvalidImageFileError
-from app.schemas.image_api.upload import UploadRequestBody, ShiftArguments, RotateArguments
+from app.schemas.image_api.image import UploadRequestBody, ShiftArguments, RotateArguments
 from app.services.image import process_and_save_image
 from fastapi import UploadFile
 import pytest

@@ -1,6 +1,6 @@
 from fastapi import Header, HTTPException, status, Form
 from typing import Annotated
-from app.schemas.image_api.upload import UploadRequestBody
+from app.schemas.image_api.image import UploadRequestBody
 from pydantic import ValidationError
 import json
 
