@@ -22,7 +22,7 @@ async def test_get_current_external_user_id_success_when_external_id_is_present(
     # check that the returned value is what we expect.
     assert result == test_external_id
 
-async def test_get_current_external_user_id_success_when_external_id_is_present():
+async def test_get_current_external_user_id_success_when_realistic_external_id_is_present():
     """
         GIVEN a user_id is in the header
         AND external_id is a more realistic example
