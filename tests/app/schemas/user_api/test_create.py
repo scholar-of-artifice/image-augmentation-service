@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 from pydantic import ValidationError
-from app.schemas.user_api.create import UserRead
+from app.schemas.user_api.user import UserRead
 import pytest
 
 def test_user_read_successful_creation():
