@@ -3,7 +3,7 @@ from datetime import datetime, timezone, timedelta
 import uuid
 from sqlalchemy.exc import IntegrityError, InvalidRequestError, DataError
 from pydantic import ValidationError
-from app.models.transactions_db.user import User
+from app.schemas.transactions_db.user import User
 import pytest
 
 def test_user_valid_model_is_persisted(db_session: Session):

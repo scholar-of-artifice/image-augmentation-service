@@ -1,6 +1,6 @@
 import numpy
 import scipy.ndimage
-from app.models.logging import LogEntry
+from app.schemas.logging import LogEntry
 import logging
 from datetime import datetime
 

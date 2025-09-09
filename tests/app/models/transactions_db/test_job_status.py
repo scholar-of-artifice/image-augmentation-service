@@ -1,5 +1,5 @@
 import pytest
-from app.models.transactions_db.job_status import JobStatus
+from app.schemas.transactions_db.job_status import JobStatus
 
 def test_JobStatus_member_values():
     """

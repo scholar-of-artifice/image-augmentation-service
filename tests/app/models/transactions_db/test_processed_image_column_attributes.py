@@ -1,8 +1,8 @@
 from sqlmodel import Session
 from datetime import datetime, timezone
-from app.models.transactions_db.processed_image import ProcessedImage
-from app.models.transactions_db.unprocessed_image import UnprocessedImage
-from app.models.transactions_db.user import User
+from app.schemas.transactions_db.processed_image import ProcessedImage
+from app.schemas.transactions_db.unprocessed_image import UnprocessedImage
+from app.schemas.transactions_db.user import User
 from sqlalchemy.exc import IntegrityError, DataError
 import pytest
 import uuid

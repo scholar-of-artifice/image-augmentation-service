@@ -4,8 +4,8 @@ from datetime import datetime, timezone
 from pydantic import ValidationError
 import pytest
 import uuid
-from app.models.transactions_db.unprocessed_image import UnprocessedImage
-from app.models.transactions_db.user import User
+from app.schemas.transactions_db.unprocessed_image import UnprocessedImage
+from app.schemas.transactions_db.user import User
 
 def test_unprocessed_image_is_valid(db_session: Session):
     """
