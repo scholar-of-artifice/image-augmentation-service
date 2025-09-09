@@ -2,12 +2,10 @@ import numpy
 import pytest
 from app.internal.file_handling import (
     translate_file_to_numpy_array,
-    write_numpy_array_to_image_file,
     InvalidImageFileError,
-    create_file_name,
-    VOLUME_PATHS
+    create_file_name
 )
-from tests.unit.app.helperfunc.helperfunc import create_dummy_numpy_array, create_dummy_image_bytes
+from tests.helperfunc import create_dummy_image_bytes
 
 def test_translate_file_to_numpy_array_creates_correct_result_when_given_valid_image_data():
     """

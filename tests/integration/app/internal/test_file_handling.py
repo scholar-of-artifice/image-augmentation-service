@@ -1,13 +1,10 @@
-import numpy
 import pytest
 from app.internal.file_handling import (
-    translate_file_to_numpy_array,
     write_numpy_array_to_image_file,
-    InvalidImageFileError,
-    create_file_name,
     VOLUME_PATHS
 )
-from tests.unit.app.helperfunc.helperfunc import create_dummy_numpy_array, create_dummy_image_bytes
+from tests.helperfunc import create_dummy_numpy_array
+
 
 def test_write_numpy_array_to_image_file(tmp_path, monkeypatch):
     """
