@@ -1,5 +1,5 @@
 from fastapi import (APIRouter, status)
-from app.schemas.health_api.health import HealthCheckResponse
+from app.schemas.health import HealthCheckResponse
 from app.schemas.logging import LogEntry
 import logging
 from datetime import datetime
