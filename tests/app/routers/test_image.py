@@ -1,9 +1,8 @@
-import numpy as np
 import pytest
 from httpx import AsyncClient, ASGITransport
 from fastapi import FastAPI, status
 from fastapi.testclient import TestClient
-from app.schemas.image_api.image import ImageProcessResponse, ShiftArguments, UploadRequestBody
+from app.schemas.image import ImageProcessResponse, ShiftArguments, UploadRequestBody
 from app.routers.image import router
 
 app = FastAPI()

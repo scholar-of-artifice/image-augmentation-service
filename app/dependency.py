@@ -1,8 +1,8 @@
 from fastapi import Header, HTTPException, status, Form
 from typing import Annotated
-from app.schemas.image_api.image import UploadRequestBody
+from app.schemas.image import UploadRequestBody
 from pydantic import ValidationError
-import json
+
 
 async def get_current_external_user_id(
     # Look for a header named "X-External-User-ID" in the request.

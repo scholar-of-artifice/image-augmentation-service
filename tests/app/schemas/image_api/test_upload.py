@@ -1,6 +1,6 @@
 import pytest
 from pydantic import ValidationError
-from app.schemas.image_api.image import ShiftArguments, RotateArguments, UploadRequestBody, ImageProcessResponse
+from app.schemas.image import ShiftArguments, RotateArguments, UploadRequestBody, ImageProcessResponse
 
 # --- ShiftArguments ---
 
