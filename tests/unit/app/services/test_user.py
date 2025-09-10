@@ -1,6 +1,7 @@
 from sqlmodel import Session
 from app.schemas.transactions_db.user import User
-from app.services.user import get_user_by_external_id, create_user
+from app.services.user import get_user_by_external_id, create_user, delete_user
+import uuid
 
 # --- get_user_by_external_id ---
 def test_get_user_by_external_id_found(mocker):
@@ -76,3 +77,32 @@ def test_create_user(mocker):
     mock_session.add.assert_called_once_with(new_user)
     mock_session.commit.assert_called_once()
     mock_session.refresh.assert_called_once_with(new_user)
+
+# --- delete_user ---
+
+def test_delete_user_success(mocker):
+    """
+        GIVEN an existing user ID
+        AND the correct matching external_id for that user
+        WHEN delete_user is called
+        THEN the user is deleted and no exception is raised
+    """
+    # mock database session
+    mock_session = mocker.MagicMock(spec=Session)
+    # input variables
+    user_id_to_delete = uuid.uuid4()
+    correct_external_id = "owner-of-account-123"
+    # create a user
+    sample_user = User(id=user_id_to_delete, external_id=correct_external_id)
+    # configure the mock query chain
+    mock_session.get.return_value = sample_user
+    # call the function
+    delete_user(
+        db_session=mock_session,
+        user_id_to_delete=user_id_to_delete,
+        requesting_external_id=correct_external_id,
+    )
+    # verify the correct methods were called in order
+    mock_session.get.assert_called_once_with(User, user_id_to_delete)
+    mock_session.delete.assert_called_once_with(sample_user)
+    mock_session.commit.assert_called_once()
