@@ -6,6 +6,7 @@ from app.db.database import get_session
 from app.schemas.transactions_db.user import User
 from app.schemas.user import UserRead
 from app.dependency.async_dependency import get_current_external_user_id
+from app.services.user import create_user, get_user_by_external_id
 import uuid
 
 router = APIRouter()
@@ -40,24 +41,22 @@ def create_user_endpoint(
     #   this is highly dependent on how you use this app.
     #   probably you should do that here where this comment is...
     # <--- NOTE
-    # query the database using SQLModel's syntax
-    existing_user = db_session.exec(select(User).where(User.external_id == external_id)).first()
-    # check for the user
+    # call the service to check for an existing user
+    existing_user = get_user_by_external_id(
+        db_session=db_session, external_id=external_id
+    )
+    # the endpoint handles the HTTP-specific logic
     if existing_user:
         # already have this user
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail=f"User with external_id '{external_id}' already exists."
         )
-    # create an instance of the SQLModel User
-    db_user = User(external_id=external_id)
-    # add the user to the database
-    db_session.add(db_user)
-    db_session.commit()
-    db_session.refresh(db_user)
+    # call the service to create the new user
+    new_user = create_user(db_session=db_session, external_id=external_id)
     # convert the SQLModel object to your Pydantic UserRead schema
     # this only works because UserRead has `from_attributes=True` and SQLModel is Pydantic-compatible.
-    return UserRead.model_validate(db_user)
+    return UserRead.model_validate(new_user)
 
 @router.post(
     path="/sign-in",
