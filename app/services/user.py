@@ -1,7 +1,19 @@
 from sqlmodel import Session, select
 from app.schemas.transactions_db.user import User
 
-def create_user(db_session: Session, *, external_id: str) -> User:
+# TODO: might move these later
+class UserNotFound(Exception):
+    """
+        Raised when a user is not found in the database.
+    """
+    pass
+
+class PermissionDenied(Exception):
+    """
+        Raised when a user is not authorized to perform an action.
+    """
+    pass
+
 def create_user(
     db_session: Session,
     *,
