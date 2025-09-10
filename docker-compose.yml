@@ -17,11 +17,11 @@ x-api-base: &api-base
     - processed_image_data:/image-augmentation-service/data/images/processed
   # Pass database credentials to the API service as environment variables
   environment:
-    - DATABASE_HOSTNAME=db
+    - DATABASE_HOSTNAME=${DATABASE_HOSTNAME}
     - POSTGRES_DB=${POSTGRES_DB}
     - POSTGRES_USER=${POSTGRES_USER}
     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+    - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${DATABASE_HOSTNAME}:5432/${POSTGRES_DB} # use the variable for a dynamic hostname
   depends_on:
     # tells the api service to wait for the db to start
     - db
@@ -56,6 +56,14 @@ services:
       context: .
       target: test
     command: uv run pytest --cov=. --cov-report=html:tests/coverage_report/web
+    depends_on:
+      - db-test # point to the test db
+    environment:
+      - DATABASE_HOSTNAME=${TEST_DATABASE_HOSTNAME} # override the hostname of the test db
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${DATABASE_HOSTNAME}:5432/${POSTGRES_DB}
     profiles:
       - test
   # the service for production
@@ -91,6 +99,19 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     restart: always
     container_name: image-augmentation-transactions-db
-  # TODO: add a persistence layer
-  # TODO: add a PostgreSQL volume for transaction information
-  # TODO: add a Images Volume for augmented images
+    profiles:
+      - dev
+      - prod
+  db-test:
+    # the testing PostgreSQL Database Service to store transaction information
+    image: postgres:16-alpine # use the official PostgreSQL image
+    tmpfs:
+      - /var/lib/postgresql/data # make this database ephemeral (store in RAM)
+    environment:
+      # use the variables from the .env file
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    container_name: image-augmentation-transactions-db-test
+    profiles:
+      - test
