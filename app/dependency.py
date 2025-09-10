@@ -1,7 +1,10 @@
-from fastapi import Header, HTTPException, status, Form
+from fastapi import Depends, Header, HTTPException, status, Form
 from typing import Annotated
 from app.schemas.image import UploadRequestBody
 from pydantic import ValidationError
+from app.schemas.transactions_db.user import User
+from app.db.database import get_session
+from sqlmodel import Session, select
 
 
 async def get_current_external_user_id(
@@ -35,3 +38,22 @@ async def get_body_as_model( body: str = Form() ) -> UploadRequestBody:
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=e.errors()
         )
+
+def get_current_active_user(
+        *,
+        external_id: str = Depends(get_current_external_user_id),
+        db_session: Session = Depends(get_session)
+) -> User:
+    """
+        Gets the external_id from the token...
+        finds the user in the database...
+        and returns the complete User model object.
+    """
+    user = db_session.exec(select(User).where(User.external_id == external_id)).first()
+    if not user:
+        # this protects against cases where a valid token is presented for a user who has since been deleted from our database.
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found."
+        )
+    return user
