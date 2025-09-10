@@ -30,6 +30,7 @@ async def process_and_save_image(
         file_name=file.filename,
         destination_volume='unprocessed_image_data'
     )
+    # TODO: save the file metadata to PostgreSQL
     # process the image
     # initialize a new variables for the processed image data
     new_img_data = image_data
