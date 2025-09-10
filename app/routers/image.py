@@ -12,7 +12,7 @@ router = APIRouter()
     path="/upload/",
     response_model=ImageProcessResponse
 )
-async def upload(
+async def upload_endpoint(
         file: UploadFile,
         validated_data: UploadRequestBody = Depends(get_body_as_model),
         db_session: Session = Depends(get_session),

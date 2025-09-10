@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
     response_model=UserRead,
     status_code=status.HTTP_201_CREATED,
 )
-def create_user(
+def create_user_endpoint(
     *,
     db_session: Session = Depends(get_session),
     external_id: str = Depends(get_current_external_user_id)
@@ -64,7 +64,7 @@ def create_user(
     response_model=UserRead,
     status_code=status.HTTP_200_OK,
 )
-def sign_in_user(
+def sign_in_user_endpoint(
     *,
     db_session: Session = Depends(get_session),
     external_id: str = Depends(get_current_external_user_id)
@@ -96,7 +96,7 @@ def sign_in_user(
     path="/users/{user_id}",
     status_code=status.HTTP_204_NO_CONTENT,
 )
-def delete_user(
+def delete_user_endpoint(
     *,
     db_session: Session = Depends(get_session),
     external_id: str = Depends(get_current_external_user_id),

@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 @router.get(path="/healthcheck",
          status_code=status.HTTP_200_OK)
-def get_health():
+def get_health_endpoint():
     log_data = LogEntry(
         date_time=datetime.now(),
         event="get_health",
