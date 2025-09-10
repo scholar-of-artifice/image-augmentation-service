@@ -3,10 +3,12 @@ from fastapi import UploadFile
 from typing import Callable
 from app.internal.file_handling import translate_file_to_numpy_array, write_numpy_array_to_image_file, create_file_name
 from app.internal.augmentations import shift, rotate
+from sqlmodel import Session
 
 async def process_and_save_image(
         file: UploadFile,
         validated_data: UploadRequestBody,
+        db_session: Session,
         # --- INJECTED DEPENDENCIES ---
         file_translator: Callable = translate_file_to_numpy_array,
         file_writer: Callable = write_numpy_array_to_image_file,
