@@ -1,7 +1,8 @@
 from sqlmodel import Session
 from app.schemas.transactions_db.user import User
-from app.services.user import get_user_by_external_id, create_user, delete_user
+from app.services.user import get_user_by_external_id, create_user, delete_user, UserNotFound
 import uuid
+import pytest
 
 # --- get_user_by_external_id ---
 def test_get_user_by_external_id_found(mocker):
@@ -106,3 +107,26 @@ def test_delete_user_success(mocker):
     mock_session.get.assert_called_once_with(User, user_id_to_delete)
     mock_session.delete.assert_called_once_with(sample_user)
     mock_session.commit.assert_called_once()
+
+def test_delete_user_raises_user_not_found(mocker):
+    """
+        GIVEN a user_id that does not exist
+        WHEN delete_user is called
+        THEN a UserNotFound exception is raised
+    """
+    # mock database session
+    mock_session = mocker.MagicMock(spec=Session)
+    # input variables
+    non_existent_user_id = uuid.uuid4()
+    # configure the mock query chain
+    mock_session.get.return_value = None
+    # call the function
+    with pytest.raises(UserNotFound):
+        delete_user(
+            db_session=mock_session,
+            user_id_to_delete=non_existent_user_id,
+            requesting_external_id="any-external-id",
+        )
+    # verify that the delete and commit methods were NOT called
+    mock_session.delete.assert_not_called()
+    mock_session.commit.assert_not_called()
