@@ -6,7 +6,7 @@ from app.db.database import get_session
 from app.schemas.transactions_db.user import User
 from app.schemas.user import UserRead
 from app.dependency.async_dependency import get_current_external_user_id
-from app.services.user import create_user, get_user_by_external_id
+from app.services.user import create_user, get_user_by_external_id, delete_user, UserNotFound, PermissionDenied
 import uuid
 
 router = APIRouter()
@@ -116,22 +116,15 @@ def delete_user_endpoint(
             external_id: The user's external ID, from the security dependency.
             user_id: The unique ID of the user to be deleted, from the URL path.
     """
-    # find the user record by its primary key.
-    user_to_delete = db_session.get(User, user_id)
-    # if the user doesn't exist, return a 404 error.
-    if not user_to_delete:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"User with id '{user_id}' not found."
+    try:
+        delete_user(
+            db_session=db_session,
+            user_id_to_delete=user_id,
+            requesting_external_id=external_id,
         )
-    # check if the authenticated user owns this record.
-    if user_to_delete.external_id != external_id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="You do not have permission to delete this user."
-        )
-    # delete the user and commit the transaction.
-    db_session.delete(user_to_delete)
-    db_session.commit()
+    except UserNotFound as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+    except PermissionDenied as e:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
     # according to HTTP standards, a successful DELETE should return 204 No Content.
     return None
