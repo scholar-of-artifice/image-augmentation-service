@@ -1,6 +1,6 @@
 from sqlmodel import Session
 from app.schemas.transactions_db.user import User
-from app.services.user import get_user_by_external_id, create_user, delete_user, UserNotFound
+from app.services.user import get_user_by_external_id, create_user, delete_user, UserNotFound, PermissionDenied
 import uuid
 import pytest
 
@@ -126,6 +126,33 @@ def test_delete_user_raises_user_not_found(mocker):
             db_session=mock_session,
             user_id_to_delete=non_existent_user_id,
             requesting_external_id="any-external-id",
+        )
+    # verify that the delete and commit methods were NOT called
+    mock_session.delete.assert_not_called()
+    mock_session.commit.assert_not_called()
+
+def test_delete_user_raises_permission_denied(mocker):
+    """
+        GIVEN an existing user's ID
+        AND an external_id that does NOT match the user's external_id
+        WHEN delete_user is called
+        THEN a PermissionDenied exception is raised
+    """
+    # mock database session
+    mock_session = mocker.MagicMock(spec=Session)
+    # input variables
+    user_id_to_delete = uuid.uuid4()
+    correct_external_id = "owner-of-account-123"
+    incorrect_external_id = "not-the-owner-456"
+    sample_user = User(id=user_id_to_delete, external_id=correct_external_id)
+    # configure the mock query chain
+    mock_session.get.return_value = sample_user
+    # call the funciton
+    with pytest.raises(PermissionDenied):
+        delete_user(
+            db_session=mock_session,
+            user_id_to_delete=user_id_to_delete,
+            requesting_external_id=incorrect_external_id,
         )
     # verify that the delete and commit methods were NOT called
     mock_session.delete.assert_not_called()
