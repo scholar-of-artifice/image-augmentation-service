@@ -1,6 +1,6 @@
 from sqlmodel import Session
 from app.schemas.transactions_db.user import User
-from app.services.user import get_user_by_external_id
+from app.services.user import get_user_by_external_id, create_user
 
 # --- get_user_by_external_id ---
 def test_get_user_by_external_id_found(mocker):
@@ -51,3 +51,28 @@ def test_get_user_by_external_id_not_found(mocker):
     mock_session.exec.return_value.first.assert_called_once()
 
 # --- create_user ---
+
+def test_create_user(mocker):
+    """
+        GIVEN a valid external_id
+        AND a mock database session
+        WHEN create_user is called
+        THEN it calls the session's add, commit, and refresh methods
+        AND returns the newly created User object
+    """
+    # mock database session
+    mock_session = mocker.MagicMock(spec=Session)
+    # make input variable
+    external_id = "new-user-456"
+    # call the function
+    new_user = create_user(
+        db_session=mock_session,
+        external_id=external_id
+    )
+    # check that a User object was created with the correct external_id
+    assert isinstance(new_user, User)
+    assert new_user.external_id == external_id
+    # check that the correct database methods were called
+    mock_session.add.assert_called_once_with(new_user)
+    mock_session.commit.assert_called_once()
+    mock_session.refresh.assert_called_once_with(new_user)
