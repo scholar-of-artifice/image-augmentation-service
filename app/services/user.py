@@ -1,5 +1,6 @@
 from sqlmodel import Session, select
 from app.schemas.transactions_db.user import User
+import uuid
 
 # TODO: might move these later
 class UserNotFound(Exception):
@@ -39,3 +40,25 @@ def get_user_by_external_id(
         Returns the User object or None if not found.
     """
     return db_session.exec(select(User).where(User.external_id == external_id)).first()
+
+def delete_user(
+        db_session: Session,
+        *,
+        user_id_to_delete: uuid.UUID,
+        requesting_external_id: str
+):
+    """
+    Deletes a user after verifying the requesting user has permission.
+    Raises UserNotFound or PermissionDenied on failure.
+    """
+    # find the user to delete
+    user_to_delete = db_session.get(User, user_id_to_delete)
+    # raise an exception if the user does not exist
+    if not user_to_delete:
+        raise UserNotFound(f"User with id '{user_id_to_delete}' not found.")
+    # raise an exception if the user is not authorized
+    if user_to_delete.external_id != requesting_external_id:
+        raise PermissionDenied("User does not have permission to delete this account.")
+    # perform the deletion
+    db_session.delete(user_to_delete)
+    db_session.commit()
