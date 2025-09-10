@@ -21,7 +21,8 @@ def test_get_user_by_external_id_found(mocker):
     mock_session.exec.return_value.first.return_value = sample_user
     # call the service function with the mock session
     result = get_user_by_external_id(
-        db=mock_session, external_id="user-abc-123"
+        db_session=mock_session,
+        external_id="user-abc-123"
     )
     # check the results
     assert result is not None
