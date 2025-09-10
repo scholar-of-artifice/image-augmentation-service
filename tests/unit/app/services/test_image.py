@@ -4,6 +4,7 @@ from app.services.image import process_and_save_image
 from fastapi import UploadFile
 from sqlmodel import Session
 import pytest
+import uuid
 
 pytestmark = pytest.mark.asyncio
 
@@ -24,6 +25,7 @@ async def test_process_and_save_image_with_shift_arguments_succeeds(mocker):
     mock_shift_processor = mocker.MagicMock(return_value="shifted_numpy_array")
     mock_rotate_processor = mocker.MagicMock()
     mock_db_session = mocker.MagicMock(spec=Session)
+    sample_user_id = uuid.uuid4()
     # create mock input data for the service function
     mock_file = mocker.MagicMock(spec=UploadFile)
     mock_file.filename = "test.jpg"
@@ -42,6 +44,7 @@ async def test_process_and_save_image_with_shift_arguments_succeeds(mocker):
         shift_processor=mock_shift_processor,
         rotate_processor=mock_rotate_processor,
         db_session=mock_db_session,
+        user_id=sample_user_id
     )
     # assert the correct functions were called
     mock_file_translator.assert_called_once_with(b"fake_image_bytes")
@@ -73,6 +76,7 @@ async def test_process_and_save_image_with_rotate_arguments_succeeds(mocker):
     mock_filename_creator = mocker.MagicMock(return_value="new_filename.jpg")
     mock_shift_processor = mocker.MagicMock()
     mock_rotate_processor = mocker.MagicMock(return_value="rotated_numpy_array")
+    sample_user_id = uuid.uuid4()
     mock_db_session = mocker.MagicMock(spec=Session)
     # create mock input data for the service function
     mock_file = mocker.MagicMock(spec=UploadFile)
@@ -91,7 +95,8 @@ async def test_process_and_save_image_with_rotate_arguments_succeeds(mocker):
         filename_creator=mock_filename_creator,
         shift_processor=mock_shift_processor,
         rotate_processor=mock_rotate_processor,
-        db_session=mock_db_session
+        db_session=mock_db_session,
+        user_id=sample_user_id
     )
     # assert the correct functions were called
     mock_file_translator.assert_called_once_with(b"fake_image_bytes")
@@ -115,6 +120,7 @@ async def test_process_and_save_image_raises_error_on_invalid_file(mocker):
     """
     # mock the dependencies
     mock_file_translator = mocker.MagicMock(side_effect=InvalidImageFileError('Bad file'))
+    sample_user_id = uuid.uuid4()
     mock_db_session = mocker.MagicMock(spec=Session)
     # do not need to mock the other dependencies as the function should fail early
     # create mock input data for the service function
@@ -130,7 +136,8 @@ async def test_process_and_save_image_raises_error_on_invalid_file(mocker):
             file=mock_file,
             validated_data=validated_data,
             file_translator=mock_file_translator,
-            db_session=mock_db_session
+            db_session=mock_db_session,
+            user_id=sample_user_id
         )
 
 async def test_process_and_save_image_raises_error_on_write_failure(mocker):
@@ -145,6 +152,7 @@ async def test_process_and_save_image_raises_error_on_write_failure(mocker):
     mock_file_translator = mocker.MagicMock(return_value="numpy_array_data")
     mock_file_writer = mocker.MagicMock(side_effect=OSError('Disk full'))
     mock_db_session = mocker.MagicMock(spec=Session)
+    sample_user_id = uuid.uuid4()
     # do not need to mock the other dependencies as the function should fail early
     # create mock input data for the service function
     mock_file = mocker.MagicMock(spec=UploadFile)
@@ -161,5 +169,6 @@ async def test_process_and_save_image_raises_error_on_write_failure(mocker):
             validated_data=validated_data,
             file_translator=mock_file_translator,
             file_writer=mock_file_writer,
-            db_session=mock_db_session
+            db_session=mock_db_session,
+            user_id=sample_user_id
         )
