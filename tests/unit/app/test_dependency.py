@@ -108,5 +108,3 @@ async def test_get_body_as_model_raises_unprocessable_entity_when_model_not_corr
     assert exc.value.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
     assert isinstance(exc.value.detail, list)
     assert len(exc.value.detail) > 0
-
-# --- get_current_active_user ---
