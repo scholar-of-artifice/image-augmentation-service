@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 )
 def create_user(
     *,
-    session: Session = Depends(get_session),
+    db_session: Session = Depends(get_session),
     external_id: str = Depends(get_current_external_user_id)
 ):
     """
@@ -30,7 +30,7 @@ def create_user(
 
         params:
             *: Enforces that all subsequent parameters must be specified by keyword.
-            session: The database session, injected by the `get_session` dependency.
+            db_session: The database session, injected by the `get_session` dependency.
             external_id: The user's external ID, injected by the security dependency.
     """
     # NOTE --->
@@ -41,7 +41,7 @@ def create_user(
     #   probably you should do that here where this comment is...
     # <--- NOTE
     # query the database using SQLModel's syntax
-    existing_user = session.exec(select(User).where(User.external_id == external_id)).first()
+    existing_user = db_session.exec(select(User).where(User.external_id == external_id)).first()
     # check for the user
     if existing_user:
         # already have this user
@@ -52,9 +52,9 @@ def create_user(
     # create an instance of the SQLModel User
     db_user = User(external_id=external_id)
     # add the user to the database
-    session.add(db_user)
-    session.commit()
-    session.refresh(db_user)
+    db_session.add(db_user)
+    db_session.commit()
+    db_session.refresh(db_user)
     # convert the SQLModel object to your Pydantic UserRead schema
     # this only works because UserRead has `from_attributes=True` and SQLModel is Pydantic-compatible.
     return UserRead.model_validate(db_user)
@@ -66,7 +66,7 @@ def create_user(
 )
 def sign_in_user(
     *,
-    session: Session = Depends(get_session),
+    db_session: Session = Depends(get_session),
     external_id: str = Depends(get_current_external_user_id)
 ):
     """
@@ -77,11 +77,11 @@ def sign_in_user(
 
         params:
            *: Enforces that all subsequent parameters must be specified by keyword.
-            session: The database session, injected by the `get_session` dependency.
+            db_session: The database session, injected by the `get_session` dependency.
             external_id: The user's external ID, from the security dependency.
     """
     # Find the user in the database using their trusted external ID.
-    user = session.exec(select(User).where(User.external_id == external_id)).first()
+    user = db_session.exec(select(User).where(User.external_id == external_id)).first()
     # If no user is found, they exist externally but not in our system.
     # The client should call the POST /users endpoint to create them.
     if not user:
@@ -98,7 +98,7 @@ def sign_in_user(
 )
 def delete_user(
     *,
-    session: Session = Depends(get_session),
+    db_session: Session = Depends(get_session),
     external_id: str = Depends(get_current_external_user_id),
     user_id: Annotated[uuid.UUID, Path(title="The ID of the item to destroy")],
 ):
@@ -111,12 +111,12 @@ def delete_user(
 
         params:
            *: Enforces that all subsequent parameters must be specified by keyword.
-            session: The database session, injected by the `get_session` dependency.
+            db_session: The database session, injected by the `get_session` dependency.
             external_id: The user's external ID, from the security dependency.
             user_id: The unique ID of the user to be deleted, from the URL path.
     """
     # find the user record by its primary key.
-    user_to_delete = session.get(User, user_id)
+    user_to_delete = db_session.get(User, user_id)
     # if the user doesn't exist, return a 404 error.
     if not user_to_delete:
         raise HTTPException(
@@ -130,7 +130,7 @@ def delete_user(
             detail="You do not have permission to delete this user."
         )
     # delete the user and commit the transaction.
-    session.delete(user_to_delete)
-    session.commit()
+    db_session.delete(user_to_delete)
+    db_session.commit()
     # according to HTTP standards, a successful DELETE should return 204 No Content.
     return None
