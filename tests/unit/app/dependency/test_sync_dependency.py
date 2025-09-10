@@ -1,6 +1,6 @@
 from sqlmodel import Session
 from app.schemas.transactions_db.user import User
-from app.dependency.dependency import get_current_active_user
+from app.dependency.async_dependency import get_current_active_user
 
 # --- get_current_active_user ---
 
