@@ -80,7 +80,9 @@ def sign_in_user_endpoint(
             external_id: The user's external ID, from the security dependency.
     """
     # Find the user in the database using their trusted external ID.
-    user = db_session.exec(select(User).where(User.external_id == external_id)).first()
+    user = get_user_by_external_id(
+        db_session=db_session, external_id=external_id
+    )
     # If no user is found, they exist externally but not in our system.
     # The client should call the POST /users endpoint to create them.
     if not user:
