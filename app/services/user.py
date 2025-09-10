@@ -58,7 +58,7 @@ def delete_user(
         raise UserNotFound(f"User with id '{user_id_to_delete}' not found.")
     # raise an exception if the user is not authorized
     if user_to_delete.external_id != requesting_external_id:
-        raise PermissionDenied("User does not have permission to delete this account.")
+        raise PermissionDenied("You do not have permission to delete this user.")
     # perform the deletion
     db_session.delete(user_to_delete)
     db_session.commit()
