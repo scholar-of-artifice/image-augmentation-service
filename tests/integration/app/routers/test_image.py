@@ -43,3 +43,24 @@ async def test_upload_endpoint_success(mocker):
         assert response.status_code == status.HTTP_200_OK
         assert response.json() == expected_response.model_dump()
         mocked_service.assert_called_once
+
+async def test_upload_endpoint_missing_body_fails_with_422(mocker):
+    """
+        GIVEN a file is provided
+        BUT the request body is missing
+        WHEN a POST request is made to /upload
+        THEN a 422 Unprocessable Entity response is returned
+    """
+    # We don't need to mock the service because the request should fail
+    # validation before the service is ever called.
+
+    async with AsyncClient(
+        transport=ASGITransport(app=app), base_url="http://test"
+    ) as ac:
+        # Note the missing 'data' parameter in the request
+        response = await ac.post(
+            url="/upload/",
+            files={"file": ('test.png', b'fake_image_bytes', 'image/png')},
+        )
+        # Assert that FastAPI caught the missing data and returned a 422
+        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
