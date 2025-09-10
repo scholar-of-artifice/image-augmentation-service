@@ -5,7 +5,7 @@ from sqlmodel import Session, select
 from app.db.database import get_session
 from app.schemas.transactions_db.user import User
 from app.schemas.user import UserRead
-from app.dependency import get_current_external_user_id
+from app.dependency.dependency import get_current_external_user_id
 import uuid
 
 router = APIRouter()
