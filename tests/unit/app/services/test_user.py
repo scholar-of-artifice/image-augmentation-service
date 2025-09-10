@@ -30,4 +30,24 @@ def test_get_user_by_external_id_found(mocker):
     assert result == sample_user
     mock_session.exec.return_value.first.assert_called_once()
 
+def test_get_user_by_external_id_not_found(mocker):
+    """
+        GIVEN an external_id that does not exist in the database
+        AND a mock database session
+        WHEN get_user_by_external_id is called
+        THEN it returns None
+    """
+    # mock database session
+    mock_session = mocker.MagicMock(spec=Session)
+    # configure the mock query chain to return None
+    mock_session.exec.return_value.first.return_value = None
+    # call the function
+    result = get_user_by_external_id(
+        db_session=mock_session,
+        external_id="user-does-not-exist"
+    )
+    # check the results
+    assert result is None
+    mock_session.exec.return_value.first.assert_called_once()
+
 # --- create_user ---
