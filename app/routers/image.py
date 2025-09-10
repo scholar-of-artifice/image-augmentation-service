@@ -24,5 +24,5 @@ async def upload(
             file {UploadFile} -- The image file to be processed.
             validated_data {UploadRequestBody} -- The parsed and validated request body.
     """
-    return await process_and_save_image(file, validated_data)
+    return await process_and_save_image(file, validated_data, db_session)
 
