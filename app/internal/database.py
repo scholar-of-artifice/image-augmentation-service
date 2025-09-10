@@ -1,5 +1,5 @@
 from sqlmodel import create_engine, SQLModel, Session
-from ..config import settings
+from app.config import settings
 
 # Use the validated DATABASE_URL directly from settings
 # Pydantic handles the os.getenv() part for you
