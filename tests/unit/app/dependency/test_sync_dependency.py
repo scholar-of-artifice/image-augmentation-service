@@ -45,7 +45,7 @@ def test_get_current_active_user_raises_not_found_when_user_does_not_exist(mocke
             external_id="user-that-does-not-exist",
             db_session=mock_session
         )
-        # check the output
-        assert exc.value.status_code == status.HTTP_404_NOT_FOUND
-        assert exc.value.detail == "User not found."
-        mock_session.exec.return_value.first.assert_called_once()
+    # check the output
+    assert exc.value.status_code == status.HTTP_404_NOT_FOUND
+    assert exc.value.detail == "User not found."
+    mock_session.exec.return_value.first.assert_called_once()
