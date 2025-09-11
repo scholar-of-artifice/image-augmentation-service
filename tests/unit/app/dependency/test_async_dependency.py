@@ -3,7 +3,11 @@ import uuid
 from fastapi import HTTPException, status
 import json
 from app.dependency.async_dependency import get_current_external_user_id, get_body_as_model
+from sqlmodel import Session
+from unittest.mock import AsyncMock
+from app.dependency.async_dependency import get_current_external_user_id, get_body_as_model, get_current_active_user
 from app.schemas.image import UploadRequestBody, RotateArguments
+from app.schemas.transactions_db.user import User
 
 pytestmark = pytest.mark.asyncio
 
