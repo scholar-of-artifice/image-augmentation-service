@@ -1,13 +1,10 @@
+from unittest.mock import AsyncMock
 import pytest
-from httpx import AsyncClient, ASGITransport
-from fastapi import FastAPI, status
+from fastapi import status
 from app.main import app
 from app.schemas.transactions_db.user import User
 from app.dependency.async_dependency import get_current_active_user
-from unittest.mock import AsyncMock
-from fastapi.testclient import TestClient
 from app.schemas.image import ImageProcessResponse, ShiftArguments, UploadRequestBody
-from app.routers.image import router
 
 pytestmark = pytest.mark.asyncio
 
@@ -52,6 +49,7 @@ async def test_upload_endpoint_success(mocker, async_client):
     finally:
         # this will always run and ensure a clean state
         app.dependency_overrides.clear()
+
 
 async def test_upload_endpoint_missing_body_fails_with_422(mocker, async_client):
     """
