@@ -27,5 +27,10 @@ async def upload_endpoint(
             file {UploadFile} -- The image file to be processed.
             validated_data {UploadRequestBody} -- The parsed and validated request body.
     """
-    return await process_and_save_image(file, validated_data, db_session)
+    return await process_and_save_image(
+        file=file,
+        validated_data=validated_data,
+        db_session=db_session,
+        user_id=current_user.id
+    )
 
