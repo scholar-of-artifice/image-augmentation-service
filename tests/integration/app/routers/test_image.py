@@ -3,7 +3,7 @@ from httpx import AsyncClient, ASGITransport
 from fastapi import FastAPI, status
 from app.main import app
 from app.schemas.transactions_db.user import User
-from app.dependency.sync_dependency import get_current_active_user
+from app.dependency.async_dependency import get_current_active_user
 from unittest.mock import AsyncMock
 from fastapi.testclient import TestClient
 from app.schemas.image import ImageProcessResponse, ShiftArguments, UploadRequestBody
