@@ -3,8 +3,10 @@ from app.schemas.image import UploadRequestBody, ShiftArguments, RotateArguments
 from app.services.image import process_and_save_image
 from fastapi import UploadFile
 from sqlmodel import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 import pytest
 import uuid
+from unittest.mock import AsyncMock
 
 pytestmark = pytest.mark.asyncio
 
@@ -18,19 +20,20 @@ async def test_process_and_save_image_with_shift_arguments_succeeds(mocker):
         AND the rotate_processor is NOT called
         AND a valid ImageProcessResponse is returned
     """
-    # mock the dependencies
+    # mock the synchronous dependencies
     mock_file_translator = mocker.MagicMock(return_value="numpy_array_data")
     mock_file_writer = mocker.MagicMock(side_effect=["/path/original.jpg", "/path/shifted.jpg"])
     mock_filename_creator = mocker.MagicMock(return_value="new_filename.jpg")
     mock_shift_processor = mocker.MagicMock(return_value="shifted_numpy_array")
     mock_rotate_processor = mocker.MagicMock()
-    mock_db_session = mocker.MagicMock(spec=Session)
     sample_user_id = uuid.uuid4()
+    # mock the asynchronous dependencies
+    mock_db_session = AsyncMock(spec=AsyncSession)
     # create mock input data for the service function
-    mock_file = mocker.MagicMock(spec=UploadFile)
+    mock_file = AsyncMock(spec=UploadFile)
     mock_file.filename = "test.jpg"
-    # mock the async read method
-    mocker.patch.object(mock_file, "read", return_value=b"fake_image_bytes")
+    # configure the return value directly on the AsyncMock's method
+    mock_file.read.return_value = b"fake_image_bytes"
     # inputs for process_and_save_image
     shift_args = ShiftArguments(processing="shift", direction="up", distance=100)
     validated_data = UploadRequestBody(arguments=shift_args)
@@ -70,19 +73,20 @@ async def test_process_and_save_image_with_rotate_arguments_succeeds(mocker):
         AND the rotate_processor is NOT called
         AND a valid ImageProcessResponse is returned
     """
-    # mock the dependencies
+    # mock the synchronous dependencies
     mock_file_translator = mocker.MagicMock(return_value="numpy_array_data")
     mock_file_writer = mocker.MagicMock(side_effect=["/path/original.jpg", "/path/rotated.jpg"])
     mock_filename_creator = mocker.MagicMock(return_value="new_filename.jpg")
     mock_shift_processor = mocker.MagicMock()
     mock_rotate_processor = mocker.MagicMock(return_value="rotated_numpy_array")
     sample_user_id = uuid.uuid4()
-    mock_db_session = mocker.MagicMock(spec=Session)
+    # mock the asynchronous dependencies
+    mock_db_session = AsyncMock(spec=AsyncSession)
     # create mock input data for the service function
-    mock_file = mocker.MagicMock(spec=UploadFile)
+    mock_file = AsyncMock(spec=UploadFile)
     mock_file.filename = "test.jpg"
-    # mock the async read method
-    mocker.patch.object(mock_file, "read", return_value=b"fake_image_bytes")
+    # configure the return value directly on the AsyncMock's method
+    mock_file.read.return_value = b"fake_image_bytes"
     # inputs for process_and_save_image
     rotate_args = RotateArguments(processing="rotate", angle=100)
     validated_data = UploadRequestBody(arguments=rotate_args)
