@@ -134,3 +134,25 @@ async def test_get_current_active_user_success(mocker):
     # the output is correct and the mock was awaited
     assert found_user == sample_user
     mock_session.exec.return_value.first.assert_awaited_once()
+
+async def test_get_current_active_user_raises_not_found_when_user_does_not_exist(mocker):
+    """
+        GIVEN a valid external_id for a non-existent user
+        AND a mock database session that does not find the user
+        WHEN get_current_active_user is called
+        THEN it raises an HTTPException with a 404 status
+    """
+    # create a mock session
+    mock_session = mocker.MagicMock(spec=Session)
+    # configure the mock to return an awaitable that resolves to None
+    mock_session.exec.return_value.first = AsyncMock(return_value=None)
+    # the function is awaited inside the pytest.raises context
+    with pytest.raises(HTTPException) as exc:
+        await get_current_active_user(
+            external_id="user-that-does-not-exist",
+            db_session=mock_session
+        )
+    # check the correct exception is raised and the mock was awaited
+    assert exc.value.status_code == status.HTTP_404_NOT_FOUND
+    assert exc.value.detail == "User not found."
+    mock_session.exec.return_value.first.assert_awaited_once()
