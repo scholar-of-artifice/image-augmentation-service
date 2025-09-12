@@ -53,7 +53,7 @@ async def process_and_save_image(
             distance=validated_data.arguments.distance
         )
     elif validated_data.arguments.processing == "rotate":
-        # appy rotate
+        # apply rotate
         new_img_data = rotate_processor(
             image_data=image_data,
             angle=validated_data.arguments.angle
