@@ -66,12 +66,11 @@ If you have never used this `external-id` you should see a response body such as
 }
 ```
 
+#### Step 2: Upload an Image
 
-## Example
-Try out the following endpoint:
-```
-/image-api/upload/
-```
+Once you have a user you can do some image transformations.
+Use the following endpoint in the documentation:
+`/image-api/upload/`
 
 Then define the request body:
 - Choose a file
@@ -79,4 +78,11 @@ Then define the request body:
     ```
         {"arguments": {"processing": "rotate", "angle": 45}}
     ```
+- Choose a `png` image file. Please note that image size and type are not contrained at this time.
+- If you want one you can find one here: `/tests/date/test_image.png`
+- Enter the following string for the `body` field:
+```terminaloutput
+{"arguments": {"processing": "rotate", "angle": 45}}
+```
+
     
