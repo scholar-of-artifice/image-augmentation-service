@@ -5,6 +5,17 @@ The Dockerfile will build the application using the code from the repository.
 The docker-compose file will get all of the required components and assemble them in a logical way.
 
 ## Prerequisites
+
+### .env
+I have included a `.env.example` file. Docker will source important variables for connecting the database from here.
+Please:
+- make a copy of this file
+- remove the `.example` extension from the filename
+- insert your own value where it says: `# replace_with_your_own_information`
+
+#### Important Note
+Never commit your `.env` file.
+
 ### Docker
 This application runs using Docker containers!
 site: https://www.docker.com
