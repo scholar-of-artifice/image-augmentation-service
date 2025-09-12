@@ -100,9 +100,8 @@ This creates an optional link between the job and its output. Keeping it nullabl
 
 ***
 ## Table Form Normalization
-The `ProcessingJob` table is in `Boyce-Codd Normal Form (BCNF)`.
+The `ProcessingJob` table is in `First Normal Form (1NF)` but given the constraints of use may be considered `BCNF`.
 
-This design is fully normalized, which prevents data anomalies and ensures each piece of information is stored in exactly one place.
 It is important to recognize the design trade-off made by using the `JSONB` column for `upload_request_body`.
 While the table itself is normalized, the data within the `JSON` field is inherently `denormalized`.
 If the request body had a consistent, complex structure that needed to be queried or updated frequently, a more normalized approach would be to break it out into separate, related tables.
@@ -110,7 +109,7 @@ For storing a flexible, unstructured request payload, `JSONB` is an excellent an
 
 For the purposes of this application, we need to store `upload_request_body` because we want to know (with fidelity) what the request was.
 We could just as easily handle it as a `string` but it is more correct and practical to handle it as JSON.
-If we ignore this or believed it to be a string, we would find this table conforms to BCNF.
+If we ignore this or believed it to be a string, we would find this table conforms to `BCNF`.
 
 The following explains why.
 
