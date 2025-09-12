@@ -4,12 +4,7 @@ Tests in this project are written using `pytest`.
 ## run all tests
 From the root directory of this repository:
 ```
-pytest
-```
-
-## run tests in specific directory
-```
-pytest tests/app/internal
+docker compose --profile test up --build --abort-on-container-exit
 ```
 
 ## How can I get more detail?
