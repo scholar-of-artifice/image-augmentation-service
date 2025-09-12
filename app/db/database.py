@@ -1,4 +1,6 @@
 from sqlmodel import create_engine, SQLModel, Session
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.orm import sessionmaker
 from app.config import settings
 
 # Use the validated DATABASE_URL directly from settings
@@ -16,4 +18,19 @@ def get_session():
         Creates a new database session and returns the session.
     """
     with Session(engine) as session:
+        yield session
+
+# Asynchronous session
+
+async_db_url = str(settings.DATABASE_URL).replace("postgresql://", "postgresql+psycopg://")
+async_engine = create_async_engine(async_db_url, echo=True)
+
+async def get_async_session():
+    """
+        Creates a new async database session and returns the session.
+    """
+    async_session = sessionmaker(
+        bind=async_engine, class_=AsyncSession, expire_on_commit=False
+    )
+    async with async_session() as session:
         yield session
