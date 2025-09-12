@@ -1,5 +1,5 @@
 # image-augmentation-service
-> This project is a Work In Progress
+> This project is a **Work In Progress**
 
 This project is a microservice which can be used to produce augmented versions of image data.
 Here are some examples of what can be done with this service:
@@ -32,3 +32,17 @@ Here are some useful articles for gettings started:
 ### 🧠 Want to know more about the `engineering`?
 - [PostgreSQL Database Design](docs/engineering/transactions_database/transactions_database.md)
 - [How tests are structured](docs/engineering/testing/_testing.md)
+
+## What is next?
+This project is a **Work in Progress**.
+However, there are some changes that I am considering all the time.
+
+In no particular order:
+- moving image processing to an async worker
+- communicating data flow using `RabbitMQ`
+- putting in some standard authentication mechanism (probably `JWT`)
+- adding more tests (this is happening all the time)
+- making an auxiliary `image-analysis-service`
+- using the `ELK` stack for logging and observability
+- using `Kubernetes` to orchestrate containers
+- expanding the image processing immensely
