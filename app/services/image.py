@@ -75,9 +75,10 @@ async def process_and_save_image(
     # --- Persist to Database ---
     # persist the data
     db_session.add(unprocessed_image_record) # only need to add the parent; SQLAlchemy handles the rest
-    await db_session.commit()
-    await db_session.refresh(unprocessed_image_record)
-    await db_session.refresh(processed_image_record)
+    db_session.flush()
+    db_session.refresh(unprocessed_image_record)
+    db_session.refresh(processed_image_record)
+    db_session.commit()
     # return an ImageProcessResponse
     return ImageProcessResponse(
         original_stored_file_path=unprocessed_image_location,
