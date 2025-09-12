@@ -125,7 +125,9 @@ async def test_get_current_active_user_success(mocker):
     mock_session = mocker.MagicMock(spec=Session)
     # configure the mock to simulate the ASYNCHRONOUS query chain
     # the .first() method now returns an awaitable object (the AsyncMock)
-    mock_session.exec.return_value.first = AsyncMock(return_value=sample_user)
+    mock_result = mocker.MagicMock()
+    mock_session.execute = AsyncMock(return_value=mock_result)
+    mock_result.scalars.return_value.first.return_value = sample_user
     # the async function is awaited
     found_user = await get_current_active_user(
         external_id="user-abc-123",
@@ -133,7 +135,7 @@ async def test_get_current_active_user_success(mocker):
     )
     # the output is correct and the mock was awaited
     assert found_user == sample_user
-    mock_session.exec.return_value.first.assert_awaited_once()
+    mock_session.execute.assert_awaited_once()
 
 async def test_get_current_active_user_raises_not_found_when_user_does_not_exist(mocker):
     """
@@ -145,7 +147,9 @@ async def test_get_current_active_user_raises_not_found_when_user_does_not_exist
     # create a mock session
     mock_session = mocker.MagicMock(spec=Session)
     # configure the mock to return an awaitable that resolves to None
-    mock_session.exec.return_value.first = AsyncMock(return_value=None)
+    mock_result = mocker.MagicMock()
+    mock_session.execute = AsyncMock(return_value=mock_result)
+    mock_result.scalars.return_value.first.return_value = None
     # the function is awaited inside the pytest.raises context
     with pytest.raises(HTTPException) as exc:
         await get_current_active_user(
@@ -155,4 +159,4 @@ async def test_get_current_active_user_raises_not_found_when_user_does_not_exist
     # check the correct exception is raised and the mock was awaited
     assert exc.value.status_code == status.HTTP_404_NOT_FOUND
     assert exc.value.detail == "User not found."
-    mock_session.exec.return_value.first.assert_awaited_once()
+    mock_session.execute.assert_awaited_once()
