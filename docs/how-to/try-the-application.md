@@ -73,11 +73,6 @@ Use the following endpoint in the documentation:
 `/image-api/upload/`
 
 Then define the request body:
-- Choose a file
-- enter the following string for the `body` field:
-    ```
-        {"arguments": {"processing": "rotate", "angle": 45}}
-    ```
 - Choose a `png` image file. Please note that image size and type are not contrained at this time.
 - If you want one you can find one here: `/tests/date/test_image.png`
 - Enter the following string for the `body` field:
