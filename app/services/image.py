@@ -3,7 +3,7 @@ from app.schemas.image import UploadRequestBody, ImageProcessResponse
 from fastapi import UploadFile
 from typing import Callable
 from app.internal.file_handling import translate_file_to_numpy_array, write_numpy_array_to_image_file, create_file_name
-from app.internal.augmentations import shift, rotate
+from app.internal.augmentations import shift, rotate, rainbow_noise
 from app.schemas.transactions_db.unprocessed_image import UnprocessedImage
 from app.schemas.transactions_db.processed_image import ProcessedImage
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -19,6 +19,7 @@ async def process_and_save_image(
         filename_creator: Callable = create_file_name,
         shift_processor: Callable = shift,      # TODO: this is probably changing later
         rotate_processor: Callable = rotate,    # TODO: this is probably changing later
+        rainbow_noise_processor: Callable = rainbow_noise,    # TODO: this is probably changing later
     ) -> ImageProcessResponse:
     """
         Handles the core logic of processing and saving an image.
@@ -57,6 +58,12 @@ async def process_and_save_image(
         new_img_data = rotate_processor(
             image_data=image_data,
             angle=validated_data.arguments.angle
+        )
+    elif validated_data.arguments.processing == "rainbow_noise":
+        # apply rainbow_noise
+        new_img_data = rainbow_noise_processor(
+            image_data=image_data,
+            amount=validated_data.arguments.amount
         )
     # --- Save Relevant Processed Image Data ---
     processed_storage_filename = filename_creator()
