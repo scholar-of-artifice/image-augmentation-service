@@ -71,7 +71,8 @@ class UploadRequestBody(BaseModel):
     arguments: Annotated[
         Union[
             ShiftArguments,
-            RotateArguments
+            RotateArguments,
+            RainbowNoiseArguments
         ],
         Field(
             json_schema_extra={
