@@ -3,7 +3,7 @@ from app.dependency.async_dependency import get_current_active_user
 from app.schemas.image import UploadRequestBody, ImageProcessResponse
 from app.dependency.async_dependency import get_body_as_model
 from app.services.image import process_and_save_image
-from app.db.database import get_session
+from app.db.database import get_async_session
 from app.schemas.transactions_db.user import User
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -17,7 +17,7 @@ router = APIRouter()
 async def upload_endpoint(
         file: UploadFile,
         validated_data: UploadRequestBody = Depends(get_body_as_model),
-        db_session: AsyncSession = Depends(get_session),
+        db_session: AsyncSession = Depends(get_async_session),
         current_user: User = Depends(get_current_active_user)
 ):
     """
