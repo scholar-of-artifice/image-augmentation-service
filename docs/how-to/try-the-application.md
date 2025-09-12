@@ -44,7 +44,28 @@ When the application is running, you just need to go to the following URL:
 http://localhost:8000/docs
 ```
 
+#### Step 1: Make a User
+
+You need to make a user so that you can do image transformations.
+Use the following endpoint in the documentation:
+`/users-api/users`
+Open the request interface using the drop-down button.
+Then click `Try it out`.
+Then enter an `X-External-User-ID` string such as:
+```terminaloutput
+shoop-da-whoop
 ```
+You will then get a `Curl` command that you may find useful later.
+Below the curl command you will see a response body.
+If you have never used this `external-id` you should see a response body such as:
+```terminaloutput
+{
+  "id": "5e4968db-f945-4c51-889f-06c22065d7b9",
+  "external_id": "shoop-da-whoop",
+  "created_at": "2025-09-12T08:18:15.817554Z"
+}
+```
+
 
 ## Example
 Try out the following endpoint:
