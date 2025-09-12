@@ -22,9 +22,9 @@ site: https://www.docker.com
 Follow the installation instructions for your system.
 
 #### Docker Commands
-To run the application use the following command:
+To run the application (in `dev` mode) use the following command:
 ```
-docker compose up
+docker compose --profile dev up
 ```
 To stop the application use the following command:
 ```
