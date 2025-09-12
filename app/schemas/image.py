@@ -48,6 +48,21 @@ class RotateArguments(BaseModel):
     angle: Annotated[int, Field(strict=True, gt=0, lt=360)]
 
 
+class RainbowNoiseArguments(BaseModel):
+    """
+        A data model for specifying a 'shift' operation.
+
+        This model is used to define the parameters for shifting an image.
+
+        Attributes:
+            processing (Literal["shift"]): The type of operation. This field is fixed.
+            amount (int): The distance of the shift. Must be a positive integer and greater than 0.
+    """
+    # enforce specific value for processing field
+    processing: Literal["rainbow_noise"]
+    # enforce positive integer... 0 is no change
+    amount: Annotated[float, Field(strict=True, gt=0, lt=1)]
+
 class UploadRequestBody(BaseModel):
     """
     This is the request body for:
