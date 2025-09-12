@@ -80,4 +80,16 @@ Then define the request body:
 {"arguments": {"processing": "rotate", "angle": 45}}
 ```
 
+##### Example:
+
+Here are some examples of image processing.
+
+Before:
+![Screenshot 2025-09-11 at 19.02.57.png](../assets/images/Screenshot%202025-09-11%20at%2019.02.57.png)
+
+After:
+```terminaloutput
+{"arguments": {"processing": "rotate", "angle": 45}}
+```
+![e253d013-5796-4099-abcf-f20bcf368d78.png](../assets/images/e253d013-5796-4099-abcf-f20bcf368d78.png)
     
