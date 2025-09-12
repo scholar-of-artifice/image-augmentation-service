@@ -93,3 +93,9 @@ After:
 ```
 ![e253d013-5796-4099-abcf-f20bcf368d78.png](../assets/images/e253d013-5796-4099-abcf-f20bcf368d78.png)
     
+
+After:
+```terminaloutput
+{"arguments": {"processing": "rainbow_noise", "amount": 0.25}}
+```
+![1b8f49d3-920f-4309-8ff8-0c1f6525a238.png](../assets/images/1b8f49d3-920f-4309-8ff8-0c1f6525a238.png)
