@@ -1,9 +1,12 @@
 from fastapi import Header, HTTPException, status, Form, Depends
 from typing import Annotated
+
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.schemas.image import UploadRequestBody
 from app.schemas.transactions_db.user import User
 from pydantic import ValidationError
-from app.db.database import get_session
+from app.db.database import get_async_session
 from sqlmodel import Session, select
 
 
@@ -42,14 +45,15 @@ async def get_body_as_model( body: str = Form() ) -> UploadRequestBody:
 async def get_current_active_user(
         *,
         external_id: str = Depends(get_current_external_user_id),
-        db_session: Session = Depends(get_session)
+        db_session: AsyncSession = Depends(get_async_session)
 ) -> User:
     """
         Gets the external_id from the token...
         finds the user in the database...
         and returns the complete User model object.
     """
-    user = await db_session.exec(select(User).where(User.external_id == external_id)).first()
+    result = await db_session.execute(select(User).where(User.external_id == external_id))
+    user = result.scalars().first()
     if not user:
         # this protects against cases where a valid token is presented for a user who has since been deleted from our database.
         raise HTTPException(
