@@ -42,6 +42,9 @@ You just need to run the application.
 When the application is running, you just need to go to the following URL:
 ```
 http://127.0.0.1:8000/docs
+http://localhost:8000/docs
+```
+
 ```
 
 ## Example
