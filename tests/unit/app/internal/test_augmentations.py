@@ -275,8 +275,8 @@ def test_rainbow_noise_example_0_percent():
 
 def test_rainbow_noise_example_25_percent():
     """
-    GIVEN a 11x11 matrix
-    AND the amount is 90 degrees
+    GIVEN a 4x4 matrix
+    AND the amount is 25%
     WHEN rotate is called
     THEN the new matrix has the correct value
     """
