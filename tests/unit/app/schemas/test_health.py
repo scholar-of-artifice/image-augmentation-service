@@ -15,6 +15,7 @@ def test_HealthCheckResponse_has_correct_structure():
     obj = HealthCheckResponse(**data)
     assert obj.status == "OK"
 
+
 def test_HealthCheckResponse_validates_incorrect_status_string():
     """
     GIVEN a HealthCheckResponse model

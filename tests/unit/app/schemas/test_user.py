@@ -4,13 +4,14 @@ from pydantic import ValidationError
 from app.schemas.user import UserRead
 import pytest
 
+
 def test_user_read_successful_creation():
     """
-        GIVEN a uuid
-        AND a time
-        AND an external_id
-        WHEN a UserRead is created
-        THEN it saves the correct information
+    GIVEN a uuid
+    AND a time
+    AND an external_id
+    WHEN a UserRead is created
+    THEN it saves the correct information
     """
     # input variables
     user_id = uuid.uuid4()
@@ -27,13 +28,14 @@ def test_user_read_successful_creation():
     assert user.external_id == external_id
     assert user.created_at == time_created
 
+
 def test_ValidationError_when_user_read_is_missing_id():
     """
-        GIVEN no uuid
-        AND a time
-        AND an external_id
-        WHEN a UserRead is created
-        THEN it raises an ValidationError
+    GIVEN no uuid
+    AND a time
+    AND an external_id
+    WHEN a UserRead is created
+    THEN it raises an ValidationError
     """
     # input variables
     user_id = None
@@ -41,19 +43,16 @@ def test_ValidationError_when_user_read_is_missing_id():
     external_id = "auth0|some_unique_id_123"
     # create an instance of the model
     with pytest.raises(ValidationError):
-        UserRead(
-            id=user_id,
-            external_id=external_id,
-            created_at=time_created
-        )
+        UserRead(id=user_id, external_id=external_id, created_at=time_created)
+
 
 def test_ValidationError_when_user_read_is_missing_created_at():
     """
-        GIVEN a uuid
-        AND no time
-        AND an external_id
-        WHEN a UserRead is created
-        THEN it raises an ValidationError
+    GIVEN a uuid
+    AND no time
+    AND an external_id
+    WHEN a UserRead is created
+    THEN it raises an ValidationError
     """
     # input variables
     user_id = uuid.uuid4()
@@ -61,19 +60,16 @@ def test_ValidationError_when_user_read_is_missing_created_at():
     external_id = "auth0|some_unique_id_123"
     # create an instance of the model
     with pytest.raises(ValidationError):
-        UserRead(
-            id=user_id,
-            external_id=external_id,
-            created_at=time_created
-        )
+        UserRead(id=user_id, external_id=external_id, created_at=time_created)
+
 
 def test_ValidationError_when_user_read_is_missing_external_id():
     """
-        GIVEN a uuid
-        AND a time
-        AND no external_id
-        WHEN a UserRead is created
-        THEN it raises an ValidationError
+    GIVEN a uuid
+    AND a time
+    AND no external_id
+    WHEN a UserRead is created
+    THEN it raises an ValidationError
     """
     # input variables
     user_id = uuid.uuid4()
@@ -81,8 +77,4 @@ def test_ValidationError_when_user_read_is_missing_external_id():
     external_id = None
     # create an instance of the model
     with pytest.raises(ValidationError):
-        UserRead(
-            id=user_id,
-            external_id=external_id,
-            created_at=time_created
-        )
+        UserRead(id=user_id, external_id=external_id, created_at=time_created)

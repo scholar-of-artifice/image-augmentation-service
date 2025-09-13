@@ -1,8 +1,14 @@
 import pytest
 from pydantic import ValidationError
-from app.schemas.image import ShiftArguments, RotateArguments, UploadRequestBody, ImageProcessResponse
+from app.schemas.image import (
+    ShiftArguments,
+    RotateArguments,
+    UploadRequestBody,
+    ImageProcessResponse,
+)
 
 # --- ShiftArguments ---
+
 
 def test_ShiftArguments_up_is_a_valid_direction():
     data = {
@@ -161,7 +167,9 @@ def test_ShiftArguments_has_docstring():
     assert ShiftArguments.__doc__ is not None
     assert "A data model for specifying a 'shift' operation." in ShiftArguments.__doc__
 
+
 # --- RotateArguments ---
+
 
 def test_RotateArguments_values_between_1_and_359_are_valid_angle():
     """
@@ -172,10 +180,7 @@ def test_RotateArguments_values_between_1_and_359_are_valid_angle():
     """
     valid_angle = list(range(1, 360))
     for v in valid_angle:
-        data = {
-            "processing": "rotate",
-            "angle": v
-        }
+        data = {"processing": "rotate", "angle": v}
         assert RotateArguments(**data).angle == v
 
 
@@ -185,10 +190,7 @@ def test_RotateArguments_shift_is_an_invalid_processing_type():
     WHEN a RotateArguments is created
     THEN it should raise an error
     """
-    data = {
-        "processing": "shift",
-        "angle": 42
-    }
+    data = {"processing": "shift", "angle": 42}
     with pytest.raises(ValidationError):
         RotateArguments(**data)
 
@@ -199,10 +201,7 @@ def test_RotateArguments_negative_number_is_invalid_angle():
     WHEN a RotateArguments is created
     THEN it should raise an error
     """
-    data = {
-        "processing": "rotate",
-        "angle": -42
-    }
+    data = {"processing": "rotate", "angle": -42}
     with pytest.raises(ValidationError):
         RotateArguments(**data)
 
@@ -213,10 +212,7 @@ def test_RotateArguments_0_is_invalid_angle():
     WHEN a RotateArguments is created
     THEN it should raise an error
     """
-    data = {
-        "processing": "rotate",
-        "angle": 0
-    }
+    data = {"processing": "rotate", "angle": 0}
     with pytest.raises(ValidationError):
         RotateArguments(**data)
 
@@ -227,29 +223,22 @@ def test_RotateArguments_360_is_invalid_angle():
     WHEN a RotateArguments is created
     THEN it should raise an error
     """
-    data = {
-        "processing": "rotate",
-        "angle": 360
-    }
+    data = {"processing": "rotate", "angle": 360}
     with pytest.raises(ValidationError):
         RotateArguments(**data)
 
+
 # --- UploadRequestBody ---
+
 
 def test_UploadRequestBody_is_valid_when_arguments_are_for_shift():
     """
-        GIVEN a valid dictionary for shift
-        WHEN an UploadRequestBody is constructed
-        THEN the expected data is stored
+    GIVEN a valid dictionary for shift
+    WHEN an UploadRequestBody is constructed
+    THEN the expected data is stored
     """
     # a valid dictionary representing the request body
-    data = {
-        "arguments": {
-            "processing": "shift",
-            "direction": "up",
-            "distance": 42
-        }
-    }
+    data = {"arguments": {"processing": "shift", "direction": "up", "distance": 42}}
     # the UploadRequestBody is constructed from the dictionary
     result = UploadRequestBody(**data)
     # the model contains the correct data and types
@@ -259,19 +248,15 @@ def test_UploadRequestBody_is_valid_when_arguments_are_for_shift():
     assert result.arguments.direction == "up"
     assert result.arguments.distance == 42
 
+
 def test_UploadRequestBody_is_valid_when_arguments_are_for_rotate():
     """
-        GIVEN a valid dictionary for rotate
-        WHEN an UploadRequestBody is constructed
-        THEN the expected data is stored
+    GIVEN a valid dictionary for rotate
+    WHEN an UploadRequestBody is constructed
+    THEN the expected data is stored
     """
     # a valid dictionary representing the request body
-    data = {
-        "arguments": {
-            "processing": "rotate",
-            "angle": 42
-        }
-    }
+    data = {"arguments": {"processing": "rotate", "angle": 42}}
     # the UploadRequestBody is constructed from the dictionary
     result = UploadRequestBody(**data)
     # the model contains the correct data and types
@@ -280,30 +265,28 @@ def test_UploadRequestBody_is_valid_when_arguments_are_for_rotate():
     assert result.arguments.processing == "rotate"
     assert result.arguments.angle == 42
 
+
 def test_UploadRequestBody_is_invalid_when_arguments_not_part_of_any_model():
     """
-        GIVEN an invalid dictionary for any argument is created
-        WHEN an UploadRequestBody is constructed
-        THEN an exception is raised
+    GIVEN an invalid dictionary for any argument is created
+    WHEN an UploadRequestBody is constructed
+    THEN an exception is raised
     """
-    data = {
-        "arguments": {
-            "what?": "goblins",
-            "there->": 30.235
-        }
-    }
+    data = {"arguments": {"what?": "goblins", "there->": 30.235}}
     with pytest.raises(ValidationError):
         UploadRequestBody(**data)
 
+
 # --- ImageProcessResponse ---
+
 
 def test_ImageProcessResponse_is_valid_with_shift_arguments():
     """
-        GIVEN a valid UploadRequestBody with ShiftArguments
-        AND a valid original_stored_file_path
-        AND a valid new_stored_file_path
-        WHEN an ImageProcessResponse is constructed
-        THEN the expected data is stored correctly
+    GIVEN a valid UploadRequestBody with ShiftArguments
+    AND a valid original_stored_file_path
+    AND a valid new_stored_file_path
+    WHEN an ImageProcessResponse is constructed
+    THEN the expected data is stored correctly
     """
     # create valid input data with ShiftArguments
     original_path = "/unprocessed_data/image.jpg"
@@ -314,7 +297,7 @@ def test_ImageProcessResponse_is_valid_with_shift_arguments():
     response = ImageProcessResponse(
         original_stored_file_path=original_path,
         new_stored_file_path=new_path,
-        body=upload_request_body
+        body=upload_request_body,
     )
     # check that the data is stored correctly
     assert response.original_stored_file_path == original_path
@@ -322,13 +305,14 @@ def test_ImageProcessResponse_is_valid_with_shift_arguments():
     assert response.body == upload_request_body
     assert isinstance(response.body.arguments, ShiftArguments)
 
+
 def test_ImageProcessResponse_is_valid_with_rotate_arguments():
     """
-        GIVEN a valid UploadRequestBody with RotateArguments
-        AND a valid original_stored_file_path
-        AND a valid new_stored_file_path
-        WHEN an ImageProcessResponse is constructed
-        THEN the expected data is stored correctly
+    GIVEN a valid UploadRequestBody with RotateArguments
+    AND a valid original_stored_file_path
+    AND a valid new_stored_file_path
+    WHEN an ImageProcessResponse is constructed
+    THEN the expected data is stored correctly
     """
     # create valid input data with RotateArguments
     original_path = "/unprocessed_data/image.jpg"
@@ -339,7 +323,7 @@ def test_ImageProcessResponse_is_valid_with_rotate_arguments():
     response = ImageProcessResponse(
         original_stored_file_path=original_path,
         new_stored_file_path=new_path,
-        body=upload_request_body
+        body=upload_request_body,
     )
     # check that the data is stored correctly
     assert response.original_stored_file_path == original_path
