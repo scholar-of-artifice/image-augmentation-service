@@ -1,12 +1,10 @@
 from app.schemas.transactions_db.user import User
 from app.schemas.transactions_db.unprocessed_image import UnprocessedImage
-from app.schemas.transactions_db.processed_image import ProcessedImage
 from app.schemas.transactions_db.job_status import JobStatus
 from app.schemas.transactions_db.processing_job import ProcessingJob
 from sqlmodel import Session
 from datetime import datetime, timezone
 import uuid
-import pytest
 
 def test_processing_job_is_valid(db_session: Session):
     """

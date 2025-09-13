@@ -1,4 +1,3 @@
-from app.routers.user import router
 from fastapi.testclient import TestClient
 from app.schemas.transactions_db.user import User
 from sqlmodel import Session
