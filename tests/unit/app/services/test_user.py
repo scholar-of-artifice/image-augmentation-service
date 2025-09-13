@@ -1,30 +1,33 @@
 from sqlmodel import Session
 from app.schemas.transactions_db.user import User
-from app.services.user import get_user_by_external_id, create_user, delete_user, UserNotFound, PermissionDenied
+from app.services.user import (
+    get_user_by_external_id,
+    create_user,
+    delete_user,
+    UserNotFound,
+    PermissionDenied,
+)
 import uuid
 import pytest
+
 
 # --- get_user_by_external_id ---
 def test_get_user_by_external_id_found(mocker):
     """
-        GIVEN an external_id that exists in the database
-        AND a mock database session
-        WHEN get_user_by_external_id is called
-        THEN it returns the correct User object
+    GIVEN an external_id that exists in the database
+    AND a mock database session
+    WHEN get_user_by_external_id is called
+    THEN it returns the correct User object
     """
     # mock database session
     mock_session = mocker.MagicMock(spec=Session)
     # create sample user that the mock database will "return"
-    sample_user = User(
-        id="a-real-uuid",
-        external_id="user-abc-123"
-    )
+    sample_user = User(id="a-real-uuid", external_id="user-abc-123")
     # configure the mock query chain to return the sample user
     mock_session.exec.return_value.first.return_value = sample_user
     # call the service function with the mock session
     result = get_user_by_external_id(
-        db_session=mock_session,
-        external_id="user-abc-123"
+        db_session=mock_session, external_id="user-abc-123"
     )
     # check the results
     assert result is not None
@@ -32,12 +35,13 @@ def test_get_user_by_external_id_found(mocker):
     assert result == sample_user
     mock_session.exec.return_value.first.assert_called_once()
 
+
 def test_get_user_by_external_id_not_found(mocker):
     """
-        GIVEN an external_id that does not exist in the database
-        AND a mock database session
-        WHEN get_user_by_external_id is called
-        THEN it returns None
+    GIVEN an external_id that does not exist in the database
+    AND a mock database session
+    WHEN get_user_by_external_id is called
+    THEN it returns None
     """
     # mock database session
     mock_session = mocker.MagicMock(spec=Session)
@@ -45,32 +49,30 @@ def test_get_user_by_external_id_not_found(mocker):
     mock_session.exec.return_value.first.return_value = None
     # call the function
     result = get_user_by_external_id(
-        db_session=mock_session,
-        external_id="user-does-not-exist"
+        db_session=mock_session, external_id="user-does-not-exist"
     )
     # check the results
     assert result is None
     mock_session.exec.return_value.first.assert_called_once()
 
+
 # --- create_user ---
+
 
 def test_create_user(mocker):
     """
-        GIVEN a valid external_id
-        AND a mock database session
-        WHEN create_user is called
-        THEN it calls the session's add, commit, and refresh methods
-        AND returns the newly created User object
+    GIVEN a valid external_id
+    AND a mock database session
+    WHEN create_user is called
+    THEN it calls the session's add, commit, and refresh methods
+    AND returns the newly created User object
     """
     # mock database session
     mock_session = mocker.MagicMock(spec=Session)
     # make input variable
     external_id = "new-user-456"
     # call the function
-    new_user = create_user(
-        db_session=mock_session,
-        external_id=external_id
-    )
+    new_user = create_user(db_session=mock_session, external_id=external_id)
     # check that a User object was created with the correct external_id
     assert isinstance(new_user, User)
     assert new_user.external_id == external_id
@@ -79,14 +81,16 @@ def test_create_user(mocker):
     mock_session.commit.assert_called_once()
     mock_session.refresh.assert_called_once_with(new_user)
 
+
 # --- delete_user ---
+
 
 def test_delete_user_success(mocker):
     """
-        GIVEN an existing user ID
-        AND the correct matching external_id for that user
-        WHEN delete_user is called
-        THEN the user is deleted and no exception is raised
+    GIVEN an existing user ID
+    AND the correct matching external_id for that user
+    WHEN delete_user is called
+    THEN the user is deleted and no exception is raised
     """
     # mock database session
     mock_session = mocker.MagicMock(spec=Session)
@@ -108,11 +112,12 @@ def test_delete_user_success(mocker):
     mock_session.delete.assert_called_once_with(sample_user)
     mock_session.commit.assert_called_once()
 
+
 def test_delete_user_raises_user_not_found(mocker):
     """
-        GIVEN a user_id that does not exist
-        WHEN delete_user is called
-        THEN a UserNotFound exception is raised
+    GIVEN a user_id that does not exist
+    WHEN delete_user is called
+    THEN a UserNotFound exception is raised
     """
     # mock database session
     mock_session = mocker.MagicMock(spec=Session)
@@ -131,12 +136,13 @@ def test_delete_user_raises_user_not_found(mocker):
     mock_session.delete.assert_not_called()
     mock_session.commit.assert_not_called()
 
+
 def test_delete_user_raises_permission_denied(mocker):
     """
-        GIVEN an existing user's ID
-        AND an external_id that does NOT match the user's external_id
-        WHEN delete_user is called
-        THEN a PermissionDenied exception is raised
+    GIVEN an existing user's ID
+    AND an external_id that does NOT match the user's external_id
+    WHEN delete_user is called
+    THEN a PermissionDenied exception is raised
     """
     # mock database session
     mock_session = mocker.MagicMock(spec=Session)
