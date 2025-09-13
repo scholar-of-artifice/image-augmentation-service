@@ -6,21 +6,17 @@ import uuid
 
 # CREATE USER
 
+
 def test_create_user_success(client: TestClient):
     """
-        GIVEN an external_user_id
-        WHEN the POST request is made to create a new user
-        THEN check the response is valid
+    GIVEN an external_user_id
+    WHEN the POST request is made to create a new user
+    THEN check the response is valid
     """
     # define the header for a new, unique user
-    headers = {
-        "X-External-User-ID": "new-user-123"
-    }
+    headers = {"X-External-User-ID": "new-user-123"}
     # make the POST request to the endpoint
-    response = client.post(
-        url="/users-api/users",
-        headers=headers
-    )
+    response = client.post(url="/users-api/users", headers=headers)
     # check the results
     assert response.status_code == status.HTTP_201_CREATED
     data = response.json()
@@ -30,52 +26,54 @@ def test_create_user_success(client: TestClient):
     assert "created_at" in data
     assert data["created_at"] is not None
 
+
 def test_create_user_raises_conflict_when_user_already_exists(client: TestClient):
     """
-        GIVEN an external_id
-        AND a user with the same external_id already exists
-        WHEN the POST request is made to create a new user
-        THEN it returns 409
+    GIVEN an external_id
+    AND a user with the same external_id already exists
+    WHEN the POST request is made to create a new user
+    THEN it returns 409
     """
     # create a user
-    headers = {
-        "X-External-User-ID": "existing-user-456"
-    }
-    response = client.post(url= "/users-api/users", headers=headers)
+    headers = {"X-External-User-ID": "existing-user-456"}
+    response = client.post(url="/users-api/users", headers=headers)
     # this first call should succeed
     assert response.status_code == status.HTTP_201_CREATED
     # attempt to create the same user again
-    response = client.post(url= "/users-api/users", headers=headers)
+    response = client.post(url="/users-api/users", headers=headers)
     # check for the conflict error
     assert response.status_code == status.HTTP_409_CONFLICT
     assert response.json() == {
         "detail": "User with external_id 'existing-user-456' already exists."
     }
 
-def test_create_user_raises_unauthorized_when_user_is_not_authorized(client: TestClient):
+
+def test_create_user_raises_unauthorized_when_user_is_not_authorized(
+    client: TestClient,
+):
     """
-        GIVEN an external_id
-        AND a user with the same external_id already exists
-        WHEN the POST request is made to create a new user
-        THEN it returns 401
+    GIVEN an external_id
+    AND a user with the same external_id already exists
+    WHEN the POST request is made to create a new user
+    THEN it returns 401
     """
     # create a user
-    headers = {
-        "X-External-User-ID": ""
-    }
+    headers = {"X-External-User-ID": ""}
     # make the request
-    response = client.post(url= "/users-api/users", headers=headers)
+    response = client.post(url="/users-api/users", headers=headers)
     # check the failure
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
-    assert response.json() == {'detail': 'Missing X-External-User-ID header'}
+    assert response.json() == {"detail": "Missing X-External-User-ID header"}
+
 
 # SIGN IN USER
 
+
 def test_sign_in_user_success(client: TestClient, db_session: Session):
     """
-        GIVEN an active user exists in the database
-        WHEN a POST request is made to /sign-in with the same external_id
-        THEN it returns 200 OK with the users details
+    GIVEN an active user exists in the database
+    WHEN a POST request is made to /sign-in with the same external_id
+    THEN it returns 200 OK with the users details
     """
     # create an active user in the database
     external_id = "auth|active-user-123"
@@ -92,11 +90,14 @@ def test_sign_in_user_success(client: TestClient, db_session: Session):
     assert data["id"] == str(active_user.id)
     assert data["external_id"] == external_id
 
-def test_sign_in_user_is_not_found_if_external_id_does_not_exist(client: TestClient, db_session: Session):
+
+def test_sign_in_user_is_not_found_if_external_id_does_not_exist(
+    client: TestClient, db_session: Session
+):
     """
-        GIVEN an active user exists in the database
-        WHEN a POST request is made to /sign-in with the same external_id
-        THEN it returns 200 OK with the users details
+    GIVEN an active user exists in the database
+    WHEN a POST request is made to /sign-in with the same external_id
+    THEN it returns 200 OK with the users details
     """
     # create an active user in the database
     external_id = "auth|active-user-123"
@@ -105,28 +106,33 @@ def test_sign_in_user_is_not_found_if_external_id_does_not_exist(client: TestCli
     response = client.post(url="/users-api/sign-in", headers=headers)
     # check for a successful response and correct data
     assert response.status_code == status.HTTP_404_NOT_FOUND
-    assert response.json() == { "detail": "User not found. Please create an account first." }
+    assert response.json() == {
+        "detail": "User not found. Please create an account first."
+    }
+
 
 def test_sign_in_user_unauthorized_missing_header(client: TestClient):
     """
-        GIVEN no authentication header is provided
-        WHEN a POST request is made to /sign-in
-        THEN it returns 401 Unauthorized
+    GIVEN no authentication header is provided
+    WHEN a POST request is made to /sign-in
+    THEN it returns 401 Unauthorized
     """
     # make a request with no headers
     response = client.post(url="/users-api/sign-in")
     # check for the 401 error from the security dependency
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
-    assert response.json() == {'detail': 'Missing X-External-User-ID header'}
+    assert response.json() == {"detail": "Missing X-External-User-ID header"}
+
 
 # DELETE USER
 
+
 def test_delete_user_success(client: TestClient, db_session: Session):
     """
-        GIVEN a user exists in the database
-        AND a request to delete a user_id with a matching external_id
-        WHEN the DELETE request is made
-        THEN it returns 204
+    GIVEN a user exists in the database
+    AND a request to delete a user_id with a matching external_id
+    WHEN the DELETE request is made
+    THEN it returns 204
     """
     # create a user in the database to get a valid user_id
     external_id = "auth|user_to_delete_123"
@@ -139,8 +145,7 @@ def test_delete_user_success(client: TestClient, db_session: Session):
     headers = {"X-External-User-ID": "auth|user_to_delete_123"}
     # make the authorized DELETE request.
     response = client.delete(
-        url=f"/users-api/users/{user_id_to_delete}",
-        headers=headers
+        url=f"/users-api/users/{user_id_to_delete}", headers=headers
     )
     # check for a successful response and confirm deletion.
     assert response.status_code == status.HTTP_204_NO_CONTENT
@@ -148,12 +153,13 @@ def test_delete_user_success(client: TestClient, db_session: Session):
     user_in_db = db_session.get(User, user_id_to_delete)
     assert user_in_db is None
 
+
 def test_delete_user_not_found(client: TestClient, db_session: Session):
     """
-        GIVEN a user does not exist in the database
-        AND a request to delete a user_id with an external_id
-        WHEN the DELETE request is made
-        THEN it returns 404
+    GIVEN a user does not exist in the database
+    AND a request to delete a user_id with an external_id
+    WHEN the DELETE request is made
+    THEN it returns 404
     """
     external_id = "auth|user_to_delete_123"
     user_id_to_delete = uuid.uuid4()
@@ -161,20 +167,20 @@ def test_delete_user_not_found(client: TestClient, db_session: Session):
     headers = {"X-External-User-ID": "auth|user_to_delete_123"}
     # make the authorized DELETE request.
     response = client.delete(
-        url=f"/users-api/users/{user_id_to_delete}",
-        headers=headers
+        url=f"/users-api/users/{user_id_to_delete}", headers=headers
     )
     # check for a 404 response.
     assert response.status_code == status.HTTP_404_NOT_FOUND
     # check the detail message for clarity.
     assert response.json()["detail"] == f"User with id '{user_id_to_delete}' not found."
 
+
 def test_delete_user_forbidden(client: TestClient, db_session: Session):
     """
-        GIVEN a user A does exist in the database
-        AND a user B does exist in the database
-        WHEN B requests to DELETE A
-        THEN it returns 403
+    GIVEN a user A does exist in the database
+    AND a user B does exist in the database
+    WHEN B requests to DELETE A
+    THEN it returns 403
     """
     # create user A
     user_a = User(external_id="auth|user_to_delete_123")
@@ -189,14 +195,13 @@ def test_delete_user_forbidden(client: TestClient, db_session: Session):
     # craft the request
     headers = {"X-External-User-ID": "auth|user_to_keep_456"}
     # make the authorized DELETE request.
-    response = client.delete(
-        url=f"/users-api/users/{user_a.id}",
-        headers=headers
-    )
+    response = client.delete(url=f"/users-api/users/{user_a.id}", headers=headers)
     # check for a 404 response.
     assert response.status_code == status.HTTP_403_FORBIDDEN
     # check the detail message for clarity.
-    assert response.json()["detail"] == "You do not have permission to delete this user."
+    assert (
+        response.json()["detail"] == "You do not have permission to delete this user."
+    )
     # verify the users are not deleted from the database.
     user_in_db = db_session.get(User, user_a.id)
     assert user_in_db is not None

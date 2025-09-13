@@ -6,22 +6,23 @@ from sqlmodel import Session
 from datetime import datetime, timezone
 import uuid
 
+
 def test_processing_job_is_valid(db_session: Session):
     """
-        GIVEN a User and an UnprocessedImage exist in the database
-        AND a valid ProcessingJob entry is created for them
-        WHEN the ProcessingJob is inserted into the database
-        THEN it persists correctly with the correct default values
+    GIVEN a User and an UnprocessedImage exist in the database
+    AND a valid ProcessingJob entry is created for them
+    WHEN the ProcessingJob is inserted into the database
+    THEN it persists correctly with the correct default values
     """
     # create a user and commit
-    user = User(external_id='user-ext-1234')
+    user = User(external_id="user-ext-1234")
     db_session.add(user)
     db_session.commit()
     # create an unprocessed_image and commit
     unprocessed_image = UnprocessedImage(
         user_id=user.id,
         original_filename="vacation_pic.png",
-        storage_filename="some-storage-name.png"
+        storage_filename="some-storage-name.png",
     )
     db_session.add(unprocessed_image)
     db_session.commit()

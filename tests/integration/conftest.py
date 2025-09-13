@@ -12,28 +12,31 @@ from httpx import AsyncClient, ASGITransport
 
 # --- SYNCHRONOUS FIXTURES ---
 
+
 @pytest.fixture(scope="session")
 def engine():
     """
-        Creates a SQLAlchemy engine instance
+    Creates a SQLAlchemy engine instance
     """
     return create_engine(str(settings.DATABASE_URL))
+
 
 @pytest.fixture(scope="session")
 def setup_database(engine):
     """
-        Create and drop all tables once for the entire test session.
+    Create and drop all tables once for the entire test session.
     """
     SQLModel.metadata.create_all(engine)
     yield
     SQLModel.metadata.drop_all(engine)
 
+
 @pytest.fixture(scope="function")
 def db_session(engine, setup_database):
     """
-        --- FIXTURE FOR TESTING DATABASE MODELS ---
-        Provides a SQLAlchemy session to the test database.
-        This fixture will be created once per test function.
+    --- FIXTURE FOR TESTING DATABASE MODELS ---
+    Provides a SQLAlchemy session to the test database.
+    This fixture will be created once per test function.
     """
     connection = engine.connect()
     transaction = connection.begin()
@@ -46,15 +49,17 @@ def db_session(engine, setup_database):
         session.close()
         connection.close()
 
+
 @pytest.fixture(scope="function")
 def client(db_session):
     """
-        --- FIXTURE FOR TESTING API ---
-        A fixture that provides a TestClient with a transactional database session.
+    --- FIXTURE FOR TESTING API ---
+    A fixture that provides a TestClient with a transactional database session.
     """
+
     def override_get_session():
         """
-            A dependency override that provides a session for one test.
+        A dependency override that provides a session for one test.
         """
         yield db_session
 
@@ -63,12 +68,14 @@ def client(db_session):
     app.dependency_overrides.clear()
     return
 
+
 # --- ASYNCHRONOUS FIXTURES ---
+
 
 @pytest_asyncio.fixture(scope="session")
 def async_engine():
     """
-        creates an asyncio-compatible SQLAlchemy engine instance.
+    creates an asyncio-compatible SQLAlchemy engine instance.
     """
     # use an async-compatible driver in the URL, e.g., postgresql+psycopg
     async_db_url = str(settings.DATABASE_URL).replace(
@@ -76,10 +83,11 @@ def async_engine():
     )
     return create_async_engine(async_db_url)
 
+
 @pytest_asyncio.fixture(scope="session")
 async def setup_database_async(async_engine):
     """
-        Creates and drops all tables once for the entire test session.
+    Creates and drops all tables once for the entire test session.
     """
     async with async_engine.begin() as connection:
         await connection.run_sync(SQLModel.metadata.create_all)
@@ -87,18 +95,17 @@ async def setup_database_async(async_engine):
     async with async_engine.begin() as connection:
         await connection.run_sync(SQLModel.metadata.drop_all)
 
+
 @pytest_asyncio.fixture(scope="function")
 async def async_db_session(async_engine, setup_database_async):
     """
-        create fixture for async database operations.
-        provides a transactional SQLAlchemy AsyncSession to the test database.
-        this fixture will be created once per test function.
+    create fixture for async database operations.
+    provides a transactional SQLAlchemy AsyncSession to the test database.
+    this fixture will be created once per test function.
     """
     # the `sessionmaker` is configured to use the AsyncSession class
     async_session_maker = sessionmaker(
-        bind=async_engine,
-        class_=AsyncSession,
-        expire_on_commit=False
+        bind=async_engine, class_=AsyncSession, expire_on_commit=False
     )
 
     async with async_session_maker() as session:
@@ -109,12 +116,14 @@ async def async_db_session(async_engine, setup_database_async):
                 # The transaction is automatically rolled back by the context manager
                 await session.rollback()
 
+
 @pytest_asyncio.fixture(scope="function")
 async def async_client(async_db_session):
     """
-        fixture for testing async API
-        provides an AsyncClient with a transactional async database session.
+    fixture for testing async API
+    provides an AsyncClient with a transactional async database session.
     """
+
     async def override_get_session_async():
         """
         A dependency override that provides an async session for one test.

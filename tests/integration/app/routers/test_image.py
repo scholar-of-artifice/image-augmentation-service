@@ -8,40 +8,42 @@ from app.schemas.image import ImageProcessResponse, ShiftArguments, UploadReques
 
 pytestmark = pytest.mark.asyncio
 
+
 async def test_upload_endpoint_success(mocker, async_client):
     """
-        GIVEN a valid file
-        AND a valid request body
-        WHEN a POST request is made to /upload
-        THEN a 200 OK response is returned
+    GIVEN a valid file
+    AND a valid request body
+    WHEN a POST request is made to /upload
+    THEN a 200 OK response is returned
     """
     # define a fake user and a simple override function
     fake_user = User(id=1, external_id="fake-test-user-id")
+
     async def override_get_current_active_user():
         return fake_user
+
     # apply the override to the main app object
     app.dependency_overrides[get_current_active_user] = override_get_current_active_user
     # Use a try...finally block to ensure cleanup
     try:
         # input values
-        shift_args = ShiftArguments(processing='shift', direction='right', distance=25)
+        shift_args = ShiftArguments(processing="shift", direction="right", distance=25)
         request_body = UploadRequestBody(arguments=shift_args)
         #
         expected_response = ImageProcessResponse(
             original_stored_file_path="mock/orginal.png",
             new_stored_file_path="mock/new.png",
-            body=request_body
+            body=request_body,
         )
         #
         mocked_service = mocker.patch(
-            'app.routers.image.process_and_save_image',
-            return_value=expected_response
+            "app.routers.image.process_and_save_image", return_value=expected_response
         )
         #
         response = await async_client.post(
             url="/image-api/upload/",
-            files={"file": ('test.png', b'fake_image_bytes', 'image/png')},
-            data={'body': request_body.model_dump_json()}
+            files={"file": ("test.png", b"fake_image_bytes", "image/png")},
+            data={"body": request_body.model_dump_json()},
         )
         assert response.status_code == status.HTTP_200_OK
         assert response.json() == expected_response.model_dump()
@@ -53,15 +55,17 @@ async def test_upload_endpoint_success(mocker, async_client):
 
 async def test_upload_endpoint_missing_body_fails_with_422(mocker, async_client):
     """
-        GIVEN a file is provided
-        BUT the request body is missing
-        WHEN a POST request is made to /upload
-        THEN a 422 Unprocessable Entity response is returned
+    GIVEN a file is provided
+    BUT the request body is missing
+    WHEN a POST request is made to /upload
+    THEN a 422 Unprocessable Entity response is returned
     """
     # define a fake user and a simple override function
     fake_user = User(id=1, external_id="fake-test-user-id")
+
     async def override_get_current_active_user():
         return fake_user
+
     # apply the override to the main app object
     app.dependency_overrides[get_current_active_user] = override_get_current_active_user
     # Use a try...finally block to ensure cleanup
@@ -73,7 +77,7 @@ async def test_upload_endpoint_missing_body_fails_with_422(mocker, async_client)
         # Note the missing 'data' parameter in the request
         response = await async_client.post(
             url="/image-api/upload/",
-            files={"file": ('test.png', b'fake_image_bytes', 'image/png')},
+            files={"file": ("test.png", b"fake_image_bytes", "image/png")},
         )
         # Assert that FastAPI caught the missing data and returned a 422
         assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
@@ -81,34 +85,37 @@ async def test_upload_endpoint_missing_body_fails_with_422(mocker, async_client)
         # this will always run and ensure a clean state
         app.dependency_overrides.clear()
 
+
 async def no_test_upload_endpoint_fails_on_service_error_with_500(mocker, async_client):
     # TODO: fix this test. not passing for some unknown reason.
     """
-        GIVEN a valid request
-        AND the underlying service function raises an unexpected exception
-        WHEN a POST request is made to /upload
-        THEN a 500 Internal Server Error response is returned
+    GIVEN a valid request
+    AND the underlying service function raises an unexpected exception
+    WHEN a POST request is made to /upload
+    THEN a 500 Internal Server Error response is returned
     """
     # create a fake user and a dependency override
     fake_user = User(id=1, external_id="fake-test-user-id")
+
     async def override_get_current_active_user():
         return fake_user
+
     app.dependency_overrides[get_current_active_user] = override_get_current_active_user
     try:
         # create a valid request body
-        shift_args = ShiftArguments(processing='shift', direction='right', distance=25)
+        shift_args = ShiftArguments(processing="shift", direction="right", distance=25)
         request_body = UploadRequestBody(arguments=shift_args)
         # create the service function is mocked to raise an error
         mocked_service = mocker.patch(
-            'app.routers.image.process_and_save_image',
+            "app.routers.image.process_and_save_image",
             new_callable=AsyncMock,
-            side_effect=Exception("A simulated service layer error occurred")
+            side_effect=Exception("A simulated service layer error occurred"),
         )
         # call the function
         response = await async_client.post(
             url="/image-api/upload/",
-            files={"file": ('test.png', b'fake_image_bytes', 'image/png')},
-            data={'body': request_body.model_dump_json()}
+            files={"file": ("test.png", b"fake_image_bytes", "image/png")},
+            data={"body": request_body.model_dump_json()},
         )
         # check the response is a 500 error
         assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
