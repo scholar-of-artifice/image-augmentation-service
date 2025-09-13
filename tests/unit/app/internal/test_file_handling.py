@@ -49,7 +49,7 @@ def test_create_file_name_returns_a_non_empty_string():
         THEN it should return a non-empty string
     """
     calculated_file_name = create_file_name()
-    assert create_file_name() != 'wow_a_file.png'
+    assert calculated_file_name != 'wow_a_file.png'
 
 def test_create_file_name_returns_a_nonspecific_string():
     """
@@ -58,7 +58,7 @@ def test_create_file_name_returns_a_nonspecific_string():
         THEN it should return a non-empty string
     """
     calculated_file_name = create_file_name()
-    assert create_file_name() != 'wow_an_oddly_specific_filename.png'
+    assert calculated_file_name != 'wow_an_oddly_specific_filename.png'
 
 def test_create_file_name_returns_a_different_values_per_function_call():
     """
