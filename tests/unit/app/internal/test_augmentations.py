@@ -255,6 +255,24 @@ def test_rotate_angle_of_string_raises_exception():
         rotate(input_image, angle="45")
 
 
+def test_rainbow_noise_example_0_percent():
+    """
+    GIVEN a 11x11 matrix
+    AND the amount is 90 degrees
+    WHEN rotate is called
+    THEN the new matrix has the correct value
+    """
+    input_image = numpy.array(
+        [[1, 0, 0, 0], [0, 2, 0, 0], [0, 0, 3, 0], [0, 0, 0, 4]], dtype=numpy.uint8
+    )
+    # this is a random process so we do not check arrays directly
+    calculated_output = rainbow_noise(input_image, amount=0.0)
+    difference = numpy.abs(calculated_output - input_image)
+    number_of_changed_pixels = numpy.count_nonzero(difference)
+    assert numpy.array_equal(number_of_changed_pixels, 0)
+    assert numpy.array_equal(calculated_output, input_image)
+
+
 def test_rainbow_noise_example_25_percent():
     """
     GIVEN a 11x11 matrix
