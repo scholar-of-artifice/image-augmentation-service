@@ -1,8 +1,10 @@
 import uuid
-from sqlmodel import SQLModel, Field, Relationship
-from datetime import datetime, timezone
-from typing import Optional, List
+from datetime import UTC, datetime
+from typing import Optional
+
 from sqlalchemy import Column, DateTime
+from sqlmodel import Field, Relationship, SQLModel
+
 
 class UnprocessedImage(SQLModel, table=True):
     """
@@ -42,9 +44,9 @@ class UnprocessedImage(SQLModel, table=True):
     )
     # Question: when was this image created?
     # the timestamp for when this image was uploaded
-    created_at: Optional[datetime] = Field(
+    created_at: datetime | None = Field(
         # automatically sets the creation time to the current time in UTC when a new user is added
-        default_factory=lambda: datetime.now(timezone.utc),
+        default_factory=lambda: datetime.now(UTC),
         # this tells SQLAlchemy to use a timezone-aware database column type
         sa_column=Column(
             # this ensures the database stores the date, time and timezone
@@ -72,7 +74,7 @@ class UnprocessedImage(SQLModel, table=True):
     # <--- ...Keep this code together
     # --- Table Relationships ---
     # an unprocessed image is related to multiple processed_images
-    processed_images: List["ProcessedImage"] = Relationship(
+    processed_images: list["ProcessedImage"] = Relationship(
         # 'back_populates' links this relationship to the 'unprocessed_image' field on the ProcessedImage model.
         back_populates="unprocessed_image"
     )
