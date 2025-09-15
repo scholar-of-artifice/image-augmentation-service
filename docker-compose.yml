@@ -30,6 +30,8 @@ services:
   # The FastAPI Application Service
   # the service for testing
   api-dev:
+    profiles:
+      - dev
     # inherit all settings from our x-api-base block
     <<: *api-base
     # Give the built image a name and tag
@@ -42,10 +44,10 @@ services:
     ports:
       - "8000:8000"
     command: uv run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-    profiles:
-      - dev
   # the service for testing
   api-test:
+    profiles:
+      - test
     # inherit all settings from our x-api-base block
     <<: *api-base
     # Give the built image a name and tag
@@ -64,10 +66,10 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${TEST_DATABASE_HOSTNAME}:5432/${POSTGRES_DB}
-    profiles:
-      - test
   # the service for production
   api-prod:
+    profiles:
+      - prod
     # inherit all settings from our x-api-base block
     <<: *api-base
     # Give the built image a name and tag
@@ -83,8 +85,6 @@ services:
     volumes:
       - unprocessed_image_data:/image-augmentation-service/data/images/unprocessed
       - processed_image_data:/image-augmentation-service/data/images/processed
-    profiles:
-      - prod
   # the PostgreSQL database service is shared by all environments
   db:
     # The PostgreSQL Database Service to store transaction information
