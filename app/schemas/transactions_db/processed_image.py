@@ -1,8 +1,10 @@
 import uuid
-from sqlmodel import SQLModel, Field,  Relationship
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Optional
+
 from sqlalchemy import Column, DateTime
+from sqlmodel import Field, Relationship, SQLModel
+
 
 class ProcessedImage(SQLModel, table=True):
     """
@@ -30,9 +32,9 @@ class ProcessedImage(SQLModel, table=True):
     )
     # Question: when was this image created?
     # this is a timestamp of when this image was created
-    created_at: Optional[datetime] = Field(
+    created_at: datetime | None = Field(
         # automatically sets the creation time to the current time in UTC when a new user is added
-        default_factory=lambda: datetime.now(timezone.utc),
+        default_factory=lambda: datetime.now(UTC),
         # This tells SQLAlchemy to use a timezone-aware database column type
         sa_column=Column(
             # this ensures the database stores the date, time and timezone
