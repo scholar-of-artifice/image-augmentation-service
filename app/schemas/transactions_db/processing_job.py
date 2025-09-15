@@ -1,11 +1,14 @@
 
-from sqlmodel import SQLModel, Field, Relationship
-from datetime import datetime, timezone
-from typing import Optional, Dict, Any
+import uuid
+from datetime import UTC, datetime
+from typing import Any, Optional
+
 from sqlalchemy import Column, DateTime, Enum
 from sqlalchemy.dialects.postgresql import JSONB
+from sqlmodel import Field, Relationship, SQLModel
+
 from .job_status import JobStatus
-import uuid
+
 
 class ProcessingJob(SQLModel, table=True):
     """
@@ -24,7 +27,7 @@ class ProcessingJob(SQLModel, table=True):
         nullable=False,
     )
     # Question: what was the request?
-    upload_request_body: Dict[str, Any] = Field(
+    upload_request_body: dict[str, Any] = Field(
         sa_column=Column(
             # postgres has a jsonb string
             # reference: https://www.postgresql.org/docs/current/datatype-json.html
@@ -44,8 +47,8 @@ class ProcessingJob(SQLModel, table=True):
         default=JobStatus.PENDING
     )
     # Question: when was this request made?
-    requested_at: Optional[datetime] = Field(
-        default_factory=lambda: datetime.now(timezone.utc),
+    requested_at: datetime | None = Field(
+        default_factory=lambda: datetime.now(UTC),
         sa_column=Column(
             # this tells SQLAlchemy to use a timezone-aware database column type
             DateTime(timezone=True),
@@ -54,7 +57,7 @@ class ProcessingJob(SQLModel, table=True):
         )
     )
     # Question: when did the processing for this image start?
-    started_at: Optional[datetime] = Field(
+    started_at: datetime | None = Field(
         sa_column=Column(
             # this tells SQLAlchemy to use a timezone-aware database column type
             DateTime(timezone=True),
@@ -63,7 +66,7 @@ class ProcessingJob(SQLModel, table=True):
         )
     )
     # Question: when did the processing for this image complete?
-    completed_at: Optional[datetime] = Field(
+    completed_at: datetime | None = Field(
         sa_column=Column(
             # this tells SQLAlchemy to use a timezone-aware database column type
             DateTime(timezone=True),
@@ -88,7 +91,7 @@ class ProcessingJob(SQLModel, table=True):
     # <--- ...Keep this code together
     # Keep this code together... --->
     # Question: what image was created?
-    processed_image_id: Optional[uuid.UUID] = Field(
+    processed_image_id: uuid.UUID | None = Field(
         # establishes the link the id column in processed_images
         foreign_key="processedimage.id",
         # is a constraint that ensures every ProcessingJob MUST have an associated processed_images
