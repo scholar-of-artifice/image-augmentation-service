@@ -1,14 +1,16 @@
+import uuid
+
+import pytest
 from sqlmodel import Session
+
 from app.schemas.transactions_db.user import User
 from app.services.user import (
-    get_user_by_external_id,
+    PermissionDenied,
+    UserNotFound,
     create_user,
     delete_user,
-    UserNotFound,
-    PermissionDenied,
+    get_user_by_external_id,
 )
-import uuid
-import pytest
 
 
 # --- get_user_by_external_id ---
