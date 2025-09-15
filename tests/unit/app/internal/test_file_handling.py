@@ -1,9 +1,10 @@
 import numpy
 import pytest
+
 from app.internal.file_handling import (
-    translate_file_to_numpy_array,
     InvalidImageFileError,
     create_file_name,
+    translate_file_to_numpy_array,
 )
 from tests.helperfunc import create_dummy_image_bytes
 

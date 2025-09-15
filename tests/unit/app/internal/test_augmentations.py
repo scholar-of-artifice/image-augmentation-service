@@ -1,6 +1,7 @@
 import numpy
 import pytest
-from app.internal.augmentations import shift, rotate, rainbow_noise
+
+from app.internal.augmentations import rainbow_noise, rotate, shift
 
 
 @pytest.mark.parametrize(
