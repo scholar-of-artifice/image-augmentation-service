@@ -1,10 +1,11 @@
 import pytest
 from pydantic import ValidationError
+
 from app.schemas.image import (
-    ShiftArguments,
-    RotateArguments,
-    UploadRequestBody,
     ImageProcessResponse,
+    RotateArguments,
+    ShiftArguments,
+    UploadRequestBody,
 )
 
 # --- ShiftArguments ---
