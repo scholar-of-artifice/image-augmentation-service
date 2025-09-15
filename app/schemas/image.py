@@ -1,4 +1,5 @@
-from typing import Annotated, Union, Literal
+from typing import Annotated, Literal
+
 from pydantic import BaseModel, Field
 from pydantic.types import StringConstraints
 
@@ -69,11 +70,7 @@ class UploadRequestBody(BaseModel):
         /image-api/upload
     """
     arguments: Annotated[
-        Union[
-            ShiftArguments,
-            RotateArguments,
-            RainbowNoiseArguments
-        ],
+        ShiftArguments | RotateArguments | RainbowNoiseArguments,
         Field(
             json_schema_extra={
                 "descriminator": "processing"
