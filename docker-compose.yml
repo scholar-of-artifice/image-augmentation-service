@@ -164,3 +164,4 @@ services:
     container_name: image-augmentation-transactions-db-test
     profiles:
       - test
+      - endtoend
