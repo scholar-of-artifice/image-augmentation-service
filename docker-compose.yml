@@ -25,6 +25,14 @@ x-api-base: &api-base
   depends_on:
     # tells the api service to wait for the db to start
     - db
+  # health check to be run by all api containers
+  healthcheck:
+    # test specified the actual command to run inside the container
+    # runs this curl command directly
+    test: ["CMD", "curl", "-f", "http://localhost:8000/healthcheck-api/healthcheck"]
+    interval: 5s
+    timeout: 10s
+    retries: 3
 # define the services to be built
 services:
   # The FastAPI Application Service
