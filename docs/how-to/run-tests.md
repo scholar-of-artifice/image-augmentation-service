@@ -7,6 +7,12 @@ From the root directory of this repository:
 docker compose --profile test up --build --abort-on-container-exit
 ```
 
+## run all `end-to-end` tests
+From the root directory of this repository;
+```terminaloutput
+docker compose --profile endtoend up --build --abort-on-container-exit
+```
+
 ## How can I get more detail?
 link: https://docs.pytest.org/en/stable/how-to/output.html#verbosity
 ```terminaloutput
