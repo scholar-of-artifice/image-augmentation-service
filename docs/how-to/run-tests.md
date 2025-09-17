@@ -3,7 +3,7 @@ Tests in this project are written using `pytest`.
 
 ## run all `unit` and `integration` tests
 From the root directory of this repository:
-```
+```terminaloutput
 docker compose --profile test up --build --abort-on-container-exit
 ```
 
