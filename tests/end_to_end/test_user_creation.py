@@ -7,7 +7,7 @@ from fastapi import status
 BASE_URL = os.getenv("API_BASE_URL")
 USER_ENDPOINT_PATH = "/users-api/users"
 
-def test_user_creation_is_success():
+def test_user_create_a_user():
     """
     GIVEN a valid set of parameters
     WHEN the POST request is made to the endpoint
