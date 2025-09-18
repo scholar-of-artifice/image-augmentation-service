@@ -4,10 +4,7 @@ import uuid
 import pytest
 from fastapi import status
 
-BASE_URL = os.getenv("API_BASE_URL")
-USER_ENDPOINT_PATH = "/users-api/users"
-
-def test_create_a_user():
+def test_create_a_user(http_client):
     """
     GIVEN a valid set of parameters
     WHEN the POST request is made to the endpoint
