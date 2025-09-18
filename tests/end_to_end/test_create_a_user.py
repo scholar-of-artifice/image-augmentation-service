@@ -1,5 +1,3 @@
-import httpx
-import os
 import uuid
 import pytest
 from fastapi import status
