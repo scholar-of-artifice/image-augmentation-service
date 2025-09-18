@@ -6,9 +6,9 @@ from fastapi import status
 
 def test_create_a_user(http_client):
     """
-    GIVEN a valid set of parameters
-    WHEN the POST request is made to the endpoint
-    THEN the response is successful
+    This test creates a user.
+    1. Create a user
+    2. Check the characteristics of the response object
     """
     assert BASE_URL, "API_BASE_URL environment variable is not set"
     external_id = str(uuid.uuid4())
