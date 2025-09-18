@@ -8,11 +8,9 @@ def test_create_a_user(http_client):
     1. Create a user
     2. Check the characteristics of the response object
     """
-    assert BASE_URL, "API_BASE_URL environment variable is not set"
     external_id = str(uuid.uuid4())
     headers = {"X-External-User-ID": external_id}
-    with httpx.Client() as client:
-        response = client.post(url=f"{BASE_URL}{USER_ENDPOINT_PATH}", headers=headers)
+    response = http_client.post(url=f"/users-api/users", headers=headers)
     assert response.status_code == status.HTTP_201_CREATED
     response_json = response.json()
     assert response_json["external_id"] == external_id
