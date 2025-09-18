@@ -12,13 +12,14 @@ def test_create_a_user(http_client):
     """
     external_id = str(uuid.uuid4())
     headers = {"X-External-User-ID": external_id}
+    # --- CREATE A USER ---
     response = http_client.post(url="/users-api/users", headers=headers)
+    # --- CHECK THE RESPONSE ---
     assert response.status_code == status.HTTP_201_CREATED
     response_json = response.json()
     assert response_json["external_id"] == external_id
     assert "id" in response_json
     assert "created_at" in response_json
-    # validate the format of the internal UUID
     try:
         uuid.UUID(response_json["id"])
     except ValueError:
