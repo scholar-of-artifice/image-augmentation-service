@@ -1,6 +1,8 @@
 import uuid
+
 import pytest
 from fastapi import status
+
 
 def test_create_a_user(http_client):
     """
@@ -10,7 +12,7 @@ def test_create_a_user(http_client):
     """
     external_id = str(uuid.uuid4())
     headers = {"X-External-User-ID": external_id}
-    response = http_client.post(url=f"/users-api/users", headers=headers)
+    response = http_client.post(url="/users-api/users", headers=headers)
     assert response.status_code == status.HTTP_201_CREATED
     response_json = response.json()
     assert response_json["external_id"] == external_id
