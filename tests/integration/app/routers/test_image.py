@@ -1,10 +1,12 @@
 from unittest.mock import AsyncMock
+
 import pytest
 from fastapi import status
-from app.main import app
-from app.schemas.transactions_db.user import User
+
 from app.dependency.async_dependency import get_current_active_user
+from app.main import app
 from app.schemas.image import ImageProcessResponse, ShiftArguments, UploadRequestBody
+from app.schemas.transactions_db.user import User
 
 pytestmark = pytest.mark.asyncio
 
