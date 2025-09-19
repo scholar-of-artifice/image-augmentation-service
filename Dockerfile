@@ -29,13 +29,17 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 COPY ./app /image-augmentation-service/app
 
 FROM dev AS test
-COPY ./tests /image-augmentation-service/tests
 # --- UNIT TEST STAGE ---
 # Copy the unit tests into the image
+COPY ./tests/unit /image-augmentation-service/tests/unit
+
 # --- INTEGRATION TEST STAGE ---
 # Copy the integration tests into the image
+COPY ./tests/integration /image-augmentation-service/tests/integration
+
 # --- END-TO-END TEST STAGE ---
 # Copy the end-to-end tests into the image
+COPY ./tests/endtoend /image-augmentation-service/tests/endtoend
 
 # --- END-TO-END STAGE ---
 # This stage is for the container that runs the API server.
