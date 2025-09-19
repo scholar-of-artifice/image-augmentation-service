@@ -53,6 +53,37 @@ async def test_upload_endpoint_success(mocker, async_client):
         app.dependency_overrides.clear()
 
 
+async def test_upload_endpoint_unauthorized(mocker, async_client):
+    """
+    GIVEN a valid file
+    AND a valid request body
+    AND no external_id
+    WHEN a POST request is made to /upload
+    THEN a 401 OK response is returned
+    """
+    # Use a try...finally block to ensure cleanup
+    try:
+        # input values
+        shift_args = ShiftArguments(processing="shift", direction="right", distance=42)
+        request_body = UploadRequestBody(arguments=shift_args)
+        #
+        mocked_service = mocker.patch(
+            "app.routers.image.process_and_save_image"
+        )
+        #
+        response = await async_client.post(
+            url="/image-api/upload/",
+            files={"file": ("test.png", b"fake_image_bytes", "image/png")},
+            data={"body": request_body.model_dump_json()},
+        )
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+        assert response.json() == { "detail": "Missing X-External-User-ID header"}
+        mocked_service.assert_not_called()
+    finally:
+        # this will always run and ensure a clean state
+        app.dependency_overrides.clear()
+
+
 async def test_upload_endpoint_missing_body_fails_with_422(mocker, async_client):
     """
     GIVEN a file is provided
