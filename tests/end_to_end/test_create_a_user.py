@@ -3,8 +3,9 @@ import uuid
 import pytest
 from fastapi import status
 
+pytestmark = pytest.mark.asyncio
 
-def test_create_a_user(http_client):
+async def test_create_a_user(http_client):
     """
     This test creates a user.
     1. Create a user
@@ -13,7 +14,7 @@ def test_create_a_user(http_client):
     external_id = str(uuid.uuid4())
     headers = {"X-External-User-ID": external_id}
     # --- CREATE A USER ---
-    response = http_client.post(url="/users-api/users", headers=headers)
+    response = await http_client.post(url="/users-api/users", headers=headers)
     # --- CHECK THE RESPONSE ---
     assert response.status_code == status.HTTP_201_CREATED
     response_json = response.json()
