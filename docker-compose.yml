@@ -83,9 +83,9 @@ services:
     # inherit all settings from our x-api-base block
     <<: *api-base
     # Give the built image a name and tag
-    image: image-augmentation-service-api:test
+    image: image-augmentation-service-api:unit-test
     # Give the running container a name
-    container_name: image-augmentation-api-test
+    container_name: image-augmentation-api-unit-test
     build:
       context: .
       target: unittest
