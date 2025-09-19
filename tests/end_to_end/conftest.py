@@ -1,14 +1,14 @@
 import os
 
 import httpx
-import pytest
+import pytest_asyncio
 
 BASE_URL = os.getenv("API_BASE_URL")
 
-@pytest.fixture(scope="module")
-def http_client():
+@pytest_asyncio.fixture(scope="module")
+async def http_client():
     """
-        Provides a httpx client for the test module.
+        Provides an async httpx client for the test module.
     """
-    with httpx.Client(base_url=BASE_URL) as client:
+    async with httpx.AsyncClient(base_url=BASE_URL) as client:
         yield client
