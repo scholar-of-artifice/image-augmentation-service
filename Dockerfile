@@ -28,16 +28,18 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 # Copy the project into the image
 COPY ./app /image-augmentation-service/app
 
-FROM dev AS test
 # --- UNIT TEST STAGE ---
+FROM dev AS unittest
 # Copy the unit tests into the image
 COPY ./tests/unit /image-augmentation-service/tests/unit
 
 # --- INTEGRATION TEST STAGE ---
+FROM dev AS integrationtest
 # Copy the integration tests into the image
 COPY ./tests/integration /image-augmentation-service/tests/integration
 
 # --- END-TO-END TEST STAGE ---
+FROM dev AS endtoendtest
 # Copy the end-to-end tests into the image
 COPY ./tests/endtoend /image-augmentation-service/tests/endtoend
 
