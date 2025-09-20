@@ -130,7 +130,7 @@ services:
     container_name: image-augmentation-api-test-end-to-end
     build:
       context: .
-      target: test
+      target: endtoendtest
     command: uv run pytest tests/end_to_end
     depends_on:
       api-end-to-end:
