@@ -127,7 +127,7 @@ services:
     # Give the built image a name and tag
     image: image-augmentation-service-api:end-to-end-test
     # Give the running container a name
-    container_name: image-augmentation-api-test-end-to-end
+    container_name: image-augmentation-api-end-to-end-test
     build:
       context: .
       target: endtoendtest
