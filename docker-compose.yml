@@ -187,4 +187,16 @@ services:
     profiles:
       - unit-test
       - integration-test
-      - endtoend-test
+  db-end-to-end-test:
+    # the testing PostgreSQL Database Service to store transaction information
+    image: postgres:16-alpine # use the official PostgreSQL image
+    tmpfs:
+      - /var/lib/postgresql/data # make this database ephemeral (store in RAM)
+    environment:
+      # use the variables from the .env file
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    container_name: image-augmentation-transactions-db-end-to-end-test
+    profiles:
+      - end-to-end-test
