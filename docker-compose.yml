@@ -173,7 +173,7 @@ services:
     profiles:
       - dev
       - prod
-  db-test:
+  db-unit-test:
     # the testing PostgreSQL Database Service to store transaction information
     image: postgres:16-alpine # use the official PostgreSQL image
     tmpfs:
@@ -183,7 +183,7 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    container_name: image-augmentation-transactions-db-test
+    container_name: image-augmentation-transactions-db-unit-test
     profiles:
       - unit-test
   db-integration-test:
