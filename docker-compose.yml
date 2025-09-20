@@ -55,7 +55,7 @@ services:
   # the service for end-to-end tests
   api-end-to-end:
     profiles:
-      - endtoend
+      - endtoend-test
     # inherit all settings from our x-api-base block
     <<: *api-base
     # Give the built image a name and tag
@@ -79,7 +79,7 @@ services:
   # the service for unit testing
   api-unit-test:
     profiles:
-      - test
+      - unit-test
     # inherit all settings from our x-api-base block
     <<: *api-base
     # Give the built image a name and tag
@@ -101,7 +101,7 @@ services:
   # the service for integration testing
   api-integration-test:
     profiles:
-      - test
+      - integration-test
     # inherit all settings from our x-api-base block
     <<: *api-base
     # Give the built image a name and tag
@@ -123,7 +123,7 @@ services:
   # the service for running end-to-end test scripts
   api-test-end-to-end:
     profiles:
-      - endtoend
+      - endtoend-test
     # Give the built image a name and tag
     image: image-augmentation-service-api:test-end-to-end
     # Give the running container a name
@@ -185,5 +185,6 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     container_name: image-augmentation-transactions-db-test
     profiles:
-      - test
-      - endtoend
+      - unit-test
+      - integration-test
+      - endtoend-test
