@@ -56,7 +56,7 @@ services:
   # the service for end-to-end tests
   api-end-to-end:
     profiles:
-      - endtoend-test
+      - end-to-end-test
     # inherit all settings from our x-api-base block
     <<: *api-base
     # Give the built image a name and tag
@@ -124,7 +124,7 @@ services:
   # the service for running end-to-end test scripts
   api-end-to-end-test:
     profiles:
-      - endtoend-test
+      - end-to-end-test
     # Give the built image a name and tag
     image: image-augmentation-service-api:end-to-end-test
     # Give the running container a name
