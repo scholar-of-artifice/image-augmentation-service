@@ -139,6 +139,7 @@ services:
       api-end-to-end:
         condition: service_healthy
     environment:
+      - PYTHONPATH=/image-augmentation-service
       - API_BASE_URL=http://api-end-to-end:8000
   # the service for production
   api-prod:
