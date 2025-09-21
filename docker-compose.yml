@@ -11,8 +11,6 @@ x-api-base: &api-base
   volumes:
     # Mount the image storage volume into the container
     # [source_of_data]:[some/file/path]
-    - ./app:/image-augmentation-service/app
-    - ./tests:/image-augmentation-service/tests
     - unprocessed_image_data:/image-augmentation-service/data/images/unprocessed
     - processed_image_data:/image-augmentation-service/data/images/processed
   # Pass database credentials to the API service as environment variables
@@ -51,6 +49,9 @@ services:
       target: dev
     ports:
       - "8000:8000"
+    volumes:
+      - ./app:/image-augmentation-service/app
+      - ./tests:/image-augmentation-service/tests
     command: uv run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
   # the service for end-to-end tests
   api-end-to-end:
