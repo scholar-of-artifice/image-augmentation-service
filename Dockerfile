@@ -41,7 +41,7 @@ COPY ./tests/integration /image-augmentation-service/tests/integration
 # --- END-TO-END TEST STAGE ---
 FROM dev AS endtoendtest
 # Copy the end-to-end tests into the image
-COPY ./tests/endtoend /image-augmentation-service/tests/endtoend
+COPY ./tests/end_to_end /image-augmentation-service/tests/end_to_end
 
 # --- END-TO-END STAGE ---
 # This stage is for the container that runs the API server.
