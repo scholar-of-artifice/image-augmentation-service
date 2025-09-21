@@ -39,6 +39,9 @@ COPY ./tests/unit /image-augmentation-service/tests/unit
 # --- INTEGRATION TEST STAGE ---
 FROM dev AS integrationtest
 # Copy the integration tests into the image
+COPY ./pyproject.toml /image-augmentation-service/
+COPY ./app /image-augmentation-service/app
+COPY ./tests/helperfunc.py /image-augmentation-service/tests/helperfunc.py
 COPY ./tests/integration /image-augmentation-service/tests/integration
 
 # --- END-TO-END TEST STAGE ---
