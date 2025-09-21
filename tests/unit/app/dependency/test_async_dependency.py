@@ -4,7 +4,7 @@ from unittest.mock import AsyncMock
 
 import pytest
 from fastapi import HTTPException, status
-from sqlmodel import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.dependency.async_dependency import (
     get_body_as_model,
@@ -136,7 +136,7 @@ async def test_get_current_active_user_success(mocker):
     # create a sample user
     sample_user = User(id="a-real-uuid", external_id="user-abc-123")
     # create a mock database session
-    mock_session = mocker.MagicMock(spec=Session)
+    mock_session = mocker.MagicMock(spec=AsyncSession)
     # configure the mock to simulate the ASYNCHRONOUS query chain
     # the .first() method now returns an awaitable object (the AsyncMock)
     mock_result = mocker.MagicMock()
@@ -161,7 +161,7 @@ async def test_get_current_active_user_raises_not_found_when_user_does_not_exist
     THEN it raises an HTTPException with a 404 status
     """
     # create a mock session
-    mock_session = mocker.MagicMock(spec=Session)
+    mock_session = mocker.MagicMock(spec=AsyncSession)
     # configure the mock to return an awaitable that resolves to None
     mock_result = mocker.MagicMock()
     mock_session.execute = AsyncMock(return_value=mock_result)
