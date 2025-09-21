@@ -70,7 +70,7 @@ services:
       - "8000:8000"
     command: uv run uvicorn app.main:app --host 0.0.0.0 --port 8000
     depends_on:
-      - db-test # point to the test db
+      - db-end-to-end-test # point to the test db
     environment:
       - DATABASE_HOSTNAME=${TEST_DATABASE_HOSTNAME} # override the hostname of the test db
       - POSTGRES_DB=${POSTGRES_DB}
@@ -92,7 +92,7 @@ services:
       target: unittest
     command: uv run pytest --cov=. --cov-report=html:tests/coverage_report/web
     depends_on:
-      - db-test # point to the test db
+      - db-unit-test # point to the test db
     environment:
       - DATABASE_HOSTNAME=${TEST_DATABASE_HOSTNAME} # override the hostname of the test db
       - POSTGRES_DB=${POSTGRES_DB}
@@ -114,7 +114,7 @@ services:
       target: integrationtest
     command: uv run pytest --cov=. --cov-report=html:tests/coverage_report/web
     depends_on:
-      - db-test # point to the test db
+      - db-integration-test # point to the test db
     environment:
       - DATABASE_HOSTNAME=${TEST_DATABASE_HOSTNAME} # override the hostname of the test db
       - POSTGRES_DB=${POSTGRES_DB}
