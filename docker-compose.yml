@@ -94,6 +94,7 @@ services:
     depends_on:
       - db-unit-test # point to the test db
     environment:
+      - PYTHONPATH=/image-augmentation-service
       - DATABASE_HOSTNAME=${UNIT_TEST_DATABASE_HOSTNAME} # override the hostname of the test db
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
