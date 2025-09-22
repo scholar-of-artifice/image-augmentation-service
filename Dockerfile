@@ -49,6 +49,7 @@ FROM dev AS endtoendtest
 # Copy the end-to-end tests into the image
 COPY ./pyproject.toml /image-augmentation-service/
 COPY ./app /image-augmentation-service/app
+COPY ./tests/data/test_image.png /image-augmentation-service/tests/data/test_image.png
 COPY ./tests/helperfunc.py /image-augmentation-service/tests/helperfunc.py
 COPY ./tests/end_to_end /image-augmentation-service/tests/end_to_end
 
