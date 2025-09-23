@@ -1,9 +1,10 @@
-import numpy
-from PIL import Image, UnidentifiedImageError
 import io
+from contextlib import contextmanager
 from pathlib import Path
 from typing import ContextManager
-from contextlib import contextmanager
+
+import numpy
+from PIL import Image, UnidentifiedImageError
 
 __current_directory = Path(__file__).parent
 TESTS_DIR = __current_directory.parent.parent
