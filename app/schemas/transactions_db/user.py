@@ -1,8 +1,9 @@
 import uuid
-from sqlmodel import SQLModel, Field, Relationship
-from datetime import datetime, timezone
-from typing import Optional, List
-from sqlalchemy import func, Column, DateTime
+from datetime import UTC, datetime
+
+from sqlalchemy import Column, DateTime, func
+from sqlmodel import Field, Relationship, SQLModel
+
 
 class User(SQLModel, table=True):
     """
@@ -37,9 +38,9 @@ class User(SQLModel, table=True):
     )
     # Question: when was this user created?
     # the timestamp for when this user was created
-    created_at: Optional[datetime] = Field(
+    created_at: datetime | None = Field(
         # automatically sets the creation time to the current time in UTC when a new user is added
-        default_factory=lambda: datetime.now(timezone.utc),
+        default_factory=lambda: datetime.now(UTC),
         # tells SQLAlchemy to use a timezone-aware database column type
         sa_column=Column(
             # this ensures the database stores the date, time and timezone
@@ -59,7 +60,7 @@ class User(SQLModel, table=True):
     )
     # --- Table Relationships ---
     # a User can have many UnprocessedImage records.
-    unprocessed_images: List["UnprocessedImage"] = Relationship(
+    unprocessed_images: list["UnprocessedImage"] = Relationship(
         # 'back_populates' links this relationship to the 'user' field on the UnprocessedImage model.
         back_populates="user",
         # These kwargs are passed to the underlying SQLAlchemy relationship
