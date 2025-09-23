@@ -1,4 +1,6 @@
 from fastapi.testclient import TestClient
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.schemas.transactions_db.user import User
 from sqlmodel import Session
 from fastapi import status
@@ -69,7 +71,7 @@ def test_create_user_raises_unauthorized_when_user_is_not_authorized(
 # SIGN IN USER
 
 
-def test_sign_in_user_success(client: TestClient, db_session: Session):
+def test_sign_in_user_success(client: TestClient, db_session: AsyncSession):
     """
     GIVEN an active user exists in the database
     WHEN a POST request is made to /sign-in with the same external_id
@@ -92,7 +94,7 @@ def test_sign_in_user_success(client: TestClient, db_session: Session):
 
 
 def test_sign_in_user_is_not_found_if_external_id_does_not_exist(
-    client: TestClient, db_session: Session
+    client: TestClient, db_session: AsyncSession
 ):
     """
     GIVEN an active user exists in the database
@@ -127,7 +129,7 @@ def test_sign_in_user_unauthorized_missing_header(client: TestClient):
 # DELETE USER
 
 
-def test_delete_user_success(client: TestClient, db_session: Session):
+def test_delete_user_success(client: TestClient, db_session: AsyncSession):
     """
     GIVEN a user exists in the database
     AND a request to delete a user_id with a matching external_id
@@ -154,7 +156,7 @@ def test_delete_user_success(client: TestClient, db_session: Session):
     assert user_in_db is None
 
 
-def test_delete_user_not_found(client: TestClient, db_session: Session):
+def test_delete_user_not_found(client: TestClient, db_session: AsyncSession):
     """
     GIVEN a user does not exist in the database
     AND a request to delete a user_id with an external_id
@@ -175,7 +177,7 @@ def test_delete_user_not_found(client: TestClient, db_session: Session):
     assert response.json()["detail"] == f"User with id '{user_id_to_delete}' not found."
 
 
-def test_delete_user_forbidden(client: TestClient, db_session: Session):
+def test_delete_user_forbidden(client: TestClient, db_session: AsyncSession):
     """
     GIVEN a user A does exist in the database
     AND a user B does exist in the database
