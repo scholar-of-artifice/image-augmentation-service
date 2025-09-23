@@ -136,7 +136,7 @@ async def test_get_current_active_user_success(mocker):
     # create a sample user
     sample_user = User(id="a-real-uuid", external_id="user-abc-123")
     # create a mock database session
-    mock_session = mocker.MagicMock(spec=AsyncSession)
+    mock_session = AsyncMock(spec=AsyncSession)
     # configure the mock to simulate the ASYNCHRONOUS query chain
     # the .first() method now returns an awaitable object (the AsyncMock)
     mock_result = mocker.MagicMock()
