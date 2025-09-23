@@ -1,6 +1,5 @@
-from sqlmodel import Session
-from app.schemas.transactions_db.user import User
 from app.schemas.transactions_db.unprocessed_image import UnprocessedImage
+from app.schemas.transactions_db.user import User
 
 
 def test_UnprocessedImage_creation_populates_user_relationship(db_session: Session):
