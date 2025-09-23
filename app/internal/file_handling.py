@@ -1,8 +1,10 @@
-import numpy
 import io
-from PIL import Image, UnidentifiedImageError
 import uuid
 from pathlib import Path
+
+import numpy
+from PIL import Image, UnidentifiedImageError
+
 from ..config import settings
 
 # Define the mapping from volume names to the in-container paths
