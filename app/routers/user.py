@@ -2,6 +2,7 @@ import logging
 from fastapi import APIRouter, Depends, HTTPException, status, Path
 from typing import Annotated
 from sqlmodel import Session, select
+from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.database import get_session
 from app.schemas.transactions_db.user import User
 from app.schemas.user import UserRead
@@ -20,7 +21,7 @@ logger = logging.getLogger(__name__)
 )
 def create_user_endpoint(
     *,
-    db_session: Session = Depends(get_session),
+    db_session: AsyncSession = Depends(get_session),
     external_id: str = Depends(get_current_external_user_id)
 ):
     """
@@ -65,7 +66,7 @@ def create_user_endpoint(
 )
 def sign_in_user_endpoint(
     *,
-    db_session: Session = Depends(get_session),
+    db_session: AsyncSession = Depends(get_session),
     external_id: str = Depends(get_current_external_user_id)
 ):
     """
@@ -99,7 +100,7 @@ def sign_in_user_endpoint(
 )
 def delete_user_endpoint(
     *,
-    db_session: Session = Depends(get_session),
+    db_session: AsyncSession = Depends(get_session),
     external_id: str = Depends(get_current_external_user_id),
     user_id: Annotated[uuid.UUID, Path(title="The ID of the item to destroy")],
 ):
