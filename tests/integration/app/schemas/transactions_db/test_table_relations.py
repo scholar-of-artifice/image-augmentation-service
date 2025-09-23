@@ -2,7 +2,7 @@ from app.schemas.transactions_db.unprocessed_image import UnprocessedImage
 from app.schemas.transactions_db.user import User
 
 
-def test_UnprocessedImage_creation_populates_user_relationship(db_session: Session):
+def test_UnprocessedImage_creation_populates_user_relationship(db_session: AsyncSession):
     """
     GIVEN a User exists in the database
     AND a UnprocessedImage is created with that User.id
@@ -33,7 +33,7 @@ def test_UnprocessedImage_creation_populates_user_relationship(db_session: Sessi
     assert unprocessed_image.user.external_id == user.external_id
 
 
-def test_user_image_list_is_updated_after_image_creation(db_session: Session):
+def test_user_image_list_is_updated_after_image_creation(db_session: AsyncSession):
     """
     GIVEN a User exists
     AND an UnprocessedImage is created for that user
@@ -65,7 +65,7 @@ def test_user_image_list_is_updated_after_image_creation(db_session: Session):
     assert image_from_list.storage_filename == "unique_storage_name.png"
 
 
-def test_deleting_image_removes_it_from_user_list(db_session: Session):
+def test_deleting_image_removes_it_from_user_list(db_session: AsyncSession):
     """
     GIVEN a User with one UnprocessedImage
     WHEN the UnprocessedImage is deleted from the database
@@ -93,7 +93,7 @@ def test_deleting_image_removes_it_from_user_list(db_session: Session):
     assert len(user.unprocessed_images) == 0
 
 
-def test_deleting_user_cascades_to_delete_images(db_session: Session):
+def test_deleting_user_cascades_to_delete_images(db_session: AsyncSession):
     """
     GIVEN a User with an UnprocessedImage
     WHEN the User is deleted
@@ -123,7 +123,7 @@ def test_deleting_user_cascades_to_delete_images(db_session: Session):
     assert deleted_image is None
 
 
-def test_linking_by_parent_object_populates_foreign_key(db_session: Session):
+def test_linking_by_parent_object_populates_foreign_key(db_session: AsyncSession):
     """
     GIVEN a User exists in the database
     WHEN an UnprocessedImage is created by assigning the User object directly
@@ -152,7 +152,7 @@ def test_linking_by_parent_object_populates_foreign_key(db_session: Session):
     assert unprocessed_image.user.external_id == "user-for-object-linking"
 
 
-def test_linking_by_appending_to_parent_list(db_session: Session):
+def test_linking_by_appending_to_parent_list(db_session: AsyncSession):
     """
     GIVEN a User exists in the database
     WHEN a new UnprocessedImage is appended to the user.unprocessed_images list
@@ -183,7 +183,7 @@ def test_linking_by_appending_to_parent_list(db_session: Session):
     assert image_from_db.original_filename == "appended_image.jpg"
 
 
-def test_deleting_image_does_not_delete_associated_user(db_session: Session):
+def test_deleting_image_does_not_delete_associated_user(db_session: AsyncSession):
     """
     GIVEN a User exists
     AND there is an associated UnprocessedImage
