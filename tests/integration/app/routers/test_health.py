@@ -1,5 +1,6 @@
 from fastapi import FastAPI, status
 from fastapi.testclient import TestClient
+
 from app.routers.health import router
 
 app = FastAPI()
