@@ -132,7 +132,7 @@ async def test_process_and_save_image_raises_error_on_invalid_file(mocker):
         side_effect=InvalidImageFileError("Bad file")
     )
     sample_user_id = uuid.uuid4()
-    mock_db_session = mocker.MagicMock(spec=AsyncSession)
+    mock_db_session = AsyncMock(spec=AsyncSession)
     # do not need to mock the other dependencies as the function should fail early
     # create mock input data for the service function
     mock_file = mocker.MagicMock(spec=UploadFile)
