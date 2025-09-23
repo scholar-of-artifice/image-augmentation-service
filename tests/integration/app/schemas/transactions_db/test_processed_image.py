@@ -1,11 +1,12 @@
-from sqlmodel import Session
-from datetime import datetime, timezone
+import uuid
+from datetime import UTC, datetime
+
+import pytest
+from sqlalchemy.exc import DataError, IntegrityError
+
 from app.schemas.transactions_db.processed_image import ProcessedImage
 from app.schemas.transactions_db.unprocessed_image import UnprocessedImage
 from app.schemas.transactions_db.user import User
-from sqlalchemy.exc import IntegrityError, DataError
-import pytest
-import uuid
 
 
 def test_processed_image_is_valid(db_session: Session):
