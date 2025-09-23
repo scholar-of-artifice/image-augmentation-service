@@ -1,14 +1,20 @@
 import logging
-from fastapi import APIRouter, Depends, HTTPException, status, Path
-from typing import Annotated
-from sqlmodel import Session, select
-from sqlalchemy.ext.asyncio import AsyncSession
-from app.db.database import get_session
-from app.schemas.transactions_db.user import User
-from app.schemas.user import UserRead
-from app.dependency.async_dependency import get_current_external_user_id
-from app.services.user import create_user, get_user_by_external_id, delete_user, UserNotFound, PermissionDenied
 import uuid
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, HTTPException, Path, status
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.db.database import get_session
+from app.dependency.async_dependency import get_current_external_user_id
+from app.schemas.user import UserRead
+from app.services.user import (
+    PermissionDenied,
+    UserNotFound,
+    create_user,
+    delete_user,
+    get_user_by_external_id,
+)
 
 router = APIRouter()
 # set up logging
