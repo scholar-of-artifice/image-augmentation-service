@@ -1,10 +1,13 @@
-from fastapi import FastAPI
-from pathlib import Path
-import logging.config
 import json
-from app.db.database import create_db_and_tables
-from app.routers import image, health, user
+import logging.config
 from contextlib import asynccontextmanager
+from pathlib import Path
+
+from fastapi import FastAPI
+
+from app.db.database import create_db_and_tables
+from app.routers import health, image, user
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
