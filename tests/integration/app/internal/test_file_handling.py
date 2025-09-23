@@ -1,5 +1,6 @@
 import pytest
-from app.internal.file_handling import write_numpy_array_to_image_file, VOLUME_PATHS
+
+from app.internal.file_handling import VOLUME_PATHS, write_numpy_array_to_image_file
 from tests.helperfunc import create_dummy_numpy_array
 
 
