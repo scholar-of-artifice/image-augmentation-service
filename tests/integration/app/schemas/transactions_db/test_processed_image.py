@@ -9,7 +9,7 @@ from app.schemas.transactions_db.unprocessed_image import UnprocessedImage
 from app.schemas.transactions_db.user import User
 
 
-def test_processed_image_is_valid(db_session: Session):
+def test_processed_image_is_valid(db_session: AsyncSession):
     """
     GIVEN a User exists in the database
     AND a valid ProcessedImage entry
@@ -42,11 +42,11 @@ def test_processed_image_is_valid(db_session: Session):
     assert isinstance(processed_image.id, uuid.UUID)
     assert processed_image.storage_filename == "some_new_file_name.png"
     assert isinstance(processed_image.created_at, datetime)
-    assert processed_image.created_at.tzinfo == timezone.utc
+    assert processed_image.created_at.tzinfo == UTC
 
 
 def test_processed_image_IntegrityError_when_storage_filename_is_nil(
-    db_session: Session,
+    db_session: AsyncSession,
 ):
     """
     GIVEN a User exists in the database
@@ -83,7 +83,7 @@ def test_processed_image_IntegrityError_when_storage_filename_is_nil(
 
 
 def no_test_processed_image_IntegrityError_when_storage_filename_is_blank_string(
-    db_session: Session,
+    db_session: AsyncSession,
 ):
     # TODO: remove this test from suite. pydantic validation not working as inteneded
     """
@@ -119,7 +119,7 @@ def no_test_processed_image_IntegrityError_when_storage_filename_is_blank_string
 
 
 def test_processed_image_DataError_when_storage_filename_is_too_long(
-    db_session: Session,
+    db_session: AsyncSession,
 ):
     # TODO: remove this test from suite. pydantic validation not working as intended
     """
