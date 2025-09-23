@@ -4,7 +4,6 @@ from unittest.mock import AsyncMock
 import pytest
 from fastapi import UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlmodel import Session
 
 from app.internal.file_handling import InvalidImageFileError
 from app.schemas.image import RotateArguments, ShiftArguments, UploadRequestBody
