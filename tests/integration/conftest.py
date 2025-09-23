@@ -1,14 +1,14 @@
 import pytest
 import pytest_asyncio
+from fastapi.testclient import TestClient
+from httpx import ASGITransport, AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 from sqlmodel import Session, SQLModel, create_engine
-from app.config import settings
-from fastapi.testclient import TestClient
-from app.main import app
-from app.db.database import get_session
-from httpx import AsyncClient, ASGITransport
 
+from app.config import settings
+from app.db.database import get_session
+from app.main import app
 
 # --- SYNCHRONOUS FIXTURES ---
 
