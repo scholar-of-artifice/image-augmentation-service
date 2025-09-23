@@ -10,7 +10,7 @@ from app.schemas.transactions_db.unprocessed_image import UnprocessedImage
 from app.schemas.transactions_db.user import User
 
 
-def test_unprocessed_image_is_valid(db_session: Session):
+def test_unprocessed_image_is_valid(db_session: AsyncSession):
     """
     GIVEN a User exists in the database
     AND a valid UnprocessedImage entry
@@ -38,11 +38,11 @@ def test_unprocessed_image_is_valid(db_session: Session):
     assert unprocessed_image.original_filename == "cool_image.png"
     assert unprocessed_image.storage_filename == "some_file_name.png"
     assert isinstance(unprocessed_image.created_at, datetime)
-    assert unprocessed_image.created_at.tzinfo == timezone.utc
+    assert unprocessed_image.created_at.tzinfo == UTC
 
 
 def test_unprocessed_image_IntegrityError_when_original_filename_is_null(
-    db_session: Session,
+    db_session: AsyncSession,
 ):
     """
     GIVEN an attempt to create an UnprocessedImage entry
@@ -68,7 +68,7 @@ def test_unprocessed_image_IntegrityError_when_original_filename_is_null(
 
 
 def no_test_unprocessed_image_ValidationError_when_original_filename_is_blank_string(
-    db_session: Session,
+    db_session: AsyncSession,
 ):
     # TODO: remove test from suite. validation not working as expected
     """
@@ -91,7 +91,7 @@ def no_test_unprocessed_image_ValidationError_when_original_filename_is_blank_st
 
 
 def test_unprocessed_image_IntegrityError_when_storage_filename_is_null(
-    db_session: Session,
+    db_session: AsyncSession,
 ):
     """
     GIVEN an attempt to create an UnprocessedImage entry
@@ -117,7 +117,7 @@ def test_unprocessed_image_IntegrityError_when_storage_filename_is_null(
 
 
 def no_test_unprocessed_image_ValidationError_when_storage_filename_is_blank_string(
-    db_session: Session,
+    db_session: AsyncSession,
 ):
     # TODO: remove test from suite. validation not working as expected
     """
@@ -139,7 +139,7 @@ def no_test_unprocessed_image_ValidationError_when_storage_filename_is_blank_str
     db_session.rollback()
 
 
-def test_unprocessed_image_IntegrityError_when_user_id_is_null(db_session: Session):
+def test_unprocessed_image_IntegrityError_when_user_id_is_null(db_session: AsyncSession):
     """
     GIVEN an attempt to create an UnprocessedImage entry
     AND the user_id is None
@@ -162,7 +162,7 @@ def test_unprocessed_image_IntegrityError_when_user_id_is_null(db_session: Sessi
 
 
 def test_unprocessed_image_DataError_when_original_filename_is_too_long(
-    db_session: Session,
+    db_session: AsyncSession,
 ):
     """
     GIVEN an attempt to create an UnprocessedImage entry
@@ -190,7 +190,7 @@ def test_unprocessed_image_DataError_when_original_filename_is_too_long(
 
 
 def test_unprocessed_image_DataError_when_storage_filename_is_to_long(
-    db_session: Session,
+    db_session: AsyncSession,
 ):
     """
     GIVEN an attempt to create an UnprocessedImage entry
@@ -218,7 +218,7 @@ def test_unprocessed_image_DataError_when_storage_filename_is_to_long(
 
 
 def test_unprocessed_image_IntegrityError_when_user_id_does_not_exist(
-    db_session: Session,
+    db_session: AsyncSession,
 ):
     """
     GIVEN an attempt to create an UnprocessedImage entry
@@ -242,7 +242,7 @@ def test_unprocessed_image_IntegrityError_when_user_id_does_not_exist(
 
 
 def test_unprocessed_image_is_IntegrityError_when_storage_file_name_is_duplicated(
-    db_session: Session,
+    db_session: AsyncSession,
 ):
     """
     GIVEN an UnprocessedImage A
@@ -279,7 +279,7 @@ def test_unprocessed_image_is_IntegrityError_when_storage_file_name_is_duplicate
     db_session.rollback()
 
 
-def test_get_unprocessed_image_by_primary_key(db_session: Session):
+def test_get_unprocessed_image_by_primary_key(db_session: AsyncSession):
     """
     GIVEN a UnprocessedImage model
     AND it is persisted in the database
@@ -309,7 +309,7 @@ def test_get_unprocessed_image_by_primary_key(db_session: Session):
     assert retrieved_image.storage_filename == "some_file_name.png"
 
 
-def test_get_unprocessed_image_by_primary_key_not_found(db_session: Session):
+def test_get_unprocessed_image_by_primary_key_not_found(db_session: AsyncSession):
     """
     GIVEN no UnprocessedImage exists with a specific ID
     WHEN a UnprocessedImage is retrieved by that ID
@@ -323,7 +323,7 @@ def test_get_unprocessed_image_by_primary_key_not_found(db_session: Session):
     assert retrieved_unprocessed_image is None
 
 
-def test_delete_unprocessed_image(db_session: Session):
+def test_delete_unprocessed_image(db_session: AsyncSession):
     """
     GIVEN a UnprocessedImage exists in the database
     WHEN the UnprocessedImage is deleted
