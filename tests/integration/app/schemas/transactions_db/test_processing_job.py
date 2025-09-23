@@ -7,7 +7,7 @@ from app.schemas.transactions_db.unprocessed_image import UnprocessedImage
 from app.schemas.transactions_db.user import User
 
 
-def test_processing_job_is_valid(db_session: Session):
+def test_processing_job_is_valid(db_session: AsyncSession):
     """
     GIVEN a User and an UnprocessedImage exist in the database
     AND a valid ProcessingJob entry is created for them
@@ -42,7 +42,7 @@ def test_processing_job_is_valid(db_session: Session):
     # test the default values
     assert job.job_status == JobStatus.PENDING
     assert isinstance(job.requested_at, datetime)
-    assert job.requested_at.tzinfo == timezone.utc
+    assert job.requested_at.tzinfo == UTC
     # test that nullable fields are None by default
     assert job.processed_image_id is None
     assert job.started_at is None
