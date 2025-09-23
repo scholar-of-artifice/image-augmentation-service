@@ -1,10 +1,10 @@
+import uuid
+
+from fastapi import status
 from fastapi.testclient import TestClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.schemas.transactions_db.user import User
-from sqlmodel import Session
-from fastapi import status
-import uuid
 
 # CREATE USER
 
