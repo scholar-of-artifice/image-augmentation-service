@@ -165,7 +165,7 @@ async def test_process_and_save_image_raises_error_on_write_failure(mocker):
     # mock the dependencies
     mock_file_translator = mocker.MagicMock(return_value="numpy_array_data")
     mock_file_writer = mocker.MagicMock(side_effect=OSError("Disk full"))
-    mock_db_session = mocker.MagicMock(spec=AsyncSession)
+    mock_db_session = AsyncMock(spec=AsyncSession)
     sample_user_id = uuid.uuid4()
     # do not need to mock the other dependencies as the function should fail early
     # create mock input data for the service function
