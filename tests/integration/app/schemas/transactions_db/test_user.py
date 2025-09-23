@@ -1,13 +1,11 @@
-from sqlmodel import Session, select
-from datetime import datetime, timezone, timedelta
 import uuid
 from sqlalchemy.exc import IntegrityError, InvalidRequestError, DataError
 from pydantic import ValidationError
+from sqlalchemy.ext.asyncio import AsyncSession
 from app.schemas.transactions_db.user import User
-import pytest
 
 
-def test_user_valid_model_is_persisted(db_session: Session):
+def test_user_valid_model_is_persisted(db_session: AsyncSession):
     """
     GIVEN a User model
     AND all input data is valid
@@ -28,10 +26,10 @@ def test_user_valid_model_is_persisted(db_session: Session):
     assert isinstance(user.created_at, datetime)
     assert user.created_at is not None
     assert user.created_at.tzinfo is not None
-    assert user.created_at.tzinfo == timezone.utc
+    assert user.created_at.tzinfo == UTC
 
 
-def test_user_IntegrityError_when_external_id_is_duplicate(db_session: Session):
+def test_user_IntegrityError_when_external_id_is_duplicate(db_session: AsyncSession):
     """
     GIVEN a User A already exists
     AND a new User B is created
@@ -50,7 +48,7 @@ def test_user_IntegrityError_when_external_id_is_duplicate(db_session: Session):
         db_session.flush()
 
 
-def test_user_IntegrityError_when_external_id_is_null(db_session: Session):
+def test_user_IntegrityError_when_external_id_is_null(db_session: AsyncSession):
     """
     GIVEN a User model
     AND external_id is null
@@ -65,7 +63,7 @@ def test_user_IntegrityError_when_external_id_is_null(db_session: Session):
         db_session.flush()
 
 
-def no_test_user_ValidationError_when_external_id_is_blank_string(db_session: Session):
+def no_test_user_ValidationError_when_external_id_is_blank_string(db_session: AsyncSession):
     # TODO: test fails and validation in pydantic not working as expected. take out for now.
     """
     GIVEN a User model
@@ -77,7 +75,7 @@ def no_test_user_ValidationError_when_external_id_is_blank_string(db_session: Se
         User(external_id="")
 
 
-def test_user_IntegrityError_when_external_id_is_too_long(db_session: Session):
+def test_user_IntegrityError_when_external_id_is_too_long(db_session: AsyncSession):
     """
     GIVEN a User model
     AND external_id is too long
@@ -92,7 +90,7 @@ def test_user_IntegrityError_when_external_id_is_too_long(db_session: Session):
         db_session.flush()
 
 
-def test_get_user_by_primary_key(db_session: Session):
+def test_get_user_by_primary_key(db_session: AsyncSession):
     """
     GIVEN a User model
     AND all input data is valid
@@ -112,7 +110,7 @@ def test_get_user_by_primary_key(db_session: Session):
     assert retrieved_user.external_id == "this_is_some_external_id"
 
 
-def test_get_user_by_primary_key_not_found(db_session: Session):
+def test_get_user_by_primary_key_not_found(db_session: AsyncSession):
     """
     GIVEN no User exists with a specific ID
     WHEN a User is retrieved by that ID
@@ -126,7 +124,7 @@ def test_get_user_by_primary_key_not_found(db_session: Session):
     assert retrieved_user is None
 
 
-def test_get_user_by_external_id(db_session: Session):
+def test_get_user_by_external_id(db_session: AsyncSession):
     """
     GIVEN a User exists in the database
     WHEN a query is made for the User by the external_id
@@ -146,7 +144,7 @@ def test_get_user_by_external_id(db_session: Session):
     assert retrieved_user.id == user_in_db.id
 
 
-def no_test_read_only_fields_are_not_updated(db_session: Session):
+def no_test_read_only_fields_are_not_updated(db_session: AsyncSession):
     # TODO: this test fails
     """
     GIVEN a User exists in the database
@@ -164,7 +162,7 @@ def no_test_read_only_fields_are_not_updated(db_session: Session):
     original_created_at = user.created_at
     # change the read-only fields in memory
     user.id = uuid.uuid4()  # assign a new, random UUID
-    user.created_at = datetime.now(timezone.utc) + timedelta(days=1)
+    user.created_at = datetime.now(UTC) + timedelta(days=1)
     # commit the session.
     # SQLAlchemy will see the object is "dirty"
     # but should ignore changes to the primary key and non-writable fields
@@ -176,7 +174,7 @@ def no_test_read_only_fields_are_not_updated(db_session: Session):
     assert user.created_at == original_created_at
 
 
-def test_external_id_can_be_updated(db_session: Session):
+def test_external_id_can_be_updated(db_session: AsyncSession):
     """
     GIVEN a User exists in the database
     WHEN mutable-only fields ('external_id') are changed on the object
@@ -202,7 +200,7 @@ def test_external_id_can_be_updated(db_session: Session):
     assert user.external_id != original_some_external_id
 
 
-def test_delete_user(db_session: Session):
+def test_delete_user(db_session: AsyncSession):
     """
     GIVEN a User exists in the database
     WHEN the User is deleted
@@ -225,7 +223,7 @@ def test_delete_user(db_session: Session):
     assert retrieved_user is None
 
 
-def test_delete_user_that_does_not_exist(db_session: Session):
+def test_delete_user_that_does_not_exist(db_session: AsyncSession):
     """
     GIVEN a User does not exist in the database
     WHEN the User is deleted
