@@ -1,11 +1,11 @@
-from fastapi import (APIRouter, Depends, UploadFile)
-from app.dependency.async_dependency import get_current_active_user
-from app.schemas.image import UploadRequestBody, ImageProcessResponse
-from app.dependency.async_dependency import get_body_as_model
-from app.services.image import process_and_save_image
-from app.db.database import get_async_session
-from app.schemas.transactions_db.user import User
+from fastapi import APIRouter, Depends, UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.db.database import get_async_session
+from app.dependency.async_dependency import get_body_as_model, get_current_active_user
+from app.schemas.image import ImageProcessResponse, UploadRequestBody
+from app.schemas.transactions_db.user import User
+from app.services.image import process_and_save_image
 
 router = APIRouter()
 
