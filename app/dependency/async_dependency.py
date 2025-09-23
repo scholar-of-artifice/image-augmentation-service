@@ -1,13 +1,13 @@
-from fastapi import Header, HTTPException, status, Form, Depends
 from typing import Annotated
 
+from fastapi import Depends, Form, Header, HTTPException, status
+from pydantic import ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlmodel import select
 
+from app.db.database import get_async_session
 from app.schemas.image import UploadRequestBody
 from app.schemas.transactions_db.user import User
-from pydantic import ValidationError
-from app.db.database import get_async_session
-from sqlmodel import Session, select
 
 
 async def get_current_external_user_id(
@@ -52,10 +52,15 @@ async def get_current_active_user(
         finds the user in the database...
         and returns the complete User model object.
     """
-    result = await db_session.execute(select(User).where(User.external_id == external_id))
+    result = await db_session.execute(
+        select(User).where(
+            User.external_id == external_id
+        )
+    )
     user = result.scalars().first()
     if not user:
-        # this protects against cases where a valid token is presented for a user who has since been deleted from our database.
+        # this protects against cases where a valid token is presented...
+        # ... for a user who has since been deleted from our database.
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="User not found."
