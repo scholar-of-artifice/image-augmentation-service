@@ -1,9 +1,11 @@
-from sqlmodel import Session
-from sqlalchemy.exc import IntegrityError, DataError
-from datetime import datetime, timezone
-from pydantic import ValidationError
-import pytest
 import uuid
+from datetime import UTC, datetime
+
+import pytest
+from pydantic import ValidationError
+from sqlalchemy.exc import DataError, IntegrityError
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.schemas.transactions_db.unprocessed_image import UnprocessedImage
 from app.schemas.transactions_db.user import User
 
