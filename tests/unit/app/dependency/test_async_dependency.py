@@ -161,7 +161,7 @@ async def test_get_current_active_user_raises_not_found_when_user_does_not_exist
     THEN it raises an HTTPException with a 404 status
     """
     # create a mock session
-    mock_session = mocker.MagicMock(spec=AsyncSession)
+    mock_session = AsyncMock(spec=AsyncSession)
     # configure the mock to return an awaitable that resolves to None
     mock_result = mocker.MagicMock()
     mock_session.execute = AsyncMock(return_value=mock_result)
