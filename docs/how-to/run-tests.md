@@ -1,10 +1,16 @@
 # How to Run Tests
 Tests in this project are written using `pytest`.
+## run all `unit` tests
+From the root directory of this repository:
 
-## run all `unit` and `integration` tests
+```terminaloutput
+docker compose --profile unit-test up --build --abort-on-container-exit
+```
+
+## and `integration` tests
 From the root directory of this repository:
 ```terminaloutput
-docker compose --profile test up --build --abort-on-container-exit
+docker compose --profile integration-test up --build --abort-on-container-exit
 ```
 
 ## run all `end-to-end` tests
