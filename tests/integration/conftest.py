@@ -13,6 +13,13 @@ from app.main import app
 
 # --- ASYNCHRONOUS FIXTURES ---
 
+async def async_clean_db(session: AsyncSession) -> None:
+    """
+    Deletes all data from all tables.
+    """
+    for table in reversed(SQLModel.metadata.sorted_tables):
+        await session.execute(table.delete())
+    await session.commit()
 
 @pytest_asyncio.fixture(scope="session")
 def async_engine():
