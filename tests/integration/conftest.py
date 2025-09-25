@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlmodel import Session, SQLModel, create_engine
 
 from app.config import settings
-from app.db.database import get_session
+from app.db.database import get_async_session
 from app.main import app
 
 # --- ASYNCHRONOUS FIXTURES ---
