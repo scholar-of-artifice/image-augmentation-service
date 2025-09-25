@@ -70,7 +70,7 @@ async def async_db_session(async_engine, setup_database_async):
 
 
 @pytest_asyncio.fixture(scope="function")
-async def async_client(async_db_session):
+async def async_client(async_session_maker, setup_database_async):
     """
     fixture for testing async API
     provides an AsyncClient with a transactional async database session.
@@ -80,13 +80,16 @@ async def async_client(async_db_session):
         """
         A dependency override that provides an async session for one test.
         """
-        yield async_db_session
+        async with async_session_maker() as session:
+            yield session
 
-    app.dependency_overrides[get_session] = override_get_session_async
+    app.dependency_overrides[get_async_session] = override_get_session_async
 
     transport = ASGITransport(app=app)
     # use httpx.AsyncClient for async requests
-    async with AsyncClient(transport=transport, base_url="http://test") as client:
+    async with AsyncClient(
+            transport=transport,
+            base_url="http://test") as client:
         yield client
 
     app.dependency_overrides.clear()
