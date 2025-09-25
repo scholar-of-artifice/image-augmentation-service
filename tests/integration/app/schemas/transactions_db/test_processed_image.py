@@ -151,6 +151,3 @@ async def test_processed_image_DataError_when_storage_filename_is_too_long(
     async_db_session.add(processed_image)
     with pytest.raises(DataError):
         await async_db_session.flush()
-    # It's good practice to roll back the session after a failed transaction
-    # to ensure the session is clean for any subsequent tests.
-    await async_db_session.flush()
