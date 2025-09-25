@@ -30,8 +30,9 @@ async def create_user(db_session: AsyncSession, *, external_id: str) -> User:
     """
     db_user = User(external_id=external_id)
     db_session.add(db_user)
-    await db_session.commit()
+    await db_session.flush()
     await db_session.refresh(db_user)
+    await db_session.commit()
     return db_user
 
 
@@ -60,5 +61,5 @@ async def delete_user(
     if user_to_delete.external_id != requesting_external_id:
         raise PermissionDenied("You do not have permission to delete this user.")
     # perform the deletion
-    db_session.delete(user_to_delete)
+    await db_session.delete(user_to_delete)
     await db_session.commit()
