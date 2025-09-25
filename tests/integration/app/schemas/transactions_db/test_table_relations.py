@@ -1,8 +1,11 @@
 from app.schemas.transactions_db.unprocessed_image import UnprocessedImage
 from app.schemas.transactions_db.user import User
+from sqlalchemy.ext.asyncio import AsyncSession
+import pytest
 
+pytestmark = pytest.mark.asyncio
 
-def test_UnprocessedImage_creation_populates_user_relationship(db_session: AsyncSession):
+async def test_UnprocessedImage_creation_populates_user_relationship(async_db_session: AsyncSession):
     """
     GIVEN a User exists in the database
     AND a UnprocessedImage is created with that User.id
@@ -12,9 +15,9 @@ def test_UnprocessedImage_creation_populates_user_relationship(db_session: Async
     # create a user
     user = User(external_id="some-1234-extr-0987-id45")
     # save the user
-    db_session.add(user)
-    db_session.commit()
-    db_session.refresh(user)
+    async_db_session.add(user)
+    await async_db_session.commit()
+    await async_db_session.refresh(user)
     # create an unprocessed_image
     unprocessed_image = UnprocessedImage(
         user_id=user.id,
@@ -22,9 +25,9 @@ def test_UnprocessedImage_creation_populates_user_relationship(db_session: Async
         storage_filename="some_file_name.png",
     )
     # save the unprocessed_image
-    db_session.add(unprocessed_image)
-    db_session.commit()
-    db_session.refresh(unprocessed_image)
+    async_db_session.add(unprocessed_image)
+    await async_db_session.flush()
+    await async_db_session.refresh(unprocessed_image, attribute_names=["user"])
     # Assert that the ORM relationship attribute has been populated
     assert unprocessed_image.user is not None
     assert isinstance(unprocessed_image.user, User)
@@ -33,7 +36,7 @@ def test_UnprocessedImage_creation_populates_user_relationship(db_session: Async
     assert unprocessed_image.user.external_id == user.external_id
 
 
-def test_user_image_list_is_updated_after_image_creation(db_session: AsyncSession):
+async def test_user_image_list_is_updated_after_image_creation(async_db_session: AsyncSession):
     """
     GIVEN a User exists
     AND an UnprocessedImage is created for that user
@@ -42,19 +45,19 @@ def test_user_image_list_is_updated_after_image_creation(db_session: AsyncSessio
     """
     # create a user
     user = User(external_id="some-1234-extr-0987-id45")
-    db_session.add(user)
-    db_session.commit()
-    db_session.refresh(user)  # Ensure we have the user's ID
+    async_db_session.add(user)
+    await async_db_session.flush()
+    await async_db_session.refresh(user)  # Ensure we have the user's ID
     # create and unprocessed_image
     unprocessed_image = UnprocessedImage(
         user_id=user.id,
         original_filename="mountain_view-california.png",
         storage_filename="unique_storage_name.png",
     )
-    db_session.add(unprocessed_image)
-    db_session.commit()
+    async_db_session.add(unprocessed_image)
+    await async_db_session.flush()
     # refresh to see what was written in db
-    db_session.refresh(user)
+    await async_db_session.refresh(user, attribute_names=["unprocessed_images"])
     # is relationship list is populated correctly?
     assert user.unprocessed_images is not None
     assert len(user.unprocessed_images) == 1
@@ -65,7 +68,7 @@ def test_user_image_list_is_updated_after_image_creation(db_session: AsyncSessio
     assert image_from_list.storage_filename == "unique_storage_name.png"
 
 
-def test_deleting_image_removes_it_from_user_list(db_session: AsyncSession):
+async def test_deleting_image_removes_it_from_user_list(async_db_session: AsyncSession):
     """
     GIVEN a User with one UnprocessedImage
     WHEN the UnprocessedImage is deleted from the database
@@ -78,22 +81,22 @@ def test_deleting_image_removes_it_from_user_list(db_session: AsyncSession):
         original_filename="image_to_delete.jpg",
         storage_filename="storage_name_to_delete.jpg",
     )
-    db_session.add(user)
-    db_session.add(unprocessed_image)
-    db_session.commit()
-    db_session.refresh(user)
+    async_db_session.add(user)
+    async_db_session.add(unprocessed_image)
+    await async_db_session.flush()
+    await async_db_session.refresh(user, attribute_names=["unprocessed_images"])
     # ensure this was saved correctly
     assert len(user.unprocessed_images) == 1
     # delete the image
-    db_session.delete(unprocessed_image)
-    db_session.commit()
+    await async_db_session.delete(unprocessed_image)
+    await async_db_session.flush()
     # refresh the user to get the latest state from the database
-    db_session.refresh(user)
+    await async_db_session.refresh(user, attribute_names=["unprocessed_images"])
     # this user has an empty unprocessed_images list
     assert len(user.unprocessed_images) == 0
 
 
-def test_deleting_user_cascades_to_delete_images(db_session: AsyncSession):
+async def test_deleting_user_cascades_to_delete_images(async_db_session: AsyncSession):
     """
     GIVEN a User with an UnprocessedImage
     WHEN the User is deleted
@@ -101,29 +104,29 @@ def test_deleting_user_cascades_to_delete_images(db_session: AsyncSession):
     """
     # create a user with an image
     user = User(external_id="cascading-delete-user")
-    db_session.add(user)
-    db_session.commit()
-    db_session.refresh(user)
+    async_db_session.add(user)
+    await async_db_session.flush()
+    await async_db_session.refresh(user)
     unprocessed_image = UnprocessedImage(
         user_id=user.id,
         original_filename="image_that_should_be_deleted.png",
         storage_filename="cascade_delete_storage.png",
     )
-    db_session.add(unprocessed_image)
-    db_session.commit()
+    async_db_session.add(unprocessed_image)
+    await async_db_session.flush()
     # store the ID to check for its existence later
     image_id = unprocessed_image.id
     # ensure the image is in the database
-    assert db_session.get(UnprocessedImage, image_id) is not None
+    assert async_db_session.get(UnprocessedImage, image_id) is not None
     # delete the user
-    db_session.delete(user)
-    db_session.commit()
+    await async_db_session.delete(user)
+    await async_db_session.flush()
     # the associated image should no longer exist in the database
-    deleted_image = db_session.get(UnprocessedImage, image_id)
+    deleted_image = await async_db_session.get(UnprocessedImage, image_id)
     assert deleted_image is None
 
 
-def test_linking_by_parent_object_populates_foreign_key(db_session: AsyncSession):
+async def test_linking_by_parent_object_populates_foreign_key(async_db_session: AsyncSession):
     """
     GIVEN a User exists in the database
     WHEN an UnprocessedImage is created by assigning the User object directly
@@ -132,19 +135,19 @@ def test_linking_by_parent_object_populates_foreign_key(db_session: AsyncSession
     """
     # create a user
     user = User(external_id="user-for-object-linking")
-    db_session.add(user)
-    db_session.commit()
-    db_session.refresh(user)
+    async_db_session.add(user)
+    await async_db_session.flush()
+    await async_db_session.refresh(user)
     # create an image by assigning the parent object directly
     unprocessed_image = UnprocessedImage(
         original_filename="linked_by_object.png",
         storage_filename="storage_name_linked_by_object.png",
         user=user,  # Link via the relationship object, not the user_id
     )
-    db_session.add(unprocessed_image)
-    db_session.commit()
+    async_db_session.add(unprocessed_image)
+    await async_db_session.flush()
     # refresh the image to get its state from the database
-    db_session.refresh(unprocessed_image)
+    await async_db_session.refresh(unprocessed_image)
     # the user_id foreign key should be correctly populated
     assert unprocessed_image.user_id is not None
     assert unprocessed_image.user_id == user.id
@@ -152,7 +155,7 @@ def test_linking_by_parent_object_populates_foreign_key(db_session: AsyncSession
     assert unprocessed_image.user.external_id == "user-for-object-linking"
 
 
-def test_linking_by_appending_to_parent_list(db_session: AsyncSession):
+async def test_linking_by_appending_to_parent_list(async_db_session: AsyncSession):
     """
     GIVEN a User exists in the database
     WHEN a new UnprocessedImage is appended to the user.unprocessed_images list
@@ -161,9 +164,9 @@ def test_linking_by_appending_to_parent_list(db_session: AsyncSession):
     """
     # create a user that is already saved in the database
     user = User(external_id="user-for-list-append")
-    db_session.add(user)
-    db_session.commit()
-    db_session.refresh(user)
+    async_db_session.add(user)
+    await async_db_session.flush()
+    await async_db_session.refresh(user, attribute_names=["unprocessed_images"])
     # create a new unprocessed_images and append to the user's relationship list
     new_image = UnprocessedImage(
         original_filename="appended_image.jpg",
@@ -171,10 +174,10 @@ def test_linking_by_appending_to_parent_list(db_session: AsyncSession):
     )
     user.unprocessed_images.append(new_image)
     # add the user to the session again to register the change to the list
-    db_session.add(user)
-    db_session.commit()
+    async_db_session.add(user)
+    await async_db_session.flush()
     # refresh the user to load the newly added image from the DB
-    db_session.refresh(user)
+    await async_db_session.refresh(user, attribute_names=["unprocessed_images"])
     # the image should be in the user's list and have the correct foreign key
     assert len(user.unprocessed_images) == 1
     image_from_db = user.unprocessed_images[0]
@@ -183,7 +186,7 @@ def test_linking_by_appending_to_parent_list(db_session: AsyncSession):
     assert image_from_db.original_filename == "appended_image.jpg"
 
 
-def test_deleting_image_does_not_delete_associated_user(db_session: AsyncSession):
+async def test_deleting_image_does_not_delete_associated_user(async_db_session: AsyncSession):
     """
     GIVEN a User exists
     AND there is an associated UnprocessedImage
@@ -197,20 +200,20 @@ def test_deleting_image_does_not_delete_associated_user(db_session: AsyncSession
         original_filename="image_to_be_deleted.jpg",
         storage_filename="transient_image.jpg",
     )
-    db_session.add(unprocessed_image)  # Adding the child cascades the add to the parent
-    db_session.commit()
+    async_db_session.add(unprocessed_image)  # Adding the child cascades the add to the parent
+    await async_db_session.flush()
     # store IDs to query for them after the deletion
     user_id = user.id
     image_id = unprocessed_image.id
     # ensure both were committed
-    assert db_session.get(User, user_id) is not None
-    assert db_session.get(UnprocessedImage, image_id) is not None
+    assert async_db_session.get(User, user_id) is not None
+    assert async_db_session.get(UnprocessedImage, image_id) is not None
     # delete the image
-    db_session.delete(unprocessed_image)
-    db_session.commit()
+    await async_db_session.delete(unprocessed_image)
+    await async_db_session.flush()
     # the image is gone, but the user remains
-    image_in_db = db_session.get(UnprocessedImage, image_id)
-    user_in_db = db_session.get(User, user_id)
+    image_in_db = await async_db_session.get(UnprocessedImage, image_id)
+    user_in_db = await async_db_session.get(User, user_id)
     assert image_in_db is None
     assert user_in_db is not None
     # Verify it's the correct user
