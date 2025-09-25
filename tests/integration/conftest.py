@@ -67,6 +67,7 @@ async def async_db_session(
     """
     # the `sessionmaker` is configured to use the AsyncSession class
     async with async_session_maker() as session:
+        await async_clean_db(session)
         await session.begin()
         try:
             yield session
