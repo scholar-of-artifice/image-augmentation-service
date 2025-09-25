@@ -16,14 +16,6 @@ def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
 
 
-def get_session():
-    """
-    Creates a new database session and returns the session.
-    """
-    with Session(engine) as session:
-        yield session
-
-
 # Asynchronous session
 
 async_db_url = str(settings.DATABASE_URL).replace(
