@@ -1,4 +1,5 @@
 import pytest
+from typing import AsyncGenerator
 import pytest_asyncio
 from fastapi.testclient import TestClient
 from httpx import ASGITransport, AsyncClient
@@ -49,39 +50,35 @@ async def async_session_maker(async_engine):
     )
 
 @pytest_asyncio.fixture(scope="function")
-async def async_db_session(async_engine, setup_database_async):
+async def async_db_session(
+        async_session_maker: sessionmaker,
+        setup_database_async):
     """
     create fixture for async database operations.
     provides a transactional SQLAlchemy AsyncSession to the test database.
     this fixture will be created once per test function.
     """
     # the `sessionmaker` is configured to use the AsyncSession class
-    async_session_maker = sessionmaker(
-        bind=async_engine, class_=AsyncSession, expire_on_commit=False
-    )
-
     async with async_session_maker() as session:
-        async with session.begin():
-            try:
-                yield session
-            finally:
-                # The transaction is automatically rolled back by the context manager
-                await session.rollback()
+        await session.begin()
+        try:
+            yield session
+        finally:
+            await session.rollback()
 
 
 @pytest_asyncio.fixture(scope="function")
-async def async_client(async_session_maker, setup_database_async):
+async def async_client( async_db_session: AsyncSession) -> AsyncGenerator[AsyncClient, None]:
     """
     fixture for testing async API
     provides an AsyncClient with a transactional async database session.
     """
 
-    async def override_get_session_async():
+    async def override_get_session_async() -> AsyncGenerator[AsyncSession, None]:
         """
         A dependency override that provides an async session for one test.
         """
-        async with async_session_maker() as session:
-            yield session
+        yield async_db_session
 
     app.dependency_overrides[get_async_session] = override_get_session_async
 
