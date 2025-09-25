@@ -10,65 +10,6 @@ from app.config import settings
 from app.db.database import get_session
 from app.main import app
 
-# --- SYNCHRONOUS FIXTURES ---
-
-
-@pytest.fixture(scope="session")
-def engine():
-    """
-    Creates a SQLAlchemy engine instance
-    """
-    return create_engine(str(settings.DATABASE_URL))
-
-
-@pytest.fixture(scope="session")
-def setup_database(engine):
-    """
-    Create and drop all tables once for the entire test session.
-    """
-    SQLModel.metadata.create_all(engine)
-    yield
-    SQLModel.metadata.drop_all(engine)
-
-
-@pytest.fixture(scope="function")
-def db_session(engine, setup_database):
-    """
-    --- FIXTURE FOR TESTING DATABASE MODELS ---
-    Provides a SQLAlchemy session to the test database.
-    This fixture will be created once per test function.
-    """
-    connection = engine.connect()
-    transaction = connection.begin()
-    session = Session(bind=connection)
-    try:
-        yield session
-    finally:
-        if transaction.is_active:
-            transaction.rollback()
-        session.close()
-        connection.close()
-
-
-@pytest.fixture(scope="function")
-def client(db_session):
-    """
-    --- FIXTURE FOR TESTING API ---
-    A fixture that provides a TestClient with a transactional database session.
-    """
-
-    def override_get_session():
-        """
-        A dependency override that provides a session for one test.
-        """
-        yield db_session
-
-    app.dependency_overrides[get_session] = override_get_session
-    yield TestClient(app)
-    app.dependency_overrides.clear()
-    return
-
-
 # --- ASYNCHRONOUS FIXTURES ---
 
 
