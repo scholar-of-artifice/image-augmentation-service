@@ -1,5 +1,9 @@
 # How to Run Tests
-Tests in this project are written using `pytest`.
+Tests in this project are broken down as follows:
+- `unit` tests
+- `integration` tests
+- `end-to-end` tests
+
 ## run all `unit` tests
 From the root directory of this repository:
 
