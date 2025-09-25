@@ -20,7 +20,7 @@ docker compose --profile integration-test up --build --abort-on-container-exit
 ## run all `end-to-end` tests
 From the root directory of this repository;
 ```terminaloutput
-docker compose --profile endtoend up --build --abort-on-container-exit
+docker compose --profile end-to-end-test up --build --abort-on-container-exit
 ```
 
 ## How can I get more detail?
