@@ -325,7 +325,7 @@ async def test_get_unprocessed_image_by_primary_key_not_found(async_db_session: 
     assert retrieved_unprocessed_image is None
 
 
-async def NO_test_delete_unprocessed_image(async_db_session: AsyncSession):
+async def test_delete_unprocessed_image(async_db_session: AsyncSession):
     """
     GIVEN a UnprocessedImage exists in the database
     WHEN the UnprocessedImage is deleted
@@ -343,16 +343,18 @@ async def NO_test_delete_unprocessed_image(async_db_session: AsyncSession):
     )
     async_db_session.add(unprocessed_image)
     await async_db_session.flush()
-    await async_db_session.refresh(unprocessed_image)
+    await async_db_session.refresh(unprocessed_image, attribute_names=["id"])
+    assert unprocessed_image.id is not None
+    await async_db_session.delete(unprocessed_image)
     # store its ID so we can look for it later
     unprocessed_image_id = unprocessed_image.id
     # confirm it's in the database before deleting
-    assert async_db_session.get(UnprocessedImage, unprocessed_image_id) is not None
+    assert await async_db_session.get(UnprocessedImage, unprocessed_image_id) is not None
     # delete the image
     await async_db_session.delete(unprocessed_image)
     await async_db_session.flush()
     # the image cannot be found by its primary key
-    retrieved_image = async_db_session.get(UnprocessedImage, unprocessed_image_id)
+    retrieved_image = await async_db_session.get(UnprocessedImage, unprocessed_image_id)
     assert retrieved_image is None
 
 
