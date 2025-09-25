@@ -5,7 +5,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Path, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.db.database import get_session
+from app.db.database import get_async_session
 from app.dependency.async_dependency import get_current_external_user_id
 from app.schemas.user import UserRead
 from app.services.user import (
@@ -25,9 +25,9 @@ logger = logging.getLogger(__name__)
     response_model=UserRead,
     status_code=status.HTTP_201_CREATED,
 )
-def create_user_endpoint(
+async def create_user_endpoint(
     *,
-    db_session: AsyncSession = Depends(get_session),
+    db_session: AsyncSession = Depends(get_async_session),
     external_id: str = Depends(get_current_external_user_id)
 ):
     """
@@ -38,7 +38,7 @@ def create_user_endpoint(
 
         params:
             *: Enforces that all subsequent parameters must be specified by keyword.
-            db_session: The database session, injected by the `get_session` dependency.
+            db_session: The database session, injected by the `get_async_session` dependency.
             external_id: The user's external ID, injected by the security dependency.
     """
     # NOTE --->
@@ -49,8 +49,9 @@ def create_user_endpoint(
     #   probably you should do that here where this comment is...
     # <--- NOTE
     # call the service to check for an existing user
-    existing_user = get_user_by_external_id(
-        db_session=db_session, external_id=external_id
+    existing_user = await get_user_by_external_id(
+        db_session=db_session,
+        external_id=external_id
     )
     # the endpoint handles the HTTP-specific logic
     if existing_user:
@@ -60,7 +61,7 @@ def create_user_endpoint(
             detail=f"User with external_id '{external_id}' already exists."
         )
     # call the service to create the new user
-    new_user = create_user(db_session=db_session, external_id=external_id)
+    new_user = await create_user(db_session=db_session, external_id=external_id)
     # convert the SQLModel object to your Pydantic UserRead schema
     # this only works because UserRead has `from_attributes=True` and SQLModel is Pydantic-compatible.
     return UserRead.model_validate(new_user)
@@ -70,9 +71,9 @@ def create_user_endpoint(
     response_model=UserRead,
     status_code=status.HTTP_200_OK,
 )
-def sign_in_user_endpoint(
+async def sign_in_user_endpoint(
     *,
-    db_session: AsyncSession = Depends(get_session),
+    db_session: AsyncSession = Depends(get_async_session),
     external_id: str = Depends(get_current_external_user_id)
 ):
     """
@@ -83,11 +84,11 @@ def sign_in_user_endpoint(
 
         params:
            *: Enforces that all subsequent parameters must be specified by keyword.
-            db_session: The database session, injected by the `get_session` dependency.
+            db_session: The database session, injected by the `get_async_session` dependency.
             external_id: The user's external ID, from the security dependency.
     """
     # Find the user in the database using their trusted external ID.
-    user = get_user_by_external_id(
+    user = await get_user_by_external_id(
         db_session=db_session, external_id=external_id
     )
     # If no user is found, they exist externally but not in our system.
@@ -104,9 +105,9 @@ def sign_in_user_endpoint(
     path="/users/{user_id}",
     status_code=status.HTTP_204_NO_CONTENT,
 )
-def delete_user_endpoint(
+async def delete_user_endpoint(
     *,
-    db_session: AsyncSession = Depends(get_session),
+    db_session: AsyncSession = Depends(get_async_session),
     external_id: str = Depends(get_current_external_user_id),
     user_id: Annotated[uuid.UUID, Path(title="The ID of the item to destroy")],
 ):
@@ -119,12 +120,12 @@ def delete_user_endpoint(
 
         params:
            *: Enforces that all subsequent parameters must be specified by keyword.
-            db_session: The database session, injected by the `get_session` dependency.
+            db_session: The database session, injected by the `get_async_session` dependency.
             external_id: The user's external ID, from the security dependency.
             user_id: The unique ID of the user to be deleted, from the URL path.
     """
     try:
-        delete_user(
+        await delete_user(
             db_session=db_session,
             user_id_to_delete=user_id,
             requesting_external_id=external_id,
