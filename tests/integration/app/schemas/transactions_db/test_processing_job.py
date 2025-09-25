@@ -1,13 +1,15 @@
 import uuid
 from datetime import UTC, datetime
-
+import pytest
 from app.schemas.transactions_db.job_status import JobStatus
 from app.schemas.transactions_db.processing_job import ProcessingJob
 from app.schemas.transactions_db.unprocessed_image import UnprocessedImage
 from app.schemas.transactions_db.user import User
+from sqlalchemy.ext.asyncio import AsyncSession
 
+pytestmark = pytest.mark.asyncio
 
-def test_processing_job_is_valid(db_session: AsyncSession):
+async def test_processing_job_is_valid(async_db_session: AsyncSession):
     """
     GIVEN a User and an UnprocessedImage exist in the database
     AND a valid ProcessingJob entry is created for them
@@ -16,24 +18,24 @@ def test_processing_job_is_valid(db_session: AsyncSession):
     """
     # create a user and commit
     user = User(external_id="user-ext-1234")
-    db_session.add(user)
-    db_session.commit()
+    async_db_session.add(user)
+    await async_db_session.flush()
     # create an unprocessed_image and commit
     unprocessed_image = UnprocessedImage(
         user_id=user.id,
         original_filename="vacation_pic.png",
         storage_filename="some-storage-name.png",
     )
-    db_session.add(unprocessed_image)
-    db_session.commit()
+    async_db_session.add(unprocessed_image)
+    await async_db_session.flush()
     # create a processing_job
     job = ProcessingJob(
         unprocessed_image_id=unprocessed_image.id,
         upload_request_body={"filter": "sepia", "intensity": 0.8},
     )
-    db_session.add(job)
-    db_session.commit()
-    db_session.refresh(job)
+    async_db_session.add(job)
+    await async_db_session.flush()
+    await async_db_session.refresh(job)
     # test the processing_job
     assert job.id is not None
     assert isinstance(job.id, uuid.UUID)
