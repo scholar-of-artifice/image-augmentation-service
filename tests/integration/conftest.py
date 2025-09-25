@@ -36,6 +36,17 @@ async def setup_database_async(async_engine):
     async with async_engine.begin() as connection:
         await connection.run_sync(SQLModel.metadata.drop_all)
 
+@pytest_asyncio.fixture(scope="session")
+async def async_session_maker(async_engine):
+    """
+    Creates an asynchronous sessionmaker factory once for...
+    ... the entire test session.
+    """
+    return sessionmaker(
+        bind=async_engine,
+        class_=AsyncSession,
+        expire_on_commit=False
+    )
 
 @pytest_asyncio.fixture(scope="function")
 async def async_db_session(async_engine, setup_database_async):
