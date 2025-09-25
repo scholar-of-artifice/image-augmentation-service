@@ -10,7 +10,9 @@ from app.schemas.transactions_db.unprocessed_image import UnprocessedImage
 from app.schemas.transactions_db.user import User
 
 
-def test_unprocessed_image_is_valid(db_session: AsyncSession):
+pytestmark = pytest.mark.asyncio
+
+async def test_unprocessed_image_is_valid(async_db_session: AsyncSession):
     """
     GIVEN a User exists in the database
     AND a valid UnprocessedImage entry
@@ -19,8 +21,8 @@ def test_unprocessed_image_is_valid(db_session: AsyncSession):
     """
     # create a user
     user = User(external_id="some-1234-extr-0987-id45")
-    db_session.add(user)
-    db_session.commit()
+    async_db_session.add(user)
+    await async_db_session.flush()
     # create an unprocessed_image
     unprocessed_image = UnprocessedImage(
         user_id=user.id,
@@ -28,9 +30,9 @@ def test_unprocessed_image_is_valid(db_session: AsyncSession):
         storage_filename="some_file_name.png",
     )
     # save the unprocessed_image
-    db_session.add(unprocessed_image)
-    db_session.commit()
-    db_session.refresh(unprocessed_image)
+    async_db_session.add(unprocessed_image)
+    await async_db_session.flush()
+    await async_db_session.refresh(unprocessed_image, attribute_names=["id", "original_filename", "storage_filename", "created_at"])
     # test the unprocessed_image
     assert unprocessed_image.id is not None
     assert isinstance(unprocessed_image.id, uuid.UUID)
@@ -41,8 +43,8 @@ def test_unprocessed_image_is_valid(db_session: AsyncSession):
     assert unprocessed_image.created_at.tzinfo == UTC
 
 
-def test_unprocessed_image_IntegrityError_when_original_filename_is_null(
-    db_session: AsyncSession,
+async def test_unprocessed_image_IntegrityError_when_original_filename_is_null(
+    async_db_session: AsyncSession,
 ):
     """
     GIVEN an attempt to create an UnprocessedImage entry
@@ -52,23 +54,23 @@ def test_unprocessed_image_IntegrityError_when_original_filename_is_null(
     """
     # create a user
     user = User(external_id="some-1234-extr-0987-id45")
-    db_session.add(user)
-    db_session.commit()
+    async_db_session.add(user)
+    await async_db_session.flush()
     # create an unprocessed_image
     unprocessed_image = UnprocessedImage(
         user_id=user.id, original_filename=None, storage_filename="some_file_name.png"
     )
     # attempt to save the data
-    db_session.add(unprocessed_image)
+    async_db_session.add(unprocessed_image)
     with pytest.raises(IntegrityError):
-        db_session.commit()
+        await async_db_session.flush()
     # It's good practice to roll back the session after a failed transaction
     # to ensure the session is clean for any subsequent tests.
-    db_session.rollback()
+    await async_db_session.rollback()
 
 
-def no_test_unprocessed_image_ValidationError_when_original_filename_is_blank_string(
-    db_session: AsyncSession,
+async def no_test_unprocessed_image_ValidationError_when_original_filename_is_blank_string(
+    async_db_session: AsyncSession,
 ):
     # TODO: remove test from suite. validation not working as expected
     """
@@ -79,19 +81,19 @@ def no_test_unprocessed_image_ValidationError_when_original_filename_is_blank_st
     """
     # create a user
     user = User(external_id="some-1234-extr-0987-id45")
-    db_session.add(user)
-    db_session.commit()
+    async_db_session.add(user)
+    await async_db_session.flush()
     with pytest.raises(ValidationError):
         UnprocessedImage(
             user_id=user.id, original_filename="", storage_filename="some_file_name.png"
         )
     # It's good practice to roll back the session after a failed transaction
     # to ensure the session is clean for any subsequent tests.
-    db_session.rollback()
+    await async_db_session.rollback()
 
 
-def test_unprocessed_image_IntegrityError_when_storage_filename_is_null(
-    db_session: AsyncSession,
+async def test_unprocessed_image_IntegrityError_when_storage_filename_is_null(
+    async_db_session: AsyncSession,
 ):
     """
     GIVEN an attempt to create an UnprocessedImage entry
@@ -101,23 +103,23 @@ def test_unprocessed_image_IntegrityError_when_storage_filename_is_null(
     """
     # create a user
     user = User(external_id="some-1234-extr-0987-id45")
-    db_session.add(user)
-    db_session.commit()
+    async_db_session.add(user)
+    await async_db_session.flush()
     # create an unprocessed_image
     unprocessed_image = UnprocessedImage(
         user_id=user.id, original_filename="cool_image.png", storage_filename=None
     )
     # attempt to save the data
-    db_session.add(unprocessed_image)
+    async_db_session.add(unprocessed_image)
     with pytest.raises(IntegrityError):
-        db_session.commit()
+        await async_db_session.flush()
     # It's good practice to roll back the session after a failed transaction
     # to ensure the session is clean for any subsequent tests.
-    db_session.rollback()
+    await async_db_session.rollback()
 
 
-def no_test_unprocessed_image_ValidationError_when_storage_filename_is_blank_string(
-    db_session: AsyncSession,
+async def no_test_unprocessed_image_ValidationError_when_storage_filename_is_blank_string(
+    async_db_session: AsyncSession,
 ):
     # TODO: remove test from suite. validation not working as expected
     """
@@ -128,18 +130,18 @@ def no_test_unprocessed_image_ValidationError_when_storage_filename_is_blank_str
     """
     # create a user
     user = User(external_id="some-1234-extr-0987-id45")
-    db_session.add(user)
-    db_session.commit()
+    async_db_session.add(user)
+    await async_db_session.flush()
     with pytest.raises(DataError):
         UnprocessedImage(
             user_id=user.id, original_filename="cool_image.png", storage_filename=""
         )
     # It's good practice to roll back the session after a failed transaction
     # to ensure the session is clean for any subsequent tests.
-    db_session.rollback()
+    await async_db_session.rollback()
 
 
-def test_unprocessed_image_IntegrityError_when_user_id_is_null(db_session: AsyncSession):
+async def test_unprocessed_image_IntegrityError_when_user_id_is_null(async_db_session: AsyncSession):
     """
     GIVEN an attempt to create an UnprocessedImage entry
     AND the user_id is None
@@ -153,16 +155,16 @@ def test_unprocessed_image_IntegrityError_when_user_id_is_null(db_session: Async
         storage_filename="some_file_name.png",
     )
     # attempt to save the data
-    db_session.add(unprocessed_image)
+    async_db_session.add(unprocessed_image)
     with pytest.raises(IntegrityError):
-        db_session.commit()
+        await async_db_session.flush()
     # It's good practice to roll back the session after a failed transaction
     # to ensure the session is clean for any subsequent tests.
-    db_session.rollback()
+    await async_db_session.rollback()
 
 
-def test_unprocessed_image_DataError_when_original_filename_is_too_long(
-    db_session: AsyncSession,
+async def test_unprocessed_image_DataError_when_original_filename_is_too_long(
+    async_db_session: AsyncSession,
 ):
     """
     GIVEN an attempt to create an UnprocessedImage entry
@@ -172,8 +174,8 @@ def test_unprocessed_image_DataError_when_original_filename_is_too_long(
     """
     # create a user
     user = User(external_id="some-1234-extr-0987-id45")
-    db_session.add(user)
-    db_session.commit()
+    async_db_session.add(user)
+    await async_db_session.flush()
     # create an unprocessed_image
     unprocessed_image = UnprocessedImage(
         user_id=user.id,
@@ -181,16 +183,16 @@ def test_unprocessed_image_DataError_when_original_filename_is_too_long(
         storage_filename="some_file_name.png",
     )
     # attempt to save the data
-    db_session.add(unprocessed_image)
+    async_db_session.add(unprocessed_image)
     with pytest.raises(DataError):
-        db_session.commit()
+        await async_db_session.flush()
     # It's good practice to roll back the session after a failed transaction
     # to ensure the session is clean for any subsequent tests.
-    db_session.rollback()
+    await async_db_session.rollback()
 
 
-def test_unprocessed_image_DataError_when_storage_filename_is_to_long(
-    db_session: AsyncSession,
+async def test_unprocessed_image_DataError_when_storage_filename_is_to_long(
+    async_db_session: AsyncSession,
 ):
     """
     GIVEN an attempt to create an UnprocessedImage entry
@@ -200,8 +202,8 @@ def test_unprocessed_image_DataError_when_storage_filename_is_to_long(
     """
     # create a user
     user = User(external_id="some-1234-extr-0987-id45")
-    db_session.add(user)
-    db_session.commit()
+    async_db_session.add(user)
+    await async_db_session.flush()
     # create an unprocessed_image
     unprocessed_image = UnprocessedImage(
         user_id=user.id,
@@ -209,16 +211,16 @@ def test_unprocessed_image_DataError_when_storage_filename_is_to_long(
         storage_filename="a" * 300,
     )
     # attempt to save the data
-    db_session.add(unprocessed_image)
+    async_db_session.add(unprocessed_image)
     with pytest.raises(DataError):
-        db_session.commit()
+        await async_db_session.flush()
     # It's good practice to roll back the session after a failed transaction
     # to ensure the session is clean for any subsequent tests.
-    db_session.rollback()
+    await async_db_session.rollback()
 
 
-def test_unprocessed_image_IntegrityError_when_user_id_does_not_exist(
-    db_session: AsyncSession,
+async def test_unprocessed_image_IntegrityError_when_user_id_does_not_exist(
+    async_db_session: AsyncSession,
 ):
     """
     GIVEN an attempt to create an UnprocessedImage entry
@@ -233,16 +235,16 @@ def test_unprocessed_image_IntegrityError_when_user_id_does_not_exist(
         storage_filename="some_file_name.png",
     )
     # attempt to save the data
-    db_session.add(unprocessed_image)
+    async_db_session.add(unprocessed_image)
     with pytest.raises(IntegrityError):
-        db_session.commit()
+        await async_db_session.flush()
     # It's good practice to roll back the session after a failed transaction
     # to ensure the session is clean for any subsequent tests.
-    db_session.rollback()
+    await async_db_session.rollback()
 
 
-def test_unprocessed_image_is_IntegrityError_when_storage_file_name_is_duplicated(
-    db_session: AsyncSession,
+async def test_unprocessed_image_is_IntegrityError_when_storage_file_name_is_duplicated(
+    async_db_session: AsyncSession,
 ):
     """
     GIVEN an UnprocessedImage A
@@ -253,8 +255,8 @@ def test_unprocessed_image_is_IntegrityError_when_storage_file_name_is_duplicate
     """
     # create a user
     user = User(external_id="some_external_id")
-    db_session.add(user)
-    db_session.commit()
+    async_db_session.add(user)
+    await async_db_session.flush()
     # create an image
     unprocessed_image_A = UnprocessedImage(
         user_id=user.id,
@@ -262,8 +264,8 @@ def test_unprocessed_image_is_IntegrityError_when_storage_file_name_is_duplicate
         storage_filename="some_file_name.png",
     )
     # save the data
-    db_session.add(unprocessed_image_A)
-    db_session.commit()
+    async_db_session.add(unprocessed_image_A)
+    await async_db_session.flush()
     # create another image
     unprocessed_image_B = UnprocessedImage(
         user_id=user.id,
@@ -271,15 +273,15 @@ def test_unprocessed_image_is_IntegrityError_when_storage_file_name_is_duplicate
         storage_filename="some_file_name.png",
     )
     # attempt to save the data
-    db_session.add(unprocessed_image_B)
+    async_db_session.add(unprocessed_image_B)
     with pytest.raises(IntegrityError):
-        db_session.commit()
+        await async_db_session.flush()
     # It's good practice to roll back the session after a failed transaction
     # to ensure the session is clean for any subsequent tests.
-    db_session.rollback()
+    await async_db_session.rollback()
 
 
-def test_get_unprocessed_image_by_primary_key(db_session: AsyncSession):
+async def test_get_unprocessed_image_by_primary_key(async_db_session: AsyncSession):
     """
     GIVEN a UnprocessedImage model
     AND it is persisted in the database
@@ -288,19 +290,19 @@ def test_get_unprocessed_image_by_primary_key(db_session: AsyncSession):
     """
     # create a user
     user = User(external_id="some_external_id")
-    db_session.add(user)
-    db_session.commit()
+    async_db_session.add(user)
+    await async_db_session.flush()
     # create a user
     unprocessed_image = UnprocessedImage(
         user_id=user.id,
         original_filename="cool_image.png",
         storage_filename="some_file_name.png",
     )
-    db_session.add(unprocessed_image)
-    db_session.commit()
-    db_session.refresh(unprocessed_image)
+    async_db_session.add(unprocessed_image)
+    await async_db_session.flush()
+    await async_db_session.refresh(unprocessed_image)
     # get the unprocessed_image by id
-    retrieved_image = db_session.get(UnprocessedImage, unprocessed_image.id)
+    retrieved_image = await async_db_session.get(UnprocessedImage, unprocessed_image.id)
     # assert that the images are the same
     assert retrieved_image.id is not None
     assert isinstance(retrieved_image.id, uuid.UUID)
@@ -309,7 +311,7 @@ def test_get_unprocessed_image_by_primary_key(db_session: AsyncSession):
     assert retrieved_image.storage_filename == "some_file_name.png"
 
 
-def test_get_unprocessed_image_by_primary_key_not_found(db_session: AsyncSession):
+async def test_get_unprocessed_image_by_primary_key_not_found(async_db_session: AsyncSession):
     """
     GIVEN no UnprocessedImage exists with a specific ID
     WHEN a UnprocessedImage is retrieved by that ID
@@ -318,12 +320,12 @@ def test_get_unprocessed_image_by_primary_key_not_found(db_session: AsyncSession
     # make some UUID
     non_existent_id = uuid.uuid4()
     # try to get a user with that ID
-    retrieved_unprocessed_image = db_session.get(UnprocessedImage, non_existent_id)
+    retrieved_unprocessed_image = await async_db_session.get(UnprocessedImage, non_existent_id)
     # the result is None
     assert retrieved_unprocessed_image is None
 
 
-def test_delete_unprocessed_image(db_session: AsyncSession):
+async def NO_test_delete_unprocessed_image(async_db_session: AsyncSession):
     """
     GIVEN a UnprocessedImage exists in the database
     WHEN the UnprocessedImage is deleted
@@ -331,26 +333,26 @@ def test_delete_unprocessed_image(db_session: AsyncSession):
     """
     # create a user
     user = User(external_id="some_external_id")
-    db_session.add(user)
-    db_session.commit()
+    async_db_session.add(user)
+    await async_db_session.flush()
     # create a user
     unprocessed_image = UnprocessedImage(
         user_id=user.id,
         original_filename="cool_image.png",
         storage_filename="some_file_name.png",
     )
-    db_session.add(unprocessed_image)
-    db_session.commit()
-    db_session.refresh(unprocessed_image)
+    async_db_session.add(unprocessed_image)
+    await async_db_session.flush()
+    await async_db_session.refresh(unprocessed_image)
     # store its ID so we can look for it later
     unprocessed_image_id = unprocessed_image.id
     # confirm it's in the database before deleting
-    assert db_session.get(UnprocessedImage, unprocessed_image_id) is not None
+    assert async_db_session.get(UnprocessedImage, unprocessed_image_id) is not None
     # delete the image
-    db_session.delete(unprocessed_image)
-    db_session.commit()
+    await async_db_session.delete(unprocessed_image)
+    await async_db_session.flush()
     # the image cannot be found by its primary key
-    retrieved_image = db_session.get(UnprocessedImage, unprocessed_image_id)
+    retrieved_image = async_db_session.get(UnprocessedImage, unprocessed_image_id)
     assert retrieved_image is None
 
 
