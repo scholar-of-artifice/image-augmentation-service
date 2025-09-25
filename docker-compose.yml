@@ -50,6 +50,8 @@ services:
     ports:
       - "8000:8000"
     volumes:
+      - unprocessed_image_data:/image-augmentation-service/data/images/unprocessed
+      - processed_image_data:/image-augmentation-service/data/images/processed
       - ./app:/image-augmentation-service/app
       - ./tests:/image-augmentation-service/tests
     command: uv run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
