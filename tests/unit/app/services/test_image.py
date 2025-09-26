@@ -233,18 +233,35 @@ async def test_get_unprocessed_image_by_id_is_not_found_when_image_does_not_exis
     """
     test_image_id = uuid.uuid4()
     test_user_id = uuid.uuid4()
-    mock_image_entry = UnprocessedImage(
-        id=uuid.uuid4(),
-        user_id=test_user_id,
-        original_filename="some_image_data.png",
-        storage_filename=f"{str(uuid.uuid4())}.png",
-    )
     mock_db_session = AsyncMock(spec=AsyncSession)
     mock_result = MagicMock()
     mock_result.scalar_one_or_none.return_value = None
     mock_db_session.execute.return_value = mock_result
     with pytest.raises(HTTPException) as http_exception:
-        result = await get_unprocessed_image_by_id(
+        await get_unprocessed_image_by_id(
+            unprocessed_image_id=test_image_id,
+            db_session=mock_db_session,
+            user_id=test_user_id
+        )
+    mock_db_session.execute.assert_called_once()
+    assert http_exception.value.status_code == 404
+
+
+async def test_get_unprocessed_image_by_id_is_not_found_when_a_different_user_requests_an_image_that_they_do_not_own(mocker):
+    """
+    GIVEN an unprocessed_image exists with example_image_id
+    AND a different user_id makes the request
+    WHEN the test_get_unprocessed_image_by_id_is_success_when_image_exists service is called
+    THEN a 404 is raised
+    """
+    test_image_id = uuid.uuid4()
+    test_user_id = uuid.uuid4()
+    mock_db_session = AsyncMock(spec=AsyncSession)
+    mock_result = MagicMock()
+    mock_result.scalar_one_or_none.return_value = None
+    mock_db_session.execute.return_value = mock_result
+    with pytest.raises(HTTPException) as http_exception:
+        await get_unprocessed_image_by_id(
             unprocessed_image_id=test_image_id,
             db_session=mock_db_session,
             user_id=test_user_id
