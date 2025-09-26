@@ -61,9 +61,10 @@ async def test_process_and_save_image_with_shift_arguments_succeeds(mocker):
     mock_rotate_processor.assert_not_called()
     assert mock_file_writer.call_count == 2
     # assert the results were correct
-    assert result.original_stored_file_path == "/path/original.jpg"
-    assert result.new_stored_file_path == "/path/shifted.jpg"
-    assert result.body == validated_data
+    assert isinstance(result.body, UploadRequestBody)
+    assert isinstance(result.unprocessed_image_id, uuid.UUID)
+    assert isinstance(result.processed_image_id, uuid.UUID)
+    assert isinstance(result.processing_job_id, uuid.UUID)
 
 
 async def test_process_and_save_image_with_rotate_arguments_succeeds(mocker):
@@ -115,9 +116,10 @@ async def test_process_and_save_image_with_rotate_arguments_succeeds(mocker):
     mock_shift_processor.assert_not_called()
     assert mock_file_writer.call_count == 2
     # assert the results were correct
-    assert result.original_stored_file_path == "/path/original.jpg"
-    assert result.new_stored_file_path == "/path/rotated.jpg"
-    assert result.body == validated_data
+    assert isinstance(result.body, UploadRequestBody)
+    assert isinstance(result.unprocessed_image_id, uuid.UUID)
+    assert isinstance(result.processed_image_id, uuid.UUID)
+    assert isinstance(result.processing_job_id, uuid.UUID)
 
 
 async def test_process_and_save_image_raises_error_on_invalid_file(mocker):
