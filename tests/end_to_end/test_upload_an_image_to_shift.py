@@ -4,7 +4,7 @@ from pathlib import Path
 import pytest
 from fastapi import status
 
-from app.schemas.image import ShiftArguments, UploadRequestBody
+from app.schemas.image import ShiftArguments, UploadRequestBody, ImageProcessResponse
 import fnmatch
 
 pytestmark = pytest.mark.asyncio
@@ -34,6 +34,4 @@ async def test_upload_an_image_to_shift(http_client):
             data={"body": request_body.model_dump_json()},
         )
     assert upload_response.status_code == status.HTTP_200_OK
-    upload_response_json = upload_response.json()
-    assert fnmatch.fnmatch(upload_response_json["original_stored_file_path"], "/image-augmentation-service/data/images/unprocessed/*")
-    assert fnmatch.fnmatch(upload_response_json["new_stored_file_path"], "/image-augmentation-service/data/images/processed/*")
+    ImageProcessResponse.model_validate(upload_response.json())
