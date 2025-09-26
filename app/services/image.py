@@ -95,7 +95,8 @@ async def process_and_save_image(
     db_session.commit()
     # return an ImageProcessResponse
     return ImageProcessResponse(
-        original_stored_file_path=unprocessed_image_location,
-        new_stored_file_path=processed_image_location,
+        unprocessed_image_id=unprocessed_image_record.id,
+        processed_image_id=processed_image_record.id,
+        processing_job_id=uuid.uuid4(), # TODO... fix this later when using worker
         body=validated_data,
     )
