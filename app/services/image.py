@@ -1,7 +1,7 @@
 import uuid
 from collections.abc import Callable
-
-from fastapi import UploadFile
+from sqlalchemy.future import select
+from fastapi import UploadFile,  HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.internal.augmentations import rainbow_noise, rotate, shift
@@ -100,3 +100,21 @@ async def process_and_save_image(
         processing_job_id=uuid.uuid4(), # TODO... fix this later when using worker
         body=validated_data,
     )
+
+
+async def get_unprocessed_image_by_id(
+    unprocessed_image_id: uuid.UUID,
+    db_session: AsyncSession,
+    user_id: uuid.UUID
+) -> UnprocessedImage:
+    """
+    Retrieves an unprocessed image by its ID.
+    """
+    query = select(UnprocessedImage).where(
+        UnprocessedImage.id == unprocessed_image_id,
+        UnprocessedImage.user_id == user_id)
+    result = await db_session.execute(query)
+    image_entry = result.scalar_one_or_none()
+    if not image_entry:
+        raise HTTPException(status_code=404, detail="Image not found")
+    return image_entry
