@@ -1,3 +1,5 @@
+import uuid
+
 import pytest
 from pydantic import ValidationError
 
@@ -289,22 +291,29 @@ def test_ImageProcessResponse_is_valid_with_shift_arguments():
     WHEN an ImageProcessResponse is constructed
     THEN the expected data is stored correctly
     """
+    # create valid set of parameters for ImageProcessResponse
+    unprocessed_id = uuid.uuid4()
+    processed_id = uuid.uuid4()
+    job_id = uuid.uuid4()
     # create valid input data with ShiftArguments
-    original_path = "/unprocessed_data/image.jpg"
-    new_path = "/processed_data/new_image.png"
     shift_args = ShiftArguments(processing="shift", direction="right", distance=50)
     upload_request_body = UploadRequestBody(arguments=shift_args)
     # construct the ImageProcessResponse object
     response = ImageProcessResponse(
-        original_stored_file_path=original_path,
-        new_stored_file_path=new_path,
+        unprocessed_image_id=unprocessed_id,
+        processed_image_id=processed_id,
+        processing_job_id=job_id,
         body=upload_request_body,
     )
     # check that the data is stored correctly
-    assert response.original_stored_file_path == original_path
-    assert response.new_stored_file_path == new_path
+    assert response.unprocessed_image_id == unprocessed_id
+    assert response.processed_image_id == processed_id
+    assert response.processing_job_id == job_id
     assert response.body == upload_request_body
     assert isinstance(response.body.arguments, ShiftArguments)
+    assert isinstance(response.unprocessed_image_id, uuid.UUID)
+    assert isinstance(response.processed_image_id, uuid.UUID)
+    assert isinstance(response.processing_job_id, uuid.UUID)
 
 
 def test_ImageProcessResponse_is_valid_with_rotate_arguments():
@@ -315,6 +324,10 @@ def test_ImageProcessResponse_is_valid_with_rotate_arguments():
     WHEN an ImageProcessResponse is constructed
     THEN the expected data is stored correctly
     """
+    # create valid set of parameters for ImageProcessResponse
+    unprocessed_id = uuid.uuid4()
+    processed_id = uuid.uuid4()
+    job_id = uuid.uuid4()
     # create valid input data with RotateArguments
     original_path = "/unprocessed_data/image.jpg"
     new_path = "/processed_data/new_image.png"
@@ -322,12 +335,16 @@ def test_ImageProcessResponse_is_valid_with_rotate_arguments():
     upload_request_body = UploadRequestBody(arguments=rotate_args)
     # construct the ImageProcessResponse object
     response = ImageProcessResponse(
-        original_stored_file_path=original_path,
-        new_stored_file_path=new_path,
+        unprocessed_image_id=unprocessed_id,
+        processed_image_id=processed_id,
+        processing_job_id=job_id,
         body=upload_request_body,
     )
     # check that the data is stored correctly
-    assert response.original_stored_file_path == original_path
-    assert response.new_stored_file_path == new_path
-    assert response.body == upload_request_body
+    assert response.unprocessed_image_id == unprocessed_id
+    assert response.processed_image_id == processed_id
+    assert response.processing_job_id == job_id
     assert isinstance(response.body.arguments, RotateArguments)
+    assert isinstance(response.unprocessed_image_id, uuid.UUID)
+    assert isinstance(response.processed_image_id, uuid.UUID)
+    assert isinstance(response.processing_job_id, uuid.UUID)
