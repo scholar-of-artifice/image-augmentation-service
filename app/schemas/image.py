@@ -51,7 +51,7 @@ class RotateArguments(BaseModel):
 
 class RainbowNoiseArguments(BaseModel):
     """
-        A data model for specifying a 'shift' operation.
+        A data model for specifying a 'rainbow_noise' operation.
 
         This model is used to define the parameters for shifting an image.
 
