@@ -1,5 +1,5 @@
 import uuid
-from unittest.mock import AsyncMock
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 from fastapi import UploadFile
@@ -7,8 +7,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.internal.file_handling import InvalidImageFileError
 from app.schemas.image import RotateArguments, ShiftArguments, UploadRequestBody
-from app.services.image import process_and_save_image
-
+from app.schemas.transactions_db import UnprocessedImage
+from app.services.image import process_and_save_image, get_unprocessed_image_by_id
+import datetime
 pytestmark = pytest.mark.asyncio
 
 
@@ -190,3 +191,35 @@ async def test_process_and_save_image_raises_error_on_write_failure(mocker):
             db_session=mock_db_session,
             user_id=sample_user_id,
         )
+
+
+async def test_get_unprocessed_image_by_id_is_success_when_image_exists(mocker):
+    """
+    GIVEN an unprocessed_image exists with example_image_id
+    AND the example_image_id is given
+    WHEN the test_get_unprocessed_image_by_id_is_success_when_image_exists service is called
+    THEN the correct image date is returned
+    """
+    test_image_id = uuid.uuid4()
+    test_user_id = uuid.uuid4()
+    mock_image_entry = UnprocessedImage(
+        id=test_image_id,
+        user_id=test_user_id,
+        original_filename="some_image_data.png",
+        storage_filename=f"{str(uuid.uuid4())}.png",
+    )
+    mock_db_session = AsyncMock(spec=AsyncSession)
+    mock_result = MagicMock()
+    mock_result.scalar_one_or_none.return_value = mock_image_entry
+    mock_db_session.execute.return_value = mock_result
+    result = await get_unprocessed_image_by_id(
+        unprocessed_image_id=test_image_id,
+        db_session=mock_db_session,
+        user_id=test_user_id
+    )
+    mock_db_session.execute.assert_called_once()
+    assert result == mock_image_entry
+    assert result.id == test_image_id
+    assert result.user_id == test_user_id
+    assert result.original_filename == "some_image_data.png"
+
