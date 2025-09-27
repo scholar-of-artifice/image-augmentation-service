@@ -3,10 +3,11 @@ from unittest.mock import AsyncMock
 import pytest
 from fastapi import status
 from pydantic import ValidationError
-
+from pathlib import Path
 from app.dependency.async_dependency import get_current_active_user
 from app.main import app
 from app.schemas.image import ImageProcessResponse, ShiftArguments, UploadRequestBody
+from app.schemas.transactions_db import UnprocessedImage
 from app.schemas.transactions_db.user import User
 import uuid
 
@@ -164,3 +165,22 @@ async def no_test_upload_endpoint_fails_on_service_error_with_500(mocker, async_
     finally:
         # clean up the dependency override
         app.dependency_overrides.clear()
+
+async def NO_test_get_unprocessed_image_by_id_endpoint_success_when_image_exists(mocker, async_client):
+    """
+    GIVEN a valid id of an image in the database
+    WHEN a GET request is made to /unprocessed-image/{id}
+    THEN a 200 OK is returned
+    AND an unprocessed image is downloaded
+    """
+    assert 1 == 3
+
+
+async def NO_test_get_unprocessed_image_by_id_endpoint_fails_when_image_does_not_exist(mocker, async_client):
+    """
+    GIVEN an invalid id of an image NOT in the database
+    WHEN a GET request is made to /unprocessed-image/{id}
+    THEN a 404 is returned
+    AND nothjing is downloaded
+    """
+    assert 1 == 3
