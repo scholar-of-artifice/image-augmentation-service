@@ -1,7 +1,7 @@
 import uuid
 from collections.abc import Callable
 import sqlalchemy
-from fastapi import UploadFile,  HTTPException
+from fastapi import UploadFile,  HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.internal.augmentations import rainbow_noise, rotate, shift
@@ -13,6 +13,7 @@ from app.internal.file_handling import (
 from app.schemas.image import ImageProcessResponse, UploadRequestBody
 from app.schemas.transactions_db.processed_image import ProcessedImage
 from app.schemas.transactions_db.unprocessed_image import UnprocessedImage
+from app.schemas.transactions_db.user import User
 
 
 async def process_and_save_image(
@@ -112,15 +113,30 @@ async def get_unprocessed_image_by_id(
     """
     Retrieves an unprocessed image by its ID.
     """
+    # go find the user with this id
+    query_for_user = sqlalchemy.select(User).where(
+        User.id == user_id
+    )
+    response_for_user = await db_session.execute(query_for_user)
+    user_entry = response_for_user.scalar_one_or_none()
+    # raise an exception if no user exists
+    if not user_entry:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No user found with ID {user_id}",
+        )
     # go find the UnprocessedImage where the user_id matches and the image_id matches
-    query = sqlalchemy.select(UnprocessedImage).where(
-        UnprocessedImage.id == unprocessed_image_id,
-        UnprocessedImage.user_id == user_id
+    query_for_image = sqlalchemy.select(UnprocessedImage).where(
+        UnprocessedImage.user_id == user_entry.id,
+        UnprocessedImage.id == unprocessed_image_id
     )
     # get the data
-    result = await db_session.execute(query)
-    # there should only be one entry
-    image_entry = result.first()
+    response_for_image = await db_session.execute(query_for_image)
+    image_entry = response_for_image.scalar_one_or_none()
     if not image_entry:
-        raise HTTPException(status_code=404, detail="Image not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No image found with ID {unprocessed_image_id}",
+        )
+    # there should only be one entry
     return image_entry
