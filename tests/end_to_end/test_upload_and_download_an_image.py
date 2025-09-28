@@ -27,7 +27,10 @@ async def test_upload_and_download_an_unprocessed_image(http_client):
     assert image_path.exists()
     shift_args = ShiftArguments(processing="shift", direction="right", distance=25)
     request_body = UploadRequestBody(arguments=shift_args)
+    unprocessed_image_content = None
     with open(image_path, "rb") as image_file:
+        unprocessed_image_content = image_file.read()
+        image_file.seek(0)
         upload_response = await http_client.post(
             headers=headers,
             url="/image-api/upload/",
@@ -39,8 +42,9 @@ async def test_upload_and_download_an_unprocessed_image(http_client):
     # --- DOWNLOAD THE UNPROCESSED IMAGE ---
     unprocessed_image_id = upload_response.json()["unprocessed_image_id"]
     print(upload_response.json())
-    download_response = await http_client.post(
+    download_response = await http_client.get(
         headers=headers,
-        url=f"/unprocessed-image/{unprocessed_image_id}/"
+        url=f"/image-api/unprocessed-image/{unprocessed_image_id}/"
     )
     assert download_response.status_code == status.HTTP_200_OK
+    assert unprocessed_image_content == download_response.content()
