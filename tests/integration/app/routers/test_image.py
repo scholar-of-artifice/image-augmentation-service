@@ -37,7 +37,9 @@ async def test_upload_endpoint_success(mocker, async_client):
         #
         expected_response = ImageProcessResponse(
             processed_image_id=uuid.uuid4(),
+            processed_image_filename=str(uuid.uuid4()) + '.png',
             unprocessed_image_id=uuid.uuid4(),
+            unprocessed_image_filename=str(uuid.uuid4()) + '.png',
             processing_job_id=uuid.uuid4(),
             body=request_body,
         )
