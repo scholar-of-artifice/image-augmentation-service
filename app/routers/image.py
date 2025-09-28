@@ -63,6 +63,7 @@ async def get_unprocessed_image_by_id_endpoint(
         path=image_path,
         media_type=image.media_type,
         filename=image.storage_filename,
+        filename=image_entry.storage_filename,
     )
 
 
