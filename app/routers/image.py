@@ -38,7 +38,7 @@ async def upload_endpoint(
     )
 
 @router.get(
-    path="unprocessed-image/{unprocessed_image_id}/",
+    path="/unprocessed-image/{unprocessed_image_id}/",
     response_class=FileResponse
 )
 async def get_unprocessed_image_by_id_endpoint(
