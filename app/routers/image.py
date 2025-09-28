@@ -62,11 +62,11 @@ async def get_unprocessed_image_by_id_endpoint(
     # if an image entry is found
     if image_entry:
         image_path = VOLUME_PATHS["unprocessed_image_data"] / image_entry.storage_filename
-
+    
         return FileResponse(
-            path=image_path,
+            path=image_path.with_suffix('.png'),
             media_type="image/png",
-            filename=image_entry.storage_filename,
+            filename=str(image_entry.storage_filename) + '.png',
         )
 
 
