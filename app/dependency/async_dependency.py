@@ -38,7 +38,7 @@ async def get_body_as_model( body: str = Form() ) -> UploadRequestBody:
     except ValidationError as e:
         # this should happen when any validation fails
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, # TODO: DeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
             detail=e.errors()
         )
 
