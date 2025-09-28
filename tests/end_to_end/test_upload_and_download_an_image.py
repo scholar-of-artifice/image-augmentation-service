@@ -41,7 +41,6 @@ async def test_upload_and_download_an_unprocessed_image(http_client):
     ImageProcessResponse.model_validate(upload_response.json())
     # --- DOWNLOAD THE UNPROCESSED IMAGE ---
     unprocessed_image_id = upload_response.json()["unprocessed_image_id"]
-    print(upload_response.json())
     download_response = await http_client.get(
         headers=headers,
         url=f"/image-api/unprocessed-image/{unprocessed_image_id}/"
