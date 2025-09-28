@@ -96,7 +96,9 @@ async def process_and_save_image(
     # return an ImageProcessResponse
     return ImageProcessResponse(
         unprocessed_image_id=unprocessed_image_record.id,
+        unprocessed_image_filename=str(unprocessed_image_record.storage_filename) + ".png",
         processed_image_id=processed_image_record.id,
+        processed_image_filename=str(processed_image_record.storage_filename) + ".png",
         processing_job_id=uuid.uuid4(), # TODO... fix this later when using worker
         body=validated_data,
     )
