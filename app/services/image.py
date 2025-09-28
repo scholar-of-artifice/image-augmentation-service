@@ -1,6 +1,6 @@
 import uuid
 from collections.abc import Callable
-from sqlalchemy.future import select
+import sqlalchemy
 from fastapi import UploadFile,  HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -112,11 +112,15 @@ async def get_unprocessed_image_by_id(
     """
     Retrieves an unprocessed image by its ID.
     """
-    query = select(UnprocessedImage).where(
+    # go find the UnprocessedImage where the user_id matches and the image_id matches
+    query = sqlalchemy.select(UnprocessedImage).where(
         UnprocessedImage.id == unprocessed_image_id,
-        UnprocessedImage.user_id == user_id)
+        UnprocessedImage.user_id == user_id
+    )
+    # get the data
     result = await db_session.execute(query)
-    image_entry = result.scalar_one_or_none()
+    # there should only be one entry
+    image_entry = result.first()
     if not image_entry:
         raise HTTPException(status_code=404, detail="Image not found")
     return image_entry
