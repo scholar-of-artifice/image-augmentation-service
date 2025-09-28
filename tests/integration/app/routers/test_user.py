@@ -84,9 +84,9 @@ async def test_sign_in_user_success(async_client: AsyncClient, async_db_session:
     external_id = "auth|active-user-123"
     active_user = User(external_id=external_id)
     async_db_session.add(active_user)
-    async_db_session.flush()
-    async_db_session.refresh(active_user)
-    async_db_session.commit()
+    await async_db_session.flush()
+    await async_db_session.refresh(active_user)
+    await async_db_session.commit()
     # makes a request to sign in
     headers = {"X-External-User-ID": external_id}
     response = await async_client.post(url="/users-api/sign-in", headers=headers)
@@ -144,9 +144,9 @@ async def test_delete_user_success(async_client: AsyncClient, async_db_session: 
     external_id = "auth|user_to_delete_123"
     test_user = User(external_id=external_id)
     async_db_session.add(test_user)
-    async_db_session.flush()
-    async_db_session.refresh(test_user)
-    async_db_session.commit()
+    await async_db_session.flush()
+    await async_db_session.refresh(test_user)
+    await async_db_session.commit()
     # craft the request
     user_id_to_delete = test_user.id
     headers = {"X-External-User-ID": "auth|user_to_delete_123"}
