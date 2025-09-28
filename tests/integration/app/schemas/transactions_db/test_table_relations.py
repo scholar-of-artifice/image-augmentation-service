@@ -117,7 +117,7 @@ async def test_deleting_user_cascades_to_delete_images(async_db_session: AsyncSe
     # store the ID to check for its existence later
     image_id = unprocessed_image.id
     # ensure the image is in the database
-    assert async_db_session.get(UnprocessedImage, image_id) is not None
+    assert await async_db_session.get(UnprocessedImage, image_id) is not None
     # delete the user
     await async_db_session.delete(user)
     await async_db_session.flush()
@@ -206,8 +206,8 @@ async def test_deleting_image_does_not_delete_associated_user(async_db_session: 
     user_id = user.id
     image_id = unprocessed_image.id
     # ensure both were committed
-    assert async_db_session.get(User, user_id) is not None
-    assert async_db_session.get(UnprocessedImage, image_id) is not None
+    assert await async_db_session.get(User, user_id) is not None
+    assert await async_db_session.get(UnprocessedImage, image_id) is not None
     # delete the image
     await async_db_session.delete(unprocessed_image)
     await async_db_session.flush()
