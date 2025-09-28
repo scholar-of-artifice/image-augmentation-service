@@ -1,8 +1,9 @@
 import uuid
 from pathlib import Path
-
+import io
 import pytest
 from fastapi import status
+from PIL import Image, ImageChops
 
 from app.schemas.image import ShiftArguments, UploadRequestBody, ImageProcessResponse
 
@@ -27,14 +28,13 @@ async def test_upload_and_download_an_unprocessed_image(http_client):
     assert image_path.exists()
     shift_args = ShiftArguments(processing="shift", direction="right", distance=25)
     request_body = UploadRequestBody(arguments=shift_args)
-    unprocessed_image_content = None
+    unprocessed_image = None
     with open(image_path, "rb") as image_file:
-        unprocessed_image_content = image_file.read()
-        image_file.seek(0)
+        unprocessed_image = image_file
         upload_response = await http_client.post(
             headers=headers,
             url="/image-api/upload/",
-            files={"file": ("test.png", image_file, "image/png")},
+            files={"file": ("test_image.png", image_file, "image/png")},
             data={"body": request_body.model_dump_json()},
         )
     assert upload_response.status_code == status.HTTP_200_OK
@@ -46,4 +46,7 @@ async def test_upload_and_download_an_unprocessed_image(http_client):
         url=f"/image-api/unprocessed-image/{unprocessed_image_id}/"
     )
     assert download_response.status_code == status.HTTP_200_OK
-    assert unprocessed_image_content == download_response.content()
+    with (open(image_path, "rb") as image_file):
+        assert ImageChops.difference(
+            Image.open(io.BytesIO(image_file.read())),
+            Image.open(io.BytesIO(download_response.content))).getbbox() is None
