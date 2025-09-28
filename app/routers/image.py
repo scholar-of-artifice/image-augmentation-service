@@ -52,12 +52,12 @@ async def get_unprocessed_image_by_id_endpoint(
         Arguments:
             unprocessed_image_id {str} -- The id of the unprocessed image.
     """
-    image = await get_unprocessed_image_by_id(
+    image_entry = await get_unprocessed_image_by_id(
         unprocessed_image_id=unprocessed_image_id,
         db_session=db_session,
         user_id=current_user.id
     )
-    image_path = VOLUME_PATHS["unprocessed_image_data"] / image.storage_filename
+    image_path = VOLUME_PATHS["unprocessed_image_data"] / image_entry.storage_filename
 
     return FileResponse(
         path=image_path,
