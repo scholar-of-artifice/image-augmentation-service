@@ -13,7 +13,7 @@ pytestmark = pytest.mark.asyncio
 async def test_upload_and_download_an_unprocessed_image(http_client):
     """
     This test creates a user and then allows that user to upload an image.
-    It then downloads that image.
+    It then downloads that unprocessed image.
     1. A user is created successfully.
     2. A user uploads an image with a request to `shift` it.
     2. A user downloads the original unprocessed image.
