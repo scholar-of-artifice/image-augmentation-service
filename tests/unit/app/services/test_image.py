@@ -2,14 +2,14 @@ import uuid
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
-from fastapi import UploadFile, HTTPException
+from fastapi import HTTPException, UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.internal.file_handling import InvalidImageFileError
 from app.schemas.image import RotateArguments, ShiftArguments, UploadRequestBody
 from app.schemas.transactions_db import UnprocessedImage, User
-from app.services.image import process_and_save_image, get_unprocessed_image_by_id
-import datetime
+from app.services.image import get_unprocessed_image_by_id, process_and_save_image
+
 pytestmark = pytest.mark.asyncio
 
 
@@ -197,7 +197,7 @@ async def test_get_unprocessed_image_by_id_is_success_when_image_exists(mocker):
     """
     GIVEN an unprocessed_image exists with example_image_id
     AND the example_image_id is given
-    WHEN the test_get_unprocessed_image_by_id_is_success_when_image_exists service is called
+    WHEN the get_unprocessed_image_by_id service is called
     THEN the correct image date is returned
     """
     test_image_id = uuid.uuid4()
