@@ -1,11 +1,12 @@
+import io
 import uuid
 from pathlib import Path
-import io
+
 import pytest
 from fastapi import status
 from PIL import Image, ImageChops
 
-from app.schemas.image import ShiftArguments, UploadRequestBody, ImageProcessResponse
+from app.schemas.image import ImageProcessResponse, ShiftArguments, UploadRequestBody
 
 pytestmark = pytest.mark.asyncio
 
