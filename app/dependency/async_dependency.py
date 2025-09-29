@@ -11,12 +11,17 @@ from app.schemas.transactions_db.user import User
 
 
 async def get_current_external_user_id(
-    # Look for a header named "X-External-User-ID" in the request.
     # 'Annotated' is the modern way to add metadata like 'Header'.
     external_id: Annotated[str | None, Header(alias="X-External-User-ID")] = None
 ) -> str:
     """
-        A dependency that simulates extracting a user's external ID from a request header.
+    Get and validate the external user ID from the 'X-External-User-ID' header.
+    This is a FastAPI dependency used to protect endpoints by ensuring that an external user ID is provided in the request headers.
+
+    Raises:
+        HTTPException: 401 Unauthorized if the 'X-External-User-ID' header is not present.
+    Returns:
+        The validated external user ID as a string.
     """
     # If the header is None or blank, raise an error.
     if not external_id:
