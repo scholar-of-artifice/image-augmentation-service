@@ -8,7 +8,7 @@ from app.db.database import get_async_session
 from app.dependency.async_dependency import get_body_as_model, get_current_active_user
 from app.schemas.image import ImageProcessResponse, UploadRequestBody
 from app.schemas.transactions_db.user import User
-from app.services.image import process_and_save_image, get_unprocessed_image_by_id
+from app.services.image import process_and_save_image, get_unprocessed_image_by_id, get_processed_image_by_id
 import uuid
 router = APIRouter()
 
@@ -68,5 +68,40 @@ async def get_unprocessed_image_by_id_endpoint(
             media_type="image/png",
             filename=str(image_entry.storage_filename) + '.png',
         )
+    return None
+
+
+@router.get(
+    path="/processed-image/{processed_image_id}/",
+    response_class=FileResponse
+)
+async def get_processed_image_by_id_endpoint(
+        processed_image_id: uuid.UUID,
+        db_session: AsyncSession = Depends(get_async_session),
+        current_user: User = Depends(get_current_active_user)
+):
+    """
+        Get a processed image by its ID.
+
+        Arguments:
+            processed_image_id {str} -- The id of the unprocessed image.
+    """
+    # get the image
+    image_entry = await get_processed_image_by_id(
+        processed_image_id=processed_image_id,
+        db_session=db_session,
+        user_id=current_user.id
+    )
+    # if nothing is found an error should be raised by the service
+    # if an image entry is found
+    if image_entry:
+        image_path = VOLUME_PATHS["processed_image_data"] / image_entry.storage_filename
+
+        return FileResponse(
+            path=image_path.with_suffix('.png'),
+            media_type="image/png",
+            filename=str(image_entry.storage_filename) + '.png',
+        )
+    return None
 
 
