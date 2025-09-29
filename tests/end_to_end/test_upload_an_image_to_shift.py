@@ -4,8 +4,7 @@ from pathlib import Path
 import pytest
 from fastapi import status
 
-from app.schemas.image import ShiftArguments, UploadRequestBody, ImageProcessResponse
-import fnmatch
+from app.schemas.image import ImageProcessResponse, ShiftArguments, UploadRequestBody
 
 pytestmark = pytest.mark.asyncio
 
