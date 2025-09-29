@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.internal.file_handling import InvalidImageFileError
 from app.schemas.image import RotateArguments, ShiftArguments, UploadRequestBody
-from app.schemas.transactions_db import UnprocessedImage
+from app.schemas.transactions_db import UnprocessedImage, User
 from app.services.image import process_and_save_image, get_unprocessed_image_by_id
 import datetime
 pytestmark = pytest.mark.asyncio
@@ -202,6 +202,10 @@ async def test_get_unprocessed_image_by_id_is_success_when_image_exists(mocker):
     """
     test_image_id = uuid.uuid4()
     test_user_id = uuid.uuid4()
+    mock_user_entry = User(
+        id=test_user_id,
+        external_id='some_external_id',
+    )
     mock_image_entry = UnprocessedImage(
         id=test_image_id,
         user_id=test_user_id,
@@ -209,15 +213,18 @@ async def test_get_unprocessed_image_by_id_is_success_when_image_exists(mocker):
         storage_filename=f"{str(uuid.uuid4())}.png",
     )
     mock_db_session = AsyncMock(spec=AsyncSession)
-    mock_result = MagicMock()
-    mock_result.scalar_one_or_none.return_value = mock_image_entry
-    mock_db_session.execute.return_value = mock_result
+    mock_user_result = MagicMock()
+    mock_user_result.scalar_one_or_none.return_value = mock_user_entry
+    mock_image_result = MagicMock()
+    mock_image_result.scalar_one_or_none.return_value = mock_image_entry
+    mock_db_session.execute.side_effect = [mock_user_result, mock_image_result]
+
     result = await get_unprocessed_image_by_id(
         unprocessed_image_id=test_image_id,
         db_session=mock_db_session,
         user_id=test_user_id
     )
-    mock_db_session.execute.assert_called_once()
+    mock_db_session.execute.call_count == 2
     assert result == mock_image_entry
     assert result.id == test_image_id
     assert result.user_id == test_user_id
