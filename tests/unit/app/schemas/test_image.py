@@ -4,7 +4,6 @@ import pytest
 from pydantic import ValidationError
 
 from app.schemas.image import (
-    ImageProcessResponse,
     RotateArguments,
     ShiftArguments,
     UploadRequestBody,
@@ -278,89 +277,3 @@ def test_UploadRequestBody_is_invalid_when_arguments_not_part_of_any_model():
     data = {"arguments": {"what?": "goblins", "there->": 30.235}}
     with pytest.raises(ValidationError):
         UploadRequestBody(**data)
-
-
-# --- ImageProcessResponse ---
-
-
-def test_ImageProcessResponse_is_valid_with_shift_arguments():
-    """
-    GIVEN a valid UploadRequestBody with ShiftArguments
-    AND a valid original_stored_file_path
-    AND a valid new_stored_file_path
-    WHEN an ImageProcessResponse is constructed
-    THEN the expected data is stored correctly
-    """
-    # create valid set of parameters for ImageProcessResponse
-    test_unprocessed_id = uuid.uuid4()
-    test_unprocessed_filename = str(uuid.uuid4()) + '.png'
-    test_processed_id = uuid.uuid4()
-    test_processed_filename = str(uuid.uuid4()) + '.png'
-    test_job_id = uuid.uuid4()
-    # create valid input data with ShiftArguments
-    shift_args = ShiftArguments(processing="shift", direction="right", distance=50)
-    upload_request_body = UploadRequestBody(arguments=shift_args)
-    # construct the ImageProcessResponse object
-    response = ImageProcessResponse(
-        unprocessed_image_id=test_unprocessed_id,
-        unprocessed_image_filename=test_unprocessed_filename,
-        processed_image_id=test_processed_id,
-        processed_image_filename=test_processed_filename,
-        processing_job_id=test_job_id,
-        body=upload_request_body,
-    )
-    # check that the data is stored correctly
-    assert response.unprocessed_image_id == test_unprocessed_id
-    assert response.unprocessed_image_filename == test_unprocessed_filename
-    assert response.processed_image_id == test_processed_id
-    assert response.processed_image_filename == test_processed_filename
-    assert response.processing_job_id == test_job_id
-    assert response.body == upload_request_body
-    assert isinstance(response.body.arguments, ShiftArguments)
-    assert isinstance(response.unprocessed_image_id, uuid.UUID)
-    assert isinstance(response.unprocessed_image_filename, str)
-    assert isinstance(response.processed_image_id, uuid.UUID)
-    assert isinstance(response.processed_image_filename, str)
-    assert isinstance(response.processing_job_id, uuid.UUID)
-
-
-def test_ImageProcessResponse_is_valid_with_rotate_arguments():
-    """
-    GIVEN a valid UploadRequestBody with RotateArguments
-    AND a valid original_stored_file_path
-    AND a valid new_stored_file_path
-    WHEN an ImageProcessResponse is constructed
-    THEN the expected data is stored correctly
-    """
-    # create valid set of parameters for ImageProcessResponse
-    test_unprocessed_id = uuid.uuid4()
-    test_unprocessed_filename = str(uuid.uuid4()) + '.png'
-    test_processed_id = uuid.uuid4()
-    test_processed_filename = str(uuid.uuid4()) + '.png'
-    test_job_id = uuid.uuid4()
-    # create valid input data with RotateArguments
-    original_path = "/unprocessed_data/image.jpg"
-    new_path = "/processed_data/new_image.png"
-    rotate_args = RotateArguments(processing="rotate", angle=90)
-    upload_request_body = UploadRequestBody(arguments=rotate_args)
-    # construct the ImageProcessResponse object
-    response = ImageProcessResponse(
-        unprocessed_image_id=test_unprocessed_id,
-        unprocessed_image_filename=test_unprocessed_filename,
-        processed_image_id=test_processed_id,
-        processed_image_filename=test_processed_filename,
-        processing_job_id=test_job_id,
-        body=upload_request_body,
-    )
-    # check that the data is stored correctly
-    assert response.unprocessed_image_id == test_unprocessed_id
-    assert response.unprocessed_image_filename == test_unprocessed_filename
-    assert response.processed_image_id == test_processed_id
-    assert response.processed_image_filename == test_processed_filename
-    assert response.processing_job_id == test_job_id
-    assert isinstance(response.body.arguments, RotateArguments)
-    assert isinstance(response.unprocessed_image_id, uuid.UUID)
-    assert isinstance(response.unprocessed_image_filename, str)
-    assert isinstance(response.processed_image_id, uuid.UUID)
-    assert isinstance(response.processed_image_filename, str)
-    assert isinstance(response.processing_job_id, uuid.UUID)
