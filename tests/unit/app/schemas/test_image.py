@@ -301,3 +301,21 @@ def test_ResponseUploadImage_is_valid():
     assert response.unprocessed_image_filename == test_unprocessed_filename
     assert isinstance(response.unprocessed_image_id, uuid.UUID)
     assert isinstance(response.unprocessed_image_filename, str)
+
+
+def test_ResponseUploadImage_is_not_valid_when_image_id_is_not_uuid():
+    """
+    GIVEN a valid set of inputs
+    WHEN an ResponseUploadImage object is constructed
+    THEN the expected data is stored correctly
+    """
+    # create valid set of parameters for ImageProcessResponse
+    test_unprocessed_id = 'not a uuid at all'
+    test_unprocessed_filename = str(uuid.uuid4()) + '.png'
+    # check that the data is not stored with error
+    with pytest.raises(ValidationError):
+        ResponseUploadImage(
+            unprocessed_image_id=test_unprocessed_id,
+            unprocessed_image_filename=test_unprocessed_filename
+        )
+
