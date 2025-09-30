@@ -101,13 +101,3 @@ class ResponseUploadImage(BaseModel):
         )
     ]
 
-class ImageProcessResponse(BaseModel):
-    """
-        This is the response body for `/image-api/upload` when the request is successful.
-    """
-    unprocessed_image_id: uuid.UUID
-    unprocessed_image_filename: str
-    processed_image_id: uuid.UUID
-    processed_image_filename: str
-    processing_job_id: uuid.UUID
-    body: UploadRequestBody
