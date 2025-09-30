@@ -8,7 +8,7 @@ from app.schemas.image import ResponseUploadImage, ShiftArguments, UploadRequest
 
 pytestmark = pytest.mark.asyncio
 
-async def test_upload_an_image_to_shift(http_client):
+async def test_upload_an_image(http_client):
     """
     This test creates a user and then allows that user to upload an image.
     1. A user is created successfully.
