@@ -7,6 +7,7 @@ from app.schemas.image import (
     RotateArguments,
     ShiftArguments,
     UploadRequestBody,
+    ResponseUploadImage
 )
 
 # --- ShiftArguments ---
@@ -277,3 +278,26 @@ def test_UploadRequestBody_is_invalid_when_arguments_not_part_of_any_model():
     data = {"arguments": {"what?": "goblins", "there->": 30.235}}
     with pytest.raises(ValidationError):
         UploadRequestBody(**data)
+
+
+# --- ResponseUploadImage ---
+
+def test_ResponseUploadImage_is_valid():
+    """
+    GIVEN a valid set of inputs
+    WHEN an ResponseUploadImage object is constructed
+    THEN the expected data is stored correctly
+    """
+    # create valid set of parameters for ImageProcessResponse
+    test_unprocessed_id = uuid.uuid4()
+    test_unprocessed_filename = str(uuid.uuid4()) + '.png'
+    # construct the ResponseUploadImage object
+    response = ResponseUploadImage(
+        unprocessed_image_id=test_unprocessed_id,
+        unprocessed_image_filename=test_unprocessed_filename
+    )
+    # check that the data is stored correctly
+    assert response.unprocessed_image_id == test_unprocessed_id
+    assert response.unprocessed_image_filename == test_unprocessed_filename
+    assert isinstance(response.unprocessed_image_id, uuid.UUID)
+    assert isinstance(response.unprocessed_image_filename, str)
