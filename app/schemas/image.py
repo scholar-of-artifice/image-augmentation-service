@@ -78,13 +78,26 @@ class UploadRequestBody(BaseModel):
         )
     ]
 
-class ImageProcessResponse(BaseModel):
+class ResponseUploadImage(BaseModel):
     """
-        This is the response body for `/image-api/upload` when the request is successful.
+    This is the response body for:
+    ```
+    /image-api/upload/
+    ```
     """
-    unprocessed_image_id: uuid.UUID
-    unprocessed_image_filename: str
-    processed_image_id: uuid.UUID
-    processed_image_filename: str
-    processing_job_id: uuid.UUID
-    body: UploadRequestBody
+    unprocessed_image_id: Annotated[
+        uuid.UUID,
+        Field(
+            description="The ID of the unprocessed image."
+                        "Use this to:"
+                        "\n- download the image"
+                        "\n- make an augmentation of this specific image"
+        )
+    ]
+    unprocessed_image_filename: Annotated[
+        str,
+        Field(
+            description="The filename of the unprocessed image."
+        )
+    ]
+

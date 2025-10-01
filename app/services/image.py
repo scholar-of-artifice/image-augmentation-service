@@ -1,17 +1,71 @@
 import uuid
 from collections.abc import Callable
+
 import sqlalchemy
 from fastapi import UploadFile,  HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.internal.augmentations import rainbow_noise, rotate, shift
 from app.internal.file_handling import (
     create_file_name,
     translate_file_to_numpy_array,
     write_numpy_array_to_image_file,
 )
-from app.schemas.image import ImageProcessResponse, UploadRequestBody
+from app.schemas.image import UploadRequestBody, ResponseUploadImage
 from app.schemas.transactions_db import ProcessedImage, UnprocessedImage, User, ProcessingJob
+
+async def save_unprocessed_image(
+        file: UploadFile,
+        user_id: uuid.UUID,
+        db_session: AsyncSession,
+        # --- INJECTED DEPENDENCIES ---
+        file_translator: Callable = translate_file_to_numpy_array,
+        file_writer: Callable = write_numpy_array_to_image_file,
+        filename_creator: Callable = create_file_name,
+) -> ResponseUploadImage:
+    """
+    Saves and UnprocessedImage to block storage and...
+    creates a corresponding entry to the transactions database.
+    """
+    # --- Check Input Data ---
+    if not file.filename:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="No filename provided."
+        )
+    # read and convert the image
+    # asynchronously read the contents of the uploaded file as bytes
+    image_content = await file.read()
+    # convert the raw image bytes into a numpy array
+    image_data = file_translator(image_content)
+    # create a new filename
+    unprocessed_storage_filename = filename_creator()
+    # --- Save Relevant Unprocessed Image Data ---
+    unprocessed_image_record = UnprocessedImage(
+        original_filename=file.filename,  # use the original name from the file
+        storage_filename=unprocessed_storage_filename,  # use a unique name
+        user_id=user_id,  # associate to the user_id
+    )
+    # --- Persist Image to Storage ---
+    # save a copy of the original unprocessed image to the 'unprocessed_image_data' volume.
+    unprocessed_image_location = file_writer(
+        data=image_data,
+        file_name=unprocessed_storage_filename,
+        destination_volume="unprocessed_image_data",
+    )
+    # --- Persist Record to Database ---
+    # persist the data
+    db_session.add(
+        unprocessed_image_record
+    )
+    await db_session.flush()
+    await db_session.refresh(unprocessed_image_record)
+    await db_session.commit()
+    # --- Formulate a Response ---
+    # give the user what they need to query for the data
+    return ResponseUploadImage(
+        unprocessed_image_id=unprocessed_image_record.id,
+        unprocessed_image_filename=unprocessed_image_record.storage_filename,
+    )
 
 
 async def process_and_save_image(
@@ -26,7 +80,7 @@ async def process_and_save_image(
     shift_processor: Callable = shift,  # TODO: this is probably changing later
     rotate_processor: Callable = rotate,  # TODO: this is probably changing later
     rainbow_noise_processor: Callable = rainbow_noise,  # TODO: this is probably changing later
-) -> ImageProcessResponse:
+) -> None:
     """
     Handles the core logic of processing and saving an image.
     """
@@ -93,14 +147,15 @@ async def process_and_save_image(
     await db_session.refresh(processed_image_record)
     await db_session.commit()
     # return an ImageProcessResponse
-    return ImageProcessResponse(
-        unprocessed_image_id=unprocessed_image_record.id,
-        unprocessed_image_filename=str(unprocessed_image_record.storage_filename) + ".png",
-        processed_image_id=processed_image_record.id,
-        processed_image_filename=str(processed_image_record.storage_filename) + ".png",
-        processing_job_id=uuid.uuid4(), # TODO... fix this later when using worker
-        body=validated_data,
-    )
+    # eturn ImageProcessResponse(
+    #    unprocessed_image_id=unprocessed_image_record.id,
+    #    unprocessed_image_filename=str(unprocessed_image_record.storage_filename) + ".png",
+    #    processed_image_id=processed_image_record.id,
+    #    processed_image_filename=str(processed_image_record.storage_filename) + ".png",
+    #    processing_job_id=uuid.uuid4(), # TODO... fix this later when using worker
+    #    body=validated_data,
+    #
+    return None
 
 
 async def get_unprocessed_image_by_id(
