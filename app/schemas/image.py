@@ -112,14 +112,16 @@ class ResponseAugmentImage(BaseModel):
         uuid.UUID,
         Field(
             description="The ID of the unprocessed image."
+    processed_image_id: Annotated[
+            description="The ID of the processed image."
                         "\nUse this to:"
                         "\n- download the image"
         )
     ]
-    unprocessed_image_filename: Annotated[
+    processed_image_filename: Annotated[
         str,
         Field(
-            description="The filename of the unprocessed image."
+            description="The filename of the processed image."
         )
     ]
     request_body: Annotated[
