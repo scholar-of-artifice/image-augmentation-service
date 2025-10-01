@@ -112,7 +112,12 @@ class ResponseAugmentImage(BaseModel):
         uuid.UUID,
         Field(
             description="The ID of the unprocessed image."
+                        "\nThis is the parent image of this augmentation."
+        )
+    ]
     processed_image_id: Annotated[
+        uuid.UUID,
+        Field(
             description="The ID of the processed image."
                         "\nUse this to:"
                         "\n- download the image"
