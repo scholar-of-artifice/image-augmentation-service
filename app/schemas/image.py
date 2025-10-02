@@ -83,7 +83,9 @@ class UploadRequestBody(BaseModel):
 class AugmentRequestBody(BaseModel):
     """
     This is the request body for:
-        /image-api/augment/
+    ```
+    /image-api/augment/
+    ```
     """
     unprocessed_image_id: Annotated[
         uuid.UUID,
