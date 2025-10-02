@@ -256,6 +256,8 @@ async def create_UnprocessedImage_entry(
         storage_filename=unprocessed_storage_filename,  # use a unique name
         user_id=user_id,  # associate to the user_id
     )
+    # TODO: check if entry already exists before saving.
+    # TODO: save new entry
     return new_entry
 
 
