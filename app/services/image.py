@@ -324,7 +324,7 @@ async def write_unprocessed_image_to_storage(
     return ResponseWriteUnprocessedImageToStorage(
         user_id=user_id,
         storage_filename=unprocessed_storage_filename,
-        unprocessed_image_location=unprocessed_image_location,
+        image_location=unprocessed_image_location,
     )
 
 async def create_ProcessedImage_entry(
