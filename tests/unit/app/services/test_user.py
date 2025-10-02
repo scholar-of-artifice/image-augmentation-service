@@ -175,3 +175,11 @@ async def test_delete_user_raises_permission_denied(mocker):
     mock_session.commit.assert_not_awaited()
 
 # --- overhauled service layer API ---
+
+# --- create_UnprocessedImage_entry ---
+
+# --- read_UnprocessedImage_entry ---
+
+# --- create_ProcessedImage_entry ---
+
+# --- read_ProcessedImage_entry ---
