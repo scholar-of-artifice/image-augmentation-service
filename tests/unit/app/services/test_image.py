@@ -374,3 +374,4 @@ async def test_get_unprocessed_image_by_id_is_not_found_when_a_different_user_re
     mock_db_session.execute.assert_called_once()
     assert http_exception.value.status_code == 404
 
+# --- overhaul services layer APIs ---
