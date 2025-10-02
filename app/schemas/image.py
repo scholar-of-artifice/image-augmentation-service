@@ -79,6 +79,28 @@ class UploadRequestBody(BaseModel):
         )
     ]
 
+
+class AugmentRequestBody(BaseModel):
+    """
+    This is the request body for:
+        /image-api/augment/
+    """
+    unprocessed_image_id: Annotated[
+        uuid.UUID,
+        Field(
+            description="The ID of the unprocessed image to be augmented.",
+        )
+    ]
+    arguments: Annotated[
+        ShiftArguments | RotateArguments | RainbowNoiseArguments,
+        Field(
+            description="How would you like to augment the image?",
+            json_schema_extra={
+                "descriminator": "processing"
+            }
+        )
+    ]
+
 # --- models for caputring the response from endpoints ---
 
 class ResponseUploadImage(BaseModel):
