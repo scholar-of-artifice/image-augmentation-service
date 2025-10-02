@@ -368,3 +368,8 @@ async def read_ProcessedImage_entry(
         )
     # there should only be one entry
     return image_entry
+
+
+async def write_processed_image_to_storage() -> None:
+    # TODO: make this function
+    return None
