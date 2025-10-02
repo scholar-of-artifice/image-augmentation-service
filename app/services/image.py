@@ -258,6 +258,9 @@ async def create_UnprocessedImage_entry(
     )
     # TODO: check if entry already exists before saving.
     # TODO: save new entry
+    db_session.add(new_entry)
+    await db_session.flush()
+    await db_session.refresh(new_entry)
     return new_entry
 
 
@@ -309,6 +312,8 @@ async def create_ProcessedImage_entry(
     new_entry = ProcessedImage(
         storage_filename='some_file_name_here.png',  # use a unique name
     )
+    # TODO: check if entry already exists before saving.
+    # TODO: save new entry
     return new_entry
 
 async def read_ProcessedImage_entry(
