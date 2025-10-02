@@ -157,7 +157,7 @@ class ResponseAugmentImage(BaseModel):
         )
     ]
     request_body: Annotated[
-        UploadRequestBody,
+        AugmentRequestBody,
         Field(
             description="The way the image was requested to be augmented."
         )
