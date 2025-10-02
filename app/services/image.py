@@ -257,3 +257,17 @@ async def create_UnprocessedImage_entry(
         user_id=user_id,  # associate to the user_id
     )
     return new_entry
+
+async def create_ProcessedImage_entry(
+        storage_filename: str,
+        user_id: uuid.UUID,
+        unprocessed_image_id: uuid.UUID,
+        db_session: AsyncSession,
+) -> ProcessedImage:
+    """
+    Creates a new ProcessedImage entry in the transactions database.
+    """
+    new_entry = ProcessedImage(
+        storage_filename='some_file_name_here.png',  # use a unique name
+    )
+    return new_entry
