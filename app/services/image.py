@@ -32,35 +32,21 @@ async def save_unprocessed_image(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="No filename provided."
         )
-    # read and convert the image
-    # asynchronously read the contents of the uploaded file as bytes
-    image_content = await file.read()
-    # convert the raw image bytes into a numpy array
-    image_data = file_translator(image_content)
-    # create a new filename
-    unprocessed_storage_filename = filename_creator()
-    # --- Save Relevant Unprocessed Image Data ---
-    unprocessed_image_record = UnprocessedImage(
-        original_filename=file.filename,  # use the original name from the file
-        storage_filename=unprocessed_storage_filename,  # use a unique name
-        user_id=user_id,  # associate to the user_id
-    )
     # --- Persist Image to Storage ---
-    # save a copy of the original unprocessed image to the 'unprocessed_image_data' volume.
-    unprocessed_image_location = file_writer(
-        data=image_data,
-        file_name=unprocessed_storage_filename,
-        destination_volume="unprocessed_image_data",
+    unprocessed_image_storage_record = await write_unprocessed_image_to_storage(
+        user_id=user_id,
+        file=file,
+        file_writer=file_writer,
+        file_translator=file_translator,
+        filename_creator=filename_creator
     )
-    # --- Persist Record to Database ---
-    # persist the data
-    db_session.add(
-        unprocessed_image_record
+    # --- Save Relevant Unprocessed Image Data ---
+    unprocessed_image_record = await create_UnprocessedImage_entry(
+        user_id=user_id,
+        original_filename=file.filename,
+        unprocessed_storage_filename= unprocessed_image_storage_record.storage_filename,
+        db_session=db_session,
     )
-    await db_session.flush()
-    await db_session.refresh(unprocessed_image_record)
-    await db_session.commit()
-    # --- Formulate a Response ---
     # give the user what they need to query for the data
     return ResponseUploadImage(
         unprocessed_image_id=unprocessed_image_record.id,
@@ -326,6 +312,10 @@ async def write_unprocessed_image_to_storage(
         storage_filename=unprocessed_storage_filename,
         image_location=unprocessed_image_location,
     )
+
+async def read_unprocessed_image_from_storage() -> None:
+    # TODO: make this function
+    return None
 
 async def create_ProcessedImage_entry(
         storage_filename: str,
