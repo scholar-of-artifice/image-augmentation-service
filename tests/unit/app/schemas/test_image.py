@@ -337,3 +337,19 @@ def test_ResponseWriteUnprocessedImageToStorage_is_valid():
     assert some_object.user_id == input_id
     assert some_object.storage_filename == input_filename
     assert some_object.image_location == input_location
+
+def test_ResponseWriteUnprocessedImageToStorage_is_not_valid_when_user_id_is_not_uuid():
+    """
+    GIVEN an invalid user_id
+    WHEN an ResponseWriteUnprocessedImageToStorage object is constructed
+    THEN it raises a ValidationError
+    """
+    input_id = 'some user id'
+    input_filename = str(uuid.uuid4()) + '.png'
+    input_location = f'foo/bar/baz/{input_filename}'
+    with pytest.raises(ValidationError):
+        ResponseWriteUnprocessedImageToStorage(
+            user_id=input_id,
+            storage_filename=input_filename,
+            image_location=input_location
+        )
