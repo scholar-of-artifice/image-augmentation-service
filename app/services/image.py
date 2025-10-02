@@ -373,3 +373,7 @@ async def read_ProcessedImage_entry(
 async def write_processed_image_to_storage() -> None:
     # TODO: make this function
     return None
+
+async def read_processed_image_from_storage() -> None:
+    # TODO: make this function
+    return None
