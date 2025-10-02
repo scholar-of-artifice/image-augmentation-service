@@ -10,7 +10,7 @@ from app.internal.file_handling import (
     translate_file_to_numpy_array,
     write_numpy_array_to_image_file,
 )
-from app.schemas.image import UploadRequestBody, ResponseUploadImage
+from app.schemas.image import UploadRequestBody, ResponseUploadImage, ResponseWriteUnprocessedImageToStorage
 from app.schemas.transactions_db import ProcessedImage, UnprocessedImage, User, ProcessingJob
 
 async def save_unprocessed_image(
@@ -299,6 +299,33 @@ async def read_UnprocessedImage_entry(
         )
     # there should only be one entry
     return image_entry
+
+async def write_unprocessed_image_to_storage(
+        user_id: uuid.UUID,
+        file: UploadFile,
+        # --- INJECTED DEPENDENCIES ---
+        file_translator: Callable = translate_file_to_numpy_array,
+        file_writer: Callable = write_numpy_array_to_image_file,
+        filename_creator: Callable = create_file_name,
+) -> ResponseWriteUnprocessedImageToStorage:
+    # asynchronously read the contents of the uploaded file as bytes
+    image_content = await file.read()
+    # convert the raw image bytes into a numpy array
+    image_data = file_translator(image_content)
+    # create a new filename
+    unprocessed_storage_filename = filename_creator()
+    # TODO: check if the file already exists
+    # save a copy of the original unprocessed image to the 'unprocessed_image_data' volume.
+    unprocessed_image_location = file_writer(
+        data=image_data,
+        file_name=unprocessed_storage_filename,
+        destination_volume="unprocessed_image_data",
+    )
+    return ResponseWriteUnprocessedImageToStorage(
+        user_id=user_id,
+        storage_filename=unprocessed_storage_filename,
+        unprocessed_image_location=unprocessed_image_location,
+    )
 
 async def create_ProcessedImage_entry(
         storage_filename: str,
