@@ -139,3 +139,20 @@ class ResponseAugmentImage(BaseModel):
 
 # --- Models for capturing responses from Service Layer functions --- #
 
+class ResponseWriteUnprocessedImageToStorage(BaseModel):
+    """
+    Response body for service layer:
+        write_unprocessed_image_to_storage
+    """
+    user_id: Annotated[
+        uuid.UUID,
+        Field(description="The ID of the user that owns the image.")
+    ]
+    storage_filename: Annotated[
+        str,
+        Field(description="The filename of the unprocessed image.")
+    ]
+    image_location: Annotated[
+        str,
+        Field(description="The location of the unprocessed image.")
+    ]
