@@ -271,3 +271,39 @@ async def create_ProcessedImage_entry(
         storage_filename='some_file_name_here.png',  # use a unique name
     )
     return new_entry
+
+async def read_ProcessedImage_entry(
+        image_id: uuid.UUID,
+        db_session: AsyncSession,
+        user_id: uuid.UUID
+) -> ProcessedImage:
+    """
+    Read an ProcessedImage entry from the transactions database.
+    """
+    # go find the user with this id
+    query_for_user = sqlalchemy.select(User).where(
+        User.id == user_id
+    )
+    response_for_user = await db_session.execute(query_for_user)
+    user_entry = response_for_user.scalar_one_or_none()
+    # raise an exception if no user exists
+    if not user_entry:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No User found with ID {user_id}",
+        )
+    # go find the ProcessedImage where the user_id matches and the image_id matches
+    query_for_image = sqlalchemy.select(ProcessedImage).where(
+        ProcessedImage.user_id == user_entry.id,
+        ProcessedImage.id == image_id
+    )
+    # get the data
+    response_for_image = await db_session.execute(query_for_image)
+    image_entry = response_for_image.scalar_one_or_none()
+    if not image_entry:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No ProcessedImage found with ID {image_id}",
+        )
+    # there should only be one entry
+    return image_entry
