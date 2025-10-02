@@ -75,6 +75,10 @@ async def augment_endpoint(
     - **db_session**: Injected database session for database operations.
     - **current_user**: The user who wants to upload the image.
     """
+    # TODO: get the image from block storage
+    # TODO: make an augmented image
+    # TODO: persist augmented image to block storage
+    # TODO: put an entry in the database for the augmented image
     return ResponseAugmentImage(
         unprocessed_image_id=uuid.uuid4(),
         processed_image_id=uuid.uuid4(),
