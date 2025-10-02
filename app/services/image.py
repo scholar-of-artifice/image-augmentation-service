@@ -241,3 +241,19 @@ async def get_processed_image_by_id(
 
 
 # TODO: new service layer API
+
+async def create_UnprocessedImage_entry(
+        user_id: uuid.UUID,
+        original_filename: str,
+        unprocessed_storage_filename: str,
+        db_session: AsyncSession,
+) -> UnprocessedImage:
+    """
+    Creates a new UnprocessedImage entry in the transactions database.
+    """
+    new_entry = UnprocessedImage(
+        original_filename=original_filename,  # use the original name from the file
+        storage_filename=unprocessed_storage_filename,  # use a unique name
+        user_id=user_id,  # associate to the user_id
+    )
+    return new_entry
