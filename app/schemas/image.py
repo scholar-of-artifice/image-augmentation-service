@@ -78,6 +78,8 @@ class UploadRequestBody(BaseModel):
         )
     ]
 
+# --- models for caputring the response from endpoints ---
+
 class ResponseUploadImage(BaseModel):
     """
     This is the response body for:
