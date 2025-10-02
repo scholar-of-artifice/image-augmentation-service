@@ -132,7 +132,7 @@ class ResponseAugmentImage(BaseModel):
     """
     This is the response body for:
     ```
-    /image-api/augment/{unprocessed_image_id}/
+    /image-api/augment/
     ```
     """
     unprocessed_image_id: Annotated[
