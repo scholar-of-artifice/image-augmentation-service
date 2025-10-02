@@ -135,3 +135,7 @@ class ResponseAugmentImage(BaseModel):
             description="The way the image was requested to be augmented."
         )
     ]
+
+
+# --- Models for capturing responses from Service Layer functions --- #
+
