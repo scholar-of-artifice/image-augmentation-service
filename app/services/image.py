@@ -238,3 +238,6 @@ async def get_processed_image_by_id(
         )
     # there should only be one entry
     return image_entry
+
+
+# TODO: new service layer API
