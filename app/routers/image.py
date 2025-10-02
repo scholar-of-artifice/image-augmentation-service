@@ -7,7 +7,7 @@ from typing import Annotated
 
 from app.db.database import get_async_session
 from app.dependency.async_dependency import get_body_as_model, get_current_active_user
-from app.schemas.image import ResponseUploadImage
+from app.schemas.image import ResponseUploadImage, ResponseAugmentImage, AugmentRequestBody
 from app.schemas.transactions_db.user import User
 from app.services.image import process_and_save_image, save_unprocessed_image, get_unprocessed_image_by_id, get_processed_image_by_id
 import uuid
@@ -48,6 +48,38 @@ async def upload_endpoint(
         file=file,
         db_session=db_session,
         user_id=current_user.id
+    )
+
+@router.post(
+    path="/augment/",
+    response_model=ResponseAugmentImage
+)
+async def augment_endpoint(
+    augment_request: AugmentRequestBody,
+    db_session: AsyncSession = Depends(get_async_session),
+    current_user: User = Depends(get_current_active_user)
+):
+    """
+    # Description
+    Use this endpoint to augment an image.
+
+    ## User Story
+    ```
+    As a user ...
+    I want to augment an image ...
+    and receive information about where to find that image...
+    so that I can use my augmented data in the future.
+    ```
+
+    ### Internal Details
+    - **db_session**: Injected database session for database operations.
+    - **current_user**: The user who wants to upload the image.
+    """
+    return ResponseAugmentImage(
+        unprocessed_image_id=uuid.uuid4(),
+        processed_image_id=uuid.uuid4(),
+        processed_image_filename='cool filename bro',
+        request_body=augment_request,
     )
 
 @router.get(
