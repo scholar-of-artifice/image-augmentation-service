@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.internal.file_handling import InvalidImageFileError
 from app.schemas.image import RotateArguments, ShiftArguments, UploadRequestBody, ResponseUploadImage
 from app.schemas.transactions_db import UnprocessedImage, User
-from app.services.image import get_unprocessed_image_by_id, process_and_save_image, save_unprocessed_image
+from app.services.image import get_unprocessed_image_by_id, process_and_save_image, save_unprocessed_image, create_UnprocessedImage_entry
 
 pytestmark = pytest.mark.asyncio
 
@@ -375,3 +375,31 @@ async def test_get_unprocessed_image_by_id_is_not_found_when_a_different_user_re
     assert http_exception.value.status_code == 404
 
 # --- overhaul services layer APIs ---
+
+async def test_create_UnprocessedImage_entry_is_successful(mocker):
+    """
+    GIVEN a user_id
+    AND an original_filename
+    AND a unique storage filename
+    WHEN create_UnprocessedImage_entry is called
+    THEN a new UnprocessedImage entry is created
+    AND the entry is added to the database session
+    """
+    test_user_id = uuid.uuid4()
+    test_original_filename = "some_original_filename.png"
+    test_storage_filename = f"{str(uuid.uuid4())}.png"
+    mock_db_session = AsyncMock(spec=AsyncSession)
+    # call the function
+    result = await create_UnprocessedImage_entry(
+        user_id=test_user_id,
+        original_filename=test_original_filename,
+        unprocessed_storage_filename=test_storage_filename,
+        db_session=mock_db_session
+    )
+    # check the conditions of the test are met
+    mock_db_session.add.assert_called_once()
+    mock_db_session.flush.assert_awaited_once()
+    assert isinstance(result, UnprocessedImage)
+    assert result.user_id == test_user_id
+    assert result.original_filename == test_original_filename
+    assert result.storage_filename == test_storage_filename
