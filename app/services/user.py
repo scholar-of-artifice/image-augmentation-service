@@ -37,25 +37,23 @@ async def sign_up_service(
     #   this is highly dependent on how you use this app.
     #   probably you should do that here where this comment is...
     # <--- NOTE
-    # call the service to check for an existing user
+    # --- Check if User exists ---
     existing_user = await get_user_by_external_id(
         db_session=db_session,
         external_id=external_id
     )
-    # the endpoint handles the HTTP-specific logic
     if existing_user:
         # already have this user
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail=f"User with external_id '{external_id}' already exists."
         )
-    # call the service to create the new user
+    # --- Create the User ---
     new_user = await create_user(
         db_session=db_session,
         external_id=external_id
     )
-    # convert the SQLModel object to your Pydantic UserRead schema
-    # this only works because UserRead has `from_attributes=True` and SQLModel is Pydantic-compatible.
+    # --- return relevant information to user ---
     return ResponseCreateUser(
         id=new_user.id,
         external_id=external_id,
