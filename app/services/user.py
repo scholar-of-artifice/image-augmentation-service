@@ -92,7 +92,7 @@ async def get_user_by_external_id(
     return result.scalars().first()
 
 
-async def delete_user(
+async def delete_user_service(
     db_session: AsyncSession, *, user_id_to_delete: uuid.UUID, requesting_external_id: str
 ):
     """
