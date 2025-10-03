@@ -64,8 +64,8 @@ async def create_user(
         external_id: str
 ) -> User:
     """
-    Creates a new user, adds it to the session, and commits.
-    Returns the newly created User object.
+    - create a new user in the transaction database
+    - returns the newly created User object.
     """
     db_user = User(external_id=external_id)
     db_session.add(db_user)
