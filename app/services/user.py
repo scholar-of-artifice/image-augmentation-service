@@ -61,7 +61,10 @@ async def sign_up_service(
         external_id=external_id,
     )
 
-async def create_user(db_session: AsyncSession, *, external_id: str) -> User:
+async def create_user(
+        db_session: AsyncSession,
+        external_id: str
+) -> User:
     """
     Creates a new user, adds it to the session, and commits.
     Returns the newly created User object.
