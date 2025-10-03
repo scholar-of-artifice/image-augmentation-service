@@ -19,7 +19,7 @@ class UserNotFound(Exception):
     pass
 
 
-class ConflictingEntryFound(Exception):
+class UserAlreadyExists(Exception):
     """
     Raised when a user is already in the database.
     """
