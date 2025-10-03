@@ -28,7 +28,7 @@ class PermissionDenied(Exception):
 async def sign_up_service(
     db_session: AsyncSession = Depends(get_async_session),
     external_id: str = Depends(get_current_external_user_id)
-) -> ResponseCreateUser
+) -> ResponseCreateUser:
     # NOTE --->
     #   trust but verify
     #   the external_id comes from an external source of your choice.
