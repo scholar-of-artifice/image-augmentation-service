@@ -67,8 +67,10 @@ async def sign_up_user_service(
     )
 
 async def delete_user_service(
-    db_session: AsyncSession, *, user_id_to_delete: uuid.UUID, requesting_external_id: str
-):
+    user_id_to_delete: uuid.UUID,
+    external_id: str = Depends(get_current_external_user_id),
+    db_session: AsyncSession = Depends(get_async_session)
+) -> None:
     """
     Deletes a user after verifying the requesting user has permission.
     Raises UserNotFound or PermissionDenied on failure.
