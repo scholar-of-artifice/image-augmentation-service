@@ -21,7 +21,7 @@ router = APIRouter()
 logger = logging.getLogger(__name__)
 
 @router.post(
-    path="/sign-up/",
+    path="/sign-up",
     response_model=ResponseCreateUser,
     status_code=status.HTTP_201_CREATED,
 )
