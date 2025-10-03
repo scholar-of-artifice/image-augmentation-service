@@ -14,7 +14,7 @@ from app.services.user import (
     delete_user_service,
     UserAlreadyExists,
     get_user_by_external_id,
-    sign_up_service,
+    sign_up_user_service,
 )
 
 router = APIRouter()
