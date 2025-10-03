@@ -7,13 +7,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.database import get_async_session
 from app.dependency.async_dependency import get_current_external_user_id
-from app.schemas.user import UserRead, ResponseCreateUser
+from app.schemas.user import ResponseCreateUser, UserRead
 from app.services.user import (
     PermissionDenied,
     UserNotFound,
-    create_user,
     delete_user,
-    get_user_by_external_id, sign_up_service,
+    get_user_by_external_id,
+    sign_up_service,
 )
 
 router = APIRouter()
@@ -75,7 +75,8 @@ async def sign_in_user_endpoint(
     """
     # Find the user in the database using their trusted external ID.
     user = await get_user_by_external_id(
-        db_session=db_session, external_id=external_id
+        db_session=db_session,
+        external_id=external_id
     )
     # If no user is found, they exist externally but not in our system.
     # The client should call the POST /users endpoint to create them.
@@ -116,8 +117,14 @@ async def delete_user_endpoint(
             requesting_external_id=external_id,
         )
     except UserNotFound as e:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(e)
+        ) from e
     except PermissionDenied as e:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=str(e)
+        ) from e
     # according to HTTP standards, a successful DELETE should return 204 No Content.
     return None
