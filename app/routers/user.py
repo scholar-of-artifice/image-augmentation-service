@@ -92,10 +92,9 @@ async def sign_in_user_endpoint(
     status_code=status.HTTP_204_NO_CONTENT,
 )
 async def delete_user_endpoint(
-    *,
+    user_id: Annotated[uuid.UUID, Path(title="The ID of the item to destroy")],
     db_session: AsyncSession = Depends(get_async_session),
     external_id: str = Depends(get_current_external_user_id),
-    user_id: Annotated[uuid.UUID, Path(title="The ID of the item to destroy")],
 ):
     """
         Deletes a user from the database.
