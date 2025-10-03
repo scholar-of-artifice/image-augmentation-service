@@ -7,9 +7,7 @@ pytestmark = pytest.mark.asyncio
 
 async def test_create_a_user(http_client):
     """
-    This test creates a user.
-    1. Create a user
-    2. Check the characteristics of the response object
+    1. A user is created successfully.
     """
     external_id = str(uuid.uuid4())
     headers = {"X-External-User-ID": external_id}
