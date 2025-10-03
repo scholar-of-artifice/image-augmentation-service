@@ -20,6 +20,8 @@ class UserRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+# --- Endpoint Request Bodies ---
+
 # --- Endpoint Responses ---
 
 class ResponseCreateUser(BaseModel):
