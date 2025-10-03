@@ -11,7 +11,7 @@ from app.schemas.user import ResponseCreateUser, UserRead
 from app.services.user import (
     PermissionDenied,
     UserNotFound,
-    delete_user,
+    delete_user_service,
     UserAlreadyExists,
     get_user_by_external_id,
     sign_up_service,
@@ -48,10 +48,23 @@ async def sign_up_user_endpoint(
     #   this is highly dependent on how you use this app.
     #   probably you should do that here where this comment is...
     # <--- NOTE
-    return await sign_up_service(
-        db_session=db_session,
-        external_id=external_id
-    )
+    try:
+        new_user_info = await sign_up_user_service(
+            db_session=db_session,
+            external_id=external_id
+        )
+        return new_user_info
+    except PermissionDenied as e:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=str(e)
+        ) from e
+    except UserAlreadyExists as e:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=str(e)
+        ) from e
+
 
 @router.delete(
     path="/user/{user_id}",
