@@ -61,6 +61,25 @@ async def sign_up_service(
         external_id=external_id,
     )
 
+async def delete_user_service(
+    db_session: AsyncSession, *, user_id_to_delete: uuid.UUID, requesting_external_id: str
+):
+    """
+    Deletes a user after verifying the requesting user has permission.
+    Raises UserNotFound or PermissionDenied on failure.
+    """
+    # --- Get The User To Delete ---
+    user_to_delete = await db_session.get(User, user_id_to_delete)
+    # raise an exception if the user does not exist
+    if not user_to_delete:
+        raise UserNotFound(f"User with id '{user_id_to_delete}' not found.")
+    # --- Check If Authorized ---
+    if user_to_delete.external_id != requesting_external_id:
+        raise PermissionDenied("You do not have permission to delete this user.")
+    # --- Delete The Entry
+    await db_session.delete(user_to_delete)
+    await db_session.commit()
+
 # --- these are the important utility functions that are used ---
 # TODO: probably move these
 
@@ -91,22 +110,3 @@ async def get_user_by_external_id(
     result = await db_session.execute(select(User).where(User.external_id == external_id))
     return result.scalars().first()
 
-
-async def delete_user_service(
-    db_session: AsyncSession, *, user_id_to_delete: uuid.UUID, requesting_external_id: str
-):
-    """
-    Deletes a user after verifying the requesting user has permission.
-    Raises UserNotFound or PermissionDenied on failure.
-    """
-    # find the user to delete
-    user_to_delete = await db_session.get(User, user_id_to_delete)
-    # raise an exception if the user does not exist
-    if not user_to_delete:
-        raise UserNotFound(f"User with id '{user_id_to_delete}' not found.")
-    # raise an exception if the user is not authorized
-    if user_to_delete.external_id != requesting_external_id:
-        raise PermissionDenied("You do not have permission to delete this user.")
-    # perform the deletion
-    await db_session.delete(user_to_delete)
-    await db_session.commit()
