@@ -18,3 +18,18 @@ class UserRead(BaseModel):
     # This tells Pydantic to read the data from ORM model attributes,
     # So it can read data from `db_user.id`.
     model_config = ConfigDict(from_attributes=True)
+
+
+# --- Endpoint Responses ---
+
+class ResponseCreateUser(BaseModel):
+    """
+    This is the model that will be returned to the client.
+    It includes the fields that are safe to expose.
+    This response corresponds with:
+        /sign-up/
+    """
+    # the ID of the user in the database.
+    id: uuid.UUID
+    # the external_id the user shows for authorization
+    external_id: str
