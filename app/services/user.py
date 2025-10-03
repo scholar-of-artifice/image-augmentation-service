@@ -28,7 +28,7 @@ class PermissionDenied(Exception):
 
 # --- these are the functions that the endpoint calls ---
 
-async def sign_up_service(
+async def sign_up_user_service(
     db_session: AsyncSession = Depends(get_async_session),
     external_id: str = Depends(get_current_external_user_id)
 ) -> ResponseCreateUser:
