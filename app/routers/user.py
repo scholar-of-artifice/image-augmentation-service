@@ -12,6 +12,7 @@ from app.services.user import (
     PermissionDenied,
     UserNotFound,
     delete_user,
+    UserAlreadyExists,
     get_user_by_external_id,
     sign_up_service,
 )
