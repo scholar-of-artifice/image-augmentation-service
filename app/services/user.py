@@ -50,7 +50,10 @@ async def sign_up_service(
             detail=f"User with external_id '{external_id}' already exists."
         )
     # call the service to create the new user
-    new_user = await create_user(db_session=db_session, external_id=external_id)
+    new_user = await create_user(
+        db_session=db_session,
+        external_id=external_id
+    )
     # convert the SQLModel object to your Pydantic UserRead schema
     # this only works because UserRead has `from_attributes=True` and SQLModel is Pydantic-compatible.
     return ResponseCreateUser(
