@@ -9,7 +9,7 @@ from app.db.database import get_async_session
 from app.dependency.async_dependency import get_body_as_model, get_current_active_user
 from app.schemas.image import ResponseUploadImage, ResponseAugmentImage, AugmentRequestBody
 from app.schemas.transactions_db.user import User
-from app.services.image import process_and_save_image, save_unprocessed_image, get_unprocessed_image_by_id, get_processed_image_by_id
+from app.services.image import process_and_save_image, upload_service, get_unprocessed_image_by_id, get_processed_image_by_id
 import uuid
 router = APIRouter()
 
@@ -44,7 +44,7 @@ async def upload_endpoint(
     - **db_session**: Injected database session for database operations.
     - **current_user**: The user who wants to upload the image.
     """
-    return await save_unprocessed_image(
+    return await upload_service(
         file=file,
         db_session=db_session,
         user_id=current_user.id
