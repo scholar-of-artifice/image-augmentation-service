@@ -21,8 +21,8 @@ router = APIRouter()
 logger = logging.getLogger(__name__)
 
 @router.post(
-    path="/users",
-    response_model=UserRead,
+    path="/sign-up/",
+    response_model=ResponseCreateUser,
     status_code=status.HTTP_201_CREATED,
 )
 async def sign_up_endpoint(
