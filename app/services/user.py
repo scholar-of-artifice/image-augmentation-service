@@ -1,13 +1,14 @@
 import uuid
 
+from fastapi import Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 
-from app.schemas.transactions_db.user import User
-from app.schemas.user import ResponseCreateUser
-from fastapi import APIRouter, Depends, HTTPException, Path, status
 from app.db.database import get_async_session
 from app.dependency.async_dependency import get_current_external_user_id
+from app.schemas.transactions_db.user import User
+from app.schemas.user import ResponseCreateUser
+
 
 # TODO: might move these later
 class UserNotFound(Exception):
