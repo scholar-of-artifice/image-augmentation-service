@@ -7,10 +7,8 @@ pytestmark = pytest.mark.asyncio
 
 async def test_create_and_delete_a_user(http_client):
     """
-    This test creates a user and then deletes it.
     1. A user is created successfully.
     2. The same user is deleted successfully.
-    3. A final check confirms the user is truly gone.
     """
     external_id = str(uuid.uuid4())
     headers = {"X-External-User-ID": external_id}

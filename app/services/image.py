@@ -10,10 +10,10 @@ from app.internal.file_handling import (
     translate_file_to_numpy_array,
     write_numpy_array_to_image_file,
 )
-from app.schemas.image import UploadRequestBody, ResponseUploadImage
+from app.schemas.image import UploadRequestBody, ResponseUploadImage, ResponseWriteUnprocessedImageToStorage
 from app.schemas.transactions_db import ProcessedImage, UnprocessedImage, User, ProcessingJob
 
-async def save_unprocessed_image(
+async def upload_service(
         file: UploadFile,
         user_id: uuid.UUID,
         db_session: AsyncSession,
@@ -32,35 +32,21 @@ async def save_unprocessed_image(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="No filename provided."
         )
-    # read and convert the image
-    # asynchronously read the contents of the uploaded file as bytes
-    image_content = await file.read()
-    # convert the raw image bytes into a numpy array
-    image_data = file_translator(image_content)
-    # create a new filename
-    unprocessed_storage_filename = filename_creator()
-    # --- Save Relevant Unprocessed Image Data ---
-    unprocessed_image_record = UnprocessedImage(
-        original_filename=file.filename,  # use the original name from the file
-        storage_filename=unprocessed_storage_filename,  # use a unique name
-        user_id=user_id,  # associate to the user_id
-    )
     # --- Persist Image to Storage ---
-    # save a copy of the original unprocessed image to the 'unprocessed_image_data' volume.
-    unprocessed_image_location = file_writer(
-        data=image_data,
-        file_name=unprocessed_storage_filename,
-        destination_volume="unprocessed_image_data",
+    unprocessed_image_storage_record = await write_unprocessed_image_to_storage(
+        user_id=user_id,
+        file=file,
+        file_writer=file_writer,
+        file_translator=file_translator,
+        filename_creator=filename_creator
     )
-    # --- Persist Record to Database ---
-    # persist the data
-    db_session.add(
-        unprocessed_image_record
+    # --- Save Relevant Unprocessed Image Data ---
+    unprocessed_image_record = await create_UnprocessedImage_entry(
+        user_id=user_id,
+        original_filename=file.filename,
+        unprocessed_storage_filename= unprocessed_image_storage_record.storage_filename,
+        db_session=db_session,
     )
-    await db_session.flush()
-    await db_session.refresh(unprocessed_image_record)
-    await db_session.commit()
-    # --- Formulate a Response ---
     # give the user what they need to query for the data
     return ResponseUploadImage(
         unprocessed_image_id=unprocessed_image_record.id,
@@ -238,3 +224,156 @@ async def get_processed_image_by_id(
         )
     # there should only be one entry
     return image_entry
+
+
+# TODO: new service layer API
+
+async def create_UnprocessedImage_entry(
+        user_id: uuid.UUID,
+        original_filename: str,
+        unprocessed_storage_filename: str,
+        db_session: AsyncSession,
+) -> UnprocessedImage:
+    """
+    Creates a new UnprocessedImage entry in the transactions database.
+    """
+    new_entry = UnprocessedImage(
+        original_filename=original_filename,  # use the original name from the file
+        storage_filename=unprocessed_storage_filename,  # use a unique name
+        user_id=user_id,  # associate to the user_id
+    )
+    # TODO: check if entry already exists before saving.
+    # TODO: save new entry
+    db_session.add(new_entry)
+    await db_session.flush()
+    await db_session.refresh(new_entry)
+    return new_entry
+
+
+async def read_UnprocessedImage_entry(
+        image_id: uuid.UUID,
+        db_session: AsyncSession,
+        user_id: uuid.UUID
+) -> UnprocessedImage:
+    """
+    Read an UnprocessedImage entry from the transactions database.
+    """
+    # go find the user with this id
+    query_for_user = sqlalchemy.select(User).where(
+        User.id == user_id
+    )
+    response_for_user = await db_session.execute(query_for_user)
+    user_entry = response_for_user.scalar_one_or_none()
+    # raise an exception if no user exists
+    if not user_entry:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No User found with ID {user_id}",
+        )
+    # go find the UnprocessedImage where the user_id matches and the image_id matches
+    query_for_image = sqlalchemy.select(UnprocessedImage).where(
+        UnprocessedImage.user_id == user_entry.id,
+        UnprocessedImage.id == image_id
+    )
+    # get the data
+    response_for_image = await db_session.execute(query_for_image)
+    image_entry = response_for_image.scalar_one_or_none()
+    if not image_entry:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No UnprocessedImage found with ID {image_id}",
+        )
+    # there should only be one entry
+    return image_entry
+
+async def write_unprocessed_image_to_storage(
+        user_id: uuid.UUID,
+        file: UploadFile,
+        # --- INJECTED DEPENDENCIES ---
+        file_translator: Callable = translate_file_to_numpy_array,
+        file_writer: Callable = write_numpy_array_to_image_file,
+        filename_creator: Callable = create_file_name,
+) -> ResponseWriteUnprocessedImageToStorage:
+    # asynchronously read the contents of the uploaded file as bytes
+    image_content = await file.read()
+    # convert the raw image bytes into a numpy array
+    image_data = file_translator(image_content)
+    # create a new filename
+    unprocessed_storage_filename = filename_creator()
+    # TODO: check if the file already exists
+    # save a copy of the original unprocessed image to the 'unprocessed_image_data' volume.
+    unprocessed_image_location = file_writer(
+        data=image_data,
+        file_name=unprocessed_storage_filename,
+        destination_volume="unprocessed_image_data",
+    )
+    return ResponseWriteUnprocessedImageToStorage(
+        user_id=user_id,
+        storage_filename=unprocessed_storage_filename,
+        image_location=unprocessed_image_location,
+    )
+
+async def read_unprocessed_image_from_storage() -> None:
+    # TODO: make this function
+    return None
+
+async def create_ProcessedImage_entry(
+        storage_filename: str,
+        user_id: uuid.UUID,
+        unprocessed_image_id: uuid.UUID,
+        db_session: AsyncSession,
+) -> ProcessedImage:
+    """
+    Creates a new ProcessedImage entry in the transactions database.
+    """
+    new_entry = ProcessedImage(
+        storage_filename='some_file_name_here.png',  # use a unique name
+    )
+    # TODO: check if entry already exists before saving.
+    # TODO: save new entry
+    return new_entry
+
+async def read_ProcessedImage_entry(
+        image_id: uuid.UUID,
+        db_session: AsyncSession,
+        user_id: uuid.UUID
+) -> ProcessedImage:
+    """
+    Read an ProcessedImage entry from the transactions database.
+    """
+    # go find the user with this id
+    query_for_user = sqlalchemy.select(User).where(
+        User.id == user_id
+    )
+    response_for_user = await db_session.execute(query_for_user)
+    user_entry = response_for_user.scalar_one_or_none()
+    # raise an exception if no user exists
+    if not user_entry:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No User found with ID {user_id}",
+        )
+    # go find the ProcessedImage where the user_id matches and the image_id matches
+    query_for_image = sqlalchemy.select(ProcessedImage).where(
+        ProcessedImage.user_id == user_entry.id,
+        ProcessedImage.id == image_id
+    )
+    # get the data
+    response_for_image = await db_session.execute(query_for_image)
+    image_entry = response_for_image.scalar_one_or_none()
+    if not image_entry:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No ProcessedImage found with ID {image_id}",
+        )
+    # there should only be one entry
+    return image_entry
+
+
+async def write_processed_image_to_storage() -> None:
+    # TODO: make this function
+    return None
+
+async def read_processed_image_from_storage() -> None:
+    # TODO: make this function
+    return None

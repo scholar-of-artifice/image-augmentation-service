@@ -1,5 +1,6 @@
-from typing import Annotated, Literal
 import uuid
+from typing import Annotated, Literal
+
 from pydantic import BaseModel, Field
 from pydantic.types import StringConstraints
 
@@ -64,6 +65,7 @@ class RainbowNoiseArguments(BaseModel):
     # enforce positive integer... 0 is no change
     amount: Annotated[float, Field(strict=True, gt=0, lt=1)]
 
+# TODO: deprecate this
 class UploadRequestBody(BaseModel):
     """
     This is the request body for:
@@ -78,6 +80,32 @@ class UploadRequestBody(BaseModel):
         )
     ]
 
+
+class AugmentRequestBody(BaseModel):
+    """
+    This is the request body for:
+    ```
+    /image-api/augment/
+    ```
+    """
+    unprocessed_image_id: Annotated[
+        uuid.UUID,
+        Field(
+            description="The ID of the unprocessed image to be augmented.",
+        )
+    ]
+    arguments: Annotated[
+        ShiftArguments | RotateArguments | RainbowNoiseArguments,
+        Field(
+            description="How would you like to augment the image?",
+            json_schema_extra={
+                "descriminator": "processing"
+            }
+        )
+    ]
+
+# --- models for caputring the response from endpoints ---
+
 class ResponseUploadImage(BaseModel):
     """
     This is the response body for:
@@ -89,7 +117,7 @@ class ResponseUploadImage(BaseModel):
         uuid.UUID,
         Field(
             description="The ID of the unprocessed image."
-                        "Use this to:"
+                        "\nUse this to:"
                         "\n- download the image"
                         "\n- make an augmentation of this specific image"
         )
@@ -101,3 +129,58 @@ class ResponseUploadImage(BaseModel):
         )
     ]
 
+class ResponseAugmentImage(BaseModel):
+    """
+    This is the response body for:
+    ```
+    /image-api/augment/
+    ```
+    """
+    unprocessed_image_id: Annotated[
+        uuid.UUID,
+        Field(
+            description="The ID of the unprocessed image."
+                        "\nThis is the parent image of this augmentation."
+        )
+    ]
+    processed_image_id: Annotated[
+        uuid.UUID,
+        Field(
+            description="The ID of the processed image."
+                        "\nUse this to:"
+                        "\n- download the image"
+        )
+    ]
+    processed_image_filename: Annotated[
+        str,
+        Field(
+            description="The filename of the processed image."
+        )
+    ]
+    request_body: Annotated[
+        AugmentRequestBody,
+        Field(
+            description="The way the image was requested to be augmented."
+        )
+    ]
+
+
+# --- Models for capturing responses from Service Layer functions --- #
+
+class ResponseWriteUnprocessedImageToStorage(BaseModel):
+    """
+    Response body for service layer:
+        write_unprocessed_image_to_storage
+    """
+    user_id: Annotated[
+        uuid.UUID,
+        Field(description="The ID of the user that owns the image.")
+    ]
+    storage_filename: Annotated[
+        str,
+        Field(description="The filename of the unprocessed image.")
+    ]
+    image_location: Annotated[
+        str,
+        Field(description="The location of the unprocessed image.")
+    ]

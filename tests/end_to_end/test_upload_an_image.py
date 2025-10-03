@@ -10,9 +10,8 @@ pytestmark = pytest.mark.asyncio
 
 async def test_upload_an_image(http_client):
     """
-    This test creates a user and then allows that user to upload an image.
     1. A user is created successfully.
-    2. A user uploads an image with a request to `shift` it.
+    2. A user uploads an image.
     """
     external_id = str(uuid.uuid4())
     headers = {"X-External-User-ID": external_id}
