@@ -54,10 +54,7 @@ async def sign_up_user_service(
     )
     if existing_user:
         # already have this user
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"User with external_id '{external_id}' already exists."
-        )
+        raise UserNotFound(f"User with external id {external_id} already exists")
     # --- Create the User ---
     new_user = await create_user(
         db_session=db_session,
