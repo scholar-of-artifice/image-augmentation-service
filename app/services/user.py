@@ -26,6 +26,8 @@ class PermissionDenied(Exception):
 
     pass
 
+# --- these are the functions that the endpoint calls ---
+
 async def sign_up_service(
     db_session: AsyncSession = Depends(get_async_session),
     external_id: str = Depends(get_current_external_user_id)
@@ -58,6 +60,9 @@ async def sign_up_service(
         id=new_user.id,
         external_id=external_id,
     )
+
+# --- these are the important utility functions that are used ---
+# TODO: probably move these
 
 async def create_user(
         db_session: AsyncSession,
