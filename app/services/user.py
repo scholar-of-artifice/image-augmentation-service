@@ -86,7 +86,7 @@ async def delete_user_service(
             f"User with id '{user_id_to_delete}' not found."
         )
     # --- Check If Authorized ---
-    if user_to_delete.external_id != requesting_external_id:
+    if user_to_delete.external_id != external_id:
         raise PermissionDenied(
             "You do not have permission to delete this user."
         )
