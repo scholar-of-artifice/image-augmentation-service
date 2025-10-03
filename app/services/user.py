@@ -79,7 +79,10 @@ async def create_user(
     await db_session.commit()
     return db_user
 
-async def get_user_by_external_id(db_session: AsyncSession, *, external_id: str) -> User | None:
+async def get_user_by_external_id(
+        db_session: AsyncSession,
+        external_id: str
+) -> User | None:
     """
     Retrieves a user from the database by their external ID.
     Returns the User object or None if not found.
