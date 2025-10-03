@@ -19,6 +19,14 @@ class UserNotFound(Exception):
     pass
 
 
+class ConflictingEntryFound(Exception):
+    """
+    Raised when a user is already in the database.
+    """
+
+    pass
+
+
 class PermissionDenied(Exception):
     """
     Raised when a user is not authorized to perform an action.
