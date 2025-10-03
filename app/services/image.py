@@ -13,7 +13,7 @@ from app.internal.file_handling import (
 from app.schemas.image import UploadRequestBody, ResponseUploadImage, ResponseWriteUnprocessedImageToStorage
 from app.schemas.transactions_db import ProcessedImage, UnprocessedImage, User, ProcessingJob
 
-async def save_unprocessed_image(
+async def upload_service(
         file: UploadFile,
         user_id: uuid.UUID,
         db_session: AsyncSession,
