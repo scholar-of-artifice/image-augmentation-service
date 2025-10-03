@@ -86,6 +86,7 @@ async def get_user_by_external_id(
     """
     Retrieves a user from the database by their external ID.
     Returns the User object or None if not found.
+    This function should not raise an exception.or HTTPError.
     """
     result = await db_session.execute(select(User).where(User.external_id == external_id))
     return result.scalars().first()
