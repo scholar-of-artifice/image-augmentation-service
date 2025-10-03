@@ -52,42 +52,6 @@ async def sign_up_user_endpoint(
         external_id=external_id
     )
 
-@router.post(
-    path="/sign-in",
-    response_model=UserRead,
-    status_code=status.HTTP_200_OK,
-)
-async def sign_in_user_endpoint(
-    *,
-    db_session: AsyncSession = Depends(get_async_session),
-    external_id: str = Depends(get_current_external_user_id)
-):
-    """
-        Finds a user based on their external ID and returns their details.
-
-        This endpoint confirms that a user who has been authenticated by an
-        external service also exists in this application's database.
-
-        params:
-           *: Enforces that all subsequent parameters must be specified by keyword.
-            db_session: The database session, injected by the `get_async_session` dependency.
-            external_id: The user's external ID, from the security dependency.
-    """
-    # Find the user in the database using their trusted external ID.
-    user = await get_user_by_external_id(
-        db_session=db_session,
-        external_id=external_id
-    )
-    # If no user is found, they exist externally but not in our system.
-    # The client should call the POST /users endpoint to create them.
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found. Please create an account first."
-        )
-    # If the user is found and active, return their data.
-    return UserRead.model_validate(user)
-
 @router.delete(
     path="/user/{user_id}",
     status_code=status.HTTP_204_NO_CONTENT,
@@ -128,3 +92,39 @@ async def delete_user_endpoint(
         ) from e
     # according to HTTP standards, a successful DELETE should return 204 No Content.
     return None
+
+@router.post(
+    path="/sign-in",
+    response_model=UserRead,
+    status_code=status.HTTP_200_OK,
+)
+async def sign_in_user_endpoint(
+    *,
+    db_session: AsyncSession = Depends(get_async_session),
+    external_id: str = Depends(get_current_external_user_id)
+):
+    """
+        Finds a user based on their external ID and returns their details.
+
+        This endpoint confirms that a user who has been authenticated by an
+        external service also exists in this application's database.
+
+        params:
+           *: Enforces that all subsequent parameters must be specified by keyword.
+            db_session: The database session, injected by the `get_async_session` dependency.
+            external_id: The user's external ID, from the security dependency.
+    """
+    # Find the user in the database using their trusted external ID.
+    user = await get_user_by_external_id(
+        db_session=db_session,
+        external_id=external_id
+    )
+    # If no user is found, they exist externally but not in our system.
+    # The client should call the POST /users endpoint to create them.
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found. Please create an account first."
+        )
+    # If the user is found and active, return their data.
+    return UserRead.model_validate(user)
