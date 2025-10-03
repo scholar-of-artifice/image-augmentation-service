@@ -93,6 +93,7 @@ async def delete_user_service(
     # --- Delete The Entry
     await db_session.delete(user_to_delete)
     await db_session.commit()
+    return None
 
 # --- these are the important utility functions that are used ---
 # TODO: probably move these
