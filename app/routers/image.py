@@ -1,16 +1,25 @@
-from pathlib import Path
-from app.internal.file_handling import VOLUME_PATHS
-from fastapi import APIRouter, Depends, UploadFile, File
-from fastapi.responses import FileResponse
-from sqlalchemy.ext.asyncio import AsyncSession
+import uuid
 from typing import Annotated
 
+from fastapi import APIRouter, Depends, File, UploadFile
+from fastapi.responses import FileResponse
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.db.database import get_async_session
-from app.dependency.async_dependency import get_body_as_model, get_current_active_user
-from app.schemas.image import ResponseUploadImage, ResponseAugmentImage, AugmentRequestBody
+from app.dependency.async_dependency import get_current_active_user
+from app.internal.file_handling import VOLUME_PATHS
+from app.schemas.image import (
+    AugmentRequestBody,
+    ResponseAugmentImage,
+    ResponseUploadImage,
+)
 from app.schemas.transactions_db.user import User
-from app.services.image import process_and_save_image, upload_service, get_unprocessed_image_by_id, get_processed_image_by_id
-import uuid
+from app.services.image import (
+    get_processed_image_by_id,
+    get_unprocessed_image_by_id,
+    upload_service,
+)
+
 router = APIRouter()
 
 
