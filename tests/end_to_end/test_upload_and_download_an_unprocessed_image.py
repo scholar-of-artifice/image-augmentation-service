@@ -12,10 +12,8 @@ pytestmark = pytest.mark.asyncio
 
 async def test_upload_and_download_an_unprocessed_image(http_client):
     """
-    This test creates a user and then allows that user to upload an image.
-    It then downloads that unprocessed image.
     1. A user is created successfully.
-    2. A user uploads an image with a request to `shift` it.
+    2. A user uploads an image.
     2. A user downloads the original unprocessed image.
     """
     external_id = str(uuid.uuid4())
@@ -27,13 +25,11 @@ async def test_upload_and_download_an_unprocessed_image(http_client):
     # --- UPLOAD AN IMAGE ---
     image_path = Path("/image-augmentation-service/tests/data/test_image.png")
     assert image_path.exists()
-    unprocessed_image = None
     with open(image_path, "rb") as image_file:
-        unprocessed_image = image_file
         upload_response = await http_client.post(
             headers=headers,
             url="/image-api/upload/",
-            files={"file": ("test_image.png", image_file, "image/png")}
+            files={"file": ("test.png", image_file, "image/png")},
         )
     assert upload_response.status_code == status.HTTP_200_OK
     ResponseUploadImage.model_validate(upload_response.json())
