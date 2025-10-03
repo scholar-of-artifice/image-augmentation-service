@@ -7,13 +7,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.database import get_async_session
 from app.dependency.async_dependency import get_current_external_user_id
-from app.schemas.user import UserRead
+from app.schemas.user import UserRead, ResponseCreateUser
 from app.services.user import (
     PermissionDenied,
     UserNotFound,
     create_user,
     delete_user,
-    get_user_by_external_id,
+    get_user_by_external_id, sign_up_service,
 )
 
 router = APIRouter()
