@@ -88,7 +88,7 @@ async def sign_in_user_endpoint(
     return UserRead.model_validate(user)
 
 @router.delete(
-    path="/users/{user_id}",
+    path="/user/{user_id}",
     status_code=status.HTTP_204_NO_CONTENT,
 )
 async def delete_user_endpoint(
