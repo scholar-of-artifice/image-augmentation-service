@@ -12,9 +12,14 @@ async def test_sign_up_a_user(http_client):
     2. Check the characteristics of the response object
     """
     external_id = str(uuid.uuid4())
-    headers = {"X-External-User-ID": external_id}
+    headers = {
+        "X-External-User-ID": external_id
+    }
     # --- CREATE A USER ---
-    response = await http_client.post(url="/users-api/sign-up", headers=headers)
+    response = await http_client.post(
+        url="/users-api/sign-up",
+        headers=headers
+    )
     # --- CHECK THE RESPONSE ---
     assert response.status_code == status.HTTP_201_CREATED
     response_json = response.json()
