@@ -98,7 +98,7 @@ async def delete_user_service(
 async def sign_in_user_service(
     external_id: str = Depends(get_current_external_user_id),
     db_session: AsyncSession = Depends(get_async_session)
-) -> User | None:
+) -> ResponseSignInUser | None:
     # --- Get the User ---
     entry = await get_user_by_external_id(
         external_id=external_id,
