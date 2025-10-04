@@ -7,7 +7,11 @@ pytestmark = pytest.mark.asyncio
 
 async def test_delete_a_user_403(http_client):
     """
-    A user should not be able to delete another user.
+    GIVEN a user A
+    AND a user B
+    WHEN B requests to delete A
+    THEN a 403 si returned
+
     1. Sign up a user A
     2. Sign up a user B
     3. B requests to delete A
