@@ -114,8 +114,8 @@ async def create_user(
     return db_user
 
 async def get_user_by_external_id(
+        external_id: str,
         db_session: AsyncSession,
-        external_id: str
 ) -> User | None:
     """
     Retrieves a user from the database by their external ID.
