@@ -1,1 +1,1 @@
-from .user import get_user_by_external_id, create_user
+from .user import create_user, get_user_by_external_id
