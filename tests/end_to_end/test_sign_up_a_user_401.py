@@ -6,7 +6,10 @@ pytestmark = pytest.mark.asyncio
 
 async def test_sign_up_a_user_401(http_client):
     """
-    This test checks auth. is possible for creating a User.
+    GIVEN an invalid external_id
+    WHEN a request is made to sign-up
+    THEN a 401 response is returned
+
     1. Create a user
     """
     external_id = ""
