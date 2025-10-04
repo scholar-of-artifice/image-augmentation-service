@@ -12,9 +12,9 @@ async def test_sign_up_a_user_401(http_client):
 
     1. Create a user
     """
-    external_id = ""
+    bad_external_id = ""
     headers = {
-        "X-External-User-ID": external_id
+        "X-External-User-ID": bad_external_id
     }
     # --- CREATE A USER ---
     response = await http_client.post(
