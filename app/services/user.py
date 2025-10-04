@@ -55,7 +55,7 @@ async def sign_up_user_service(
     )
     if existing_user:
         # already have this user
-        raise UserNotFound(f"User with external id {external_id} already exists")
+        raise UserAlreadyExists(f"User with external id {external_id} already exists")
     # --- Create the User ---
     new_user = await create_user(
         external_id=external_id,
