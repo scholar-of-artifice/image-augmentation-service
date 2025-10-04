@@ -24,7 +24,7 @@ class UserRead(BaseModel):
 
 # --- Endpoint Responses ---
 
-class ResponseCreateUser(BaseModel):
+class ResponseSignUpUser(BaseModel):
     """
     This is the model that will be returned to the client.
     It includes the fields that are safe to expose.
