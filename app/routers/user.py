@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.database import get_async_session
 from app.dependency.async_dependency import get_current_external_user_id
 from app.schemas.user import ResponseSignInUser, ResponseSignUpUser
+import app.exceptions as exc
 from app.services.user import (
     delete_user_service,
     sign_in_user_service,
