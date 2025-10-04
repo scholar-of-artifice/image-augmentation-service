@@ -1,8 +1,10 @@
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
+
 from app.db.database import get_async_session
 from app.schemas.transactions_db.user import User
+
 
 async def create_user(
     external_id: str,
