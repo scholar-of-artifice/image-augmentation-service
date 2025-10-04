@@ -4,7 +4,7 @@ from fastapi import status
 
 pytestmark = pytest.mark.asyncio
 
-async def test_sign_up_a_user_403(http_client):
+async def test_sign_up_a_user_401(http_client):
     """
     This test checks auth. is possible for creating a User.
     1. Create a user
