@@ -1,65 +1,91 @@
 import uuid
 
+from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlmodel import select
 
+import app.exceptions as exc
+import app.repository as repository_layer
+from app.db.database import get_async_session
+from app.dependency.async_dependency import get_current_external_user_id
 from app.schemas.transactions_db.user import User
+from app.schemas.user import ResponseSignInUser, ResponseSignUpUser
 
+# --- these are the functions that the endpoint calls ---
 
-# TODO: might move these later
-class UserNotFound(Exception):
-    """
-    Raised when a user is not found in the database.
-    """
+async def sign_up_user_service(
+    external_id: str = Depends(get_current_external_user_id),
+    db_session: AsyncSession = Depends(get_async_session)
+) -> ResponseSignUpUser:
+    # NOTE --->
+    #   trust but verify
+    #   the external_id comes from an external source of your choice.
+    #   it is suggested that you verify the existence of the external_id before continuing.
+    #   this is highly dependent on how you use this app.
+    #   probably you should do that here where this comment is...
+    # <--- NOTE
+    # --- Check if User exists ---
+    existing_user = await repository_layer.get_user_by_external_id(
+        external_id=external_id,
+        db_session=db_session
+    )
+    if existing_user:
+        # already have this user
+        raise exc.UserAlreadyExists(f"User with external id {external_id} already exists")
+    # --- Create the User ---
+    new_user = await repository_layer.create_user(
+        external_id=external_id,
+        db_session=db_session
+    )
+    # --- return relevant information to user ---
+    return ResponseSignUpUser(
+        id=new_user.id,
+        external_id=external_id,
+    )
 
-    pass
-
-
-class PermissionDenied(Exception):
-    """
-    Raised when a user is not authorized to perform an action.
-    """
-
-    pass
-
-
-async def create_user(db_session: AsyncSession, *, external_id: str) -> User:
-    """
-    Creates a new user, adds it to the session, and commits.
-    Returns the newly created User object.
-    """
-    db_user = User(external_id=external_id)
-    db_session.add(db_user)
-    await db_session.flush()
-    await db_session.refresh(db_user)
-    await db_session.commit()
-    return db_user
-
-
-async def get_user_by_external_id(db_session: AsyncSession, *, external_id: str) -> User | None:
-    """
-    Retrieves a user from the database by their external ID.
-    Returns the User object or None if not found.
-    """
-    result = await db_session.execute(select(User).where(User.external_id == external_id))
-    return result.scalars().first()
-
-
-async def delete_user(
-    db_session: AsyncSession, *, user_id_to_delete: uuid.UUID, requesting_external_id: str
-):
+async def delete_user_service(
+    user_id_to_delete: uuid.UUID,
+    external_id: str = Depends(get_current_external_user_id),
+    db_session: AsyncSession = Depends(get_async_session)
+) -> None:
     """
     Deletes a user after verifying the requesting user has permission.
     Raises UserNotFound or PermissionDenied on failure.
     """
-    # find the user to delete
-    user_to_delete = await db_session.get(User, user_id_to_delete)
-    # raise an exception if the user does not exist
-    if not user_to_delete:
-        raise UserNotFound(f"User with id '{user_id_to_delete}' not found.")
-    # raise an exception if the user is not authorized
-    if user_to_delete.external_id != requesting_external_id:
-        raise PermissionDenied("You do not have permission to delete this user.")
-    # perform the deletion
-    await db_session.delete(user_to_delete)
+    # --- Get The User To Delete ---
+    user_record = await db_session.get(
+        User,
+        user_id_to_delete,
+    )
+    # --- Check If User Exists ---
+    if not user_record:
+        raise exc.UserNotFound(
+            f"User with id '{user_id_to_delete}' not found."
+        )
+    # --- Check If Authorized ---
+    if user_record.external_id != external_id:
+        raise exc.PermissionDenied(
+            "You do not have permission to delete this user."
+        )
+    # --- Delete The Entry ---
+    await db_session.delete(user_record)
     await db_session.commit()
+    return None
+
+async def sign_in_user_service(
+    external_id: str = Depends(get_current_external_user_id),
+    db_session: AsyncSession = Depends(get_async_session)
+) -> ResponseSignInUser | None:
+    # --- Get the User ---
+    entry = await repository_layer.get_user_by_external_id(
+        external_id=external_id,
+        db_session=db_session
+    )
+    # --- Check If User Exists ---
+    if not entry:
+        raise exc.UserNotFound(
+            f"User with external id '{external_id}' not found."
+        )
+    return ResponseSignInUser(
+        id=entry.id,
+        external_id=external_id,
+    )

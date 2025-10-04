@@ -89,7 +89,7 @@ class ResponseUploadImage(BaseModel):
         uuid.UUID,
         Field(
             description="The ID of the unprocessed image."
-                        "Use this to:"
+                        "\nUse this to:"
                         "\n- download the image"
                         "\n- make an augmentation of this specific image"
         )
@@ -101,3 +101,37 @@ class ResponseUploadImage(BaseModel):
         )
     ]
 
+class ResponseAugmentImage(BaseModel):
+    """
+    This is the response body for:
+    ```
+    /image-api/augment/{unprocessed_image_id}/
+    ```
+    """
+    unprocessed_image_id: Annotated[
+        uuid.UUID,
+        Field(
+            description="The ID of the unprocessed image."
+                        "\nThis is the parent image of this augmentation."
+        )
+    ]
+    processed_image_id: Annotated[
+        uuid.UUID,
+        Field(
+            description="The ID of the processed image."
+                        "\nUse this to:"
+                        "\n- download the image"
+        )
+    ]
+    processed_image_filename: Annotated[
+        str,
+        Field(
+            description="The filename of the processed image."
+        )
+    ]
+    request_body: Annotated[
+        UploadRequestBody,
+        Field(
+            description="The way the image was requested to be augmented."
+        )
+    ]
