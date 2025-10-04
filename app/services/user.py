@@ -145,8 +145,5 @@ async def get_user_by_external_id(
     )
     user_record = result.scalars().first()
     # --- return relevant information to user ---
-    return ResponseSignInUser(
-        id=user_record.id,
-        external_id=external_id,
-    )
+    return user_record
 
