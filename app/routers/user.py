@@ -95,7 +95,7 @@ async def delete_user_endpoint(
             db_session=db_session,
         )
         # according to HTTP standards, a successful DELETE should return 204 No Content.
-        return response
+        return None
     except UserNotFound as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
