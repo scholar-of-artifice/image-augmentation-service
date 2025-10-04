@@ -73,7 +73,6 @@ async def test_delete_user_service_success(mocker):
     """
     # mock database session
     mock_session = AsyncMock(spec=AsyncSession)
-    mock_session = AsyncMock(spec=AsyncSession)
 
     # input variables
     user_id_to_delete = uuid.uuid4()
