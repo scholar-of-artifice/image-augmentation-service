@@ -30,7 +30,7 @@ async def sign_up_user_service(
     )
     if existing_user:
         # already have this user
-        raise UserAlreadyExists(f"User with external id {external_id} already exists")
+        raise exc.UserAlreadyExists(f"User with external id {external_id} already exists")
     # --- Create the User ---
     new_user = await create_user(
         external_id=external_id,
@@ -58,12 +58,12 @@ async def delete_user_service(
     )
     # --- Check If User Exists ---
     if not user_record:
-        raise UserNotFound(
+        raise exc.UserNotFound(
             f"User with id '{user_id_to_delete}' not found."
         )
     # --- Check If Authorized ---
     if user_record.external_id != external_id:
-        raise PermissionDenied(
+        raise exc.PermissionDenied(
             "You do not have permission to delete this user."
         )
     # --- Delete The Entry ---
@@ -82,7 +82,7 @@ async def sign_in_user_service(
     )
     # --- Check If User Exists ---
     if not entry:
-        raise UserNotFound(
+        raise exc.UserNotFound(
             f"User with external id '{external_id}' not found."
         )
     return ResponseSignInUser(
