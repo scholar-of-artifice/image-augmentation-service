@@ -80,7 +80,7 @@ async def delete_user_service(
         User,
         user_id_to_delete
     )
-    # raise an exception if the user does not exist
+    # --- Check If User Exists ---
     if not user_to_delete:
         raise UserNotFound(
             f"User with id '{user_id_to_delete}' not found."
@@ -90,7 +90,7 @@ async def delete_user_service(
         raise PermissionDenied(
             "You do not have permission to delete this user."
         )
-    # --- Delete The Entry
+    # --- Delete The Entry ---
     await db_session.delete(user_to_delete)
     await db_session.commit()
     return None
