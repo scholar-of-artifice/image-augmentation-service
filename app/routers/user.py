@@ -130,16 +130,14 @@ async def sign_in_user_endpoint(
             external_id: The user's external ID, from the security dependency.
     """
     # Find the user in the database using their trusted external ID.
-    user = await get_user_by_external_id(
-        db_session=db_session,
-        external_id=external_id
-    )
-    # If no user is found, they exist externally but not in our system.
-    # The client should call the POST /users endpoint to create them.
-    if not user:
+    try:
+        user_entry = await sign_in_user_service(
+            external_id=external_id,
+            db_session=db_session
+        )
+        return user_entry
+    except UserNotFound as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found. Please create an account first."
-        )
-    # If the user is found and active, return their data.
-    return UserRead.model_validate(user)
+            detail=str(e)
+        ) from e
