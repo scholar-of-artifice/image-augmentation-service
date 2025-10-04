@@ -7,7 +7,7 @@ from sqlmodel import select
 from app.db.database import get_async_session
 from app.dependency.async_dependency import get_current_external_user_id
 from app.schemas.transactions_db.user import User
-from app.schemas.user import ResponseCreateUser
+from app.schemas.user import ResponseSignUpUser, ResponseSignInUser
 
 # --- Custom Exceptions ---
 # TODO: might move these later
