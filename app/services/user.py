@@ -109,7 +109,10 @@ async def sign_in_user_service(
         raise UserNotFound(
             f"User with external id '{external_id}' not found."
         )
-    return entry
+    return ResponseSignInUser(
+        id=entry.id,
+        external_id=external_id,
+    )
 
 # --- these are the important utility functions that are used ---
 # TODO: probably move these
