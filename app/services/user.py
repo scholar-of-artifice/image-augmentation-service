@@ -2,14 +2,13 @@ import uuid
 
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlmodel import select
 
+import app.exceptions as exc
+import app.repository as repository_layer
 from app.db.database import get_async_session
 from app.dependency.async_dependency import get_current_external_user_id
 from app.schemas.transactions_db.user import User
 from app.schemas.user import ResponseSignInUser, ResponseSignUpUser
-import app.exceptions as exc
-import app.repository as repository_layer
 
 # --- these are the functions that the endpoint calls ---
 
