@@ -35,3 +35,11 @@ class ResponseSignUpUser(BaseModel):
     id: uuid.UUID
     # the external_id the user shows for authorization
     external_id: str
+
+class ResponseSignInUser(ResponseSignUpUser):
+    """
+    This is the model that will be returned to the client.
+    It includes the fields that are safe to expose.
+    This response corresponds with:
+        /sign-in/
+    """
