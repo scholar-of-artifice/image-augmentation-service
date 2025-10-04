@@ -5,7 +5,7 @@ from fastapi import status
 
 pytestmark = pytest.mark.asyncio
 
-async def test_create_a_user(http_client):
+async def test_sign_up_a_user(http_client):
     """
     This test creates a user.
     1. Create a user
