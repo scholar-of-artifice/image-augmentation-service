@@ -125,12 +125,12 @@ async def create_user(
     - create a new user in the transaction database
     - returns the newly created User object.
     """
-    db_user = User(external_id=external_id)
-    db_session.add(db_user)
+    user_record = User(external_id=external_id)
+    db_session.add(user_record)
     await db_session.flush()
-    await db_session.refresh(db_user)
+    await db_session.refresh(user_record)
     await db_session.commit()
-    return db_user
+    return user_record
 
 async def get_user_by_external_id(
     external_id: str,
