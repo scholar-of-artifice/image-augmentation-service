@@ -49,16 +49,16 @@ async def sign_up_user_service(
     # <--- NOTE
     # --- Check if User exists ---
     existing_user = await get_user_by_external_id(
-        db_session=db_session,
-        external_id=external_id
+        external_id=external_id,
+        db_session=db_session
     )
     if existing_user:
         # already have this user
         raise UserNotFound(f"User with external id {external_id} already exists")
     # --- Create the User ---
     new_user = await create_user(
-        db_session=db_session,
-        external_id=external_id
+        external_id=external_id,
+        db_session=db_session
     )
     # --- return relevant information to user ---
     return ResponseSignUpUser(
@@ -115,8 +115,8 @@ async def sign_in_user_service(
 # TODO: probably move these
 
 async def create_user(
-        db_session: AsyncSession,
-        external_id: str
+    external_id: str,
+    db_session: AsyncSession = Depends(get_async_session)
 ) -> User:
     """
     - create a new user in the transaction database
@@ -130,8 +130,8 @@ async def create_user(
     return db_user
 
 async def get_user_by_external_id(
-        external_id: str,
-        db_session: AsyncSession,
+    external_id: str,
+    db_session: AsyncSession = Depends(get_async_session)
 ) -> User | None:
     """
     Retrieves a user from the database by their external ID.
