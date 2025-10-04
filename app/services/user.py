@@ -8,6 +8,7 @@ from app.db.database import get_async_session
 from app.dependency.async_dependency import get_current_external_user_id
 from app.schemas.transactions_db.user import User
 from app.schemas.user import ResponseSignInUser, ResponseSignUpUser
+import app.exceptions as exc
 
 # --- these are the functions that the endpoint calls ---
 
