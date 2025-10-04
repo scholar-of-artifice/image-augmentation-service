@@ -1,99 +1,70 @@
 import uuid
-from unittest.mock import AsyncMock
-
+from unittest.mock import AsyncMock, MagicMock
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
-
 from app.schemas.transactions_db.user import User
+from app.schemas.user import ResponseSignUpUser
 from app.services.user import (
-    PermissionDenied,
-    UserNotFound,
-    create_user,
-    delete_user,
-    get_user_by_external_id,
+    sign_up_user_service,
+    delete_user_service,
+    sign_up_user_service,
 )
+import app.exceptions as exc
 
 pytestmark = pytest.mark.asyncio
 
-# --- get_user_by_external_id ---
-async def test_get_user_by_external_id_found(mocker):
-    """
-    GIVEN an external_id that exists in the database
-    AND a mock database session
-    WHEN get_user_by_external_id is called
-    THEN it returns the correct User object
-    """
-    # mock database session
-    mock_session = AsyncMock(spec=AsyncSession)
-    # create sample user that the mock database will "return"
-    sample_user = User(id="a-real-uuid", external_id="user-abc-123")
-    # configure the mock query chain to return the sample user
-    mock_result = mocker.MagicMock()
-    mock_session.execute = AsyncMock(return_value=mock_result)
-    mock_result.scalars.return_value.first.return_value = sample_user
-    # call the service function with the mock session
-    result = await get_user_by_external_id(
-        db_session=mock_session, external_id="user-abc-123"
-    )
-    # check the results
-    assert result is not None
-    assert result.external_id == "user-abc-123"
-    assert result == sample_user
-    mock_session.execute.assert_awaited_once()
+# --- sign_up_user_service ---
 
 
-async def test_get_user_by_external_id_not_found(mocker):
+async def test_sign_up_user_service(mocker):
     """
-    GIVEN an external_id that does not exist in the database
-    AND a mock database session
-    WHEN get_user_by_external_id is called
-    THEN it returns None
+    GIVEN a new external_id not in the database
+    WHEN the sign_up_user_service is called
+    THEN it should create and return a new user.
     """
-    # mock database session
-    mock_session = AsyncMock(spec=AsyncSession)
-    # configure the mock query chain to return None
-    mock_result = mocker.MagicMock()
-    mock_session.execute = AsyncMock(return_value=mock_result)
-    mock_result.scalars.return_value.first.return_value = None
-    # call the function
-    result = await get_user_by_external_id(
-        db_session=mock_session, external_id="user-does-not-exist"
-    )
-    # check the results
-    assert result is None
-    mock_session.execute.assert_awaited_once()
-
-
-# --- create_user ---
-
-
-async def test_create_user(mocker):
-    """
-    GIVEN a valid external_id
-    AND a mock database session
-    WHEN create_user is called
-    THEN it calls the session's add, commit, and refresh methods
-    AND returns the newly created User object
-    """
-    # mock database session
-    mock_session = AsyncMock(spec=AsyncSession)
     # make input variable
-    external_id = "new-user-456"
+    test_external_id = "new-user-123"
+    test_user_id = uuid.uuid4()
+    mock_session = AsyncMock(spec=AsyncSession)
+    # mock the repository layer response when checking for an existing user
+    mock_get_user = mocker.patch(
+        "app.services.user.repository_layer.get_user_by_external_id",
+        return_value=None
+    )
+    # mock the User object that the repository create_user function would return
+    mock_created_user = MagicMock()
+    mock_created_user.id = test_user_id
+    mock_created_user.external_id = test_external_id
+    # mock the repository layer response when creating the user
+    mock_create_user = mocker.patch(
+        "app.services.user.repository_layer.create_user",
+        return_value=mock_created_user
+    )
     # call the function
-    new_user = await create_user(db_session=mock_session, external_id=external_id)
-    # check that a User object was created with the correct external_id
-    assert isinstance(new_user, User)
-    assert new_user.external_id == external_id
-    # check that the correct database methods were called
-    mock_session.add.assert_called_once_with(new_user)
-    mock_session.commit.assert_awaited_once()
-    mock_session.refresh.assert_awaited_once_with(new_user)
+    result = await sign_up_user_service(
+        external_id=test_external_id,
+        db_session=mock_session
+    )
+    # check that we tried to find an existing user
+    mock_get_user.assert_awaited_once_with(
+        external_id=test_external_id,
+        db_session=mock_session
+    )
+    # check that we created a new user since one did not exist
+    mock_create_user.assert_awaited_once_with(
+        external_id=test_external_id,
+        db_session=mock_session
+    )
+    # check that the final result is correct
+    assert isinstance(result, ResponseSignUpUser)
+    assert result.id == test_user_id
+    assert result.external_id == test_external_id
 
 
-# --- delete_user ---
+# --- delete_user_service ---
 
 
-async def test_delete_user_success(mocker):
+async def test_delete_user_service_success(mocker):
     """
     GIVEN an existing user ID
     AND the correct matching external_id for that user
@@ -112,10 +83,10 @@ async def test_delete_user_success(mocker):
     # configure the mock query chain
     mock_session.get.return_value = sample_user
     # call the function
-    await delete_user(
+    await delete_user_service(
         db_session=mock_session,
         user_id_to_delete=user_id_to_delete,
-        requesting_external_id=correct_external_id,
+        external_id=correct_external_id,
     )
     # verify the correct methods were called in order
     mock_session.get.assert_awaited_once_with(User, user_id_to_delete)
@@ -123,7 +94,7 @@ async def test_delete_user_success(mocker):
     mock_session.commit.assert_awaited_once()
 
 
-async def test_delete_user_raises_user_not_found(mocker):
+async def test_delete_user_service_raises_user_not_found(mocker):
     """
     GIVEN a user_id that does not exist
     WHEN delete_user is called
@@ -136,18 +107,18 @@ async def test_delete_user_raises_user_not_found(mocker):
     # configure the mock query chain
     mock_session.get.return_value = None
     # call the function
-    with pytest.raises(UserNotFound):
-        await delete_user(
+    with pytest.raises(exc.UserNotFound):
+        await delete_user_service(
             db_session=mock_session,
             user_id_to_delete=non_existent_user_id,
-            requesting_external_id="any-external-id",
+            external_id="any-external-id",
         )
     # verify that the delete and commit methods were NOT called
     mock_session.delete.assert_not_awaited()
     mock_session.commit.assert_not_awaited()
 
 
-async def test_delete_user_raises_permission_denied(mocker):
+async def test_delete_user_service_raises_permission_denied(mocker):
     """
     GIVEN an existing user's ID
     AND an external_id that does NOT match the user's external_id
@@ -164,11 +135,11 @@ async def test_delete_user_raises_permission_denied(mocker):
     # configure the mock query chain
     mock_session.get.return_value = sample_user
     # call the funciton
-    with pytest.raises(PermissionDenied):
-        await delete_user(
+    with pytest.raises(exc.PermissionDenied):
+        await delete_user_service(
             db_session=mock_session,
             user_id_to_delete=user_id_to_delete,
-            requesting_external_id=incorrect_external_id,
+            external_id=incorrect_external_id,
         )
     # verify that the delete and commit methods were NOT called
     mock_session.delete.assert_not_awaited()
