@@ -9,32 +9,6 @@ from app.dependency.async_dependency import get_current_external_user_id
 from app.schemas.transactions_db.user import User
 from app.schemas.user import ResponseSignInUser, ResponseSignUpUser
 
-
-# --- Custom Exceptions ---
-# TODO: might move these later
-class UserNotFound(Exception):
-    """
-    Raised when a user is not found in the database.
-    """
-
-    pass
-
-
-class UserAlreadyExists(Exception):
-    """
-    Raised when a user is already in the database.
-    """
-
-    pass
-
-
-class PermissionDenied(Exception):
-    """
-    Raised when a user is not authorized to perform an action.
-    """
-
-    pass
-
 # --- these are the functions that the endpoint calls ---
 
 async def sign_up_user_service(
