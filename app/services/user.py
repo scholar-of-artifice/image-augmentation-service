@@ -9,6 +9,7 @@ from app.dependency.async_dependency import get_current_external_user_id
 from app.schemas.transactions_db.user import User
 from app.schemas.user import ResponseSignInUser, ResponseSignUpUser
 import app.exceptions as exc
+import app.repository as repository_layer
 
 # --- these are the functions that the endpoint calls ---
 
@@ -24,7 +25,7 @@ async def sign_up_user_service(
     #   probably you should do that here where this comment is...
     # <--- NOTE
     # --- Check if User exists ---
-    existing_user = await get_user_by_external_id(
+    existing_user = await repository_layer.get_user_by_external_id(
         external_id=external_id,
         db_session=db_session
     )
@@ -32,7 +33,7 @@ async def sign_up_user_service(
         # already have this user
         raise exc.UserAlreadyExists(f"User with external id {external_id} already exists")
     # --- Create the User ---
-    new_user = await create_user(
+    new_user = await repository_layer.create_user(
         external_id=external_id,
         db_session=db_session
     )
@@ -76,7 +77,7 @@ async def sign_in_user_service(
     db_session: AsyncSession = Depends(get_async_session)
 ) -> ResponseSignInUser | None:
     # --- Get the User ---
-    entry = await get_user_by_external_id(
+    entry = await repository_layer.get_user_by_external_id(
         external_id=external_id,
         db_session=db_session
     )
