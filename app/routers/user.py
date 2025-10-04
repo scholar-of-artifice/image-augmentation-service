@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 @router.post(
     path="/sign-up",
-    response_model=ResponseCreateUser,
+    response_model=ResponseSignUpUser,
     status_code=status.HTTP_201_CREATED,
 )
 async def sign_up_user_endpoint(
@@ -110,7 +110,7 @@ async def delete_user_endpoint(
 
 @router.post(
     path="/sign-in",
-    response_model=UserRead,
+    response_model=ResponseSignInUser,
     status_code=status.HTTP_200_OK,
 )
 async def sign_in_user_endpoint(
