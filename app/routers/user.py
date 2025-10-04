@@ -52,12 +52,12 @@ async def sign_up_user_endpoint(
             db_session=db_session
         )
         return new_user_info
-    except PermissionDenied as e:
+    except exc.PermissionDenied as e:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail=str(e)
         ) from e
-    except UserAlreadyExists as e:
+    except exc.UserAlreadyExists as e:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail=str(e)
@@ -94,12 +94,12 @@ async def delete_user_endpoint(
         )
         # according to HTTP standards, a successful DELETE should return 204 No Content.
         return None
-    except UserNotFound as e:
+    except exc.UserNotFound as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=str(e)
         ) from e
-    except PermissionDenied as e:
+    except exc.PermissionDenied as e:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail=str(e)
@@ -133,7 +133,7 @@ async def sign_in_user_endpoint(
             db_session=db_session
         )
         return user_entry
-    except UserNotFound as e:
+    except exc.UserNotFound as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=str(e)
