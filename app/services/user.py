@@ -95,6 +95,22 @@ async def delete_user_service(
     await db_session.commit()
     return None
 
+async def sign_in_user_service(
+    external_id: str = Depends(get_current_external_user_id),
+    db_session: AsyncSession = Depends(get_async_session)
+) -> User | None:
+    # --- Get the User ---
+    entry = await get_user_by_external_id(
+        external_id=external_id,
+        db_session=db_session
+    )
+    # --- Check If User Exists ---
+    if not entry:
+        raise UserNotFound(
+            f"User with external id '{external_id}' not found."
+        )
+    return entry
+
 # --- these are the important utility functions that are used ---
 # TODO: probably move these
 
