@@ -51,8 +51,8 @@ async def sign_up_user_endpoint(
     # <--- NOTE
     try:
         new_user_info = await sign_up_user_service(
-            db_session=db_session,
-            external_id=external_id
+            external_id=external_id,
+            db_session=db_session
         )
         return new_user_info
     except PermissionDenied as e:
