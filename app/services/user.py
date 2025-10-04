@@ -61,7 +61,7 @@ async def sign_up_user_service(
         external_id=external_id
     )
     # --- return relevant information to user ---
-    return ResponseCreateUser(
+    return ResponseSignUpUser(
         id=new_user.id,
         external_id=external_id,
     )
