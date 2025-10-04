@@ -89,10 +89,10 @@ async def delete_user_endpoint(
             user_id: The unique ID of the user to be deleted, from the URL path.
     """
     try:
-        response = await delete_user_service(
-            db_session=db_session,
+        await delete_user_service(
             user_id_to_delete=user_id,
-            requesting_external_id=external_id,
+            external_id=external_id,
+            db_session=db_session,
         )
         # according to HTTP standards, a successful DELETE should return 204 No Content.
         return response
