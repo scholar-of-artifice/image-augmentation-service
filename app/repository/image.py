@@ -38,20 +38,19 @@ async def create_UnprocessedImage_entry(
 
 
 async def read_UnprocessedImage_entry(
-    id: uuid.UUID,
+    image_id: uuid.UUID,
     user_id: uuid.UUID,
     db_session: AsyncSession = Depends(get_async_session)
 ) -> UnprocessedImage:
-    entry_query = await db_session.query(UnprocessedImage).filter(
-        UnprocessedImage.id == id,
-    )
-    entry = entry_query.first()
+    query = sqlalchemy.select(UnprocessedImage).where(
+            UnprocessedImage.id == image_id
+        ).where(
+            UnprocessedImage.user_id == user_id
+        )
+    result = await db_session.execute(query)
+    entry = result.scalar_one_or_none()
     if entry is None:
         raise ImageNotFound(
-            f'Image with id {id} not found',
-        )
-    if entry.user_id != user_id:
-        raise PermissionDenied(
-            f'You do not have permission to access this image',
+            f'Image with id {image_id} not found',
         )
     return entry
