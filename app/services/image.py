@@ -19,6 +19,16 @@ from app.schemas.transactions_db import (
 )
 
 
+async def upload_image_service(
+        # image: UploadFile
+) -> ResponseUploadImage:
+    return ResponseUploadImage(
+        unprocessed_image_id=uuid.uuid4(),
+        unprocessed_image_filename='example_filename.png'
+    )
+
+
+
 async def save_unprocessed_image(
         file: UploadFile,
         user_id: uuid.UUID,
