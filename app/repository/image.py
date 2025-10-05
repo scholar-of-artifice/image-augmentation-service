@@ -1,14 +1,21 @@
 import uuid
 
-from app.schemas.transactions_db import UnprocessedImage
-from app.exceptions import ImageNotFound, PermissionDenied
-from fastapi import Depends
 import sqlalchemy
+from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.db.database import get_async_session
 
-async def store_unprocessed_image(
+from app.db.database import get_async_session
+from app.exceptions import ImageNotFound
+from app.schemas.transactions_db import UnprocessedImage
+
+
+async def write_unprocessed_image_to_disc(
 ) -> None:
+    """
+    Store an unprocessed image in the block storage.
+    """
+    # TODO: create a storage filename
+    # TODO: save the image
     return None
 
 
