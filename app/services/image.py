@@ -20,7 +20,7 @@ from app.schemas.transactions_db import (
 
 
 async def upload_image_service(
-        # image: UploadFile
+        image: UploadFile
 ) -> ResponseUploadImage:
     # TODO: find if user exists in database
     # TODO: persist image to storage volume
