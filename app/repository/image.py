@@ -11,7 +11,7 @@ async def store_unprocessed_image(
     return None
 
 
-async def create_unprocessed_image_entry(
+async def create_UnprocessedImage_entry(
     original_filename: str,
     storage_filename: str,
     user_id: uuid.UUID,
