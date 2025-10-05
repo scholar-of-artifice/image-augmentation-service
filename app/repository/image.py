@@ -36,7 +36,7 @@ async def create_UnprocessedImage_entry(
     return new_entry
 
 
-async def read_unprocessed_image_entry(
+async def read_UnprocessedImage_entry(
     id: uuid.UUID,
     user_id: uuid.UUID,
     db_session: AsyncSession = Depends(get_async_session)
