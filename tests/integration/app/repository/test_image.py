@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-
+from app.exceptions.image import ImageNotFound
 import pytest
 import sqlalchemy
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -79,3 +79,28 @@ async def test_read_UnprocessedImage_entry_success(
     # check the results
     assert isinstance(read_entry, UnprocessedImage)
     assert read_entry == new_image_entry
+
+
+async def test_read_UnprocessedImage_fails_when_image_does_not_exist(
+        async_db_session: AsyncSession,
+        test_user: User,
+):
+    # create fake test data
+    test_original_filename = 'my_cool_image.png'
+    test_storage_filename = f"{uuid.uuid4()}.png"
+    fake_user = await test_user
+    test_user_id = fake_user.id
+    # create an UnprocessedImage
+    new_image_entry = await create_UnprocessedImage_entry(
+        original_filename=test_original_filename,
+        storage_filename=test_storage_filename,
+        user_id=test_user_id,
+        db_session=async_db_session,
+    )
+    # call the function
+    with pytest.raises(ImageNotFound):
+        await read_UnprocessedImage_entry(
+            image_id=uuid.uuid4(),
+            user_id=test_user_id,
+            db_session=async_db_session,
+        )
