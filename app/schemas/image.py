@@ -78,6 +78,8 @@ class UploadRequestBody(BaseModel):
         )
     ]
 
+# --- Service Layer Responses ---
+
 class ResponseUploadImage(BaseModel):
     """
     This is the response body for:
