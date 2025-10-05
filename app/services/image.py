@@ -22,6 +22,9 @@ from app.schemas.transactions_db import (
 async def upload_image_service(
         # image: UploadFile
 ) -> ResponseUploadImage:
+    # TODO: find if user exists in database
+    # TODO: persist image to storage volume
+    # TODO: persist entry to transactions database
     return ResponseUploadImage(
         unprocessed_image_id=uuid.uuid4(),
         unprocessed_image_filename='example_filename.png'
