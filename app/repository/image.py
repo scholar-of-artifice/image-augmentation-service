@@ -27,3 +27,23 @@ async def create_unprocessed_image_entry(
     await db_session.refresh(new_entry)
     await db_session.commit()
     return new_entry
+
+
+async def read_unprocessed_image_entry(
+    id: uuid.UUID,
+    user_id: uuid.UUID,
+    db_session: AsyncSession = Depends(get_async_session)
+) -> UnprocessedImage:
+    entry_query = await db_session.query(UnprocessedImage).filter(
+        UnprocessedImage.id == id,
+    )
+    entry = entry_query.first()
+    if entry is None:
+        raise ImageNotFound(
+            f'Image with id {id} not found',
+        )
+    if entry.user_id != user_id:
+        raise PermissionDenied(
+            f'You do not have permission to access this image',
+        )
+    return entry
