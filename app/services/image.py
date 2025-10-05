@@ -2,16 +2,22 @@ import uuid
 from collections.abc import Callable
 
 import sqlalchemy
-from fastapi import UploadFile,  HTTPException, status
+from fastapi import HTTPException, UploadFile, status
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.internal.augmentations import rainbow_noise, rotate, shift
 from app.internal.file_handling import (
     create_file_name,
     translate_file_to_numpy_array,
     write_numpy_array_to_image_file,
 )
-from app.schemas.image import UploadRequestBody, ResponseUploadImage
-from app.schemas.transactions_db import ProcessedImage, UnprocessedImage, User, ProcessingJob
+from app.schemas.image import ResponseUploadImage, UploadRequestBody
+from app.schemas.transactions_db import (
+    ProcessedImage,
+    UnprocessedImage,
+    User,
+)
+
 
 async def save_unprocessed_image(
         file: UploadFile,
