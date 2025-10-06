@@ -9,6 +9,16 @@ class UserDirectoryAlreadyExists(Exception):
 
     pass
 
+class ImageAlreadyExists(Exception):
+    """
+    Raised when an image is already found in the block image storage.
+
+    example:
+        path/to/{user_id}/{storage_filename} -> already exists
+    """
+
+    pass
+
 class UserDirectoryNotFound(Exception):
     """
     Raised when a user sub-directory is not found in the database.
