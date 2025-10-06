@@ -18,6 +18,13 @@ async def write_unprocessed_image_to_disc(
     # TODO: save the image
     return None
 
+async def read_unprocessed_image_from_disc(
+        filename: str
+) -> None:
+    """
+    Read an unprocessed image from the block storage.
+    """
+    return None
 
 async def create_UnprocessedImage_entry(
     original_filename: str,
