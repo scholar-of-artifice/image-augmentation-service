@@ -4,10 +4,9 @@ from app.exceptions import PermissionDenied
 
 
 def fake_PermissionDenied_function():
-    if True:
-        raise PermissionDenied(
-            "You do not have permission to do that!"
-        )
+    raise PermissionDenied(
+        "You do not have permission to do that!"
+    )
 
 def test_PermissionDenied_is_raised():
     """
