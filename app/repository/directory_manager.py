@@ -52,10 +52,16 @@ async def create_processed_user_directory(
     """
     Create a processed image directory.
     """
-    # TODO: check if subdirectory exists
-    # /image-augmentation-service/data/images/processed/{user_id}/
-    # TODO: create subdirectory
-    return None
+    # create the path object
+    user_dir_path = VOLUME_PATHS["processed_image_data"] / str(user_id)
+    # check if subdirectory exists
+    try:
+        user_dir_path.mkdir(parents=False, exist_ok=False)
+        return None
+    except FileExistsError:
+        raise UserDirectoryAlreadyExists(
+            f"{user_dir_path} already exists."
+        )
 
 
 async def delete_processed_user_directory(
