@@ -4,19 +4,17 @@ from app.exceptions.user import UserAlreadyExists, UserNotFound
 
 # --- UserNotFound ---
 
+def fake_UserNotFound_function():
+    raise UserNotFound(
+        "The user is not found!"
+    )
+
 # --- UserAlreadyExists ---
 
-def fake_UserNotFound_function():
-    if True:
-        raise UserNotFound(
-            "The user is not found!"
-        )
-
 def fake_UserAlreadyExists_function():
-    if True:
-        raise UserAlreadyExists(
-            "The user already exists!"
-        )
+    raise UserAlreadyExists(
+        "The user already exists!"
+    )
 
 
 def test_UserNotFound_is_raised():
