@@ -8,6 +8,7 @@ from app.exceptions import (
     UserNotFound,
     UserDirectoryAlreadyExists
 )
+from pathlib import Path
 from app.config import settings
 
 # Define a mapping from volume names to the in-container paths for easy lookup
@@ -18,7 +19,7 @@ VOLUME_PATHS = {
 
 async def create_unprocessed_user_directory(
         user_id: uuid.UUID,
-) -> None:
+) -> Path:
     """
     Create an unprocessed image directory.
     """
@@ -27,7 +28,7 @@ async def create_unprocessed_user_directory(
     # check if subdirectory exists
     try:
         user_dir_path.mkdir(parents=False, exist_ok=False)
-        return None
+        return user_dir_path
     except FileExistsError:
         raise UserDirectoryAlreadyExists(
             f"{user_dir_path} already exists."
@@ -48,7 +49,7 @@ async def delete_unprocessed_user_directory(
 
 async def create_processed_user_directory(
         user_id: uuid.UUID,
-) -> None:
+) -> Path:
     """
     Create a processed image directory.
     """
@@ -57,7 +58,7 @@ async def create_processed_user_directory(
     # check if subdirectory exists
     try:
         user_dir_path.mkdir(parents=False, exist_ok=False)
-        return None
+        return user_dir_path
     except FileExistsError:
         raise UserDirectoryAlreadyExists(
             f"{user_dir_path} already exists."
