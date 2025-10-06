@@ -4,5 +4,6 @@ from .user import (
 )
 from .directory_manager import (
     create_unprocessed_user_directory,
-    create_processed_user_directory
+    create_processed_user_directory,
+    write_unprocessed_image
 )
