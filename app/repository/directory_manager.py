@@ -3,6 +3,13 @@ This module contains a number of functions for creating, reading and deleting di
 """
 import uuid
 
+from PIL import UnidentifiedImageError
+from app.exceptions import (
+    UserNotFound,
+    UserDirectoryAlreadyExists
+)
+from app.config import settings
+
 # Define a mapping from volume names to the in-container paths for easy lookup
 VOLUME_PATHS = {
     "unprocessed_image_data": settings.UNPROCESSED_IMAGE_PATH,
@@ -15,10 +22,16 @@ async def create_unprocessed_user_directory(
     """
     Create an unprocessed image directory.
     """
-    # TODO: check if subdirectory exists
-    # /image-augmentation-service/data/images/unprocessed/{user_id}/
-    # TODO: create subdirectory
-    return None
+    # create the path object
+    user_dir_path = VOLUME_PATHS["unprocessed_image_data"] / str(user_id)
+    # check if subdirectory exists
+    try:
+        user_dir_path.mkdir(parents=False, exist_ok=False)
+        return None
+    except FileExistsError:
+        raise UserDirectoryAlreadyExists(
+            f"{user_dir_path} already exists."
+        )
 
 
 async def delete_unprocessed_user_directory(
