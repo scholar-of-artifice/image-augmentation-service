@@ -2,11 +2,12 @@
 This module contains a number of functions for creating, reading and deleting directories.
 """
 import uuid
-
-from PIL import UnidentifiedImageError
+import numpy
+from PIL import Image, UnidentifiedImageError
 from app.exceptions import (
     UserNotFound,
-    UserDirectoryAlreadyExists
+    UserDirectoryAlreadyExists,
+    ImageAlreadyExists,
 )
 from pathlib import Path
 from app.config import settings
@@ -45,6 +46,33 @@ async def delete_unprocessed_user_directory(
     # /image-augmentation-service/data/images/unprocessed/{user_id}/
     # TODO: delete subdirectory and all internal contents
     return None
+
+async def write_unprocessed_image(
+        image_data: numpy.ndarray,
+        user_id: uuid.UUID,
+        storage_filename: str,
+) -> Path:
+    """
+    Write an unprocessed image file to the filesystem.
+    """
+    # check if the file exists
+    image_filepath = VOLUME_PATHS["unprocessed_image_data"] / str(user_id) / storage_filename
+    try:
+        # convert the numpy array to a Pillow Image object.
+        image = Image.fromarray(
+            obj=image_data,
+            mode="RGB",
+        )
+        # save the image object to the save location in PNG format
+        image.save(
+            fp= image_filepath,
+            format='PNG'
+        )
+        return image_filepath
+    except FileExistsError:
+        raise ImageAlreadyExists(
+            f"{image_filepath} already exists."
+        )
 
 
 async def create_processed_user_directory(
