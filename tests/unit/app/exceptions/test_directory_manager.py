@@ -13,32 +13,6 @@ def fake_ImageDirectoryNotFound_function():
         "The image directory /foo/ is not found!"
     )
 
-# --- UserDirectoryAlreadyExists ---
-
-def fake_UserDirectoryAlreadyExists_function():
-    raise UserDirectoryAlreadyExists(
-        "The user directory /foo/ already exists."
-    )
-
-# --- UserDirectoryNotFound ---
-
-def fake_UserDirectoryNotFound_function():
-    raise UserDirectoryNotFound(
-        "The user directory /foo/ is not found!"
-    )
-
-
-
-def test_UserDirectoryNotFound_is_raised():
-    """
-    GIVEN an UserDirectoryNotFound exception
-    WHEN fake_UserDirectoryNotFound_function is called
-    THEN it should raise UserDirectoryNotFound
-    """
-    with pytest.raises(UserDirectoryNotFound):
-        fake_UserDirectoryNotFound_function()
-
-
 def test_ImageDirectoryNotFound_is_raised():
     """
     GIVEN an ImageDirectoryNotFound exception
@@ -48,6 +22,12 @@ def test_ImageDirectoryNotFound_is_raised():
     with pytest.raises(ImageDirectoryNotFound):
         fake_ImageDirectoryNotFound_function()
 
+# --- UserDirectoryAlreadyExists ---
+
+def fake_UserDirectoryAlreadyExists_function():
+    raise UserDirectoryAlreadyExists(
+        "The user directory /foo/ already exists."
+    )
 
 def test_UserDirectoryAlreadyExists_is_raised():
     """
@@ -57,3 +37,19 @@ def test_UserDirectoryAlreadyExists_is_raised():
     """
     with pytest.raises(UserDirectoryAlreadyExists):
         fake_UserDirectoryAlreadyExists_function()
+
+# --- UserDirectoryNotFound ---
+
+def fake_UserDirectoryNotFound_function():
+    raise UserDirectoryNotFound(
+        "The user directory /foo/ is not found!"
+    )
+
+def test_UserDirectoryNotFound_is_raised():
+    """
+    GIVEN an UserDirectoryNotFound exception
+    WHEN fake_UserDirectoryNotFound_function is called
+    THEN it should raise UserDirectoryNotFound
+    """
+    with pytest.raises(UserDirectoryNotFound):
+        fake_UserDirectoryNotFound_function()
