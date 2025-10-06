@@ -1,7 +1,7 @@
 import uuid
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, File, UploadFile
+from fastapi import status, APIRouter, Depends, File, UploadFile
 from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -14,6 +14,7 @@ from app.services.image import (
     get_processed_image_by_id,
     get_unprocessed_image_by_id,
     save_unprocessed_image,
+    upload_image_service
 )
 
 router = APIRouter()
