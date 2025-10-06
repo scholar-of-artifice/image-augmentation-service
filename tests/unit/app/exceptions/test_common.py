@@ -3,6 +3,8 @@ import pytest
 from app.exceptions import PermissionDenied
 
 
+# --- PermissionDenied ---
+
 def fake_PermissionDenied_function():
     raise PermissionDenied(
         "You do not have permission to do that!"
