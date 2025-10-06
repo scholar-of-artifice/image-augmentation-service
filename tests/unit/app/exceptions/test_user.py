@@ -9,13 +9,6 @@ def fake_UserNotFound_function():
         "The user is not found!"
     )
 
-# --- UserAlreadyExists ---
-
-def fake_UserAlreadyExists_function():
-    raise UserAlreadyExists(
-        "The user already exists!"
-    )
-
 
 def test_UserNotFound_is_raised():
     """
@@ -25,6 +18,13 @@ def test_UserNotFound_is_raised():
     """
     with pytest.raises(UserNotFound):
         fake_UserNotFound_function()
+
+# --- UserAlreadyExists ---
+
+def fake_UserAlreadyExists_function():
+    raise UserAlreadyExists(
+        "The user already exists!"
+    )
 
 
 def test_UserAlreadyExists_is_raised():
