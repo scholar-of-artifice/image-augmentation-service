@@ -8,29 +8,26 @@ from app.exceptions.directory_manager import (
 
 # --- ImageDirectoryNotFound ---
 
+def fake_ImageDirectoryNotFound_function():
+    raise ImageDirectoryNotFound(
+        "The image directory /foo/ is not found!"
+    )
 
 # --- UserDirectoryAlreadyExists ---
 
+def fake_UserDirectoryAlreadyExists_function():
+    raise UserDirectoryAlreadyExists(
+        "The user directory /foo/ already exists."
+    )
 
 # --- UserDirectoryNotFound ---
 
-def fake_UserDirectoryAlreadyExists_function():
-    raise UserDirectoryAlreadyExists(
-        "The user directory /foo already exists."
+def fake_UserDirectoryNotFound_function():
+    raise UserDirectoryNotFound(
+        "The user directory /foo/ is not found!"
     )
 
-def fake_UserDirectoryNotFound_function():
-    if True:
-        raise UserDirectoryNotFound(
-            "The user directory is not found!"
-        )
 
-
-def fake_ImageDirectoryNotFound_function():
-    if True:
-        raise ImageDirectoryNotFound(
-            "The user directory is not found!"
-        )
 
 def test_UserDirectoryNotFound_is_raised():
     """
