@@ -12,7 +12,7 @@ def fake_UserNotFound_function():
 def fake_UserAlreadyExists_function():
     if True:
         raise UserAlreadyExists(
-            f"The user already exists!"
+            "The user already exists!"
         )
 
 
