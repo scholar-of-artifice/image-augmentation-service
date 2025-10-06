@@ -20,7 +20,7 @@ async def delete_unprocessed_user_directory(
         user_id: uuid.UUID,
 ) -> None:
     """
-    Delete an unprocessed image directory.
+    Delete the entire subdirectory of unprocessed images for a particular user.
     """
     # TODO: check if subdirectory exists
     # /image-augmentation-service/data/images/unprocessed/{user_id}/
