@@ -2,9 +2,15 @@ import pytest
 
 from app.exceptions.directory_manager import (
     ImageDirectoryNotFound,
+    UserDirectoryAlreadyExists,
     UserDirectoryNotFound,
 )
 
+
+def fake_UserDirectoryAlreadyExists_function():
+    raise UserDirectoryAlreadyExists(
+        "The user directory /foo already exists."
+    )
 
 def fake_UserDirectoryNotFound_function():
     if True:
@@ -37,3 +43,13 @@ def test_ImageDirectoryNotFound_is_raised():
     """
     with pytest.raises(ImageDirectoryNotFound):
         fake_ImageDirectoryNotFound_function()
+
+
+def test_UserDirectoryAlreadyExists_is_raised():
+    """
+    GIVEN a UserDirectoryAlreadyExists exception
+    WHEN fake_UserDirectoryAlreadyExists_function is called
+    THEN it should raise UserDirectoryAlreadyExists
+    """
+    with pytest.raises(UserDirectoryAlreadyExists):
+        fake_UserDirectoryAlreadyExists_function()
