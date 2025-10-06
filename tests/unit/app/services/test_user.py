@@ -31,6 +31,14 @@ async def test_sign_up_user_service(mocker):
         "app.services.user.repository_layer.get_user_by_external_id",
         return_value=None
     )
+    mock_create_unprocessed_directory = mocker.patch(
+        "app.services.user.create_unprocessed_user_directory",
+        return_value=None
+    )
+    mock_create_processed_directory = mocker.patch(
+        "app.services.user.create_processed_user_directory",
+        return_value=None
+    )
     # mock the User object that the repository create_user function would return
     mock_created_user = MagicMock()
     mock_created_user.id = test_user_id
@@ -54,6 +62,12 @@ async def test_sign_up_user_service(mocker):
     mock_create_user.assert_awaited_once_with(
         external_id=test_external_id,
         db_session=mock_session
+    )
+    mock_create_unprocessed_directory.assert_awaited_once_with(
+        user_id=test_user_id,
+    )
+    mock_create_processed_directory.assert_awaited_once_with(
+        user_id=test_user_id,
     )
     # check that the final result is correct
     assert isinstance(result, ResponseSignUpUser)
