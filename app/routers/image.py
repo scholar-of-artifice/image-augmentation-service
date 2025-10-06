@@ -18,6 +18,23 @@ from app.services.image import (
 
 router = APIRouter()
 
+@router.post(
+    path="/upload",
+    response_model=ResponseUploadImage,
+    status_code=status.HTTP_201_CREATED
+)
+async def upload_image_endpoint(
+        image: Annotated[
+            UploadFile,
+            File(
+                description="The image file to upload"
+            )
+        ],
+):
+    response = await upload_image_service(
+        image=image,
+    )
+    return response
 
 # #@router.post(
 # #    path="/upload/",
