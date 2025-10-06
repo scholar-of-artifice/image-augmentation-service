@@ -2,7 +2,6 @@ import pytest
 
 from app.exceptions import PermissionDenied
 
-
 # --- PermissionDenied ---
 
 def fake_PermissionDenied_function():
