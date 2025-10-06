@@ -6,7 +6,7 @@ from app.exceptions.user import UserAlreadyExists, UserNotFound
 def fake_UserNotFound_function():
     if True:
         raise UserNotFound(
-            f"The user is not found!"
+            "The user is not found!"
         )
 
 def fake_UserAlreadyExists_function():
