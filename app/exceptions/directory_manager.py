@@ -8,3 +8,14 @@ class UserDirectoryNotFound(Exception):
     """
 
     pass
+
+
+class ImageDirectoryNotFound(Exception):
+    """
+    Raised when an image sub-directory is not found in the database.
+
+    example:
+        path/to/{user_id}/{image_id} -> does not exist
+    """
+
+    pass
