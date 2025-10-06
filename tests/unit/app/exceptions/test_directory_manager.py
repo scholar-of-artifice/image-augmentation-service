@@ -6,6 +6,13 @@ from app.exceptions.directory_manager import (
     UserDirectoryNotFound,
 )
 
+# --- ImageDirectoryNotFound ---
+
+
+# --- UserDirectoryAlreadyExists ---
+
+
+# --- UserDirectoryNotFound ---
 
 def fake_UserDirectoryAlreadyExists_function():
     raise UserDirectoryAlreadyExists(
