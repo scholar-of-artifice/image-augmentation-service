@@ -2,6 +2,9 @@ import pytest
 
 from app.exceptions.user import UserAlreadyExists, UserNotFound
 
+# --- UserNotFound ---
+
+# --- UserAlreadyExists ---
 
 def fake_UserNotFound_function():
     if True:
