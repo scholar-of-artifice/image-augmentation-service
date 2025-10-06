@@ -15,11 +15,6 @@ def fake_UserAlreadyExists_function():
             f"The user already exists!"
         )
 
-def fake_PermissionDenied_function():
-    if True:
-        raise PermissionDenied(
-            f"You do not have permission to do that!"
-        )
 
 def test_UserNotFound_is_raised():
     """
