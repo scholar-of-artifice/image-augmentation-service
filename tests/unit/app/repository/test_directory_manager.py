@@ -4,7 +4,9 @@ from app.repository.directory_manager import (
 VOLUME_PATHS
 )
 
-def test_VOLUME_PATHS_has_correct_structure():
+pytestmark = pytest.mark.asyncio
+
+async def test_VOLUME_PATHS_has_correct_structure():
     """
     GIVEN a VOLUME_PATHS
     WHEN the VOLUME_PATHS structure is read
