@@ -2,6 +2,7 @@ import pytest
 
 from app.exceptions.image import ImageNotFound
 
+
 def fake_ImageNotFound_function():
     if True:
         raise ImageNotFound(
