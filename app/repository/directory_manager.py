@@ -3,6 +3,11 @@ This module contains a number of functions for creating, reading and deleting di
 """
 import uuid
 
+# Define a mapping from volume names to the in-container paths for easy lookup
+VOLUME_PATHS = {
+    "unprocessed_image_data": settings.UNPROCESSED_IMAGE_PATH,
+    "processed_image_data": settings.PROCESSED_IMAGE_PATH,
+}
 
 async def create_unprocessed_user_directory(
         user_id: uuid.UUID,
