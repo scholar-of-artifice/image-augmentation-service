@@ -64,7 +64,7 @@ async def write_unprocessed_image(
         )
         # save the image object to the save location in PNG format
         image.save(
-            fp= image_filepath,
+            fp= str(image_filepath),
             format='PNG'
         )
         return image_filepath
