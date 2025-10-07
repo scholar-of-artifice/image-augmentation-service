@@ -9,7 +9,7 @@ import app.exceptions as exc
 from app.db.database import get_async_session
 from app.dependency.async_dependency import get_current_active_user
 from app.internal.file_handling import VOLUME_PATHS
-from app.schemas.image import ResponseUploadImage
+from app.schemas.image import ResponseUploadImage, AugmentationRequestBody, ResponseAugmentImage
 from app.schemas.transactions_db.user import User
 from app.services.image import (
     get_processed_image_by_id,
