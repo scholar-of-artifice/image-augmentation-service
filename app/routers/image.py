@@ -50,6 +50,25 @@ async def upload_image_endpoint(
             detail=str(e)
         ) from e
 
+
+@router.post(
+    path="/augment/{unprocessed_image_id}",
+    response_model=ResponseUploadImage,
+    status_code=status.HTTP_201_CREATED
+)
+async def augment_image_endpoint(
+        unprocessed_image_id: uuid.UUID,
+        processing_request: AugmentationRequestBody,
+        current_user: User = Depends(get_current_active_user),
+        db_session: AsyncSession = Depends(get_async_session),
+) -> ResponseAugmentImage:
+    return ResponseAugmentImage(
+        unprocessed_image_id=unprocessed_image_id,
+        processed_image_id=uuid.uuid4(),
+        processed_image_filename=f"{uuid.uuid4()}.png",
+        request_body=processing_request
+    )
+
 # #@router.post(
 # #    path="/upload/",
 # #    response_model=ResponseUploadImage
