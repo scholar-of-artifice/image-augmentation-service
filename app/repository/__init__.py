@@ -3,7 +3,8 @@ from .user import (
     get_user_by_external_id
 )
 from .image  import (
-    write_unprocessed_image_to_disc
+    write_unprocessed_image_to_disc,
+    create_UnprocessedImage_entry
 )
 from .directory_manager import (
     create_unprocessed_user_directory,
