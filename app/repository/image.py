@@ -10,6 +10,9 @@ from app.schemas.transactions_db import UnprocessedImage
 
 
 async def write_unprocessed_image_to_disc(
+    image_content: bytes,
+    user_id: uuid.UUID,
+    storage_filename=str,
 ) -> None:
     """
     Store an unprocessed image in the block storage.
