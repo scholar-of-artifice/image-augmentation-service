@@ -49,7 +49,6 @@ async def upload_image_endpoint(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=str(e)
         ) from e
-    return None
 
 # #@router.post(
 # #    path="/upload/",
