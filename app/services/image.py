@@ -2,16 +2,66 @@ import uuid
 from collections.abc import Callable
 
 import sqlalchemy
-from fastapi import UploadFile,  HTTPException, status
+from fastapi import HTTPException, UploadFile, status, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.db.database import get_async_session
 from app.internal.augmentations import rainbow_noise, rotate, shift
 from app.internal.file_handling import (
     create_file_name,
     translate_file_to_numpy_array,
     write_numpy_array_to_image_file,
 )
-from app.schemas.image import UploadRequestBody, ResponseUploadImage
-from app.schemas.transactions_db import ProcessedImage, UnprocessedImage, User, ProcessingJob
+from app.repository import (
+    write_unprocessed_image_to_disc,
+    create_UnprocessedImage_entry,
+    create_processed_image_directory
+)
+from app.schemas.image import ResponseUploadImage, UploadRequestBody
+from app.schemas.transactions_db import (
+    ProcessedImage,
+    UnprocessedImage,
+    User,
+)
+
+
+async def upload_image_service(
+        image_file: UploadFile,
+        user_id: uuid.UUID,
+        db_session: AsyncSession = Depends(get_async_session),
+) -> ResponseUploadImage:
+    # TODO: any other raised exceptions and such...
+    # asynchronously read the contents of the uploaded file as bytes
+    image_content = await image_file.read()
+    # create a filename
+    filename = f"{uuid.uuid4()}.png"
+    # persist image to storage volume
+    file_path = await write_unprocessed_image_to_disc(
+        image_content=image_content,
+        user_id=user_id,
+        storage_filename=filename
+    )
+    print(f"Uploaded {filename} to {file_path}")
+    # persist entry to transactions database
+    data_entry = await create_UnprocessedImage_entry(
+        original_filename=image_file.filename,
+        storage_filename=filename,
+        user_id=user_id,
+        db_session=db_session,
+    )
+    unprocessed_image_id = data_entry.id
+    # create the processed image subdirectory
+    await create_processed_image_directory(
+        user_id=user_id,
+        image_id=unprocessed_image_id
+    )
+    # return relevant information
+    return ResponseUploadImage(
+        unprocessed_image_id=unprocessed_image_id,
+        unprocessed_image_filename=filename,
+    )
+
+
 
 async def save_unprocessed_image(
         file: UploadFile,
@@ -35,8 +85,6 @@ async def save_unprocessed_image(
     # read and convert the image
     # asynchronously read the contents of the uploaded file as bytes
     image_content = await file.read()
-    # convert the raw image bytes into a numpy array
-    image_data = file_translator(image_content)
     # create a new filename
     unprocessed_storage_filename = filename_creator()
     # --- Save Relevant Unprocessed Image Data ---
@@ -48,7 +96,7 @@ async def save_unprocessed_image(
     # --- Persist Image to Storage ---
     # save a copy of the original unprocessed image to the 'unprocessed_image_data' volume.
     unprocessed_image_location = file_writer(
-        data=image_data,
+        data=image_content,
         file_name=unprocessed_storage_filename,
         destination_volume="unprocessed_image_data",
     )

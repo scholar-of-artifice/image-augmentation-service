@@ -1,5 +1,6 @@
-from typing import Annotated, Literal
 import uuid
+from typing import Annotated, Literal
+
 from pydantic import BaseModel, Field
 from pydantic.types import StringConstraints
 
@@ -77,6 +78,8 @@ class UploadRequestBody(BaseModel):
             }
         )
     ]
+
+# --- Service Layer Responses ---
 
 class ResponseUploadImage(BaseModel):
     """
