@@ -34,8 +34,8 @@ async def upload_image_service(
     # TODO: persist image to storage volume
     # TODO: persist entry to transactions database
     return ResponseUploadImage(
-        unprocessed_image_id=uuid.uuid4(),
-        unprocessed_image_filename='example_filename.png'
+        unprocessed_image_id=unprocessed_image_id,
+        unprocessed_image_filename=filename,
     )
 
 
