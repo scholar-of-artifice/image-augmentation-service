@@ -16,6 +16,7 @@ from app.services.image import (
     get_unprocessed_image_by_id,
     save_unprocessed_image,
     upload_image_service,
+    augment_image_service,
 )
 from app.dependency.async_dependency import get_current_external_user_id
 from app.repository.directory_manager import write_unprocessed_image
@@ -62,12 +63,13 @@ async def augment_image_endpoint(
         current_user: User = Depends(get_current_active_user),
         db_session: AsyncSession = Depends(get_async_session),
 ) -> ResponseAugmentImage:
-    return ResponseAugmentImage(
+    return await augment_image_service(
         unprocessed_image_id=unprocessed_image_id,
-        processed_image_id=uuid.uuid4(),
-        processed_image_filename=f"{uuid.uuid4()}.png",
-        request_body=processing_request
+        processing_request=processing_request,
+        user_id=current_user.id,
+        db_session=db_session,
     )
+
 
 # #@router.post(
 # #    path="/upload/",
