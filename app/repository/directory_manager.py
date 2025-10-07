@@ -8,6 +8,7 @@ from app.exceptions import (
     UserNotFound,
     UserDirectoryAlreadyExists,
     ImageAlreadyExists,
+    ImageDirectoryAlreadyExists
 )
 from pathlib import Path
 from app.config import settings
