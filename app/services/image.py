@@ -85,8 +85,6 @@ async def save_unprocessed_image(
     # read and convert the image
     # asynchronously read the contents of the uploaded file as bytes
     image_content = await file.read()
-    # convert the raw image bytes into a numpy array
-    image_data = file_translator(image_content)
     # create a new filename
     unprocessed_storage_filename = filename_creator()
     # --- Save Relevant Unprocessed Image Data ---
