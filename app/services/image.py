@@ -30,7 +30,7 @@ async def upload_image_service(
         user_id: uuid.UUID,
         db_session: AsyncSession = Depends(get_async_session),
 ) -> ResponseUploadImage:
-
+    # TODO: any other raised exceptions and such...
     # asynchronously read the contents of the uploaded file as bytes
     image_content = await image_file.read()
     # create a filename
@@ -96,7 +96,7 @@ async def save_unprocessed_image(
     # --- Persist Image to Storage ---
     # save a copy of the original unprocessed image to the 'unprocessed_image_data' volume.
     unprocessed_image_location = file_writer(
-        data=image_data,
+        data=image_content,
         file_name=unprocessed_storage_filename,
         destination_volume="unprocessed_image_data",
     )
