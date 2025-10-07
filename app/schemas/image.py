@@ -65,6 +65,7 @@ class RainbowNoiseArguments(BaseModel):
     # enforce positive integer... 0 is no change
     amount: Annotated[float, Field(strict=True, gt=0, lt=1)]
 
+# TODO: deprecate
 class UploadRequestBody(BaseModel):
     """
     This is the request body for:
