@@ -10,6 +10,7 @@ from app.exceptions import (
     ImageAlreadyExists,
     ImageDirectoryAlreadyExists
 )
+import io
 from pathlib import Path
 from app.config import settings
 
