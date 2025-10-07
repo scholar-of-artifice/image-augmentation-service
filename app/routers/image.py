@@ -1,10 +1,11 @@
 import uuid
 from typing import Annotated
 
-from fastapi import status, APIRouter, Depends, File, UploadFile
+from fastapi import status, APIRouter, Depends, File, UploadFile, HTTPException
 from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
+import app.exceptions as exc
 from app.db.database import get_async_session
 from app.dependency.async_dependency import get_current_active_user
 from app.internal.file_handling import VOLUME_PATHS
