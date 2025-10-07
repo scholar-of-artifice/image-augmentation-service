@@ -61,7 +61,6 @@ async def write_unprocessed_image(
         # convert the numpy array to a Pillow Image object.
         image = Image.fromarray(
             obj=image_data,
-            mode="RGB",
         )
         # save the image object to the save location in PNG format
         image.save(
