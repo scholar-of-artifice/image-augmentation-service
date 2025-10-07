@@ -35,11 +35,21 @@ async def upload_image_endpoint(
                 description="The image file to upload"
             )
         ],
-):
-    response = await upload_image_service(
-        image=image,
-    )
-    return response
+        current_user: User = Depends(get_current_active_user),
+        db_session: AsyncSession = Depends(get_async_session),
+) -> ResponseUploadImage:
+    try:
+        return await upload_image_service(
+            image_file=image,
+            user_id=current_user.id,
+            db_session=db_session,
+        )
+    except exc.UserNotFound as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(e)
+        ) from e
+    return None
 
 # #@router.post(
 # #    path="/upload/",
