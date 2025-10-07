@@ -30,9 +30,32 @@ async def upload_image_service(
         user_id: uuid.UUID,
         db_session: AsyncSession = Depends(get_async_session),
 ) -> ResponseUploadImage:
-    # TODO: find if user exists in database
-    # TODO: persist image to storage volume
-    # TODO: persist entry to transactions database
+
+    # asynchronously read the contents of the uploaded file as bytes
+    image_content = await image_file.read()
+    # create a filename
+    filename = f"{uuid.uuid4()}.png"
+    # persist image to storage volume
+    file_path = await write_unprocessed_image_to_disc(
+        image_content=image_content,
+        user_id=user_id,
+        storage_filename=filename
+    )
+    print(f"Uploaded {filename} to {file_path}")
+    # persist entry to transactions database
+    data_entry = await create_UnprocessedImage_entry(
+        original_filename=image_file.filename,
+        storage_filename=filename,
+        user_id=user_id,
+        db_session=db_session,
+    )
+    unprocessed_image_id = data_entry.id
+    # create the processed image subdirectory
+    await create_processed_image_directory(
+        user_id=user_id,
+        image_id=unprocessed_image_id
+    )
+    # return relevant information
     return ResponseUploadImage(
         unprocessed_image_id=unprocessed_image_id,
         unprocessed_image_filename=filename,
