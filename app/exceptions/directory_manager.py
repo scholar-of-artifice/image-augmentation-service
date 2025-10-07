@@ -19,7 +19,7 @@ class ImageAlreadyExists(Exception):
 
     pass
 
-class ImageDirectoryExists(Exception):
+class ImageDirectoryAlreadyExists(Exception):
     """
     Raised when an image directory already found in the block image storage.
 
