@@ -18,9 +18,16 @@ async def write_unprocessed_image_to_disc(
     """
     Store an unprocessed image in the block storage.
     """
-    # TODO: create a storage filename
-    # TODO: save the image
-    return None
+    # convert the raw image bytes into a numpy array
+    image_data = translate_file_to_numpy_array(image_content)
+    # save the image
+    file_location = await write_unprocessed_image(
+        image_data=image_data,
+        user_id=user_id,
+        storage_filename=storage_filename,
+    )
+    # tell the caller where the image was stored
+    return file_location
 
 async def read_unprocessed_image_from_disc(
         filename: str
