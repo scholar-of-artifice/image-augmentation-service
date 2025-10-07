@@ -17,7 +17,7 @@ from app.repository import (
     create_UnprocessedImage_entry,
     create_processed_image_directory
 )
-from app.schemas.image import ResponseUploadImage, UploadRequestBody
+from app.schemas.image import ResponseUploadImage, UploadRequestBody, AugmentationRequestBody, ResponseAugmentImage
 from app.schemas.transactions_db import (
     ProcessedImage,
     UnprocessedImage,
