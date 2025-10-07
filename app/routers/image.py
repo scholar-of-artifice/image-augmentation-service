@@ -53,7 +53,7 @@ async def upload_image_endpoint(
 
 @router.post(
     path="/augment/{unprocessed_image_id}",
-    response_model=ResponseUploadImage,
+    response_model=ResponseAugmentImage,
     status_code=status.HTTP_201_CREATED
 )
 async def augment_image_endpoint(
