@@ -80,6 +80,21 @@ class UploadRequestBody(BaseModel):
         )
     ]
 
+
+class AugmentationRequestBody(BaseModel):
+    """
+    This is the request body for:
+        /image-api/augment/...
+    """
+    arguments: Annotated[
+        ShiftArguments | RotateArguments | RainbowNoiseArguments,
+        Field(
+            json_schema_extra={
+                "descriminator": "processing"
+            }
+        )
+    ]
+
 # --- Service Layer Responses ---
 
 class ResponseUploadImage(BaseModel):
