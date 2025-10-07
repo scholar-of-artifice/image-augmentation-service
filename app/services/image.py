@@ -67,6 +67,30 @@ async def upload_image_service(
         unprocessed_image_filename=filename,
     )
 
+async def augment_image_service(
+        unprocessed_image_id: uuid.UUID,
+        processing_request: AugmentationRequestBody,
+        user_id: uuid.UUID,
+        db_session: AsyncSession = Depends(get_async_session),
+) -> ResponseAugmentImage:
+    # read the UnprocessedImage from the database
+    unprocessed_image_entry = read_UnprocessedImage_entry(
+        image_id=unprocessed_image_id,
+        user_id=user_id,
+        db_session=db_session,
+    )
+    # get the unprocessed_image from block storage
+    # make an augmentation
+    # persist the image to block storage
+    # make an entry in the database
+    return ResponseAugmentImage(
+        unprocessed_image_id=unprocessed_image_id,
+        processed_image_id=uuid.uuid4(),
+        processed_image_filename=f"{uuid.uuid4()}.png",
+        request_body=processing_request
+    )
+
+
 
 
 async def save_unprocessed_image(
