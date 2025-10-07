@@ -15,8 +15,11 @@ from app.services.image import (
     get_processed_image_by_id,
     get_unprocessed_image_by_id,
     save_unprocessed_image,
-    upload_image_service
+    upload_image_service,
 )
+from app.dependency.async_dependency import get_current_external_user_id
+from app.repository.directory_manager import write_unprocessed_image
+from app.services.user import sign_in_user_service
 
 router = APIRouter()
 
