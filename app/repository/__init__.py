@@ -2,6 +2,9 @@ from .user import (
     create_user,
     get_user_by_external_id
 )
+from .image  import (
+    write_unprocessed_image_to_disc
+)
 from .directory_manager import (
     create_unprocessed_user_directory,
     create_processed_user_directory,
