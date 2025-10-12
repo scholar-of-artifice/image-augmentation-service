@@ -8,7 +8,8 @@ from app.exceptions import (
     UserNotFound,
     UserDirectoryAlreadyExists,
     ImageAlreadyExists,
-    ImageDirectoryAlreadyExists
+    ImageDirectoryAlreadyExists,
+    ImageNotFound
 )
 import io
 from pathlib import Path
