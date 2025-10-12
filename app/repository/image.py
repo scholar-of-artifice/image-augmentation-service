@@ -30,8 +30,9 @@ async def write_unprocessed_image_to_disc(
     return file_location
 
 async def read_unprocessed_image_from_disc(
-        filename: str
-) -> None:
+        user_id: uuid.UUID,
+        storage_filename: str,
+) -> numpy.ndarray:
     """
     Read an unprocessed image from the block storage.
     """
