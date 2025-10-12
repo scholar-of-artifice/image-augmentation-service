@@ -154,7 +154,7 @@ async def write_processed_image(
     """
     Write an unprocessed image file to the filesystem.
     """
-    image_filepath = VOLUME_PATHS["processed_image_data"] / str(user_id) / str(unprocessed_image_id)
+    image_filepath = VOLUME_PATHS["processed_image_data"] / str(user_id) / str(unprocessed_image_id) / storage_filename
     try:
         # convert the numpy array to a Pillow Image object.
         image = Image.fromarray(
