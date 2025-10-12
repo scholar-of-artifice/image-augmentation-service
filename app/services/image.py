@@ -17,7 +17,8 @@ from app.repository import (
     read_unprocessed_image_from_disc,
     create_UnprocessedImage_entry,
     create_processed_image_directory,
-    read_UnprocessedImage_entry
+    read_UnprocessedImage_entry,
+    write_processed_image_to_disc
 )
 from app.schemas.image import (
     ResponseUploadImage,
