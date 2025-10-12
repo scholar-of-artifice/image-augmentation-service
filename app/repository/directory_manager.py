@@ -148,7 +148,7 @@ async def create_processed_image_directory(
 async def write_processed_image(
         image_data: numpy.ndarray,
         user_id: uuid.UUID,
-        unprocessed_image_id: str,
+        unprocessed_image_id: uuid.UUID,
         storage_filename: str,
 ) -> Path:
     """
