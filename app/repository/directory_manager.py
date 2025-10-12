@@ -87,6 +87,7 @@ async def read_unprocessed_image(
     """
     # check if the file exists
     image_filepath = VOLUME_PATHS["unprocessed_image_data"] / str(user_id) / storage_filename
+    # TODO: file not found
     # read image file as bytes
     image_content = Image.open(str(image_filepath)).tobytes()
     # Wrap raw byte content to an in-memory binary stream.
