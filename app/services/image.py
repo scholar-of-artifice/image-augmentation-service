@@ -82,6 +82,7 @@ async def augment_image_service(
     # get the unprocessed_image from block storage
     # make an augmentation
     # persist the image to block storage
+    storage_filename = f"{uuid.uuid4()}.png"
     # make an entry in the database
     return ResponseAugmentImage(
         unprocessed_image_id=unprocessed_image_id,
