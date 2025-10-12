@@ -81,6 +81,10 @@ async def augment_image_service(
         db_session=db_session,
     )
     # get the unprocessed_image from block storage
+    unprocessed_image_data = await read_unprocessed_image_from_disc(
+        user_id=user_id,
+        storage_filename=unprocessed_image_entry.storage_filename,
+    )
     # make an augmentation
     # persist the image to block storage
     storage_filename = f"{uuid.uuid4()}.png"
