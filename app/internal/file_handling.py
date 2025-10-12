@@ -38,7 +38,8 @@ def translate_file_to_numpy_array(content: bytes) -> numpy.ndarray:
         # use a context to ensure the image is properly closed
         with Image.open(image_stream) as img:
             # convert the image object to a numpy array
-            return numpy.array(img)
+            rgb_image = img.convert("RGB")
+            return numpy.array(rgb_image)
     except UnidentifiedImageError as e:
         # Pillow cannot open the file (example: not a valid image format)
         raise InvalidImageFileError(f"failed to open or convert image {e}")
