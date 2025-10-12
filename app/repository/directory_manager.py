@@ -78,6 +78,23 @@ async def write_unprocessed_image(
         )
 
 
+async def read_unprocessed_image(
+        user_id: uuid.UUID,
+        storage_filename: str,
+) -> numpy.ndarray:
+    """
+    Write an unprocessed image file to the filesystem.
+    """
+    # check if the file exists
+    image_filepath = VOLUME_PATHS["unprocessed_image_data"] / str(user_id) / storage_filename
+    # read image file as bytes
+    image_content = Image.open(str(image_filepath)).tobytes()
+    # Wrap raw byte content to an in-memory binary stream.
+    # This allows Pillow to use it like a file without persisting to disk.
+    image_data = translate_file_to_numpy_array(image_content)
+    return image_data
+
+
 async def create_processed_user_directory(
         user_id: uuid.UUID,
 ) -> Path:
