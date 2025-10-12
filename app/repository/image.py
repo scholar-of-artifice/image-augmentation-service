@@ -47,6 +47,26 @@ async def read_unprocessed_image_from_disc(
     )
     return image_data
 
+async def write_processed_image_to_disc(
+    image_data: numpy.ndarray,
+    user_id: uuid.UUID,
+    unprocessed_image_id: uuid.UUID,
+    storage_filename: str
+) -> None:
+    """
+    Store a processed image in the block storage.
+    """
+    # create a filename
+    # save the image
+    file_location = await write_processed_image(
+        image_data=image_data,
+        user_id=user_id,
+        unprocessed_image_id=unprocessed_image_id,
+        storage_filename=storage_filename,
+    )
+    # tell the caller where the image was stored
+    return file_location
+
 async def create_UnprocessedImage_entry(
     original_filename: str,
     storage_filename: str,
