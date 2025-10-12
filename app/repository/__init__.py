@@ -4,6 +4,7 @@ from .user import (
 )
 from .image  import (
     write_unprocessed_image_to_disc,
+    read_unprocessed_image_from_disc,
     create_UnprocessedImage_entry,
     read_UnprocessedImage_entry
 )
