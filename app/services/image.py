@@ -74,7 +74,7 @@ async def augment_image_service(
         db_session: AsyncSession = Depends(get_async_session),
 ) -> ResponseAugmentImage:
     # read the UnprocessedImage from the database
-    unprocessed_image_entry = read_UnprocessedImage_entry(
+    unprocessed_image_entry = await read_UnprocessedImage_entry(
         image_id=unprocessed_image_id,
         user_id=user_id,
         db_session=db_session,
