@@ -144,6 +144,33 @@ async def create_processed_image_directory(
         )
 
 
+
+async def write_processed_image(
+        image_data: numpy.ndarray,
+        user_id: uuid.UUID,
+        unprocessed_image_id: str,
+        storage_filename: str,
+) -> Path:
+    """
+    Write an unprocessed image file to the filesystem.
+    """
+    image_filepath = VOLUME_PATHS["processed_image_data"] / str(user_id) / str(unprocessed_image_id)
+    try:
+        # convert the numpy array to a Pillow Image object.
+        image = Image.fromarray(
+            obj=image_data,
+        )
+        # save the image object to the save location in PNG format
+        image.save(
+            fp= str(image_filepath),
+            format='PNG'
+        )
+        return image_filepath
+    except FileExistsError:
+        raise ImageAlreadyExists(
+            f"{image_filepath} already exists."
+        )
+
 async def delete_processed_image_directory(
         user_id: uuid.UUID,
         image_id: uuid.UUID,
