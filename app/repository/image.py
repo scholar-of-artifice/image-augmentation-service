@@ -37,6 +37,10 @@ async def read_unprocessed_image_from_disc(
     Read an unprocessed image from the block storage.
     """
     return None
+    image_data = await read_unprocessed_image(
+        user_id=user_id,
+        storage_filename=storage_filename,
+    )
 
 async def create_UnprocessedImage_entry(
     original_filename: str,
