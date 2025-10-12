@@ -13,6 +13,7 @@ from app.exceptions import (
 import io
 from pathlib import Path
 from app.config import settings
+from app.internal.file_handling import translate_file_to_numpy_array
 
 # Define a mapping from volume names to the in-container paths for easy lookup
 VOLUME_PATHS = {
