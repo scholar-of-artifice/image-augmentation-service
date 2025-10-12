@@ -10,7 +10,8 @@ from app.exceptions import ImageNotFound
 from app.schemas.transactions_db import UnprocessedImage
 from app.repository.directory_manager import (
     write_unprocessed_image,
-    read_unprocessed_image
+    read_unprocessed_image,
+    write_processed_image
 )
 from app.internal.file_handling import translate_file_to_numpy_array
 
