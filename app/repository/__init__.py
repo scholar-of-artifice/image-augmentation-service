@@ -13,5 +13,4 @@ from .directory_manager import (
     create_unprocessed_user_directory,
     create_processed_user_directory,
     create_processed_image_directory,
-    write_unprocessed_image
 )
