@@ -365,6 +365,7 @@ async def get_unprocessed_image_entry_by_id(
     response_for_image = await db_session.execute(query_for_image)
     image_entry = response_for_image.scalar_one_or_none()
     if not image_entry:
+        # TODO: fix this exception
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"No image found with ID {unprocessed_image_id}",
