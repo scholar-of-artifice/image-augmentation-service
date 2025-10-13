@@ -39,6 +39,11 @@ async def upload_image_service(
         user_id: uuid.UUID,
         db_session: AsyncSession = Depends(get_async_session),
 ) -> ResponseUploadImage:
+    """
+    Upload a new unprocess image.
+    Creates an entry in the database.
+    Creates a file in the block storage to be retrieved later.
+    """
     # TODO: any other raised exceptions and such...
     # asynchronously read the contents of the uploaded file as bytes
     image_content = await image_file.read()
