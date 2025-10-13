@@ -2,7 +2,7 @@ import uuid
 from collections.abc import Callable
 
 import sqlalchemy
-from fastapi import HTTPException, UploadFile, status, Depends
+from fastapi import Depends, HTTPException, UploadFile, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.database import get_async_session
@@ -13,19 +13,19 @@ from app.internal.file_handling import (
     write_numpy_array_to_image_file,
 )
 from app.repository import (
-    write_unprocessed_image_to_disc,
-    read_unprocessed_image_from_disc,
-    create_UnprocessedImage_entry,
     create_processed_image_directory,
+    create_UnprocessedImage_entry,
+    process_image,
+    read_unprocessed_image_from_disc,
     read_UnprocessedImage_entry,
     write_processed_image_to_disc,
-    process_image
+    write_unprocessed_image_to_disc,
 )
 from app.schemas.image import (
+    AugmentationRequestBody,
+    ResponseAugmentImage,
     ResponseUploadImage,
     UploadRequestBody,
-    AugmentationRequestBody,
-    ResponseAugmentImage
 )
 from app.schemas.transactions_db import (
     ProcessedImage,
