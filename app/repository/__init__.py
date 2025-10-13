@@ -14,6 +14,7 @@ from .directory_manager import (
     does_unprocessed_image_file_exist,
     get_unprocessed_image_location,
     does_processed_image_file_exist,
+    get_processed_image_location,
     create_unprocessed_user_directory,
     create_processed_user_directory,
     create_processed_image_directory,
