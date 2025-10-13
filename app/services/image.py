@@ -173,7 +173,7 @@ async def get_processed_image_by_id_service(
         return None
     # check if the file exists
     # TODO: this can be improved
-    if does_processed_image_file_exist(
+    if await does_processed_image_file_exist(
         user_id=user_id,
         processed_image_storage_filename=image_entry.storage_filename,
     ):
