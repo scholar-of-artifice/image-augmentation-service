@@ -7,7 +7,8 @@ from .image  import (
     read_unprocessed_image_from_disc,
     write_processed_image_to_disc,
     create_UnprocessedImage_entry,
-    read_UnprocessedImage_entry
+    read_UnprocessedImage_entry,
+    read_ProcessedImage_entry
 )
 from .image_processing import process_image
 from .directory_manager import (
