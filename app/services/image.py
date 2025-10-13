@@ -23,6 +23,7 @@ from app.repository import (
     does_unprocessed_image_file_exist,
     get_unprocessed_image_location,
     does_processed_image_file_exist,
+    get_processed_image_location
 )
 from app.schemas.image import (
     AugmentationRequestBody,
