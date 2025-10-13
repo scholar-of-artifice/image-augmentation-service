@@ -156,8 +156,7 @@ async def read_ProcessedImage_entry(
     query = sqlalchemy.select(ProcessedImage).join(
         UnprocessedImage,
     ).where(
-        ProcessedImage.id == image_id
-    ).where(
+        ProcessedImage.id == image_id,
         UnprocessedImage.user_id == user_id
     )
     # execute the query
