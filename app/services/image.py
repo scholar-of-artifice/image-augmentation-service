@@ -15,6 +15,7 @@ from app.internal.file_handling import (
 from app.repository import (
     create_processed_image_directory,
     create_UnprocessedImage_entry,
+    create_ProcessedImage_entry,
     process_image,
     read_unprocessed_image_from_disc,
     read_UnprocessedImage_entry,
