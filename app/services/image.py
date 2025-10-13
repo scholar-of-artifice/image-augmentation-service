@@ -160,7 +160,7 @@ async def get_processed_image_by_id_service(
         processed_image_id: uuid.UUID,
         user_id: uuid.UUID,
         db_session: AsyncSession = Depends(get_async_session),
-) -> None:
+) -> FileResponse:
     # get the ProcessedImage entry from the database
     image_entry = await get_processed_image_entry_by_id(
         unprocessed_image_id=processed_image_id,
