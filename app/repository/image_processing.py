@@ -1,6 +1,7 @@
 import numpy
+
+from app.internal.augmentations import rainbow_noise, rotate, shift
 from app.schemas.image import AugmentationRequestBody
-from app.internal.augmentations import shift, rotate, rainbow_noise
 
 # map a string in the input parameter to an augmentation function
 PROCESSING_MAP = {
