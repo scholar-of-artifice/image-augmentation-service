@@ -21,6 +21,7 @@ from app.repository import (
     write_processed_image_to_disc,
     write_unprocessed_image_to_disc,
     does_unprocessed_image_file_exist,
+    get_unprocessed_image_location
 )
 from app.schemas.image import (
     AugmentationRequestBody,
