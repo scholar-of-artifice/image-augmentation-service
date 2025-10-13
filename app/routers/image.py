@@ -73,43 +73,6 @@ async def augment_image_endpoint(
     )
 
 
-
-# #@router.post(
-# #    path="/upload/",
-# #    response_model=ResponseUploadImage
-# #)
-# #async def upload_endpoint(
-# #        file: Annotated[
-# #            UploadFile,
-# #            File(
-# #                description="The image file to upload."
-# #            )
-# #        ],
-# #        db_session: AsyncSession = Depends(get_async_session),
-# #        current_user: User = Depends(get_current_active_user)
-# #):
-# #    """
-# #    # Description
-# #    Use this endpoint to upload an image for later processing.
-# #
-# #    ## User Story
-# #
-# #    ```
-# #    As a user ...
-# #    I want to store an image ...
-# #    so that I can make augmented versions in the future.
-# #    ```
-# #
-# #    ### Internal Details
-# #    - **db_session**: Injected database session for database operations.
-# #    - **current_user**: The user who wants to upload the image.
-# #    """
-# #    return await save_unprocessed_image(
-# #        file=file,
-# #        db_session=db_session,
-# #        user_id=current_user.id
-# #    )
-# #
 @router.get(
     path="/unprocessed-image/{unprocessed_image_id}/",
     response_class=FileResponse,
