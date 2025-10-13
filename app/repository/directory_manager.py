@@ -29,6 +29,14 @@ async def does_unprocessed_image_data_file_exist(
     return filepath.exists()
 
 
+async def does_processed_image_file_exist(
+        user_id: uuid.UUID,
+        unprocessed_image_id: uuid.UUID,
+        processed_image_storage_filename: str,
+) -> bool:
+    filepath = VOLUME_PATHS["processed_image_data"] / str(user_id) / str(unprocessed_image_id) / processed_image_storage_filename
+    return filepath.exists()
+
 async def create_unprocessed_user_directory(
         user_id: uuid.UUID,
 ) -> Path:
