@@ -352,6 +352,7 @@ async def get_unprocessed_image_entry_by_id(
     user_entry = response_for_user.scalar_one_or_none()
     # raise an exception if no user exists
     if not user_entry:
+        # TODO: fix this exception
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"No user found with ID {user_id}",
