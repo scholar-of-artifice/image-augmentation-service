@@ -28,6 +28,12 @@ async def does_unprocessed_image_file_exist(
     filepath = VOLUME_PATHS["unprocessed_image_data"] / str(user_id) / unprocessed_image_storage_filename
     return filepath.exists()
 
+async def get_unprocessed_image_location(
+        user_id: uuid.UUID,
+        unprocessed_image_storage_filename: str,
+) -> Path:
+    filepath = VOLUME_PATHS["unprocessed_image_data"] / str(user_id) / unprocessed_image_storage_filename
+    return filepath
 
 async def does_processed_image_file_exist(
         user_id: uuid.UUID,
