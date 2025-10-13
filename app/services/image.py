@@ -121,8 +121,8 @@ async def augment_image_service(
     # return the important information
     return ResponseAugmentImage(
         unprocessed_image_id=unprocessed_image_id,
-        processed_image_id=uuid.uuid4(),
-        processed_image_filename=storage_filename,
+        processed_image_id=new_entry.id,
+        processed_image_filename=new_entry.storage_filename,
         request_body=processing_request
     )
 
