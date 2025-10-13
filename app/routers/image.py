@@ -21,8 +21,6 @@ from app.services.image import (
     upload_image_service,
     get_unprocessed_image_by_id_service,
     get_processed_image_by_id_service,
-    # get_processed_image_by_id_service,
-    # get_processed_images_by_unprocessed_id_service,
 )
 
 router = APIRouter()
