@@ -103,8 +103,9 @@ async def augment_image_service(
         image_data=unprocessed_image_data,
         processing_parameters=processing_request
     )
-    # persist the image to block storage
+    # make a filename
     storage_filename = f"{uuid.uuid4()}.png"
+    # persist the image to block storage
     stored_at = await write_processed_image_to_disc(
         image_data=processed_image_data,
         user_id=user_id,
