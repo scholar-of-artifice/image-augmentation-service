@@ -11,6 +11,7 @@ from .image  import (
 )
 from .image_processing import process_image
 from .directory_manager import (
+    does_unprocessed_image_file_exist,
     does_processed_image_file_exist,
     create_unprocessed_user_directory,
     create_processed_user_directory,
