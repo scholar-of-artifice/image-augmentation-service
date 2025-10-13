@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.database import get_async_session
 from app.exceptions import ImageNotFound
-from app.schemas.transactions_db import UnprocessedImage
+from app.schemas.transactions_db import UnprocessedImage, ProcessedImage
 from app.repository.directory_manager import (
     write_unprocessed_image,
     read_unprocessed_image,
