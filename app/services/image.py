@@ -19,6 +19,7 @@ from app.repository import (
     process_image,
     read_unprocessed_image_from_disc,
     read_UnprocessedImage_entry,
+    read_ProcessedImage_entry,
     write_processed_image_to_disc,
     write_unprocessed_image_to_disc,
     does_unprocessed_image_file_exist,
