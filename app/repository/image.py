@@ -7,13 +7,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.database import get_async_session
 from app.exceptions import ImageNotFound
-from app.schemas.transactions_db import UnprocessedImage, ProcessedImage
-from app.repository.directory_manager import (
-    write_unprocessed_image,
-    read_unprocessed_image,
-    write_processed_image
-)
 from app.internal.file_handling import translate_file_to_numpy_array
+from app.repository.directory_manager import (
+    read_unprocessed_image,
+    write_processed_image,
+    write_unprocessed_image,
+)
+from app.schemas.transactions_db import ProcessedImage, UnprocessedImage
+
 
 async def write_unprocessed_image_to_disc(
     image_content: bytes,
