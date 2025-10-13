@@ -102,6 +102,8 @@ async def augment_image_service(
     )
     print(f"Uploaded {storage_filename} to {stored_at}")
     # make an entry in the database
+
+    # return the important information
     return ResponseAugmentImage(
         unprocessed_image_id=unprocessed_image_id,
         processed_image_id=uuid.uuid4(),
