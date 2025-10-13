@@ -20,6 +20,7 @@ from app.repository import (
     read_UnprocessedImage_entry,
     write_processed_image_to_disc,
     write_unprocessed_image_to_disc,
+    does_unprocessed_image_file_exist,
 )
 from app.schemas.image import (
     AugmentationRequestBody,
