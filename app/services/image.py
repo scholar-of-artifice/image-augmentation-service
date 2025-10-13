@@ -298,7 +298,7 @@ async def process_and_save_image(
     return None
 
 
-async def get_unprocessed_image_by_id(
+async def get_unprocessed_image_entry_by_id(
     unprocessed_image_id: uuid.UUID,
     db_session: AsyncSession,
     user_id: uuid.UUID
