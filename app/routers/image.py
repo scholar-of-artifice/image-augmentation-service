@@ -20,6 +20,8 @@ from app.services.image import (
     augment_image_service,
     upload_image_service,
     get_unprocessed_image_by_id_service,
+    # get_processed_image_by_id_service,
+    # get_processed_images_by_unprocessed_id_service,
 )
 
 router = APIRouter()
@@ -123,23 +125,12 @@ async def get_unprocessed_image_by_id_endpoint(
         Arguments:
             unprocessed_image_id {str} -- The id of the unprocessed image.
     """
-    # get the image
-    image_entry = await get_unprocessed_image_by_id(
+    # call the service
+    return await get_unprocessed_image_by_id_service(
         unprocessed_image_id=unprocessed_image_id,
+        user_id=current_user.id,
         db_session=db_session,
-        user_id=current_user.id
     )
-    # if nothing is found an error should be raised by the service
-    # if an image entry is found
-    if image_entry:
-        image_path = VOLUME_PATHS["unprocessed_image_data"] / image_entry.storage_filename
-
-        return FileResponse(
-            path=image_path.with_suffix('.png'),
-            media_type="image/png",
-            filename=str(image_entry.storage_filename) + '.png',
-        )
-    return None
 # #
 # #
 # #@router.get(
