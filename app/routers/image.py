@@ -112,7 +112,8 @@ async def augment_image_endpoint(
 # #
 @router.get(
     path="/unprocessed-image/{unprocessed_image_id}/",
-    response_class=FileResponse
+    response_class=FileResponse,
+    status_code=status.HTTP_200_OK
 )
 async def get_unprocessed_image_by_id_endpoint(
         unprocessed_image_id: uuid.UUID,
