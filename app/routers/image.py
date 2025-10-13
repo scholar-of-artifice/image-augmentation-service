@@ -69,6 +69,7 @@ async def augment_image_endpoint(
     )
 
 
+
 # #@router.post(
 # #    path="/upload/",
 # #    response_model=ResponseUploadImage
@@ -105,38 +106,38 @@ async def augment_image_endpoint(
 # #        user_id=current_user.id
 # #    )
 # #
-# #@router.get(
-# #    path="/unprocessed-image/{unprocessed_image_id}/",
-# #    response_class=FileResponse
-# #)
-# #async def get_unprocessed_image_by_id_endpoint(
-# #        unprocessed_image_id: uuid.UUID,
-# #        db_session: AsyncSession = Depends(get_async_session),
-# #        current_user: User = Depends(get_current_active_user)
-# #):
-# #    """
-# #        Get an unprocessed image by its ID.
-# #
-# #        Arguments:
-# #            unprocessed_image_id {str} -- The id of the unprocessed image.
-# #    """
-# #    # get the image
-# #    image_entry = await get_unprocessed_image_by_id(
-# #        unprocessed_image_id=unprocessed_image_id,
-# #        db_session=db_session,
-# #        user_id=current_user.id
-# #    )
-# #    # if nothing is found an error should be raised by the service
-# #    # if an image entry is found
-# #    if image_entry:
-# #        image_path = VOLUME_PATHS["unprocessed_image_data"] / image_entry.storage_filename
-# #
-# #        return FileResponse(
-# #            path=image_path.with_suffix('.png'),
-# #            media_type="image/png",
-# #            filename=str(image_entry.storage_filename) + '.png',
-# #        )
-# #    return None
+@router.get(
+    path="/unprocessed-image/{unprocessed_image_id}/",
+    response_class=FileResponse
+)
+async def get_unprocessed_image_by_id_endpoint(
+        unprocessed_image_id: uuid.UUID,
+        db_session: AsyncSession = Depends(get_async_session),
+        current_user: User = Depends(get_current_active_user)
+):
+    """
+        Get an unprocessed image by its ID.
+
+        Arguments:
+            unprocessed_image_id {str} -- The id of the unprocessed image.
+    """
+    # get the image
+    image_entry = await get_unprocessed_image_by_id(
+        unprocessed_image_id=unprocessed_image_id,
+        db_session=db_session,
+        user_id=current_user.id
+    )
+    # if nothing is found an error should be raised by the service
+    # if an image entry is found
+    if image_entry:
+        image_path = VOLUME_PATHS["unprocessed_image_data"] / image_entry.storage_filename
+
+        return FileResponse(
+            path=image_path.with_suffix('.png'),
+            media_type="image/png",
+            filename=str(image_entry.storage_filename) + '.png',
+        )
+    return None
 # #
 # #
 # #@router.get(
