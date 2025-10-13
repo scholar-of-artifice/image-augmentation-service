@@ -4,7 +4,7 @@ from collections.abc import Callable
 import sqlalchemy
 from fastapi import Depends, HTTPException, UploadFile, status
 from sqlalchemy.ext.asyncio import AsyncSession
-
+from fastapi.responses import FileResponse
 from app.db.database import get_async_session
 from app.internal.augmentations import rainbow_noise, rotate, shift
 from app.internal.file_handling import (
