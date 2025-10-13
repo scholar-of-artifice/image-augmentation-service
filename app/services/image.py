@@ -156,6 +156,42 @@ async def get_unprocessed_image_by_id_service(
         # TODO: raise error
         return None
 
+async def get_processed_image_by_id_service(
+        processed_image_id: uuid.UUID,
+        user_id: uuid.UUID,
+        db_session: AsyncSession = Depends(get_async_session),
+) -> None:
+    # get the ProcessedImage entry from the database
+    image_entry = await get_processed_image_entry_by_id(
+        unprocessed_image_id=processed_image_id,
+        user_id=user_id,
+        db_session=db_session,
+    )
+    # check if the entry exists
+    if not image_entry:
+        # TODO: raise error
+        return None
+    # check if the file exists
+    # TODO: this can be improved
+    if does_processed_image_file_exist(
+        user_id=user_id,
+        processed_image_storage_filename=image_entry.storage_filename,
+    ):
+        image_path = await get_processed_image_location(
+            user_id=user_id,
+            processed_image_storage_filename=image_entry.storage_filename,
+        )
+        # it exists
+        return FileResponse(
+            path=image_path.with_suffix('.png'),
+            media_type="image/png",
+            filename=str(image_entry.storage_filename) + '.png',
+        )
+    else:
+        # it does not exist
+        # TODO: raise error
+        return None
+
 
 async def save_unprocessed_image(
         file: UploadFile,
