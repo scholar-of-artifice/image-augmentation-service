@@ -19,6 +19,7 @@ from app.schemas.transactions_db.user import User
 from app.services.image import (
     augment_image_service,
     upload_image_service,
+    get_unprocessed_image_by_id_service,
 )
 
 router = APIRouter()
