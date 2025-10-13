@@ -9,6 +9,7 @@ from .image  import (
     create_UnprocessedImage_entry,
     read_UnprocessedImage_entry
 )
+from .image_processing import process_image
 from .directory_manager import (
     create_unprocessed_user_directory,
     create_processed_user_directory,
