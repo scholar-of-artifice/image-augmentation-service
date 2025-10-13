@@ -113,7 +113,11 @@ async def augment_image_service(
         storage_filename=storage_filename
     )
     # make an entry in the database
-
+    new_entry = await create_ProcessedImage_entry(
+        unprocessed_image_id=unprocessed_image_id,
+        storage_filename=storage_filename,
+        db_session=db_session,
+    )
     # return the important information
     return ResponseAugmentImage(
         unprocessed_image_id=unprocessed_image_id,
