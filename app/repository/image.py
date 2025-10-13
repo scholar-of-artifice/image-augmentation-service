@@ -92,6 +92,29 @@ async def create_UnprocessedImage_entry(
     return new_entry
 
 
+async def create_ProcessedImage_entry(
+    unprocessed_image_id: uuid.UUID,
+    storage_filename: str,
+    db_session: AsyncSession = Depends(get_async_session)
+) -> ProcessedImage:
+    """
+    Create an ProcessedImage entry.
+    Write ProcessedImage entry to database.
+    """
+    # create the UnprocessedImage entry
+    new_entry = ProcessedImage(
+        unprocessed_image_id=unprocessed_image_id,
+        storage_filename=storage_filename,
+    )
+    # attempt to write it to the Transactions Database
+    db_session.add(new_entry)
+    await db_session.flush()
+    await db_session.refresh(new_entry)
+    await db_session.commit()
+    # return the entry
+    return new_entry
+
+
 async def read_UnprocessedImage_entry(
     image_id: uuid.UUID,
     user_id: uuid.UUID,
