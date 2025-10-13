@@ -141,3 +141,32 @@ async def read_UnprocessedImage_entry(
         )
     # return the entry
     return entry
+
+
+async def read_ProcessedImage_entry(
+    image_id: uuid.UUID,
+    user_id: uuid.UUID,
+    db_session: AsyncSession = Depends(get_async_session)
+) -> ProcessedImage:
+    """
+    Find an ProcessedImage entry.
+    Return the ProcessedImage entry if it exists.
+    """
+    # make the query
+    query = sqlalchemy.select(ProcessedImage).join(
+        UnprocessedImage,
+    ).where(
+        ProcessedImage.id == image_id
+    ).where(
+        UnprocessedImage.user_id == user_id
+    )
+    # execute the query
+    result = await db_session.execute(query)
+    # evaluate if entry exists
+    entry = result.scalar_one_or_none()
+    if entry is None:
+        raise ImageNotFound(
+            f'Image with id {image_id} not found',
+        )
+    # return the entry
+    return entry
