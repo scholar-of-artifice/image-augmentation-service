@@ -40,7 +40,7 @@ async def upload_image_service(
         db_session: AsyncSession = Depends(get_async_session),
 ) -> ResponseUploadImage:
     """
-    Upload a new unprocess image.
+    Upload a new unprocessed image.
     Creates an entry in the database.
     Creates a file in the block storage to be retrieved later.
     """
