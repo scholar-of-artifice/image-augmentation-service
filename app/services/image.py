@@ -112,7 +112,6 @@ async def augment_image_service(
         unprocessed_image_id=unprocessed_image_id,
         storage_filename=storage_filename
     )
-    print(f"Uploaded {storage_filename} to {stored_at}")
     # make an entry in the database
 
     # return the important information
