@@ -2,18 +2,17 @@
 This module contains a number of functions for creating, reading and deleting directories.
 """
 import uuid
+from pathlib import Path
+
 import numpy
-from PIL import Image, UnidentifiedImageError
+from PIL import Image
+
+from app.config import settings
 from app.exceptions import (
-    UserNotFound,
-    UserDirectoryAlreadyExists,
     ImageAlreadyExists,
     ImageDirectoryAlreadyExists,
-    ImageNotFound
+    UserDirectoryAlreadyExists,
 )
-import io
-from pathlib import Path
-from app.config import settings
 from app.internal.file_handling import translate_file_to_numpy_array
 
 # Define a mapping from volume names to the in-container paths for easy lookup
