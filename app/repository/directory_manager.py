@@ -21,7 +21,7 @@ VOLUME_PATHS = {
     "processed_image_data": settings.PROCESSED_IMAGE_PATH,
 }
 
-async def does_unprocessed_image_data_file_exist(
+async def does_unprocessed_image_file_exist(
         user_id: uuid.UUID,
         unprocessed_image_storage_filename: str,
 ) -> bool:
