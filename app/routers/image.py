@@ -20,6 +20,7 @@ from app.services.image import (
     augment_image_service,
     upload_image_service,
     get_unprocessed_image_by_id_service,
+    get_processed_image_by_id_service,
     # get_processed_image_by_id_service,
     # get_processed_images_by_unprocessed_id_service,
 )
@@ -92,6 +93,27 @@ async def get_unprocessed_image_by_id_endpoint(
     # call the service
     return await get_unprocessed_image_by_id_service(
         unprocessed_image_id=unprocessed_image_id,
+        user_id=current_user.id,
+        db_session=db_session,
+    )
+
+
+@router.get(
+    path="/processed-image/{processed_image_id}/",
+    response_class=FileResponse,
+    status_code=status.HTTP_200_OK
+)
+async def get_processed_image_by_id_endpoint(
+        processed_image_id: uuid.UUID,
+        db_session: AsyncSession = Depends(get_async_session),
+        current_user: User = Depends(get_current_active_user)
+):
+    """
+    Get a processed image by its ID.
+    """
+    # call the service
+    return await get_processed_image_by_id_service(
+        processed_image_id=processed_image_id,
         user_id=current_user.id,
         db_session=db_session,
     )
