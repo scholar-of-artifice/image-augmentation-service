@@ -1,26 +1,24 @@
 import uuid
 from typing import Annotated
 
-from fastapi import status, APIRouter, Depends, File, UploadFile, HTTPException
-from fastapi.responses import FileResponse
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 import app.exceptions as exc
 from app.db.database import get_async_session
-from app.dependency.async_dependency import get_current_active_user
-from app.internal.file_handling import VOLUME_PATHS
-from app.schemas.image import ResponseUploadImage, AugmentationRequestBody, ResponseAugmentImage
+from app.dependency.async_dependency import (
+    get_current_active_user,
+)
+from app.schemas.image import (
+    AugmentationRequestBody,
+    ResponseAugmentImage,
+    ResponseUploadImage,
+)
 from app.schemas.transactions_db.user import User
 from app.services.image import (
-    get_processed_image_by_id,
-    get_unprocessed_image_by_id,
-    save_unprocessed_image,
-    upload_image_service,
     augment_image_service,
+    upload_image_service,
 )
-from app.dependency.async_dependency import get_current_external_user_id
-from app.repository.directory_manager import write_unprocessed_image
-from app.services.user import sign_in_user_service
 
 router = APIRouter()
 
