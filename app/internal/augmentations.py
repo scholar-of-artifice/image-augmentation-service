@@ -217,3 +217,22 @@ def channel_swap(image_data: numpy.ndarray, a: str, b: str) -> numpy.ndarray:
     # return the modified array
     return output_image
 
+
+# TODO: Zoom
+# TODO: Shear
+# TODO: Perspective Warp
+# TODO: Elastic Transformation
+# TODO: Brighten
+# TODO: Contrast
+# TODO: Saturate
+# TODO: Hue
+# TODO: Color Jitter
+# TODO: Grayscale
+# TODO: Invert
+# TODO: Solarize
+# TODO: Gaussian Blur
+# TODO: Sharpen
+# TODO: Gaussian Noise
+# TODO: Median Blur
+# TODO: Cutout
+# TODO: Grid Mask
