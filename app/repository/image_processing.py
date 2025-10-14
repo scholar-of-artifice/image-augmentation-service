@@ -11,6 +11,7 @@ PROCESSING_MAP = {
     'salt_noise': salt_noise,
     'pepper_noise': pepper_noise,
     'flip': flip,
+    'channel_swap': channel_swap,
 }
 # TODO: add more functions
 # flip
