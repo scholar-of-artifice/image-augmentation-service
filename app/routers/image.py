@@ -151,10 +151,31 @@ async def get_unprocessed_image_by_id_endpoint(
         current_user: User = Depends(get_current_active_user)
 ):
     """
-        Get an unprocessed image by its ID.
+    Get an unprocessed image by its ID.
 
-        Arguments:
-            unprocessed_image_id {str} -- The id of the unprocessed image.
+    It will then be downloadable from the service via a link.
+
+    ## Parameters
+    ### unprocessed_image_id
+
+    The ID of the unprocessed image you uploaded earlier.
+
+    It was returned to you in the response at:
+
+    > `/image-api/upload`
+
+    ### X-External-User-ID
+
+    Your external user ID.
+
+    This should be the same value that was used in:
+
+    > `/users-api/sign-up`
+
+    Example:
+
+    > `my-cool-username`
+
     """
     # call the service
     return await get_unprocessed_image_by_id_service(
