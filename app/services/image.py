@@ -61,7 +61,6 @@ async def upload_image_service(
         user_id=user_id,
         storage_filename=filename
     )
-    print(f"Uploaded {filename} to {file_path}")
     # persist entry to transactions database
     data_entry = await create_UnprocessedImage_entry(
         original_filename=image_file.filename,
