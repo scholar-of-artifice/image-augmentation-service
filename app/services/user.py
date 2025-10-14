@@ -7,9 +7,12 @@ import app.exceptions as exc
 import app.repository as repository_layer
 from app.db.database import get_async_session
 from app.dependency.async_dependency import get_current_external_user_id
+from app.repository.directory_manager import (
+    create_processed_user_directory,
+    create_unprocessed_user_directory,
+)
 from app.schemas.transactions_db.user import User
 from app.schemas.user import ResponseSignInUser, ResponseSignUpUser
-from app.repository.directory_manager import create_unprocessed_user_directory, create_processed_user_directory
 
 # --- these are the functions that the endpoint calls ---
 
