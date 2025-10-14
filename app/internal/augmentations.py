@@ -90,44 +90,6 @@ def flip(image_data: numpy.ndarray, axis: str) -> numpy.ndarray:
     else:
         return numpy.fliplr(image_data)
 
-# def rainbow_noise(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
-#     # TODO: I am not sure if i like this function the way that it is. migh change.
-#     """
-#     Applies random color noise to a percentage of pixels in the image.
-# 
-#     Args:
-#         image_data (numpy.array): the image data to process.
-#         amount (float): The percentage of pixels to replace with noise, as a float between 0.0 and 1.0 (e.g., 0.1 for 10%).
-#     Returns:
-#         numpy.array: The newly processed image.
-#     """
-#     # --- Noise Application ---
-#     noisy_image = image_data.copy()
-#     height, width = image_data.shape[:2]
-# 
-#     # Calculate the number of pixels to change
-#     num_pixels = int(amount * height * width)
-#     if num_pixels == 0:
-#         return noisy_image
-#     # Generate random, unique coordinates for the noise
-#     # This is faster than generating all possible coords and shuffling
-#     rows = numpy.random.randint(0, height, size=num_pixels)
-#     cols = numpy.random.randint(0, width, size=num_pixels)
-#     # Determine the max value from the image's data type (e.g., 255 for uint8)
-#     if numpy.issubdtype(image_data.dtype, numpy.integer):
-#         max_val = numpy.iinfo(image_data.dtype).max
-#     else:
-#         # Assume float image is in range [0, 1]
-#         max_val = 1.0
-#     # Generate the noise and apply it to the selected coordinates
-#     if image_data.ndim == 2:  # Grayscale
-#         noise = numpy.random.randint(0, max_val + 1, size=num_pixels, dtype=image_data.dtype)
-#     else:  # Color
-#         channels = image_data.shape[2]
-#         noise = numpy.random.randint(0, max_val + 1, size=(num_pixels, channels), dtype=image_data.dtype)
-#     noisy_image[rows, cols] = noise
-#     return noisy_image
-
 
 def rainbow_noise(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
     """
