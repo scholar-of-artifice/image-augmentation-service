@@ -130,9 +130,36 @@ def flip(image_data: numpy.ndarray, axis: str) -> numpy.ndarray:
 
 
 def rainbow_noise(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
-    # TODO: I am not sure if i like this function the way that it is. migh change.
+    """
+    Applies random noise to a percentage of pixels in the image.
+    Takes n randomly selected pixels and overwrites the pixel value.
+
+    Args:
+        image_data (numpy.array): the image data to process.
+        amount (float): The percentage of pixels to replace with noise, as a float between 0.0 and 1.0 (e.g., 0.1 for 10%).
+    Returns:
+        numpy.array: The newly processed image.
     """
     Applies random color noise to a percentage of pixels in the image.
+    output_image = image_data.copy()
+    # Get dimensions of image
+    width, height = output_image.shape[:2]
+    # Get number of channels
+    num_channels = output_image.shape[2]
+    # Get the bit depth of the image
+    bit_depth = output_image.dtype
+    max_val = numpy.iinfo(bit_depth).max
+    # Calculate the number of pixels to change
+    num_pixels = int(amount * height * width)
+    # Generate a random set of coordinates
+    rows = numpy.random.randint(low=0, high=height, size=num_pixels)
+    columns = numpy.random.randint(low=0, high=width, size=num_pixels)
+    # Generate a set of random colors pixels.
+    random_colours = numpy.random.randint(low=0, high=max_val + 1, size=(num_pixels, num_channels), dtype=bit_depth)
+    # apply the random colours to the selected coordinates
+    output_image[rows, columns] = random_colours
+    # return the modified array
+    return output_image
 
     Args:
         image_data (numpy.array): the image data to process.
