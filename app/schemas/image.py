@@ -79,6 +79,22 @@ class RainbowNoiseArguments(BaseModel):
     # enforce positive integer... 0 is no change
     amount: Annotated[float, Field(strict=True, gt=0, lt=1)]
 
+
+class PepperNoiseArguments(BaseModel):
+    """
+        A data model for specifying a 'pepper_noise' operation.
+
+        This model is used to define the parameters for applying noise to the image.
+
+        Attributes:
+            processing (Literal["pepper_noise"]): The type of operation. This field is fixed.
+            amount (float): The ratio of pixels to overwrite.
+    """
+    # enforce specific value for processing field
+    processing: Literal["pepper_noise"]
+    # enforce positive integer... 0 is no change
+    amount: Annotated[float, Field(strict=True, gt=0, lt=1)]
+
 # TODO: deprecate
 class UploadRequestBody(BaseModel):
     """
