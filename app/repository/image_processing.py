@@ -8,6 +8,8 @@ PROCESSING_MAP = {
     'shift': shift,
     'rotate': rotate,
     'rainbow_noise': rainbow_noise,
+    'salt_noise': salt_noise,
+    'pepper_noise': pepper_noise,
     'flip': flip,
 }
 # TODO: add more functions
