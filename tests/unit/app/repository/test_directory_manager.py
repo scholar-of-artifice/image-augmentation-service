@@ -64,7 +64,7 @@ async def test_write_unprocessed_image_success(mocker):
     expected_path = VOLUME_PATHS["unprocessed_image_data"] / str(fake_user_id) / fake_storage_filename
     mock_fromarray.assert_called_once_with(obj= fake_image_data)
     mock_image_instance.save.assert_called_once_with(
-        fp=expected_path,
+        fp=str(expected_path),
         format='PNG'
     )
     assert result_path == expected_path
