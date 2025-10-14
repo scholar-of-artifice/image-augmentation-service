@@ -134,9 +134,26 @@ def salt_noise(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
     Returns:
         numpy.array: The newly processed image.
     """
-    # --- Noise Application ---
-    noisy_image = image_data.copy()
-    height, width = image_data.shape[:2]
+    output_image = image_data.copy()
+    # Get dimensions of image
+    width, height = output_image.shape[:2]
+    # Get number of channels
+    num_channels = output_image.shape[2]
+    # Get the bit depth of the image
+    bit_depth = output_image.dtype
+    max_val = numpy.iinfo(bit_depth).max
+    # Calculate the number of pixels to change
+    num_pixels = int(amount * height * width)
+    # Generate a random set of coordinates
+    rows = numpy.random.randint(low=0, high=height, size=num_pixels)
+    columns = numpy.random.randint(low=0, high=width, size=num_pixels)
+    # Generate a set of random colors pixels.
+    random_white = numpy.random.randint(low=max_val, high=max_val + 1, size=(num_pixels, num_channels), dtype=bit_depth)
+    # apply the random colours to the selected coordinates
+    output_image[rows, columns] = random_white
+    # return the modified array
+    return output_image
+
 
     # Calculate the number of pixels to change
     num_pixels = int(amount * height * width)
