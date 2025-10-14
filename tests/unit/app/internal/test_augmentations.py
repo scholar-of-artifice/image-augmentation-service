@@ -264,7 +264,12 @@ def test_rainbow_noise_example_0_percent():
     THEN the new matrix has the correct value
     """
     input_image = numpy.array(
-        [[1, 0, 0, 0], [0, 2, 0, 0], [0, 0, 3, 0], [0, 0, 0, 4]], dtype=numpy.uint8
+        [
+            [[1,0,0], [0,0,0], [0,0,0], [0,0,0]],
+            [[0,0,0], [2,0,0], [0,0,0], [0,0,0]],
+            [[0,0,0], [0,0,0], [3,0,0], [0,0,0]],
+            [[0,0,0], [0,0,0], [0,0,0], [4,0,0]]
+        ], dtype=numpy.uint8
     )
     # this is a random process so we do not check arrays directly
     calculated_output = rainbow_noise(input_image, amount=0.0)
