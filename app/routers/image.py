@@ -1,58 +1,149 @@
-from pathlib import Path
-from app.internal.file_handling import VOLUME_PATHS
-from fastapi import APIRouter, Depends, UploadFile, File
-from fastapi.responses import FileResponse
-from sqlalchemy.ext.asyncio import AsyncSession
+import uuid
 from typing import Annotated
 
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
+from fastapi.responses import FileResponse
+from sqlalchemy.ext.asyncio import AsyncSession
+
+import app.exceptions as exc
 from app.db.database import get_async_session
-from app.dependency.async_dependency import get_body_as_model, get_current_active_user
-from app.schemas.image import ResponseUploadImage
+from app.dependency.async_dependency import (
+    get_current_active_user,
+)
+from app.schemas.image import (
+    AugmentationRequestBody,
+    ResponseAugmentImage,
+    ResponseUploadImage,
+)
 from app.schemas.transactions_db.user import User
-from app.services.image import process_and_save_image, save_unprocessed_image, get_unprocessed_image_by_id, get_processed_image_by_id
-import uuid
+from app.services.image import (
+    augment_image_service,
+    get_processed_image_by_id_service,
+    get_unprocessed_image_by_id_service,
+    upload_image_service,
+)
+
 router = APIRouter()
+
+@router.post(
+    path="/upload",
+    response_model=ResponseUploadImage,
+    status_code=status.HTTP_201_CREATED
+)
+async def upload_image_endpoint(
+        image: Annotated[
+            UploadFile,
+            File(
+                description="The image file to upload"
+            )
+        ],
+        current_user: User = Depends(get_current_active_user),
+        db_session: AsyncSession = Depends(get_async_session),
+) -> ResponseUploadImage:
+    """
+    Upload a new unprocessed image to the service.
+
+    ## Parameters
+    ### X-External-User-ID
+
+    Your external user ID.
+
+    This should be the same value that was used in:
+
+    > `/users-api/sign-up`
+
+    Example:
+
+    > `my-cool-username`
+
+    ### image
+    An image file to upload.
+
+    Example:
+
+    > `my_image.png`
+
+    """
+    try:
+        return await upload_image_service(
+            image_file=image,
+            user_id=current_user.id,
+            db_session=db_session,
+        )
+    except exc.UserNotFound as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(e)
+        ) from e
 
 
 @router.post(
-    path="/upload/",
-    response_model=ResponseUploadImage
+    path="/augment/{unprocessed_image_id}",
+    response_model=ResponseAugmentImage,
+    status_code=status.HTTP_201_CREATED
 )
-async def upload_endpoint(
-        file: Annotated[
-            UploadFile,
-            File(
-                description="The image file to upload."
-            )
-        ],
+async def augment_image_endpoint(
+        unprocessed_image_id: uuid.UUID,
+        processing_request: AugmentationRequestBody,
+        current_user: User = Depends(get_current_active_user),
         db_session: AsyncSession = Depends(get_async_session),
-        current_user: User = Depends(get_current_active_user)
-):
+) -> ResponseAugmentImage:
     """
-    # Description
-    Use this endpoint to upload an image for later processing.
+    Create an augmented version of an unprocessed image.
+    Store it in the service for later retrieval.
 
-    ## User Story
+    ## Parameters
+    ### unprocessed_image_id
+
+    The ID of the unprocessed image you uploaded earlier.
+
+    It was returned to you in the response at:
+
+    > `/image-api/upload`
+
+    ### X-External-User-ID
+
+    Your external user ID.
+
+    This should be the same value that was used in:
+
+    > `/users-api/sign-up`
+
+    Example:
+
+    > `my-cool-username`
+
+    ### Request body
+
+    This is the JSON object which specifies how to process the image.
+
+    There are many processing algorithms that can be used.
+    Please look at the relevant model schemas to find out more.
+
+    Example:
 
     ```
-    As a user ...
-    I want to store an image ...
-    so that I can make augmented versions in the future.
+    {
+      "arguments": {
+        "processing": "rotate",
+        "angle": 30,
+      }
+    }
     ```
 
-    ### Internal Details
-    - **db_session**: Injected database session for database operations.
-    - **current_user**: The user who wants to upload the image.
     """
-    return await save_unprocessed_image(
-        file=file,
+    return await augment_image_service(
+        unprocessed_image_id=unprocessed_image_id,
+        processing_request=processing_request,
+        user_id=current_user.id,
         db_session=db_session,
-        user_id=current_user.id
     )
+
 
 @router.get(
     path="/unprocessed-image/{unprocessed_image_id}/",
-    response_class=FileResponse
+    response_class=FileResponse,
+    status_code=status.HTTP_200_OK
 )
 async def get_unprocessed_image_by_id_endpoint(
         unprocessed_image_id: uuid.UUID,
@@ -60,33 +151,44 @@ async def get_unprocessed_image_by_id_endpoint(
         current_user: User = Depends(get_current_active_user)
 ):
     """
-        Get an unprocessed image by its ID.
+    Get an unprocessed image by its ID.
 
-        Arguments:
-            unprocessed_image_id {str} -- The id of the unprocessed image.
+    It will then be downloadable from the service via a link.
+
+    ## Parameters
+    ### unprocessed_image_id
+
+    The ID of the unprocessed image you uploaded earlier.
+
+    It was returned to you in the response at:
+
+    > `/image-api/upload`
+
+    ### X-External-User-ID
+
+    Your external user ID.
+
+    This should be the same value that was used in:
+
+    > `/users-api/sign-up`
+
+    Example:
+
+    > `my-cool-username`
+
     """
-    # get the image
-    image_entry = await get_unprocessed_image_by_id(
+    # call the service
+    return await get_unprocessed_image_by_id_service(
         unprocessed_image_id=unprocessed_image_id,
+        user_id=current_user.id,
         db_session=db_session,
-        user_id=current_user.id
     )
-    # if nothing is found an error should be raised by the service
-    # if an image entry is found
-    if image_entry:
-        image_path = VOLUME_PATHS["unprocessed_image_data"] / image_entry.storage_filename
-    
-        return FileResponse(
-            path=image_path.with_suffix('.png'),
-            media_type="image/png",
-            filename=str(image_entry.storage_filename) + '.png',
-        )
-    return None
 
 
 @router.get(
     path="/processed-image/{processed_image_id}/",
-    response_class=FileResponse
+    response_class=FileResponse,
+    status_code=status.HTTP_200_OK
 )
 async def get_processed_image_by_id_endpoint(
         processed_image_id: uuid.UUID,
@@ -94,27 +196,35 @@ async def get_processed_image_by_id_endpoint(
         current_user: User = Depends(get_current_active_user)
 ):
     """
-        Get a processed image by its ID.
+    Get a processed image by its ID.
 
-        Arguments:
-            processed_image_id {str} -- The id of the unprocessed image.
+    It will then be downloadable from the service via a link.
+
+    ## Parameters
+    ### processed_image_id
+
+    The ID of the processed image you created earlier.
+
+    It was returned to you in the response at:
+
+    > `/image-api/augment/{unprocessed_image_id}`
+
+    ### X-External-User-ID
+
+    Your external user ID.
+
+    This should be the same value that was used in:
+
+    > `/users-api/sign-up`
+
+    Example:
+
+    > `my-cool-username`
+
     """
-    # get the image
-    image_entry = await get_processed_image_by_id(
+    # call the service
+    return await get_processed_image_by_id_service(
         processed_image_id=processed_image_id,
+        user_id=current_user.id,
         db_session=db_session,
-        user_id=current_user.id
     )
-    # if nothing is found an error should be raised by the service
-    # if an image entry is found
-    if image_entry:
-        image_path = VOLUME_PATHS["processed_image_data"] / image_entry.storage_filename
-
-        return FileResponse(
-            path=image_path.with_suffix('.png'),
-            media_type="image/png",
-            filename=str(image_entry.storage_filename) + '.png',
-        )
-    return None
-
-

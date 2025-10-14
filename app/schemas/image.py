@@ -1,5 +1,6 @@
-from typing import Annotated, Literal
 import uuid
+from typing import Annotated, Literal
+
 from pydantic import BaseModel, Field
 from pydantic.types import StringConstraints
 
@@ -64,6 +65,7 @@ class RainbowNoiseArguments(BaseModel):
     # enforce positive integer... 0 is no change
     amount: Annotated[float, Field(strict=True, gt=0, lt=1)]
 
+# TODO: deprecate
 class UploadRequestBody(BaseModel):
     """
     This is the request body for:
@@ -77,6 +79,23 @@ class UploadRequestBody(BaseModel):
             }
         )
     ]
+
+
+class AugmentationRequestBody(BaseModel):
+    """
+    This is the request body for:
+        /image-api/augment/...
+    """
+    arguments: Annotated[
+        ShiftArguments | RotateArguments | RainbowNoiseArguments,
+        Field(
+            json_schema_extra={
+                "descriminator": "processing"
+            }
+        )
+    ]
+
+# --- Service Layer Responses ---
 
 class ResponseUploadImage(BaseModel):
     """
@@ -130,7 +149,7 @@ class ResponseAugmentImage(BaseModel):
         )
     ]
     request_body: Annotated[
-        UploadRequestBody,
+        AugmentationRequestBody,
         Field(
             description="The way the image was requested to be augmented."
         )

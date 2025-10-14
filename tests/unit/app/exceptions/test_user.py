@@ -1,24 +1,14 @@
 import pytest
 
-from app.exceptions.user import UserNotFound, UserAlreadyExists, PermissionDenied
+from app.exceptions.user import UserAlreadyExists, UserNotFound
+
+# --- UserNotFound ---
 
 def fake_UserNotFound_function():
-    if True:
-        raise UserNotFound(
-            f"The user is not found!"
-        )
+    raise UserNotFound(
+        "The user is not found!"
+    )
 
-def fake_UserAlreadyExists_function():
-    if True:
-        raise UserAlreadyExists(
-            f"The user already exists!"
-        )
-
-def fake_PermissionDenied_function():
-    if True:
-        raise PermissionDenied(
-            f"You do not have permission to do that!"
-        )
 
 def test_UserNotFound_is_raised():
     """
@@ -29,6 +19,13 @@ def test_UserNotFound_is_raised():
     with pytest.raises(UserNotFound):
         fake_UserNotFound_function()
 
+# --- UserAlreadyExists ---
+
+def fake_UserAlreadyExists_function():
+    raise UserAlreadyExists(
+        "The user already exists!"
+    )
+
 
 def test_UserAlreadyExists_is_raised():
     """
@@ -38,12 +35,3 @@ def test_UserAlreadyExists_is_raised():
     """
     with pytest.raises(UserAlreadyExists):
         fake_UserAlreadyExists_function()
-
-def test_PermissionDenied_is_raised():
-    """
-    GIVEN a PermissionDenied exception
-    WHEN fake_PermissionDenied_function is called
-    THEN it should raise PermissionDenied
-    """
-    with pytest.raises(PermissionDenied):
-        fake_PermissionDenied_function()

@@ -7,6 +7,10 @@ import app.exceptions as exc
 import app.repository as repository_layer
 from app.db.database import get_async_session
 from app.dependency.async_dependency import get_current_external_user_id
+from app.repository.directory_manager import (
+    create_processed_user_directory,
+    create_unprocessed_user_directory,
+)
 from app.schemas.transactions_db.user import User
 from app.schemas.user import ResponseSignInUser, ResponseSignUpUser
 
@@ -35,6 +39,13 @@ async def sign_up_user_service(
     new_user = await repository_layer.create_user(
         external_id=external_id,
         db_session=db_session
+    )
+    # --- create some subdirectories to organize the image data ---
+    await create_unprocessed_user_directory(
+        user_id=new_user.id,
+    )
+    await create_processed_user_directory(
+        user_id=new_user.id,
     )
     # --- return relevant information to user ---
     return ResponseSignUpUser(
