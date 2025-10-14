@@ -88,6 +88,50 @@ async def augment_image_endpoint(
         current_user: User = Depends(get_current_active_user),
         db_session: AsyncSession = Depends(get_async_session),
 ) -> ResponseAugmentImage:
+    """
+    Create an augmented version of an unprocessed image.
+    Store it in the service for later retrieval.
+
+    ## Parameters
+    ### unprocessed_image_id
+
+    The ID of the unprocessed image you uploaded earlier.
+
+    It was returned to you in the response at:
+
+    > `/image-api/upload`
+
+    ### X-External-User-ID
+
+    Your external user ID.
+
+    This should be the same value that was used in:
+
+    > `/users-api/sign-up`
+
+    Example:
+
+    > `my-cool-username`
+
+    ### Request body
+
+    This is the JSON object which specifies how to process the image.
+
+    There are many processing algorithms that can be used.
+    Please look at the relevant model schemas to find out more.
+
+    Example:
+
+    ```
+    {
+      "arguments": {
+        "processing": "rotate",
+        "angle": 30,
+      }
+    }
+    ```
+
+    """
     return await augment_image_service(
         unprocessed_image_id=unprocessed_image_id,
         processing_request=processing_request,
