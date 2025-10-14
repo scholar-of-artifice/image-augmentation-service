@@ -4,6 +4,14 @@ import pytest
 from app.internal.augmentations import flip, rainbow_noise, rotate, shift
 
 
+# --- flip ---
+
+# --- rainbow_noise ---
+
+# --- rotate ---
+
+# --- shift ---
+
 @pytest.mark.parametrize(
     "direction, distance, expected_output",
     [
