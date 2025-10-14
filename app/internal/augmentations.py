@@ -140,7 +140,6 @@ def rainbow_noise(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
     Returns:
         numpy.array: The newly processed image.
     """
-    Applies random color noise to a percentage of pixels in the image.
     output_image = image_data.copy()
     # Get dimensions of image
     width, height = output_image.shape[:2]
@@ -160,6 +159,12 @@ def rainbow_noise(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
     output_image[rows, columns] = random_colours
     # return the modified array
     return output_image
+
+
+def salt_noise(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
+    """
+    Applies random noise to a percentage of pixels in the image.
+    Takes n randomly selected pixels and overwrites the pixel as white.
 
     Args:
         image_data (numpy.array): the image data to process.
