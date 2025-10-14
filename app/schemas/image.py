@@ -49,6 +49,20 @@ class RotateArguments(BaseModel):
     # enforce integer range
     angle: Annotated[int, Field(strict=True, gt=0, lt=360)]
 
+class FlipArguments(BaseModel):
+    """
+        A data model for specifying a 'flip' operation.
+
+        This model is used to define the parameters for flipping an image.
+
+        Attributes:
+            processing (Literal["flip"]): The name of the operation. This field is fixed.
+            axis (string): The direction of the flip.
+    """
+    # enforce specific value for processing field
+    processing: Literal["flip"]
+    # enforce the possible values
+    axis: Literal["x"] | Literal["y"]
 
 class RainbowNoiseArguments(BaseModel):
     """
