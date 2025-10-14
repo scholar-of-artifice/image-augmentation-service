@@ -186,6 +186,7 @@ async def get_processed_image_by_id_service(
     ):
         image_path = await get_processed_image_location(
             user_id=user_id,
+            unprocessed_image_id=image_entry.unprocessed_image_id,
             processed_image_storage_filename=image_entry.storage_filename,
         )
         # it exists
