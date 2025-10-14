@@ -101,7 +101,7 @@ class AugmentationRequestBody(BaseModel):
         /image-api/augment/...
     """
     arguments: Annotated[
-        ShiftArguments | RotateArguments | RainbowNoiseArguments,
+        ShiftArguments | RotateArguments | FlipArguments | RainbowNoiseArguments,
         Field(
             json_schema_extra={
                 "descriminator": "processing"
