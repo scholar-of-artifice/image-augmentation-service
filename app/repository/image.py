@@ -127,10 +127,9 @@ async def read_UnprocessedImage_entry(
     """
     # make the query
     query = sqlalchemy.select(UnprocessedImage).where(
-            UnprocessedImage.id == image_id
-        ).where(
-            UnprocessedImage.user_id == user_id
-        )
+        UnprocessedImage.id == image_id,
+        UnprocessedImage.user_id == user_id
+    )
     # execute the query
     result = await db_session.execute(query)
     # evaluate if entry exists
