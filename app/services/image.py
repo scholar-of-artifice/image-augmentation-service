@@ -1,42 +1,29 @@
 import uuid
-from collections.abc import Callable
 
-import sqlalchemy
-from fastapi import Depends, HTTPException, UploadFile, status
-from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import Depends, UploadFile
 from fastapi.responses import FileResponse
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.db.database import get_async_session
-from app.internal.augmentations import rainbow_noise, rotate, shift
-from app.internal.file_handling import (
-    create_file_name,
-    translate_file_to_numpy_array,
-    write_numpy_array_to_image_file,
-)
 from app.repository import (
     create_processed_image_directory,
-    create_UnprocessedImage_entry,
     create_ProcessedImage_entry,
+    create_UnprocessedImage_entry,
+    does_processed_image_file_exist,
+    does_unprocessed_image_file_exist,
+    get_processed_image_location,
+    get_unprocessed_image_location,
     process_image,
+    read_ProcessedImage_entry,
     read_unprocessed_image_from_disc,
     read_UnprocessedImage_entry,
-    read_ProcessedImage_entry,
     write_processed_image_to_disc,
     write_unprocessed_image_to_disc,
-    does_unprocessed_image_file_exist,
-    get_unprocessed_image_location,
-    does_processed_image_file_exist,
-    get_processed_image_location
 )
 from app.schemas.image import (
     AugmentationRequestBody,
     ResponseAugmentImage,
     ResponseUploadImage,
-    UploadRequestBody,
-)
-from app.schemas.transactions_db import (
-    ProcessedImage,
-    UnprocessedImage,
-    User,
 )
 
 
