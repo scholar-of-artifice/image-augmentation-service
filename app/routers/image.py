@@ -52,7 +52,9 @@ async def upload_image_endpoint(
 
     > `/users-api/sign-up`
 
-    Example: `my-cool-username`
+    Example:
+
+    > `my-cool-username`
 
     ### image
     An image file to upload.
