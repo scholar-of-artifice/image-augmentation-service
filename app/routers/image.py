@@ -48,7 +48,9 @@ async def upload_image_endpoint(
 
     Your external user ID.
 
-    This should be the same value that was used in `/users-api/sign-up`
+    This should be the same value that was used in:
+
+    > `/users-api/sign-up`
 
     Example: `my-cool-username`
 
