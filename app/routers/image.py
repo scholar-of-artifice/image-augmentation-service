@@ -40,6 +40,24 @@ async def upload_image_endpoint(
         current_user: User = Depends(get_current_active_user),
         db_session: AsyncSession = Depends(get_async_session),
 ) -> ResponseUploadImage:
+    """
+    Upload a new unprocessed image to the service.
+
+    ## Parameters
+    ### X-External-User-ID
+
+    Your external user ID.
+
+    This should be the same value that was used in `/users-api/sign-up`
+
+    Example: `my-cool-username`
+
+    ### image
+    An image file to upload.
+
+    Example: `my_image.png`
+
+    """
     try:
         return await upload_image_service(
             image_file=image,
