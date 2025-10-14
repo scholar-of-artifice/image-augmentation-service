@@ -197,6 +197,30 @@ async def get_processed_image_by_id_endpoint(
 ):
     """
     Get a processed image by its ID.
+
+    It will then be downloadable from the service via a link.
+
+    ## Parameters
+    ### processed_image_id
+
+    The ID of the processed image you created earlier.
+
+    It was returned to you in the response at:
+
+    > `/image-api/augment/{unprocessed_image_id}`
+
+    ### X-External-User-ID
+
+    Your external user ID.
+
+    This should be the same value that was used in:
+
+    > `/users-api/sign-up`
+
+    Example:
+
+    > `my-cool-username`
+
     """
     # call the service
     return await get_processed_image_by_id_service(
