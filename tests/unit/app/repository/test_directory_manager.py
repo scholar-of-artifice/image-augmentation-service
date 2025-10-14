@@ -55,7 +55,7 @@ async def test_write_unprocessed_image_success(mocker):
         "app.repository.directory_manager.Image.fromarray",
         return_value=mock_image_instance
     )
-    # call the funciton
+    # call the function
     result_path = await write_unprocessed_image(
         image_data=fake_image_data,
         user_id=fake_user_id,
