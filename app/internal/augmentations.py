@@ -75,6 +75,20 @@ def rotate(image_data: numpy.ndarray, angle: int) -> numpy.ndarray:
     logger.info(log_data.model_dump_json())
     return scipy.ndimage.rotate(input=image_data, angle=angle, reshape=False)
 
+def flip(image_data: numpy.ndarray, axis: str) -> numpy.ndarray:
+    """
+    Flips image along the specified axis.
+
+    Args:
+        image_data (numpy.array): the image data to process.
+        axis (string): 'x' makes the image upside down. 'y' makes a mirror image.
+    Returns:
+        numpy.array: The newly processed image.
+    """
+    if axis == 'x':
+        return numpy.flipud(image_data)
+    else:
+        return numpy.fliplr(image_data)
 
 def rainbow_noise(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
     # TODO: I am not sure if i like this function the way that it is. migh change.
