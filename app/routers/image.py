@@ -57,7 +57,9 @@ async def upload_image_endpoint(
     ### image
     An image file to upload.
 
-    Example: `my_image.png`
+    Example:
+
+    > `my_image.png`
 
     """
     try:
