@@ -6,6 +6,18 @@ from app.internal.augmentations import flip, rainbow_noise, rotate, shift
 
 # --- flip ---
 
+def test_flip_x_valid_data_is_correct_result():
+    """
+    GIVEN a 4x4 matrix
+    AND the axis is x
+    WHEN flip is called
+    THEN the correct result is computed
+    """
+    input_image = numpy.array([[1, 0, 0, 0], [0, 2, 0, 0], [0, 0, 3, 0], [0, 0, 0, 4]])
+    output_image = flip(input_image, axis='x')
+    expected_image = numpy.array([[0, 0, 0, 4], [0, 0, 3, 0], [0, 2, 0, 0], [1, 0, 0, 0]])
+    assert numpy.array_equal(output_image, expected_image)
+
 # --- rainbow_noise ---
 
 # --- rotate ---
@@ -142,18 +154,6 @@ def test_shift_bad_input_dimensions_raises_exception():
     with pytest.raises(TypeError):
         shift(input_image, "left", 3)
 
-
-def test_flip_x_valid_data_is_correct_result():
-    """
-    GIVEN a 4x4 matrix
-    AND the axis is x
-    WHEN flip is called
-    THEN the correct result is computed
-    """
-    input_image = numpy.array([[1, 0, 0, 0], [0, 2, 0, 0], [0, 0, 3, 0], [0, 0, 0, 4]])
-    output_image = flip(input_image, axis='x')
-    expected_image = numpy.array([[0, 0, 0, 4], [0, 0, 3, 0], [0, 2, 0, 0], [1, 0, 0, 0]])
-    assert numpy.array_equal(output_image, expected_image)
 
 def test_rotate_example_45_degrees():
     """
