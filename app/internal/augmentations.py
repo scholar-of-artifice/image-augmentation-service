@@ -185,3 +185,35 @@ def pepper_noise(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
     output_image[rows, columns] = random_black
     # return the modified array
     return output_image
+
+
+def channel_swap(image_data: numpy.ndarray, a: str, b: str) -> numpy.ndarray:
+    """
+    Takes two channels and swaps the values.
+
+    Args:
+        image_data (numpy.array): the image data to process.
+        a (str): A value for a channel.
+        b (str): A value for a channel.
+    Returns:
+        numpy.array: The newly processed image.
+    """
+    output_image = image_data.copy()
+    if a == b:
+        return output_image
+    channel_map = {
+        'r': 0,
+        'g': 1,
+        'b': 2,
+        'a': 2,
+    }
+    # Get dimensions of image
+    width, height = output_image.shape[:2]
+    # Get number of channels
+    num_channels = output_image.shape[2]
+    for i, row in enumerate(output_image):
+        for j, pixel in enumerate(row):
+            pixel[channel_map[a]], pixel[channel_map[b]] = pixel[channel_map[b]], pixel[channel_map[a]]
+    # return the modified array
+    return output_image
+
