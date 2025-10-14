@@ -37,8 +37,8 @@ async def test_download_an_unprocessed_image_200(http_client):
     assert upload_response.status_code == status.HTTP_201_CREATED
     ResponseUploadImage.model_validate(upload_response.json())
     # --- DOWNLOAD AN IMAGE ---
-    upload_response = await http_client.get(
+    download_response = await http_client.get(
         headers=headers,
         url=f"/image-api/unprocessed-image/{upload_response.json()['unprocessed_image_id']}/",
     )
-    assert upload_response.status_code == status.HTTP_200_OK
+    assert download_response.status_code == status.HTTP_200_OK
