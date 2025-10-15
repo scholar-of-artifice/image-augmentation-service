@@ -103,6 +103,31 @@ def test_rainbow_noise_example_25_percent():
                 number_of_changed_pixels = number_of_changed_pixels + 1
     assert number_of_changed_pixels == 4
 
+def test_rainbow_noise_example_50_percent():
+    """
+    GIVEN a 4x4 matrix
+    AND the amount is 50%
+    WHEN rotate is called
+    THEN the new matrix has the correct value
+    """
+    input_image = numpy.array(
+        [
+            [[255, 0, 0], [0, 255, 0], [0, 0, 255], [0, 0, 0]],
+            [[255, 255, 0], [255, 0, 255], [0, 255, 255], [0, 0, 0]],
+            [[255, 255, 255], [128, 128, 128], [0, 0, 0], [0, 0, 0]],
+            [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]
+        ], dtype=numpy.uint8
+    )
+    # this is a random process so we do not check arrays directly
+    calculated_output = rainbow_noise(input_image, amount=0.5)
+    # count the number of changed pixels
+    number_of_changed_pixels = 0
+    for i, row in enumerate(calculated_output):
+        for j, pixel in enumerate(row):
+            if not numpy.array_equal(pixel, input_image[i, j]):
+                number_of_changed_pixels = number_of_changed_pixels + 1
+    assert number_of_changed_pixels == 8
+
 
 # --- rotate ---
 
