@@ -49,6 +49,31 @@ def test_flip_y_valid_data_is_correct_result():
     )
     assert numpy.array_equal(output_image, expected_image)
 
+
+# --- channel_swap ---
+
+def test_channel_swap_r_g_is_correct_result():
+    """
+    GIVEN a 2x2 matrix
+    AND we want to swap R <-> G
+    WHEN channel_swap is called
+    THEN the correct result is computed
+    """
+    input_image = numpy.array(
+        [
+            [[255,    0,    0], [0,     255,   0]],
+            [[255,  255,    0], [255,   0,   255]],
+        ], dtype=numpy.uint8
+    )
+    expected_result = numpy.array(
+        [
+            [[0,    255,    0], [255,    0,   0]],
+            [[255,  255,    0], [0,    255, 255]],
+        ], dtype=numpy.uint8
+    )
+    calculated_result = channel_swap(input_image, a='r', b='g')
+    assert numpy.array_equal(calculated_result, expected_result)
+
 # --- rainbow_noise ---
 
 
