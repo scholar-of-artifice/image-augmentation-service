@@ -13,9 +13,23 @@ def test_flip_x_valid_data_is_correct_result():
     WHEN flip is called
     THEN the correct result is computed
     """
-    input_image = numpy.array([[1, 0, 0, 0], [0, 2, 0, 0], [0, 0, 3, 0], [0, 0, 0, 4]])
+    input_image = numpy.array(
+        [
+            [[255,0,0], [0,255,0], [0,0,255], [0,0,0]],
+            [[255,255,0], [255,0,255], [0,255,255], [0,0,0]],
+            [[255,255,255], [128,128,128], [0,0,0], [0,0,0]],
+            [[0,0,0], [0,0,0], [0,0,0], [0,0,0]]
+        ], dtype=numpy.uint8
+    )
     output_image = flip(input_image, axis='x')
-    expected_image = numpy.array([[0, 0, 0, 4], [0, 0, 3, 0], [0, 2, 0, 0], [1, 0, 0, 0]])
+    expected_image = numpy.array(
+        [
+            [[0,0,0], [0,0,0], [0,0,0], [0,0,0]],
+            [[255,255,255], [128,128,128], [0,0,0], [0,0,0]],
+            [[255,255,0], [255,0,255], [0,255,255], [0,0,0]],
+            [[255,0,0], [0,255,0], [0,0,255], [0,0,0]],
+        ], dtype=numpy.uint8
+    )
     assert numpy.array_equal(output_image, expected_image)
 
 # --- rainbow_noise ---
