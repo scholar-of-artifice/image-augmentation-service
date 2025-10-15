@@ -78,8 +78,7 @@ def test_rainbow_noise_example_0_percent():
     assert number_of_changed_pixels == 0
 
 
-def no_test_rainbow_noise_example_25_percent():
-    # TODO: this test is flakey. perhaps consider seeding random number generator?
+def test_rainbow_noise_example_25_percent():
     """
     GIVEN a 4x4 matrix
     AND the amount is 25%
