@@ -95,9 +95,13 @@ def test_rainbow_noise_example_25_percent():
     )
     # this is a random process so we do not check arrays directly
     calculated_output = rainbow_noise(input_image, amount=0.25)
-    difference = numpy.abs(calculated_output - input_image)
-    number_of_changed_pixels = numpy.count_nonzero(difference)
-    assert numpy.array_equal(number_of_changed_pixels, 4)
+    # count the number of changed pixels
+    number_of_changed_pixels = 0
+    for i, row in enumerate(calculated_output):
+        for j, pixel in enumerate(row):
+            if not numpy.array_equal(pixel, input_image[i, j]):
+                number_of_changed_pixels = number_of_changed_pixels + 1
+    assert number_of_changed_pixels == 4
 
 
 # --- rotate ---
