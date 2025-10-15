@@ -27,6 +27,28 @@ def test_flip_x_valid_data_is_correct_result():
     )
     assert numpy.array_equal(output_image, expected_image)
 
+def test_flip_y_valid_data_is_correct_result():
+    """
+    GIVEN a 2x2 matrix
+    AND the axis is y
+    WHEN flip is called
+    THEN the correct result is computed
+    """
+    input_image = numpy.array(
+        [
+            [[255,  0,      0], [0,     255,  0]],
+            [[255,  255,    0], [255,   0,  255]],
+        ], dtype=numpy.uint8
+    )
+    output_image = flip(input_image, axis='y')
+    expected_image = numpy.array(
+        [
+            [[0,    255,    0], [255,    0,     0]],
+            [[255,    0,  255], [255,  255,     0]],
+        ], dtype=numpy.uint8
+    )
+    assert numpy.array_equal(output_image, expected_image)
+
 # --- rainbow_noise ---
 
 # --- rotate ---
