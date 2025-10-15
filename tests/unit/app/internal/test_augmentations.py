@@ -129,8 +129,6 @@ def test_rainbow_noise_example_50_percent():
     assert number_of_changed_pixels == 8
 
 
-# --- rotate ---
-
 # --- shift ---
 
 @pytest.mark.parametrize(
@@ -319,6 +317,8 @@ def test_rotate_example_90_degrees():
     calculated_output = rotate(input_image, 90)
     assert numpy.array_equal(calculated_output, expected_output)
 
+
+# --- rotate ---
 
 def test_rotate_example_0_degrees():
     """
