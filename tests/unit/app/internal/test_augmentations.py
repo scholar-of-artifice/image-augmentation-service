@@ -51,6 +51,48 @@ def test_flip_y_valid_data_is_correct_result():
 
 # --- rainbow_noise ---
 
+
+def test_rainbow_noise_example_0_percent():
+    """
+    GIVEN a 4x4 matrix
+    AND the amount is 0%
+    WHEN rotate is called
+    THEN the new matrix has the correct value
+    """
+    input_image = numpy.array(
+        [
+            [[255,0,0], [0,255,0], [0,0,255], [0,0,0]],
+            [[255,255,0], [255,0,255], [0,255,255], [0,0,0]],
+            [[255,255,255], [128,128,128], [0,0,0], [0,0,0]],
+            [[0,0,0], [0,0,0], [0,0,0], [0,0,0]]
+        ], dtype=numpy.uint8
+    )
+    # this is a random process so we do not check arrays directly
+    calculated_output = rainbow_noise(input_image, amount=0.0)
+    difference = numpy.abs(calculated_output - input_image)
+    number_of_changed_pixels = numpy.count_nonzero(difference)
+    assert numpy.array_equal(number_of_changed_pixels, 0)
+    assert numpy.array_equal(calculated_output, input_image)
+
+
+def no_test_rainbow_noise_example_25_percent():
+    # TODO: this test is flakey. perhaps consider seeding random number generator?
+    """
+    GIVEN a 4x4 matrix
+    AND the amount is 25%
+    WHEN rotate is called
+    THEN the new matrix has the correct value
+    """
+    input_image = numpy.array(
+        [[1, 0, 0, 0], [0, 2, 0, 0], [0, 0, 3, 0], [0, 0, 0, 4]], dtype=numpy.uint8
+    )
+    # this is a random process so we do not check arrays directly
+    calculated_output = rainbow_noise(input_image, amount=0.25)
+    difference = numpy.abs(calculated_output - input_image)
+    number_of_changed_pixels = numpy.count_nonzero(difference)
+    assert numpy.array_equal(number_of_changed_pixels, 4)
+
+
 # --- rotate ---
 
 # --- shift ---
@@ -306,43 +348,3 @@ def test_rotate_angle_of_string_raises_exception():
     with pytest.raises(TypeError):
         rotate(input_image, angle="45")
 
-
-def test_rainbow_noise_example_0_percent():
-    """
-    GIVEN a 4x4 matrix
-    AND the amount is 0%
-    WHEN rotate is called
-    THEN the new matrix has the correct value
-    """
-    input_image = numpy.array(
-        [
-            [[255,0,0], [0,255,0], [0,0,255], [0,0,0]],
-            [[255,255,0], [255,0,255], [0,255,255], [0,0,0]],
-            [[255,255,255], [128,128,128], [0,0,0], [0,0,0]],
-            [[0,0,0], [0,0,0], [0,0,0], [0,0,0]]
-        ], dtype=numpy.uint8
-    )
-    # this is a random process so we do not check arrays directly
-    calculated_output = rainbow_noise(input_image, amount=0.0)
-    difference = numpy.abs(calculated_output - input_image)
-    number_of_changed_pixels = numpy.count_nonzero(difference)
-    assert numpy.array_equal(number_of_changed_pixels, 0)
-    assert numpy.array_equal(calculated_output, input_image)
-
-
-def no_test_rainbow_noise_example_25_percent():
-    # TODO: this test is flakey. perhaps consider seeding random number generator?
-    """
-    GIVEN a 4x4 matrix
-    AND the amount is 25%
-    WHEN rotate is called
-    THEN the new matrix has the correct value
-    """
-    input_image = numpy.array(
-        [[1, 0, 0, 0], [0, 2, 0, 0], [0, 0, 3, 0], [0, 0, 0, 4]], dtype=numpy.uint8
-    )
-    # this is a random process so we do not check arrays directly
-    calculated_output = rainbow_noise(input_image, amount=0.25)
-    difference = numpy.abs(calculated_output - input_image)
-    number_of_changed_pixels = numpy.count_nonzero(difference)
-    assert numpy.array_equal(number_of_changed_pixels, 4)
