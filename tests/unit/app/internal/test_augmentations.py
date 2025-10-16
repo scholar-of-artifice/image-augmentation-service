@@ -2,6 +2,15 @@ import numpy
 import pytest
 
 from app.internal.augmentations import channel_swap, flip, rainbow_noise, rotate, shift
+from app.internal.augmentations import (
+    channel_swap,
+    flip,
+    rainbow_noise,
+    rotate,
+    salt_noise,
+    shift,
+)
+
 
 # --- flip ---
 
