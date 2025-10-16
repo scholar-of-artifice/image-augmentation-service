@@ -12,6 +12,26 @@ from app.internal.augmentations import (
     shift,
 )
 
+
+# --- cutout ---
+
+def test_cutout_50_percent_is_correct():
+    input_image = numpy.array(
+        [
+            [[255,  0,      0], [0,     255,  0]],
+            [[255,  255,    0], [255,   0,  255]],
+        ], dtype=numpy.uint8
+    )
+    calculated_output = cutout(input_image, amount=0.5)
+    # count the number of changed pixels
+    number_of_changed_pixels = 0
+    for i, row in enumerate(calculated_output):
+        for j, pixel in enumerate(row):
+            if not numpy.array_equal(pixel, input_image[i, j]):
+                number_of_changed_pixels = number_of_changed_pixels + 1
+    assert number_of_changed_pixels == 1
+
+
 # --- flip ---
 
 def test_flip_x_valid_data_is_correct_result():
