@@ -219,6 +219,43 @@ def channel_swap(image_data: numpy.ndarray, a: str, b: str) -> numpy.ndarray:
     return output_image
 
 
+def cutout(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
+    """
+        Takes a subset of contiguous pixels and overwrites the values.
+        The cutout is rectangular but not always square.
+
+        Args:
+            image_data (numpy.array): the image data to process.
+            amount (float): The percentage of pixels to replace with noise, as a float between 0.0 and 1.0 (e.g., 0.1 for 10%).
+        Returns:
+            numpy.array: The newly processed image.
+        """
+    output_image = image_data.copy()
+    # Get dimensions of image
+    width, height = output_image.shape[:2]
+    # Get number of channels
+    num_channels = output_image.shape[2]
+    # Get the bit depth of the image
+    bit_depth = output_image.dtype
+    max_val = numpy.iinfo(bit_depth).max
+    # Calculate the number of pixels to change
+    num_pixels = int(amount * height * width)
+    is_square = True
+    # if is_square:
+    censor_mask_width = floor(numpy.sqrt(num_pixels))
+    censor_mask_height = floor(numpy.sqrt(num_pixels))
+    start_x = numpy.random.randint(low=0, high=width - censor_mask_width)
+    start_y = numpy.random.randint(low=0, high=height - censor_mask_height)
+    end_x = start_x + censor_mask_width
+    end_y = start_y + censor_mask_height
+    # Generate a set of random colors pixels.
+    # apply the random colours to the selected coordinates
+    for i in range(start_x, end_x):
+        for j in range(start_y, end_y):
+            output_image[i][j] = numpy.random.randint(low=0, high=max_val + 1, size=(1, num_channels), dtype=bit_depth)
+    # return the modified array
+    return output_image
+
 # TODO: Zoom
 # TODO: Shear
 # TODO: Perspective Warp
