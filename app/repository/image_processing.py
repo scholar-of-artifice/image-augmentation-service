@@ -1,6 +1,15 @@
 import numpy
 
-from app.internal.augmentations import rainbow_noise, rotate, shift, flip, salt_noise, pepper_noise, channel_swap, cutout
+from app.internal.augmentations import (
+    channel_swap,
+    cutout,
+    flip,
+    pepper_noise,
+    rainbow_noise,
+    rotate,
+    salt_noise,
+    shift,
+)
 from app.schemas.image import AugmentationRequestBody
 
 # map a string in the input parameter to an augmentation function
