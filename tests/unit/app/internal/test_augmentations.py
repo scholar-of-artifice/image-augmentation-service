@@ -5,6 +5,7 @@ from app.internal.augmentations import channel_swap, flip, rainbow_noise, rotate
 from app.internal.augmentations import (
     channel_swap,
     flip,
+    pepper_noise,
     rainbow_noise,
     rotate,
     salt_noise,
