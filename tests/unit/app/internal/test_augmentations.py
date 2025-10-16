@@ -3,6 +3,7 @@ import pytest
 
 from app.internal.augmentations import (
     channel_swap,
+    cutout,
     flip,
     pepper_noise,
     rainbow_noise,
