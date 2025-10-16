@@ -11,7 +11,6 @@ from app.internal.augmentations import (
     shift,
 )
 
-
 # --- flip ---
 
 def test_flip_x_valid_data_is_correct_result():
