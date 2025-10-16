@@ -117,7 +117,7 @@ services:
     build:
       context: .
       target: integrationtest
-    command: uv run pytest --cov=. --cov-report=html:tests/coverage_report/web
+    command: uv run pytest tests/integration --cov=. --cov-report=html:tests/coverage_report/web
     depends_on:
       - db-integration-test # point to the test db
     volumes:
