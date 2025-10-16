@@ -383,6 +383,7 @@ def test_shift_bad_input_dimensions_raises_exception():
     with pytest.raises(TypeError):
         shift(input_image, "left", 3)
 
+# --- rotate ---
 
 def test_rotate_example_45_degrees():
     """
@@ -438,9 +439,6 @@ def test_rotate_example_90_degrees():
     )
     calculated_output = rotate(input_image, 90)
     assert numpy.array_equal(calculated_output, expected_output)
-
-
-# --- rotate ---
 
 def test_rotate_example_0_degrees():
     """
