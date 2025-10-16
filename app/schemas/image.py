@@ -49,6 +49,20 @@ class RotateArguments(BaseModel):
     # enforce integer range
     angle: Annotated[int, Field(strict=True, gt=0, lt=360)]
 
+class FlipArguments(BaseModel):
+    """
+        A data model for specifying a 'flip' operation.
+
+        This model is used to define the parameters for flipping an image.
+
+        Attributes:
+            processing (Literal["flip"]): The name of the operation. This field is fixed.
+            axis (string): The direction of the flip.
+    """
+    # enforce specific value for processing field
+    processing: Literal["flip"]
+    # enforce the possible values
+    axis: Literal["x"] | Literal["y"]
 
 class RainbowNoiseArguments(BaseModel):
     """
@@ -64,6 +78,54 @@ class RainbowNoiseArguments(BaseModel):
     processing: Literal["rainbow_noise"]
     # enforce positive integer... 0 is no change
     amount: Annotated[float, Field(strict=True, gt=0, lt=1)]
+
+
+class SaltNoiseArguments(BaseModel):
+    """
+        A data model for specifying a 'salt_noise' operation.
+
+        This model is used to define the parameters for making a noisey image.
+
+        Attributes:
+            processing (Literal["salt_noise"]): The type of operation. This field is fixed.
+            amount (float): The ratio of pixels to overwrite.
+    """
+    # enforce specific value for processing field
+    processing: Literal["salt_noise"]
+    # enforce positive integer... 0 is no change
+    amount: Annotated[float, Field(strict=True, gt=0, lt=1)]
+
+
+class PepperNoiseArguments(BaseModel):
+    """
+        A data model for specifying a 'pepper_noise' operation.
+
+        This model is used to define the parameters for applying noise to the image.
+
+        Attributes:
+            processing (Literal["pepper_noise"]): The type of operation. This field is fixed.
+            amount (float): The ratio of pixels to overwrite.
+    """
+    # enforce specific value for processing field
+    processing: Literal["pepper_noise"]
+    # enforce positive integer... 0 is no change
+    amount: Annotated[float, Field(strict=True, gt=0, lt=1)]
+
+
+class ChannelSwapArguments(BaseModel):
+    """
+        A data model for specifying a 'channel_swap' operation.
+
+        This model is used to define the parameters for applying noise to the image.
+
+        Attributes:
+            processing (Literal["channel_swap"]): The type of operation. This field is fixed.
+            amount (float): The ratio of pixels to overwrite.
+    """
+    # enforce specific value for processing field
+    processing: Literal["channel_swap"]
+    a: Literal["r"]|Literal["g"]|Literal["b"]|Literal["a"]
+    b: Literal["r"]|Literal["g"]|Literal["b"]|Literal["a"]
 
 # TODO: deprecate
 class UploadRequestBody(BaseModel):
@@ -87,7 +149,7 @@ class AugmentationRequestBody(BaseModel):
         /image-api/augment/...
     """
     arguments: Annotated[
-        ShiftArguments | RotateArguments | RainbowNoiseArguments,
+        ShiftArguments | RotateArguments | FlipArguments | RainbowNoiseArguments | SaltNoiseArguments | PepperNoiseArguments | ChannelSwapArguments,
         Field(
             json_schema_extra={
                 "descriminator": "processing"

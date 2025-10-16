@@ -1,8 +1,256 @@
 import numpy
 import pytest
 
-from app.internal.augmentations import rainbow_noise, rotate, shift
+from app.internal.augmentations import (
+    channel_swap,
+    flip,
+    pepper_noise,
+    rainbow_noise,
+    rotate,
+    salt_noise,
+    shift,
+)
 
+# --- flip ---
+
+def test_flip_x_valid_data_is_correct_result():
+    """
+    GIVEN a 2x2 matrix
+    AND the axis is x
+    WHEN flip is called
+    THEN the correct result is computed
+    """
+    input_image = numpy.array(
+        [
+            [[255,  0,      0], [0,     255,  0]],
+            [[255,  255,    0], [255,   0,  255]],
+        ], dtype=numpy.uint8
+    )
+    output_image = flip(input_image, axis='x')
+    expected_image = numpy.array(
+        [
+            [[255,  255,    0], [255,   0,  255]],
+            [[255,  0,      0], [0,     255,  0]],
+        ], dtype=numpy.uint8
+    )
+    assert numpy.array_equal(output_image, expected_image)
+
+def test_flip_y_valid_data_is_correct_result():
+    """
+    GIVEN a 2x2 matrix
+    AND the axis is y
+    WHEN flip is called
+    THEN the correct result is computed
+    """
+    input_image = numpy.array(
+        [
+            [[255,  0,      0], [0,     255,  0]],
+            [[255,  255,    0], [255,   0,  255]],
+        ], dtype=numpy.uint8
+    )
+    output_image = flip(input_image, axis='y')
+    expected_image = numpy.array(
+        [
+            [[0,    255,    0], [255,    0,     0]],
+            [[255,    0,  255], [255,  255,     0]],
+        ], dtype=numpy.uint8
+    )
+    assert numpy.array_equal(output_image, expected_image)
+
+
+# --- pepper_noise ---
+
+def test_pepper_noise_50_percent_is_correct():
+    input_image = numpy.array(
+        [
+            [[255,  0,      0], [0,     255,  0]],
+            [[255,  255,    0], [255,   0,  255]],
+        ], dtype=numpy.uint8
+    )
+    calculated_output = pepper_noise(input_image, amount=0.5)
+    # count the number of changed pixels
+    number_of_changed_pixels = 0
+    for i, row in enumerate(calculated_output):
+        for j, pixel in enumerate(row):
+            if not numpy.array_equal(pixel, input_image[i, j]):
+                number_of_changed_pixels = number_of_changed_pixels + 1
+    assert number_of_changed_pixels == 2
+
+
+# --- channel_swap ---
+
+def test_channel_swap_r_g_is_correct_result():
+    """
+    GIVEN a 2x2 matrix
+    AND we want to swap R <-> G
+    WHEN channel_swap is called
+    THEN the correct result is computed
+    """
+    input_image = numpy.array(
+        [
+            [[255,    0,    0], [0,     255,   0]],
+            [[255,  255,    0], [255,   0,   255]],
+        ], dtype=numpy.uint8
+    )
+    expected_result = numpy.array(
+        [
+            [[0,    255,    0], [255,    0,   0]],
+            [[255,  255,    0], [0,    255, 255]],
+        ], dtype=numpy.uint8
+    )
+    calculated_result = channel_swap(input_image, a='r', b='g')
+    assert numpy.array_equal(calculated_result, expected_result)
+
+
+def test_channel_swap_r_b_is_correct_result():
+    """
+    GIVEN a 2x2 matrix
+    AND we want to swap R <-> B
+    WHEN channel_swap is called
+    THEN the correct result is computed
+    """
+    input_image = numpy.array(
+        [
+            [[255,    0,    0], [0,     255,   0]],
+            [[255,  255,    0], [255,   0,   255]],
+        ], dtype=numpy.uint8
+    )
+    expected_result = numpy.array(
+        [
+            [[  0,    0,  255], [0,     255,   0]],
+            [[  0,  255,  255], [255,   0,   255]],
+        ], dtype=numpy.uint8
+    )
+    calculated_result = channel_swap(input_image, a='r', b='b')
+    assert numpy.array_equal(calculated_result, expected_result)
+
+
+def test_channel_swap_g_b_is_correct_result():
+    """
+    GIVEN a 2x2 matrix
+    AND we want to swap G <-> B
+    WHEN channel_swap is called
+    THEN the correct result is computed
+    """
+    input_image = numpy.array(
+        [
+            [[255,    0,    0], [0,     255,   0]],
+            [[255,  255,    0], [255,   0,   255]],
+        ], dtype=numpy.uint8
+    )
+    expected_result = numpy.array(
+        [
+            [[255,  0,      0], [  0,     0,   255]],
+            [[255,  0,    255], [255,   255,     0]],
+        ], dtype=numpy.uint8
+    )
+    calculated_result = channel_swap(input_image, a='g', b='b')
+    assert numpy.array_equal(calculated_result, expected_result)
+
+
+def test_channel_swap_g_g_is_correct_result():
+    """
+    GIVEN a 2x2 matrix
+    AND we want to swap G <-> G
+    WHEN channel_swap is called
+    THEN the correct result is computed
+    """
+    input_image = numpy.array(
+        [
+            [[255,    0,    0], [0,     255,   0]],
+            [[255,  255,    0], [255,   0,   255]],
+        ], dtype=numpy.uint8
+    )
+    expected_result = numpy.array(
+        [
+            [[255,    0,    0], [0,     255,   0]],
+            [[255,  255,    0], [255,   0,   255]],
+        ], dtype=numpy.uint8
+    )
+    calculated_result = channel_swap(input_image, a='g', b='g')
+    assert numpy.array_equal(calculated_result, expected_result)
+
+# --- rainbow_noise ---
+
+
+def test_rainbow_noise_example_0_percent():
+    """
+    GIVEN a 4x4 matrix
+    AND the amount is 0%
+    WHEN rainbow_noise is called
+    THEN the new matrix has the correct value
+    """
+    input_image = numpy.array(
+        [
+            [[255,0,0], [0,255,0], [0,0,255], [0,0,0]],
+            [[255,255,0], [255,0,255], [0,255,255], [0,0,0]],
+            [[255,255,255], [128,128,128], [0,0,0], [0,0,0]],
+            [[0,0,0], [0,0,0], [0,0,0], [0,0,0]]
+        ], dtype=numpy.uint8
+    )
+    # this is a random process so we do not check arrays directly
+    calculated_output = rainbow_noise(input_image, amount=0.0)
+    # count the number of changed pixels
+    number_of_changed_pixels = 0
+    for i, row in enumerate(calculated_output):
+        for j, pixel in enumerate(row):
+            if not numpy.array_equal(pixel, input_image[i, j]):
+                number_of_changed_pixels = number_of_changed_pixels + 1
+    assert number_of_changed_pixels == 0
+
+
+def test_rainbow_noise_example_25_percent():
+    """
+    GIVEN a 4x4 matrix
+    AND the amount is 25%
+    WHEN rainbow_noise is called
+    THEN the new matrix has the correct value
+    """
+    input_image = numpy.array(
+        [
+            [[255, 0, 0], [0, 255, 0], [0, 0, 255], [0, 0, 0]],
+            [[255, 255, 0], [255, 0, 255], [0, 255, 255], [0, 0, 0]],
+            [[255, 255, 255], [128, 128, 128], [0, 0, 0], [0, 0, 0]],
+            [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]
+        ], dtype=numpy.uint8
+    )
+    # this is a random process so we do not check arrays directly
+    calculated_output = rainbow_noise(input_image, amount=0.25)
+    # count the number of changed pixels
+    number_of_changed_pixels = 0
+    for i, row in enumerate(calculated_output):
+        for j, pixel in enumerate(row):
+            if not numpy.array_equal(pixel, input_image[i, j]):
+                number_of_changed_pixels = number_of_changed_pixels + 1
+    assert number_of_changed_pixels == 4
+
+def test_rainbow_noise_example_50_percent():
+    """
+    GIVEN a 4x4 matrix
+    AND the amount is 50%
+    WHEN rainbow_noise is called
+    THEN the new matrix has the correct value
+    """
+    input_image = numpy.array(
+        [
+            [[255, 0, 0], [0, 255, 0], [0, 0, 255], [0, 0, 0]],
+            [[255, 255, 0], [255, 0, 255], [0, 255, 255], [0, 0, 0]],
+            [[255, 255, 255], [128, 128, 128], [0, 0, 0], [0, 0, 0]],
+            [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]
+        ], dtype=numpy.uint8
+    )
+    # this is a random process so we do not check arrays directly
+    calculated_output = rainbow_noise(input_image, amount=0.5)
+    # count the number of changed pixels
+    number_of_changed_pixels = 0
+    for i, row in enumerate(calculated_output):
+        for j, pixel in enumerate(row):
+            if not numpy.array_equal(pixel, input_image[i, j]):
+                number_of_changed_pixels = number_of_changed_pixels + 1
+    assert number_of_changed_pixels == 8
+
+
+# --- shift ---
 
 @pytest.mark.parametrize(
     "direction, distance, expected_output",
@@ -134,6 +382,7 @@ def test_shift_bad_input_dimensions_raises_exception():
     with pytest.raises(TypeError):
         shift(input_image, "left", 3)
 
+# --- rotate ---
 
 def test_rotate_example_45_degrees():
     """
@@ -189,7 +438,6 @@ def test_rotate_example_90_degrees():
     )
     calculated_output = rotate(input_image, 90)
     assert numpy.array_equal(calculated_output, expected_output)
-
 
 def test_rotate_example_0_degrees():
     """
@@ -255,38 +503,21 @@ def test_rotate_angle_of_string_raises_exception():
     with pytest.raises(TypeError):
         rotate(input_image, angle="45")
 
+# --- salt_noise ---
 
-def test_rainbow_noise_example_0_percent():
-    """
-    GIVEN a 4x4 matrix
-    AND the amount is 0%
-    WHEN rotate is called
-    THEN the new matrix has the correct value
-    """
+def test_salt_noise_50_percent_is_correct():
     input_image = numpy.array(
-        [[1, 0, 0, 0], [0, 2, 0, 0], [0, 0, 3, 0], [0, 0, 0, 4]], dtype=numpy.uint8
+        [
+            [[255,  0,      0], [0,     255,  0]],
+            [[255,  255,    0], [255,   0,  255]],
+        ], dtype=numpy.uint8
     )
-    # this is a random process so we do not check arrays directly
-    calculated_output = rainbow_noise(input_image, amount=0.0)
-    difference = numpy.abs(calculated_output - input_image)
-    number_of_changed_pixels = numpy.count_nonzero(difference)
-    assert numpy.array_equal(number_of_changed_pixels, 0)
-    assert numpy.array_equal(calculated_output, input_image)
+    calculated_output = salt_noise(input_image, amount=0.5)
+    # count the number of changed pixels
+    number_of_changed_pixels = 0
+    for i, row in enumerate(calculated_output):
+        for j, pixel in enumerate(row):
+            if not numpy.array_equal(pixel, input_image[i, j]):
+                number_of_changed_pixels = number_of_changed_pixels + 1
+    assert number_of_changed_pixels == 2
 
-
-def no_test_rainbow_noise_example_25_percent():
-    # TODO: this test is flakey. perhaps consider seeding random number generator?
-    """
-    GIVEN a 4x4 matrix
-    AND the amount is 25%
-    WHEN rotate is called
-    THEN the new matrix has the correct value
-    """
-    input_image = numpy.array(
-        [[1, 0, 0, 0], [0, 2, 0, 0], [0, 0, 3, 0], [0, 0, 0, 4]], dtype=numpy.uint8
-    )
-    # this is a random process so we do not check arrays directly
-    calculated_output = rainbow_noise(input_image, amount=0.25)
-    difference = numpy.abs(calculated_output - input_image)
-    number_of_changed_pixels = numpy.count_nonzero(difference)
-    assert numpy.array_equal(number_of_changed_pixels, 4)
