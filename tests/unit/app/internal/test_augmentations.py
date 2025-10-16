@@ -204,7 +204,7 @@ def test_rainbow_noise_example_25_percent():
     """
     GIVEN a 4x4 matrix
     AND the amount is 25%
-    WHEN rotate is called
+    WHEN rainbow_noise is called
     THEN the new matrix has the correct value
     """
     input_image = numpy.array(
