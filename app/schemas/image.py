@@ -127,6 +127,10 @@ class ChannelSwapArguments(BaseModel):
     a: Literal["r"]|Literal["g"]|Literal["b"]|Literal["a"]
     b: Literal["r"]|Literal["g"]|Literal["b"]|Literal["a"]
 
+class CutoutArguments(BaseModel):
+    processing: Literal["cutout"]
+    amount: Annotated[float, Field(strict=True, gt=0, lt=1)]
+
 # TODO: deprecate
 class UploadRequestBody(BaseModel):
     """
