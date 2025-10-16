@@ -92,7 +92,7 @@ services:
     build:
       context: .
       target: unittest
-    command: uv run pytest --cov=. --cov-report=html:tests/coverage_report/web
+    command: uv run pytest tests/unit --cov=. --cov-report=html:tests/coverage_report/web
     depends_on:
       - db-unit-test # point to the test db
     volumes:
