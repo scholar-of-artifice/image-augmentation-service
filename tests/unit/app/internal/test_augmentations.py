@@ -50,6 +50,25 @@ def test_flip_y_valid_data_is_correct_result():
     assert numpy.array_equal(output_image, expected_image)
 
 
+# --- pepper_noise ---
+
+def test_pepper_noise_50_percent_is_correct():
+    input_image = numpy.array(
+        [
+            [[255,  0,      0], [0,     255,  0]],
+            [[255,  255,    0], [255,   0,  255]],
+        ], dtype=numpy.uint8
+    )
+    calculated_output = pepper_noise(input_image, amount=0.5)
+    # count the number of changed pixels
+    number_of_changed_pixels = 0
+    for i, row in enumerate(calculated_output):
+        for j, pixel in enumerate(row):
+            if not numpy.array_equal(pixel, input_image[i, j]):
+                number_of_changed_pixels = number_of_changed_pixels + 1
+    assert number_of_changed_pixels == 2
+
+
 # --- channel_swap ---
 
 def test_channel_swap_r_g_is_correct_result():
