@@ -141,6 +141,8 @@ services:
       context: .
       target: endtoendtest
     command: uv run pytest tests/end_to_end
+    volumes:
+      - ./tests/coverage_reports/end_to_end:/image-augmentation-service/tests/coverage_report/web
     depends_on:
       api-end-to-end:
         condition: service_healthy
