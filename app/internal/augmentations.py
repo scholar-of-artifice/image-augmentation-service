@@ -449,7 +449,6 @@ def zoom(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
 # TODO: Elastic Transformation
 # TODO: Contrast
 # TODO: Saturate
-# TODO: Hue
 # TODO: Color Jitter
 # TODO: Grayscale
 # TODO: Solarize
