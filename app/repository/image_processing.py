@@ -15,6 +15,7 @@ from app.schemas.image import AugmentationRequestBody
 
 # map a string in the input parameter to an augmentation function
 PROCESSING_MAP = {
+    'brighten': brighten,
     'shift': shift,
     'rotate': rotate,
     'rainbow_noise': rainbow_noise,
