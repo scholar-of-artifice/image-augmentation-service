@@ -38,6 +38,99 @@ def test_brighten_is_correct_for_8_bit_RGB_image():
     )
     assert numpy.array_equal(calculated_output, expected_output)
 
+# --- channel_swap ---
+
+def test_channel_swap_r_g_is_correct_result():
+    """
+    GIVEN a 2x2 matrix
+    AND we want to swap R <-> G
+    WHEN channel_swap is called
+    THEN the correct result is computed
+    """
+    input_image = numpy.array(
+        [
+            [[255,    0,    0], [0,     255,   0]],
+            [[255,  255,    0], [255,   0,   255]],
+        ], dtype=numpy.uint8
+    )
+    expected_result = numpy.array(
+        [
+            [[0,    255,    0], [255,    0,   0]],
+            [[255,  255,    0], [0,    255, 255]],
+        ], dtype=numpy.uint8
+    )
+    calculated_result = channel_swap(input_image, a='r', b='g')
+    assert numpy.array_equal(calculated_result, expected_result)
+
+
+def test_channel_swap_r_b_is_correct_result():
+    """
+    GIVEN a 2x2 matrix
+    AND we want to swap R <-> B
+    WHEN channel_swap is called
+    THEN the correct result is computed
+    """
+    input_image = numpy.array(
+        [
+            [[255,    0,    0], [0,     255,   0]],
+            [[255,  255,    0], [255,   0,   255]],
+        ], dtype=numpy.uint8
+    )
+    expected_result = numpy.array(
+        [
+            [[  0,    0,  255], [0,     255,   0]],
+            [[  0,  255,  255], [255,   0,   255]],
+        ], dtype=numpy.uint8
+    )
+    calculated_result = channel_swap(input_image, a='r', b='b')
+    assert numpy.array_equal(calculated_result, expected_result)
+
+
+def test_channel_swap_g_b_is_correct_result():
+    """
+    GIVEN a 2x2 matrix
+    AND we want to swap G <-> B
+    WHEN channel_swap is called
+    THEN the correct result is computed
+    """
+    input_image = numpy.array(
+        [
+            [[255,    0,    0], [0,     255,   0]],
+            [[255,  255,    0], [255,   0,   255]],
+        ], dtype=numpy.uint8
+    )
+    expected_result = numpy.array(
+        [
+            [[255,  0,      0], [  0,     0,   255]],
+            [[255,  0,    255], [255,   255,     0]],
+        ], dtype=numpy.uint8
+    )
+    calculated_result = channel_swap(input_image, a='g', b='b')
+    assert numpy.array_equal(calculated_result, expected_result)
+
+
+def test_channel_swap_g_g_is_correct_result():
+    """
+    GIVEN a 2x2 matrix
+    AND we want to swap G <-> G
+    WHEN channel_swap is called
+    THEN the correct result is computed
+    """
+    input_image = numpy.array(
+        [
+            [[255,    0,    0], [0,     255,   0]],
+            [[255,  255,    0], [255,   0,   255]],
+        ], dtype=numpy.uint8
+    )
+    expected_result = numpy.array(
+        [
+            [[255,    0,    0], [0,     255,   0]],
+            [[255,  255,    0], [255,   0,   255]],
+        ], dtype=numpy.uint8
+    )
+    calculated_result = channel_swap(input_image, a='g', b='g')
+    assert numpy.array_equal(calculated_result, expected_result)
+
 # --- cutout ---
 
 def test_cutout_50_percent_is_correct():
