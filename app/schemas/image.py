@@ -9,6 +9,11 @@ Models for: Inputs schema
 endpoint: .../image-api/upload
 """
 
+class BrightenArguments(BaseModel):
+    processing: Literal["brighten"]
+    amount: Annotated[int, Field(ge=0), Field(le=100)]
+
+
 class ShiftArguments(BaseModel):
     """
         A data model for specifying a 'shift' operation.
