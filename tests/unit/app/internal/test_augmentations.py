@@ -5,6 +5,7 @@ from app.internal.augmentations import (
     brighten,
     channel_swap,
     cutout,
+    darken,
     flip,
     pepper_noise,
     rainbow_noise,
