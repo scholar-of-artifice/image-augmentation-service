@@ -33,6 +33,21 @@ class CutoutArguments(BaseModel):
     processing: Literal["cutout"]
     amount: Annotated[float, Field(strict=True, gt=0, lt=1)]
 
+class FlipArguments(BaseModel):
+    """
+        A data model for specifying a 'flip' operation.
+
+        This model is used to define the parameters for flipping an image.
+
+        Attributes:
+            processing (Literal["flip"]): The name of the operation. This field is fixed.
+            axis (string): The direction of the flip.
+    """
+    # enforce specific value for processing field
+    processing: Literal["flip"]
+    # enforce the possible values
+    axis: Literal["x"] | Literal["y"]
+
 
 class ShiftArguments(BaseModel):
     """
@@ -59,35 +74,20 @@ class ShiftArguments(BaseModel):
     distance: Annotated[int, Field(strict=True, gt=0)]
 
 
-class RotateArguments(BaseModel):
+class PepperNoiseArguments(BaseModel):
     """
-        A data model for specifying a 'rotate' operation.
+        A data model for specifying a 'pepper_noise' operation.
 
-        This model is used to define the parameters for rotating an image.
+        This model is used to define the parameters for applying noise to the image.
 
         Attributes:
-            processing (Literal["rotate"]): The name of the operation. This field is fixed.
-            angle (int): The amount of rotation in degrees. Must be a postive integer between 1 and 359.
+            processing (Literal["pepper_noise"]): The type of operation. This field is fixed.
+            amount (float): The ratio of pixels to overwrite.
     """
     # enforce specific value for processing field
-    processing: Literal["rotate"]
-    # enforce integer range
-    angle: Annotated[int, Field(strict=True, gt=0, lt=360)]
-
-class FlipArguments(BaseModel):
-    """
-        A data model for specifying a 'flip' operation.
-
-        This model is used to define the parameters for flipping an image.
-
-        Attributes:
-            processing (Literal["flip"]): The name of the operation. This field is fixed.
-            axis (string): The direction of the flip.
-    """
-    # enforce specific value for processing field
-    processing: Literal["flip"]
-    # enforce the possible values
-    axis: Literal["x"] | Literal["y"]
+    processing: Literal["pepper_noise"]
+    # enforce positive integer... 0 is no change
+    amount: Annotated[float, Field(strict=True, gt=0, lt=1)]
 
 class RainbowNoiseArguments(BaseModel):
     """
@@ -104,6 +104,20 @@ class RainbowNoiseArguments(BaseModel):
     # enforce positive integer... 0 is no change
     amount: Annotated[float, Field(strict=True, gt=0, lt=1)]
 
+class RotateArguments(BaseModel):
+    """
+        A data model for specifying a 'rotate' operation.
+
+        This model is used to define the parameters for rotating an image.
+
+        Attributes:
+            processing (Literal["rotate"]): The name of the operation. This field is fixed.
+            angle (int): The amount of rotation in degrees. Must be a postive integer between 1 and 359.
+    """
+    # enforce specific value for processing field
+    processing: Literal["rotate"]
+    # enforce integer range
+    angle: Annotated[int, Field(strict=True, gt=0, lt=360)]
 
 class SaltNoiseArguments(BaseModel):
     """
@@ -117,22 +131,6 @@ class SaltNoiseArguments(BaseModel):
     """
     # enforce specific value for processing field
     processing: Literal["salt_noise"]
-    # enforce positive integer... 0 is no change
-    amount: Annotated[float, Field(strict=True, gt=0, lt=1)]
-
-
-class PepperNoiseArguments(BaseModel):
-    """
-        A data model for specifying a 'pepper_noise' operation.
-
-        This model is used to define the parameters for applying noise to the image.
-
-        Attributes:
-            processing (Literal["pepper_noise"]): The type of operation. This field is fixed.
-            amount (float): The ratio of pixels to overwrite.
-    """
-    # enforce specific value for processing field
-    processing: Literal["pepper_noise"]
     # enforce positive integer... 0 is no change
     amount: Annotated[float, Field(strict=True, gt=0, lt=1)]
 
