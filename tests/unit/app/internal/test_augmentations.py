@@ -150,6 +150,31 @@ def test_cutout_50_percent_is_correct():
     assert number_of_changed_pixels == 1
 
 
+# --- darken ---
+
+def test_darken_is_correct_for_8_bit_RGB_image():
+    """
+    GIVEN an 8-bit RGB image
+    AND an amount of 50% increase
+    WHEN darken is called
+    THEN the darekened image has the correct values
+    """
+    input_image = numpy.array(
+        object= [
+            [[255,  128,    0]],
+        ], dtype=numpy.uint8
+    )
+    expected_output = numpy.array(
+        object= [
+            [[127,  0,    0]],
+        ], dtype=numpy.uint8
+    )
+    calculated_output = brighten(
+        image_data=input_image,
+        amount=0.5,
+    )
+    assert numpy.array_equal(calculated_output, expected_output)
+
 # --- flip ---
 
 def test_flip_x_valid_data_is_correct_result():
