@@ -13,6 +13,13 @@ logger = logging.getLogger(__name__)
 # --- utility function ---
 # TODO: move this?
 
+CHANNEL_MAP = {
+    'r': 0,
+    'g': 1,
+    'b': 2,
+    'a': 3
+}
+
 def split_channels(image_data: numpy.ndarray) -> dict:
     r_channel = image_data[:, :, 0]
     g_channel = image_data[:, :, 1]
