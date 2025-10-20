@@ -163,6 +163,9 @@ class ShiftArguments(BaseModel):
     # enforce positive integer... 0 is no change
     distance: Annotated[int, Field(strict=True, gt=0)]
 
+class TintArguments(BaseModel):
+    processing: Literal["tint"]
+    amount: Annotated[int, Field(ge=0, le=100)]
 
 
 # TODO: deprecate
