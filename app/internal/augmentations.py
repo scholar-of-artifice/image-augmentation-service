@@ -424,6 +424,26 @@ def uniform_blur(image_data: numpy.ndarray, size: int) -> numpy.ndarray:
     )
     return result
 
+
+def zoom(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
+    # https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.zoom.html#scipy.ndimage.zoom
+    width, height = image_data.shape[:2]
+    channel_dict = split_channels(image_data)
+    result_r = scipy.ndimage.zoom(channel_dict['r_channel'], zoom=amount).astype(
+        image_data.dtype)
+    result_g = scipy.ndimage.zoom(channel_dict['g_channel'], zoom=amount).astype(
+        image_data.dtype)
+    result_b = scipy.ndimage.zoom(channel_dict['b_channel'], zoom=amount).astype(
+        image_data.dtype)
+    result = merge_channels(
+        r_channel=result_r,
+        g_channel=result_g,
+        b_channel=result_b,
+    )
+    # TODO: random zoom point?
+    result = result[0:width, 0:height]
+    return result
+
 # TODO: Zoom
 # TODO: Shear
 # TODO: Perspective Warp
