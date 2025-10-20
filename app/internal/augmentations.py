@@ -67,12 +67,6 @@ def channel_swap(image_data: numpy.ndarray, a: str, b: str) -> numpy.ndarray:
     output_image = image_data.copy()
     if a == b:
         return output_image
-    channel_map = {
-        'r': 0,
-        'g': 1,
-        'b': 2,
-        'a': 2,
-    }
     # Get dimensions of image
     width, height = output_image.shape[:2]
     # Get number of channels
