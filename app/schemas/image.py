@@ -57,6 +57,8 @@ class GaussianBlurArguments(BaseModel):
     processing: Literal["gaussian_blur"]
     amount: Annotated[int, Field(ge=1), Field(le=100)]
 
+class InvertArguments(BaseModel):
+    processing: Literal["invert"]
 
 class ShiftArguments(BaseModel):
     """
