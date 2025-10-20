@@ -93,31 +93,6 @@ class PercentileFilterArguments(BaseModel):
     amount: Annotated[int, Field(ge=1), Field(le=128)]
 
 
-class ShiftArguments(BaseModel):
-    """
-        A data model for specifying a 'shift' operation.
-
-        This model is used to define the parameters for shifting an image.
-
-        Attributes:
-            processing (Literal["shift"]): The type of operation. This field is fixed.
-            direction (str): The direction of the shift. Must have a value of "up", "down", "left", or "right".
-            distance (int): The distance of the shift. Must be a positive integer and greater than 0.
-    """
-    # enforce specific value for processing field
-    processing: Literal["shift"]
-    # enforce specific string constraints for direction
-    direction: Annotated[str, StringConstraints(
-        min_length=2,
-        max_length=5,
-        strip_whitespace=True,
-        strict=True,
-        to_lower=True,
-        pattern="^(up|down|left|right)$")]
-    # enforce positive integer... 0 is no change
-    distance: Annotated[int, Field(strict=True, gt=0)]
-
-
 class RainbowNoiseArguments(BaseModel):
     """
         A data model for specifying a 'rainbow_noise' operation.
@@ -162,6 +137,32 @@ class SaltNoiseArguments(BaseModel):
     processing: Literal["salt_noise"]
     # enforce positive integer... 0 is no change
     amount: Annotated[float, Field(strict=True, gt=0, lt=1)]
+
+
+class ShiftArguments(BaseModel):
+    """
+        A data model for specifying a 'shift' operation.
+
+        This model is used to define the parameters for shifting an image.
+
+        Attributes:
+            processing (Literal["shift"]): The type of operation. This field is fixed.
+            direction (str): The direction of the shift. Must have a value of "up", "down", "left", or "right".
+            distance (int): The distance of the shift. Must be a positive integer and greater than 0.
+    """
+    # enforce specific value for processing field
+    processing: Literal["shift"]
+    # enforce specific string constraints for direction
+    direction: Annotated[str, StringConstraints(
+        min_length=2,
+        max_length=5,
+        strip_whitespace=True,
+        strict=True,
+        to_lower=True,
+        pattern="^(up|down|left|right)$")]
+    # enforce positive integer... 0 is no change
+    distance: Annotated[int, Field(strict=True, gt=0)]
+
 
 
 # TODO: deprecate
