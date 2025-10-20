@@ -170,7 +170,7 @@ def test_darken_is_correct_for_8_bit_RGB_image():
             [[127,  0,    0]],
         ], dtype=numpy.uint8
     )
-    calculated_output = brighten(
+    calculated_output = darken(
         image_data=input_image,
         amount=0.5,
     )
