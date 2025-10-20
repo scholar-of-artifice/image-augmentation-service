@@ -31,6 +31,7 @@ PROCESSING_MAP = {
     'cutout': cutout,
     'darken': darken,
     'edge_filter': edge_filter,
+    'gaussian_blur': gaussian_blur,
     'shift': shift,
     'rotate': rotate,
     'rainbow_noise': rainbow_noise,
