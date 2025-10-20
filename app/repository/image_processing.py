@@ -20,6 +20,7 @@ from app.internal.augmentations import (
     shift,
     tint,
     uniform_blur,
+    zoom,
 )
 from app.schemas.image import AugmentationRequestBody
 
