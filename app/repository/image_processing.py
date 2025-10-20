@@ -1,6 +1,7 @@
 import numpy
 
 from app.internal.augmentations import (
+    brighten,
     channel_swap,
     cutout,
     flip,
