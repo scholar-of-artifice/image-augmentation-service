@@ -37,6 +37,7 @@ PROCESSING_MAP = {
     'shift': shift,
     'rotate': rotate,
     'mute_channel': mute_channel,
+    'pepper_noise': pepper_noise,
     'percentile_filter': percentile_filter,
     'rainbow_noise': rainbow_noise,
     'salt_noise': salt_noise,
