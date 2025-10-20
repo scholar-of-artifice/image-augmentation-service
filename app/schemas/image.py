@@ -14,6 +14,26 @@ class BrightenArguments(BaseModel):
     amount: Annotated[int, Field(ge=0), Field(le=100)]
 
 
+class ChannelSwapArguments(BaseModel):
+    """
+        A data model for specifying a 'channel_swap' operation.
+
+        This model is used to define the parameters for applying noise to the image.
+
+        Attributes:
+            processing (Literal["channel_swap"]): The type of operation. This field is fixed.
+            amount (float): The ratio of pixels to overwrite.
+    """
+    # enforce specific value for processing field
+    processing: Literal["channel_swap"]
+    a: Literal["r"]|Literal["g"]|Literal["b"]|Literal["a"]
+    b: Literal["r"]|Literal["g"]|Literal["b"]|Literal["a"]
+
+class CutoutArguments(BaseModel):
+    processing: Literal["cutout"]
+    amount: Annotated[float, Field(strict=True, gt=0, lt=1)]
+
+
 class ShiftArguments(BaseModel):
     """
         A data model for specifying a 'shift' operation.
@@ -116,25 +136,6 @@ class PepperNoiseArguments(BaseModel):
     # enforce positive integer... 0 is no change
     amount: Annotated[float, Field(strict=True, gt=0, lt=1)]
 
-
-class ChannelSwapArguments(BaseModel):
-    """
-        A data model for specifying a 'channel_swap' operation.
-
-        This model is used to define the parameters for applying noise to the image.
-
-        Attributes:
-            processing (Literal["channel_swap"]): The type of operation. This field is fixed.
-            amount (float): The ratio of pixels to overwrite.
-    """
-    # enforce specific value for processing field
-    processing: Literal["channel_swap"]
-    a: Literal["r"]|Literal["g"]|Literal["b"]|Literal["a"]
-    b: Literal["r"]|Literal["g"]|Literal["b"]|Literal["a"]
-
-class CutoutArguments(BaseModel):
-    processing: Literal["cutout"]
-    amount: Annotated[float, Field(strict=True, gt=0, lt=1)]
 
 # TODO: deprecate
 class UploadRequestBody(BaseModel):
