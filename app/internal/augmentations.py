@@ -400,6 +400,16 @@ def shift(image_data: numpy.ndarray, direction: str, distance: int) -> numpy.nda
     shift_direction, axis = direction_map[direction]
     return numpy.roll(image_data, shift_direction * distance, axis=axis)
 
+def tint(image_data: numpy.ndarray, channel: str, amount: float) -> numpy.ndarray:
+    for i, row in enumerate(image_data):
+        for j, pixel in enumerate(row):
+            for k, c in enumerate(pixel):
+                channel_to_change = CHANNEL_MAP[channel]
+                if k == channel_to_change:
+                    image_data[i][j][k] = min(int(c + (c * amount/2)), 255)
+                else:
+                    image_data[i][j][k] = max(int(c - (c * amount/2)), 0)
+    return image_data
 
 
 # TODO: Zoom
