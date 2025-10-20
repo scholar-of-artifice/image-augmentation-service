@@ -10,6 +10,25 @@ from app.schemas.logging import LogEntry
 # set up logging
 logger = logging.getLogger(__name__)
 
+# --- utility function ---
+# TODO: move this?
+
+def split_channels(image_data: numpy.ndarray) -> dict:
+    r_channel = image_data[:, :, 0]
+    g_channel = image_data[:, :, 1]
+    b_channel = image_data[:, :, 2]
+    return {
+        'r_channel': r_channel,
+        'g_channel': g_channel,
+        'b_channel': b_channel,
+    }
+
+def merge_channels(r_channel: numpy.ndarray, g_channel: numpy.ndarray, b_channel: numpy.ndarray) -> numpy.ndarray:
+    merged_array = numpy.stack((r_channel, g_channel, b_channel), axis=-1)
+    return merged_array
+
+# --- --- ---
+
 def brighten(image_data: numpy.ndarray, amount: int) -> numpy.ndarray:
     """
     Takes an image and increases the value of every pixel.
