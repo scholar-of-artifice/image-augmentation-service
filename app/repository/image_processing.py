@@ -43,6 +43,7 @@ PROCESSING_MAP = {
     'rotate': rotate,
     'salt_noise': salt_noise,
     'shift': shift,
+    'tint': tint,
 }
 # TODO: add more functions
 # flip
