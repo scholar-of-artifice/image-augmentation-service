@@ -258,6 +258,18 @@ def pepper_noise(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
     return output_image
 
 
+def percentile_filter(image_data: numpy.ndarray, percentile: int, size: int) -> numpy.ndarray:
+    # https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.percentile_filter.html#scipy.ndimage.percentile_filter
+    channel_dict = split_channels(image_data)
+    result_r = scipy.ndimage.percentile_filter(channel_dict['r_channel'], percentile=percentile, size=size).astype(image_data.dtype)
+    result_g = scipy.ndimage.percentile_filter(channel_dict['g_channel'], percentile=percentile, size=size).astype(image_data.dtype)
+    result_b = scipy.ndimage.percentile_filter(channel_dict['b_channel'], percentile=percentile, size=size).astype(image_data.dtype)
+    result = merge_channels(
+        r_channel=result_r,
+        g_channel=result_g,
+        b_channel=result_b,
+    )
+    return result
 
 def rainbow_noise(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
     """
