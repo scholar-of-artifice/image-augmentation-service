@@ -36,6 +36,7 @@ PROCESSING_MAP = {
     'invert': invert,
     'shift': shift,
     'rotate': rotate,
+    'max_filter': max_filter,
     'min_filter': min_filter,
     'mute_channel': mute_channel,
     'pepper_noise': pepper_noise,
