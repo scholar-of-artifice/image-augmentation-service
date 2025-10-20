@@ -16,14 +16,14 @@ from app.schemas.image import AugmentationRequestBody
 # map a string in the input parameter to an augmentation function
 PROCESSING_MAP = {
     'brighten': brighten,
+    'channel_swap': channel_swap,
+    'cutout': cutout,
     'shift': shift,
     'rotate': rotate,
     'rainbow_noise': rainbow_noise,
     'salt_noise': salt_noise,
     'pepper_noise': pepper_noise,
     'flip': flip,
-    'channel_swap': channel_swap,
-    'cutout': cutout,
 }
 # TODO: add more functions
 # flip
