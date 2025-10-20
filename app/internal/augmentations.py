@@ -10,6 +10,23 @@ from app.schemas.logging import LogEntry
 # set up logging
 logger = logging.getLogger(__name__)
 
+def brighten(image_data: numpy.ndarray, amount: int) -> numpy.ndarray:
+    """
+    Takes an image and increases the value of every pixel.
+
+    Args:
+        image_data (numpy.array): the image data to process.
+        amount (int): the percentage amount to increase image brightness.
+    Returns:
+        numpy.array: The newly processed image.
+    """
+    value = int(amount/100 * 255)
+    for i, row in enumerate(image_data):
+        for j, pixel in enumerate(row):
+            for k, channel in enumerate(pixel):
+                image_data[i][j][k] = min(channel + value, 255)
+    return image_data
+
 def shift(image_data: numpy.ndarray, direction: str, distance: int) -> numpy.ndarray:
     """
     Translate an image by a specified distance (in pixels).
