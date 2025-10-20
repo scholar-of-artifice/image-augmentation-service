@@ -444,21 +444,13 @@ def zoom(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
     result = result[0:width, 0:height]
     return result
 
-# TODO: Zoom
 # TODO: Shear
 # TODO: Perspective Warp
 # TODO: Elastic Transformation
-# TODO: Brighten
 # TODO: Contrast
 # TODO: Saturate
 # TODO: Hue
 # TODO: Color Jitter
 # TODO: Grayscale
-# TODO: Invert
 # TODO: Solarize
-# TODO: Gaussian Blur
-# TODO: Sharpen
-# TODO: Gaussian Noise
-# TODO: Median Blur
-# TODO: Cutout
 # TODO: Grid Mask
