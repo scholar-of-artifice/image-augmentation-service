@@ -39,7 +39,6 @@ PROCESSING_MAP = {
     'rainbow_noise': rainbow_noise,
     'salt_noise': salt_noise,
     'pepper_noise': pepper_noise,
-    'flip': flip,
 }
 # TODO: add more functions
 # flip
