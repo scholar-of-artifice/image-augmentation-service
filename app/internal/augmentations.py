@@ -73,7 +73,7 @@ def channel_swap(image_data: numpy.ndarray, a: str, b: str) -> numpy.ndarray:
     num_channels = output_image.shape[2]
     for i, row in enumerate(output_image):
         for j, pixel in enumerate(row):
-            pixel[channel_map[a]], pixel[channel_map[b]] = pixel[channel_map[b]], pixel[channel_map[a]]
+            pixel[CHANNEL_MAP[a]], pixel[CHANNEL_MAP[b]] = pixel[CHANNEL_MAP[b]], pixel[CHANNEL_MAP[a]]
     # return the modified array
     return output_image
 
