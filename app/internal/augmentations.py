@@ -208,11 +208,6 @@ def max_filter(image_data: numpy.ndarray, size: int) -> numpy.ndarray:
     return result
 
 def mute_channel(image_data: numpy.ndarray, channel: str) -> numpy.ndarray:
-    channel_map = {
-        'b': 0,
-        'g': 1,
-        'r': 2,
-    }
     for i, row in enumerate(image_data):
         for j, pixel in enumerate(row):
             image_data[i][j][CHANNEL_MAP[channel]] = 0
