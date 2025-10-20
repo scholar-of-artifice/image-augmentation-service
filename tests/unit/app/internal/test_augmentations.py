@@ -13,6 +13,30 @@ from app.internal.augmentations import (
     shift,
 )
 
+# --- brighten ---
+
+def test_brighten_is_correct_for_8_bit_RGB_image():
+    """
+    GIVEN an 8-bit RGB image
+    AND an amount of 50% increase
+    WHEN brighten is called
+    THEN the brightened image has the correct values
+    """
+    input_image = numpy.array(
+        object= [
+            [[255,  128,    0]],
+        ], dtype=numpy.uint8
+    )
+    expected_output = numpy.array(
+        object= [
+            [[255,  255,    127]],
+        ], dtype=numpy.uint8
+    )
+    calculated_output = brighten(
+        image_data=input_image,
+        amount=0.5,
+    )
+    assert numpy.array_equal(calculated_output, expected_output)
 
 # --- cutout ---
 
