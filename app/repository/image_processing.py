@@ -45,6 +45,7 @@ PROCESSING_MAP = {
     'shift': shift,
     'tint': tint,
     'uniform_blur': uniform_blur,
+    'zoom': zoom,
 }
 # TODO: add more functions
 # flip
