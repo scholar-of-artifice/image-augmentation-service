@@ -167,6 +167,10 @@ class TintArguments(BaseModel):
     processing: Literal["tint"]
     amount: Annotated[int, Field(ge=0, le=100)]
 
+class UniformBlurArguments(BaseModel):
+    processing: Literal["uniform_blur"]
+    amount: Annotated[int, Field(ge=1), Field(le=100)]
+
 class ZoomArguments(BaseModel):
     processing: Literal["zoom"]
     amount: Annotated[int, Field(ge=1), Field(le=100)]
