@@ -7,6 +7,7 @@ from app.internal.augmentations import (
     darken,
     edge_filter,
     flip,
+    gaussian_blur,
     invert,
     pepper_noise,
     rainbow_noise,
