@@ -34,16 +34,15 @@ PROCESSING_MAP = {
     'flip': flip,
     'gaussian_blur': gaussian_blur,
     'invert': invert,
-    'shift': shift,
-    'rotate': rotate,
     'max_filter': max_filter,
     'min_filter': min_filter,
     'mute_channel': mute_channel,
     'pepper_noise': pepper_noise,
     'percentile_filter': percentile_filter,
     'rainbow_noise': rainbow_noise,
+    'rotate': rotate,
     'salt_noise': salt_noise,
-    'pepper_noise': pepper_noise,
+    'shift': shift,
 }
 # TODO: add more functions
 # flip
