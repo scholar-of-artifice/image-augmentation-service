@@ -18,6 +18,7 @@ from app.internal.augmentations import (
     rotate,
     salt_noise,
     shift,
+    tint,
     uniform_blur,
 )
 from app.schemas.image import AugmentationRequestBody
