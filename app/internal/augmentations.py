@@ -411,6 +411,18 @@ def tint(image_data: numpy.ndarray, channel: str, amount: float) -> numpy.ndarra
                     image_data[i][j][k] = max(int(c - (c * amount/2)), 0)
     return image_data
 
+def uniform_blur(image_data: numpy.ndarray, size: int) -> numpy.ndarray:
+    # https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.uniform_filter.html#scipy.ndimage.uniform_filter
+    channel_dict = split_channels(image_data)
+    result_r = scipy.ndimage.uniform_filter(channel_dict['r_channel'], size=size).astype(image_data.dtype)
+    result_g = scipy.ndimage.uniform_filter(channel_dict['g_channel'], size=size).astype(image_data.dtype)
+    result_b = scipy.ndimage.uniform_filter(channel_dict['b_channel'], size=size).astype(image_data.dtype)
+    result = merge_channels(
+        r_channel=result_r,
+        g_channel=result_g,
+        b_channel=result_b,
+    )
+    return result
 
 # TODO: Zoom
 # TODO: Shear
