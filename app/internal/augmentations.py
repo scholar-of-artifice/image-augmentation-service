@@ -186,6 +186,13 @@ def gaussian_blur(image_data: numpy.ndarray, sigma: int) -> numpy.ndarray:
     )
     return result
 
+def invert(image_data: numpy.ndarray) -> numpy.ndarray:
+    for i, row in enumerate(image_data):
+        for j, pixel in enumerate(row):
+            for k, channel in enumerate(pixel):
+                image_data[i][j][k] = max(255 - channel, 0)
+    return image_data
+
 def pepper_noise(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
     """
     Applies random noise to a percentage of pixels in the image.
