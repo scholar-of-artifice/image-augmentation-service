@@ -95,6 +95,22 @@ def cutout(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
     # return the modified array
     return output_image
 
+def darken(image_data: numpy.ndarray, amount: int) -> numpy.ndarray:
+    """
+    Takes an image and increases the value of every pixel.
+
+    Args:
+        image_data (numpy.array): the image data to process.
+        amount (int): the percentage amount to increase image brightness.
+    Returns:
+        numpy.array: The newly processed image.
+    """
+    value = int(amount/100 * 255)
+    for i, row in enumerate(image_data):
+        for j, pixel in enumerate(row):
+            for k, channel in enumerate(pixel):
+                image_data[i][j][k] = max(channel - value, 0)
+    return image_data
 
 def flip(image_data: numpy.ndarray, axis: str) -> numpy.ndarray:
     """
