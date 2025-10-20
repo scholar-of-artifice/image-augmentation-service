@@ -33,6 +33,11 @@ class CutoutArguments(BaseModel):
     processing: Literal["cutout"]
     amount: Annotated[float, Field(strict=True, gt=0, lt=1)]
 
+
+class DarkenArguments(BaseModel):
+    processing: Literal["darken"]
+    amount: Annotated[int, Field(ge=0), Field(le=100)]
+
 class FlipArguments(BaseModel):
     """
         A data model for specifying a 'flip' operation.
