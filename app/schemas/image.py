@@ -64,6 +64,10 @@ class MaxFilterArguments(BaseModel):
     processing: Literal["max_filter"]
     amount: Annotated[int, Field(ge=1), Field(le=128)]
 
+class MinFilterArguments(BaseModel):
+    processing: Literal["min_filter"]
+    amount: Annotated[int, Field(ge=1), Field(le=128)]
+
 class ShiftArguments(BaseModel):
     """
         A data model for specifying a 'shift' operation.
