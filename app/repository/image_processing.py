@@ -11,6 +11,7 @@ from app.internal.augmentations import (
     invert,
     max_filter,
     min_filter,
+    mute_channel,
     pepper_noise,
     percentile_filter,
     rainbow_noise,
