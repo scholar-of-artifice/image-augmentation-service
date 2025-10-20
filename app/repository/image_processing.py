@@ -44,6 +44,7 @@ PROCESSING_MAP = {
     'salt_noise': salt_noise,
     'shift': shift,
     'tint': tint,
+    'uniform_blur': uniform_blur,
 }
 # TODO: add more functions
 # flip
