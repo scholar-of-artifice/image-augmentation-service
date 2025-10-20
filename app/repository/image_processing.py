@@ -20,6 +20,7 @@ PROCESSING_MAP = {
     'brighten': brighten,
     'channel_swap': channel_swap,
     'cutout': cutout,
+    'darken': darken,
     'shift': shift,
     'rotate': rotate,
     'rainbow_noise': rainbow_noise,
