@@ -53,6 +53,10 @@ class FlipArguments(BaseModel):
     # enforce the possible values
     axis: Literal["x"] | Literal["y"]
 
+class GaussianBlurArguments(BaseModel):
+    processing: Literal["gaussian_blur"]
+    sigma: Annotated[int, Field(ge=1), Field(le=100)]
+
 
 class ShiftArguments(BaseModel):
     """
