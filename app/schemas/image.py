@@ -87,6 +87,12 @@ class PepperNoiseArguments(BaseModel):
     # enforce positive integer... 0 is no change
     amount: Annotated[float, Field(strict=True, gt=0, lt=1)]
 
+class PercentileFilterArguments(BaseModel):
+    processing: Literal["percentile_filter"]
+    percentile: Annotated[int, Field(ge=0), Field(le=100)]
+    amount: Annotated[int, Field(ge=1), Field(le=128)]
+
+
 class ShiftArguments(BaseModel):
     """
         A data model for specifying a 'shift' operation.
