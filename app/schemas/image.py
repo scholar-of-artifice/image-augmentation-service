@@ -68,6 +68,10 @@ class MinFilterArguments(BaseModel):
     processing: Literal["min_filter"]
     amount: Annotated[int, Field(ge=1), Field(le=128)]
 
+class MuteChannelArguments(BaseModel):
+    processing: Literal["mute_channel"]
+    channel: Literal["r"] | Literal["g"] | Literal["b"]
+
 class ShiftArguments(BaseModel):
     """
         A data model for specifying a 'shift' operation.
