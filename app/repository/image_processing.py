@@ -10,6 +10,7 @@ from app.internal.augmentations import (
     gaussian_blur,
     invert,
     max_filter,
+    min_filter,
     pepper_noise,
     percentile_filter,
     rainbow_noise,
