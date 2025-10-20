@@ -72,6 +72,21 @@ class MuteChannelArguments(BaseModel):
     processing: Literal["mute_channel"]
     channel: Literal["r"] | Literal["g"] | Literal["b"]
 
+class PepperNoiseArguments(BaseModel):
+    """
+        A data model for specifying a 'pepper_noise' operation.
+
+        This model is used to define the parameters for applying noise to the image.
+
+        Attributes:
+            processing (Literal["pepper_noise"]): The type of operation. This field is fixed.
+            amount (float): The ratio of pixels to overwrite.
+    """
+    # enforce specific value for processing field
+    processing: Literal["pepper_noise"]
+    # enforce positive integer... 0 is no change
+    amount: Annotated[float, Field(strict=True, gt=0, lt=1)]
+
 class ShiftArguments(BaseModel):
     """
         A data model for specifying a 'shift' operation.
@@ -96,21 +111,6 @@ class ShiftArguments(BaseModel):
     # enforce positive integer... 0 is no change
     distance: Annotated[int, Field(strict=True, gt=0)]
 
-
-class PepperNoiseArguments(BaseModel):
-    """
-        A data model for specifying a 'pepper_noise' operation.
-
-        This model is used to define the parameters for applying noise to the image.
-
-        Attributes:
-            processing (Literal["pepper_noise"]): The type of operation. This field is fixed.
-            amount (float): The ratio of pixels to overwrite.
-    """
-    # enforce specific value for processing field
-    processing: Literal["pepper_noise"]
-    # enforce positive integer... 0 is no change
-    amount: Annotated[float, Field(strict=True, gt=0, lt=1)]
 
 class RainbowNoiseArguments(BaseModel):
     """
