@@ -193,6 +193,20 @@ def invert(image_data: numpy.ndarray) -> numpy.ndarray:
                 image_data[i][j][k] = max(255 - channel, 0)
     return image_data
 
+
+def min_filter(image_data: numpy.ndarray, size: int) -> numpy.ndarray:
+    # https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.minimum_filter.html#scipy.ndimage.minimum_filter
+    channel_dict = split_channels(image_data)
+    result_b = scipy.ndimage.minimum_filter(channel_dict['b_channel'], size=size).astype(image_data.dtype)
+    result_r = scipy.ndimage.minimum_filter(channel_dict['r_channel'], size=size).astype(image_data.dtype)
+    result_g = scipy.ndimage.minimum_filter(channel_dict['g_channel'], size=size).astype(image_data.dtype)
+    result = merge_channels(
+        r_channel=result_r,
+        g_channel=result_g,
+        b_channel=result_b,
+    )
+    return result
+
 def pepper_noise(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
     """
     Applies random noise to a percentage of pixels in the image.
