@@ -206,6 +206,17 @@ def max_filter(image_data: numpy.ndarray, size: int) -> numpy.ndarray:
     )
     return result
 
+def mute_channel(image_data: numpy.ndarray, channel: str) -> numpy.ndarray:
+    channel_map = {
+        'b': 0,
+        'g': 1,
+        'r': 2,
+    }
+    for i, row in enumerate(image_data):
+        for j, pixel in enumerate(row):
+            image_data[i][j][channel_map[channel]] = 0
+    return image_data
+
 def min_filter(image_data: numpy.ndarray, size: int) -> numpy.ndarray:
     # https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.minimum_filter.html#scipy.ndimage.minimum_filter
     channel_dict = split_channels(image_data)
