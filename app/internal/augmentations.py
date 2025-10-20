@@ -208,12 +208,6 @@ def max_filter(image_data: numpy.ndarray, size: int) -> numpy.ndarray:
     )
     return result
 
-def mute_channel(image_data: numpy.ndarray, channel: str) -> numpy.ndarray:
-    for i, row in enumerate(image_data):
-        for j, pixel in enumerate(row):
-            image_data[i][j][CHANNEL_MAP[channel]] = 0
-    return image_data
-
 def min_filter(image_data: numpy.ndarray, size: int) -> numpy.ndarray:
     # https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.minimum_filter.html#scipy.ndimage.minimum_filter
     channel_dict = split_channels(image_data)
@@ -226,6 +220,12 @@ def min_filter(image_data: numpy.ndarray, size: int) -> numpy.ndarray:
         b_channel=result_b,
     )
     return result
+
+def mute_channel(image_data: numpy.ndarray, channel: str) -> numpy.ndarray:
+    for i, row in enumerate(image_data):
+        for j, pixel in enumerate(row):
+            image_data[i][j][CHANNEL_MAP[channel]] = 0
+    return image_data
 
 def pepper_noise(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
     """
