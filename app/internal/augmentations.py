@@ -131,6 +131,32 @@ def darken(image_data: numpy.ndarray, amount: int) -> numpy.ndarray:
                 image_data[i][j][k] = max(channel - value, 0)
     return image_data
 
+
+def edge_filter(image_data: numpy.ndarray, image_type: str) -> numpy.ndarray:
+    # https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.percentile_filter.html#scipy.ndimage.percentile_filter
+    # convert to grayscale
+    g_image_data = numpy.dot(image_data[...,:3], [0.2989, 0.5870, 0.1140])
+    g_image_data = g_image_data.astype('int32')
+    sobel_h = scipy.ndimage.sobel(g_image_data, axis=0)
+    sobel_v = scipy.ndimage.sobel(g_image_data, axis=1)
+    magnitude = numpy.sqrt(sobel_h**2 + sobel_v**2)
+    # normalize the magnitude
+    max_mag = numpy.max(magnitude)
+    if max_mag == 0:
+        magnitude_norm_2D = numpy.zeros(magnitude.shape, dtype=image_data.dtype)
+    else:
+        magnitude_norm_2D = (magnitude * (255.0 / numpy.max(magnitude))).astype(image_data.dtype)
+    if image_type == 'edge_map':
+        result = numpy.stack([magnitude_norm_2D] * 3, axis=-1)
+    else:
+        # enhance the edges
+        enhance_weight = 0.5
+        edge_map_3D = numpy.stack([magnitude_norm_2D] * 3, axis=-1).astype('float32')
+        original_3D = image_data[..., :3].astype('float32')
+        blended = original_3D + ( edge_map_3D * enhance_weight )
+        result = numpy.clip(blended, 0, 255).astype(image_data.dtype)
+    return result
+
 def flip(image_data: numpy.ndarray, axis: str) -> numpy.ndarray:
     """
     Flips image along the specified axis.
