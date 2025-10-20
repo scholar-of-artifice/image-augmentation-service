@@ -174,7 +174,7 @@ def flip(image_data: numpy.ndarray, axis: str) -> numpy.ndarray:
         return numpy.fliplr(image_data)
 
 
-def gaussian_blur(image_data: numpy.ndarray, sigma: int) -> numpy.ndarray:
+def gaussian_blur(image_data: numpy.ndarray, amount: int) -> numpy.ndarray:
     # https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.gaussian_filter.html#scipy.ndimage.gaussian_filter
     channel_dict = split_channels(image_data)
     result_b = scipy.ndimage.gaussian_filter(channel_dict['b_channel'], sigma=sigma).astype(image_data.dtype)
