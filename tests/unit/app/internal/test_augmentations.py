@@ -2,6 +2,7 @@ import numpy
 import pytest
 
 from app.internal.augmentations import (
+    brighten,
     channel_swap,
     cutout,
     flip,
