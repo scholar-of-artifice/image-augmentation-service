@@ -36,6 +36,7 @@ PROCESSING_MAP = {
     'invert': invert,
     'shift': shift,
     'rotate': rotate,
+    'percentile_filter': percentile_filter,
     'rainbow_noise': rainbow_noise,
     'salt_noise': salt_noise,
     'pepper_noise': pepper_noise,
