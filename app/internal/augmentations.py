@@ -30,6 +30,7 @@ def split_channels(image_data: numpy.ndarray) -> dict:
         'b_channel': b_channel,
     }
 
+
 def merge_channels(r_channel: numpy.ndarray, g_channel: numpy.ndarray, b_channel: numpy.ndarray) -> numpy.ndarray:
     merged_array = numpy.stack((r_channel, g_channel, b_channel), axis=-1)
     return merged_array
@@ -410,6 +411,7 @@ def shift(image_data: numpy.ndarray, direction: str, distance: int) -> numpy.nda
     logger.info(log_data.model_dump_json())
     shift_direction, axis = direction_map[direction]
     return numpy.roll(image_data, shift_direction * distance, axis=axis)
+
 
 def tint(image_data: numpy.ndarray, channel: str, amount: float) -> numpy.ndarray:
     for i, row in enumerate(image_data):
