@@ -55,6 +55,13 @@ def test_BrightenArguments_amount_of_negative_value_is_not_valid():
     with pytest.raises(ValidationError):
         BrightenArguments(**data)
 
+def test_BrightenArguments_amount_of_value_101_is_not_valid():
+    data = {
+        "processing": "brighten",
+        "amount": 101
+    }
+    with pytest.raises(ValidationError):
+        BrightenArguments(**data)
 
 def test_BrightenArguments_amount_of_type_float_is_not_valid():
     data = {
@@ -63,6 +70,41 @@ def test_BrightenArguments_amount_of_type_float_is_not_valid():
     }
     with pytest.raises(ValidationError):
         BrightenArguments(**data)
+
+# --- ChannelSwapArguments ---
+
+def test_ChannelSwapArguments_rg_is_valid():
+    data = {
+        "processing": "channel_swap",
+        "a": 'r',
+        "b": 'g'
+    }
+    channel_swap_args = ChannelSwapArguments(**data)
+    assert channel_swap_args.processing == "channel_swap"
+    assert channel_swap_args.a == 'r'
+    assert channel_swap_args.b == 'g'
+
+def test_ChannelSwapArguments_rb_is_valid():
+    data = {
+        "processing": "channel_swap",
+        "a": 'r',
+        "b": 'b'
+    }
+    channel_swap_args = ChannelSwapArguments(**data)
+    assert channel_swap_args.processing == "channel_swap"
+    assert channel_swap_args.a == 'r'
+    assert channel_swap_args.b == 'b'
+
+def test_ChannelSwapArguments_bg_is_valid():
+    data = {
+        "processing": "channel_swap",
+        "a": 'b',
+        "b": 'g'
+    }
+    channel_swap_args = ChannelSwapArguments(**data)
+    assert channel_swap_args.processing == "channel_swap"
+    assert channel_swap_args.a == 'b'
+    assert channel_swap_args.b == 'g'
 
 # --- ShiftArguments ---
 
