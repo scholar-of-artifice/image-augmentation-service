@@ -9,6 +9,7 @@ from app.internal.augmentations import (
     edge_filter,
     flip,
     invert,
+    max_filter,
     min_filter,
     mute_channel,
     pepper_noise,
