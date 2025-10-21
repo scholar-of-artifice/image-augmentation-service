@@ -18,6 +18,7 @@ from app.schemas.image import (
     PepperNoiseArguments,
     RainbowNoiseArguments,
     RotateArguments,
+    SaltNoiseArguments,
     ShiftArguments,
     TintArguments,
     UniformBlurArguments,
