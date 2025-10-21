@@ -8,6 +8,7 @@ from pydantic.types import StringConstraints
 Models for: Inputs schema
 endpoint: .../image-api/upload
 """
+# TODO: do not allow floats. all inputs should be clearly defined int values if numeric.
 
 class BrightenArguments(BaseModel):
     processing: Literal["brighten"]
