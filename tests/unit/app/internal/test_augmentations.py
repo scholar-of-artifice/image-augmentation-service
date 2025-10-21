@@ -706,3 +706,7 @@ def test_shift_bad_input_dimensions_raises_exception():
 # --- tint ---
 
 # --- zoom ---
+
+def NO_test_zoom_produces_correct_results():
+    # TODO: unsure how to test this as it is random...
+    pytest.fail('not implemented')
