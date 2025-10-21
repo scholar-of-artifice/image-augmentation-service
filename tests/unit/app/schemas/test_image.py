@@ -126,6 +126,14 @@ def test_CutoutArguments_amount_value_99_is_valid():
     assert channel_swap_args.processing == "cutout"
     assert channel_swap_args.amount == 99
 
+def test_CutoutArguments_amount_value_0_is_not_valid():
+    data = {
+        "processing": "cutout",
+        "amount": 0
+    }
+    with pytest.raises(ValidationError):
+        CutoutArguments(**data)
+
 # --- ShiftArguments ---
 
 
