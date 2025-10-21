@@ -6,7 +6,7 @@ from pydantic import ValidationError
 from app.schemas.image import (
     RotateArguments,
     ShiftArguments,
-    UploadRequestBody,
+    AugmentationRequestBody,
     ResponseUploadImage
 )
 
@@ -231,53 +231,53 @@ def test_RotateArguments_360_is_invalid_angle():
         RotateArguments(**data)
 
 
-# --- UploadRequestBody ---
+# --- AugmentationRequestBody ---
 
 
-def test_UploadRequestBody_is_valid_when_arguments_are_for_shift():
+def test_AugmentationRequestBody_is_valid_when_arguments_are_for_shift():
     """
     GIVEN a valid dictionary for shift
-    WHEN an UploadRequestBody is constructed
+    WHEN an AugmentationRequestBody is constructed
     THEN the expected data is stored
     """
     # a valid dictionary representing the request body
     data = {"arguments": {"processing": "shift", "direction": "up", "distance": 42}}
-    # the UploadRequestBody is constructed from the dictionary
-    result = UploadRequestBody(**data)
+    # the AugmentationRequestBody is constructed from the dictionary
+    result = AugmentationRequestBody(**data)
     # the model contains the correct data and types
-    assert isinstance(result, UploadRequestBody)
+    assert isinstance(result, AugmentationRequestBody)
     assert isinstance(result.arguments, ShiftArguments)
     assert result.arguments.processing == "shift"
     assert result.arguments.direction == "up"
     assert result.arguments.distance == 42
 
 
-def test_UploadRequestBody_is_valid_when_arguments_are_for_rotate():
+def test_AugmentationRequestBody_is_valid_when_arguments_are_for_rotate():
     """
     GIVEN a valid dictionary for rotate
-    WHEN an UploadRequestBody is constructed
+    WHEN an AugmentationRequestBody is constructed
     THEN the expected data is stored
     """
     # a valid dictionary representing the request body
     data = {"arguments": {"processing": "rotate", "angle": 42}}
-    # the UploadRequestBody is constructed from the dictionary
-    result = UploadRequestBody(**data)
+    # the AugmentationRequestBody is constructed from the dictionary
+    result = AugmentationRequestBody(**data)
     # the model contains the correct data and types
-    assert isinstance(result, UploadRequestBody)
+    assert isinstance(result, AugmentationRequestBody)
     assert isinstance(result.arguments, RotateArguments)
     assert result.arguments.processing == "rotate"
     assert result.arguments.angle == 42
 
 
-def test_UploadRequestBody_is_invalid_when_arguments_not_part_of_any_model():
+def test_AugmentationRequestBody_is_invalid_when_arguments_not_part_of_any_model():
     """
     GIVEN an invalid dictionary for any argument is created
-    WHEN an UploadRequestBody is constructed
+    WHEN an AugmentationRequestBody is constructed
     THEN an exception is raised
     """
     data = {"arguments": {"what?": "goblins", "there->": 30.235}}
     with pytest.raises(ValidationError):
-        UploadRequestBody(**data)
+        AugmentationRequestBody(**data)
 
 
 # --- ResponseUploadImage ---
