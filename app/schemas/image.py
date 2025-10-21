@@ -198,6 +198,27 @@ class AugmentationRequestBody(BaseModel):
         /image-api/augment/...
     """
     arguments: Annotated[
+        (
+            BrightenArguments |
+            ChannelSwapArguments |
+            CutoutArguments |
+            DarkenArguments |
+            EdgeFilterArguments |
+            FlipArguments |
+            GaussianBlurArguments |
+            InvertArguments |
+            MaxFilterArguments |
+            MinFilterArguments |
+            PepperNoiseArguments |
+            PercentileFilterArguments |
+            RainbowNoiseArguments |
+            RotateArguments |
+            SaltNoiseArguments |
+            ShiftArguments |
+            TintArguments |
+            UniformBlurArguments |
+            ZoomArguments
+        ),
         Field(
             json_schema_extra={
                 "descriminator": "processing"
