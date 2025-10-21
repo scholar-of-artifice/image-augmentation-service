@@ -8,6 +8,7 @@ from app.internal.augmentations import (
     darken,
     edge_filter,
     flip,
+    gaussian_blur,
     invert,
     max_filter,
     min_filter,
