@@ -237,6 +237,29 @@ def test_flip_y_valid_data_is_correct_result():
 
 # --- mute_channel ---
 
+def test_mute_channel_G_produces_correct_results():
+    """
+    GIVEN an RGB image
+    AND a channel of G
+    WHEN mute_channel is called
+    THEN the correct result is returned
+    """
+    input_image = numpy.array(
+        object= [
+            [[255, 255, 255]],
+        ]
+    )
+    calculated_output = mute_channel(
+        image_data=input_image,
+        channel='g'
+    )
+    expected_output = numpy.array(
+        object= [
+            [[255, 0, 255]],
+        ]
+    )
+    assert numpy.array_equal(calculated_output, expected_output)
+
 # --- pepper_noise ---
 
 def test_pepper_noise_50_percent_is_correct():
