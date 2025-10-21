@@ -53,6 +53,12 @@ class FlipArguments(BaseModel):
     # enforce the possible values
     axis: Literal["x"] | Literal["y"]
 
+class EdgeFilterArguments(BaseModel):
+    # enforce specific value for processing field
+    processing: Literal["edge_filter"]
+    # enforce the possible values
+    image_type: Literal["edge_map"] | Literal["edge_enhanced"]
+
 class GaussianBlurArguments(BaseModel):
     processing: Literal["gaussian_blur"]
     amount: Annotated[int, Field(ge=1), Field(le=100)]
