@@ -142,6 +142,14 @@ def test_CutoutArguments_amount_value_100_is_not_valid():
     with pytest.raises(ValidationError):
         CutoutArguments(**data)
 
+def test_CutoutArguments_amount_of_type_float_is_not_valid():
+    data = {
+        "processing": "cutout",
+        "amount": 10.0
+    }
+    with pytest.raises(ValidationError):
+        CutoutArguments(**data)
+
 # --- ShiftArguments ---
 
 
