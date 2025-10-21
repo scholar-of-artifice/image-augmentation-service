@@ -6,6 +6,7 @@ from app.internal.augmentations import (
     channel_swap,
     cutout,
     darken,
+    edge_filter,
     flip,
     invert,
     mute_channel,
