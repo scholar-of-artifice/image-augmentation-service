@@ -11,6 +11,13 @@ endpoint: .../image-api/upload
 # TODO: do not allow floats. all inputs should be clearly defined int values if numeric.
 
 class BrightenArguments(BaseModel):
+    """
+        A data model for specifying a 'brighten' operation.
+
+        Attributes:
+            processing (Literal["brighten"]): The type of operation. This field is fixed.
+            amount (int): The percentage (%) of brightness you want to apply. 0 will keep the image the same. 100 will turn all channels to their maximum value.
+    """
     processing: Literal["brighten"]
     amount: Annotated[int, Field(ge=0), Field(le=100)]
 
