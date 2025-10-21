@@ -55,6 +55,15 @@ def test_BrightenArguments_amount_of_negative_value_is_not_valid():
     with pytest.raises(ValidationError):
         BrightenArguments(**data)
 
+
+def test_BrightenArguments_amount_of_type_float_is_not_valid():
+    data = {
+        "processing": "brighten",
+        "amount": 10.1
+    }
+    with pytest.raises(ValidationError):
+        BrightenArguments(**data)
+
 # --- ShiftArguments ---
 
 
