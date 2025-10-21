@@ -216,6 +216,32 @@ def test_edge_filter_edge_map_produces_correct_results():
         print(row)
     assert numpy.array_equal(calculated_output, expected_output)
 
+def test_edge_filter_edge_enhanced_produces_correct_results():
+
+    input_image = numpy.array(
+        object= [
+            [[255, 0, 0], [0, 0, 0], [0, 0, 0]],
+            [[255, 0, 0], [0, 0, 0], [0, 0, 0]],
+            [[255, 0, 0], [0, 0, 0], [0, 0, 0]],
+            [[255, 0, 0], [0, 0, 0], [0, 0, 0]],
+        ], dtype=numpy.uint8
+    )
+    expected_output = numpy.array(
+        object= [
+            [[255, 127, 127], [127, 127, 127], [0, 0, 0]],
+            [[255, 127, 127], [127, 127, 127], [0, 0, 0]],
+            [[255, 127, 127], [127, 127, 127], [0, 0, 0]],
+            [[255, 127, 127], [127, 127, 127], [0, 0, 0]],
+        ], dtype=numpy.uint8
+    )
+    calculated_output = edge_filter(
+        image_data=input_image,
+        image_type='edge_enhanced',
+    )
+    for row in calculated_output:
+        print(row)
+    assert numpy.array_equal(calculated_output, expected_output)
+
 # --- flip ---
 
 def test_flip_x_valid_data_is_correct_result():
