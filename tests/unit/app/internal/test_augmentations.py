@@ -284,6 +284,30 @@ def test_mute_channel_G_produces_correct_results():
     )
     assert numpy.array_equal(calculated_output, expected_output)
 
+
+def test_mute_channel_B_produces_correct_results():
+    """
+    GIVEN an RGB image
+    AND a channel of B
+    WHEN mute_channel is called
+    THEN the correct result is returned
+    """
+    input_image = numpy.array(
+        object= [
+            [[255, 255, 255]],
+        ]
+    )
+    calculated_output = mute_channel(
+        image_data=input_image,
+        channel='r'
+    )
+    expected_output = numpy.array(
+        object= [
+            [[255, 255, 0]],
+        ]
+    )
+    assert numpy.array_equal(calculated_output, expected_output)
+
 # --- pepper_noise ---
 
 def test_pepper_noise_50_percent_is_correct():
