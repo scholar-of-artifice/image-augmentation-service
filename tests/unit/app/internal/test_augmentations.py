@@ -212,8 +212,6 @@ def test_edge_filter_edge_map_produces_correct_results():
         image_data=input_image,
         image_type='edge_map',
     )
-    for row in calculated_output:
-        print(row)
     assert numpy.array_equal(calculated_output, expected_output)
 
 def test_edge_filter_edge_enhanced_produces_correct_results():
@@ -238,8 +236,6 @@ def test_edge_filter_edge_enhanced_produces_correct_results():
         image_data=input_image,
         image_type='edge_enhanced',
     )
-    for row in calculated_output:
-        print(row)
     assert numpy.array_equal(calculated_output, expected_output)
 
 # --- flip ---
@@ -333,8 +329,6 @@ def test_max_filter_produces_correct_results():
         image_data=input_image,
         size=3
     )
-    for row in calculated_output:
-        print(row)
     assert numpy.array_equal(calculated_output, expected_output)
 
 # --- min_filter ---
@@ -361,8 +355,6 @@ def test_min_filter_produces_correct_results():
         image_data=input_image,
         size=3
     )
-    for row in calculated_output:
-        print(row)
     assert numpy.array_equal(calculated_output, expected_output)
 
 # --- mute_channel ---
@@ -745,7 +737,6 @@ def test_shift_produces_correct_results(direction, distance, expected_output):
     calculated_output = shift(
         image_data=input_image, direction=direction, distance=distance
     )
-    print(calculated_output)
     assert numpy.array_equal(calculated_output, expected_output)
 
 
