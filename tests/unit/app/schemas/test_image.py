@@ -38,6 +38,15 @@ def test_BrightenArguments_amount_of_value_0_is_valid():
     assert brighten_args.processing == "brighten"
     assert brighten_args.amount == 100
 
+def test_BrightenArguments_amount_of_value_100_is_valid():
+    data = {
+        "processing": "brighten",
+        "amount": 100
+    }
+    brighten_args = BrightenArguments(**data)
+    assert brighten_args.processing == "brighten"
+    assert brighten_args.amount == 100
+
 def test_BrightenArguments_amount_of_negative_value_is_not_valid():
     data = {
         "processing": "brighten",
