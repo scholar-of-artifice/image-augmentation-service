@@ -10,6 +10,17 @@ from app.schemas.image import (
     ResponseUploadImage
 )
 
+# --- BrightenArguments ---
+
+def test_BrightenArguments_amount_of_value_0_is_valid():
+    data = {
+        "processing": "brighten",
+        "amount": 100
+    }
+    brighten_args = BrightenArguments(**data)
+    assert brighten_args.processing == "brighten"
+    assert brighten_args.amount == 100
+
 # --- ShiftArguments ---
 
 
