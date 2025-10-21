@@ -4,6 +4,7 @@ import pytest
 from pydantic import ValidationError
 
 from app.schemas.image import (
+    BrightenArguments,
     RotateArguments,
     ShiftArguments,
     AugmentationRequestBody,
