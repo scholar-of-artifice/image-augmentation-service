@@ -190,6 +190,32 @@ def test_darken_is_correct_for_8_bit_RGB_image():
 
 # --- edge_filter ---
 
+def test_edge_filter_edge_map_produces_correct_results():
+
+    input_image = numpy.array(
+        object= [
+            [[255, 255, 255], [0, 0, 0], [0, 0, 0]],
+            [[255, 255, 255], [0, 0, 0], [0, 0, 0]],
+            [[255, 255, 255], [0, 0, 0], [0, 0, 0]],
+            [[255, 255, 255], [0, 0, 0], [0, 0, 0]],
+        ], dtype=numpy.uint8
+    )
+    expected_output = numpy.array(
+        object= [
+            [[255, 255, 255], [255, 255, 255], [0, 0, 0]],
+            [[255, 255, 255], [255, 255, 255], [0, 0, 0]],
+            [[255, 255, 255], [255, 255, 255], [0, 0, 0]],
+            [[255, 255, 255], [255, 255, 255], [0, 0, 0]],
+        ], dtype=numpy.uint8
+    )
+    calculated_output = edge_filter(
+        image_data=input_image,
+        image_type='edge_map',
+    )
+    for row in calculated_output:
+        print(row)
+    assert numpy.array_equal(calculated_output, expected_output)
+
 # --- flip ---
 
 def test_flip_x_valid_data_is_correct_result():
