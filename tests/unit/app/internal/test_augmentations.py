@@ -608,8 +608,6 @@ def test_shift_bad_input_dimensions_raises_exception():
         shift(input_image, "left", 3)
 
 
-# --- shift ---
-
 # --- tint ---
 
 # --- zoom ---
