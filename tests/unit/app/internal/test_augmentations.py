@@ -7,6 +7,7 @@ from app.internal.augmentations import (
     cutout,
     darken,
     flip,
+    invert,
     mute_channel,
     pepper_noise,
     rainbow_noise,
