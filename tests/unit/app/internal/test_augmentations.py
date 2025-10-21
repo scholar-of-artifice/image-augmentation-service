@@ -337,7 +337,143 @@ def test_rainbow_noise_example_50_percent():
 
 # --- rotate ---
 
+def test_rotate_example_45_degrees():
+    """
+    GIVEN a 4x4 matrix
+    AND the amount is 45 degrees
+    WHEN rotate is called
+    THEN the new matrix has the correct value
+    """
+    input_image = numpy.array([[1, 0, 0, 0], [0, 2, 0, 0], [0, 0, 3, 0], [0, 0, 0, 4]])
+    expected_output = numpy.array(
+        [[0, 0, 0, 0], [0, 1, 1, 1], [0, 1, 1, 1], [0, 0, 0, 0]]
+    )
+    calculated_output = rotate(input_image, 45)
+    assert numpy.array_equal(calculated_output, expected_output)
+
+
+def test_rotate_example_90_degrees():
+    """
+    GIVEN a 11x11 matrix
+    AND the amount is 90 degrees
+    WHEN rotate is called
+    THEN the new matrix has the correct value
+    """
+    input_image = numpy.array(
+        [
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11],
+        ]
+    )
+    expected_output = numpy.array(
+        [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ]
+    )
+    calculated_output = rotate(input_image, 90)
+    assert numpy.array_equal(calculated_output, expected_output)
+
+def test_rotate_example_0_degrees():
+    """
+    GIVEN a 11x11 matrix
+    AND the amount is 0 degrees
+    WHEN rotate is called
+    THEN the new matrix has the correct value
+    """
+    input_image = numpy.array(
+        [
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11],
+        ]
+    )
+    expected_output = numpy.array(
+        [
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11],
+        ]
+    )
+    calculated_output = rotate(input_image, 0)
+    assert numpy.array_equal(calculated_output, expected_output)
+
+
+def test_rotate_bad_input_dimensions_raises_exception():
+    """
+    GIVEN a 4x4 matrix
+    AND the input dimensions are incorrect
+    WHEN rotate is called
+    THEN it raises a TypeError
+    """
+    input_image = numpy.array([1, 0, 0, 0])
+    with pytest.raises(TypeError):
+        rotate(input_image, angle=45)
+
+
+def test_rotate_angle_of_string_raises_exception():
+    """
+    GIVEN a 4x4 matrix
+    AND the angle is a string
+    WHEN rotate is called
+    THEN it raises a TypeError
+    """
+    input_image = numpy.array([[1, 0, 0, 0], [0, 2, 0, 0], [0, 0, 3, 0], [0, 0, 0, 4]])
+    with pytest.raises(TypeError):
+        rotate(input_image, angle="45")
+
+
 # --- salt_noise ---
+
+def test_salt_noise_50_percent_is_correct():
+    input_image = numpy.array(
+        [
+            [[255,  0,      0], [0,     255,  0]],
+            [[255,  255,    0], [255,   0,  255]],
+        ], dtype=numpy.uint8
+    )
+    calculated_output = salt_noise(input_image, amount=0.5)
+    # count the number of changed pixels
+    number_of_changed_pixels = 0
+    for i, row in enumerate(calculated_output):
+        for j, pixel in enumerate(row):
+            if not numpy.array_equal(pixel, input_image[i, j]):
+                number_of_changed_pixels = number_of_changed_pixels + 1
+    assert number_of_changed_pixels == 2
 
 # --- shift ---
 
@@ -470,145 +606,6 @@ def test_shift_bad_input_dimensions_raises_exception():
     input_image = numpy.array([1, 0, 0, 0])
     with pytest.raises(TypeError):
         shift(input_image, "left", 3)
-
-# --- rotate ---
-
-def test_rotate_example_45_degrees():
-    """
-    GIVEN a 4x4 matrix
-    AND the amount is 45 degrees
-    WHEN rotate is called
-    THEN the new matrix has the correct value
-    """
-    input_image = numpy.array([[1, 0, 0, 0], [0, 2, 0, 0], [0, 0, 3, 0], [0, 0, 0, 4]])
-    expected_output = numpy.array(
-        [[0, 0, 0, 0], [0, 1, 1, 1], [0, 1, 1, 1], [0, 0, 0, 0]]
-    )
-    calculated_output = rotate(input_image, 45)
-    assert numpy.array_equal(calculated_output, expected_output)
-
-
-def test_rotate_example_90_degrees():
-    """
-    GIVEN a 11x11 matrix
-    AND the amount is 90 degrees
-    WHEN rotate is called
-    THEN the new matrix has the correct value
-    """
-    input_image = numpy.array(
-        [
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11],
-        ]
-    )
-    expected_output = numpy.array(
-        [
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        ]
-    )
-    calculated_output = rotate(input_image, 90)
-    assert numpy.array_equal(calculated_output, expected_output)
-
-def test_rotate_example_0_degrees():
-    """
-    GIVEN a 11x11 matrix
-    AND the amount is 0 degrees
-    WHEN rotate is called
-    THEN the new matrix has the correct value
-    """
-    input_image = numpy.array(
-        [
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11],
-        ]
-    )
-    expected_output = numpy.array(
-        [
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11],
-        ]
-    )
-    calculated_output = rotate(input_image, 0)
-    assert numpy.array_equal(calculated_output, expected_output)
-
-
-def test_rotate_bad_input_dimensions_raises_exception():
-    """
-    GIVEN a 4x4 matrix
-    AND the input dimensions are incorrect
-    WHEN rotate is called
-    THEN it raises a TypeError
-    """
-    input_image = numpy.array([1, 0, 0, 0])
-    with pytest.raises(TypeError):
-        rotate(input_image, angle=45)
-
-
-def test_rotate_angle_of_string_raises_exception():
-    """
-    GIVEN a 4x4 matrix
-    AND the angle is a string
-    WHEN rotate is called
-    THEN it raises a TypeError
-    """
-    input_image = numpy.array([[1, 0, 0, 0], [0, 2, 0, 0], [0, 0, 3, 0], [0, 0, 0, 4]])
-    with pytest.raises(TypeError):
-        rotate(input_image, angle="45")
-
-# --- salt_noise ---
-
-def test_salt_noise_50_percent_is_correct():
-    input_image = numpy.array(
-        [
-            [[255,  0,      0], [0,     255,  0]],
-            [[255,  255,    0], [255,   0,  255]],
-        ], dtype=numpy.uint8
-    )
-    calculated_output = salt_noise(input_image, amount=0.5)
-    # count the number of changed pixels
-    number_of_changed_pixels = 0
-    for i, row in enumerate(calculated_output):
-        for j, pixel in enumerate(row):
-            if not numpy.array_equal(pixel, input_image[i, j]):
-                number_of_changed_pixels = number_of_changed_pixels + 1
-    assert number_of_changed_pixels == 2
 
 
 # --- shift ---
