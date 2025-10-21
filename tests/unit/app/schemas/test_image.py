@@ -15,6 +15,7 @@ from app.schemas.image import (
     MaxFilterArguments,
     MinFilterArguments,
     MuteChannelArguments,
+    RainbowNoiseArguments,
     RotateArguments,
     ShiftArguments,
     TintArguments,
