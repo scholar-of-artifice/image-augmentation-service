@@ -310,6 +310,32 @@ def test_invert_produces_correct_results():
 
 # --- min_filter ---
 
+def test_min_filter_produces_correct_results():
+
+    input_image = numpy.array(
+        object= [
+            [[255, 0, 0], [255, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+            [[255, 0, 0], [255, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+            [[255, 0, 0], [255, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+            [[255, 0, 0], [255, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+        ], dtype=numpy.uint8
+    )
+    expected_output = numpy.array(
+        object= [
+            [[255, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+            [[255, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+            [[255, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+            [[255, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+        ], dtype=numpy.uint8
+    )
+    calculated_output = min_filter(
+        image_data=input_image,
+        size=3
+    )
+    for row in calculated_output:
+        print(row)
+    assert numpy.array_equal(calculated_output, expected_output)
+
 # --- mute_channel ---
 
 def test_mute_channel_R_produces_correct_results():
