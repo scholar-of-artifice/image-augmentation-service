@@ -17,6 +17,7 @@ from app.internal.augmentations import (
     rotate,
     salt_noise,
     shift,
+    uniform_blur,
 )
 
 # --- brighten ---
