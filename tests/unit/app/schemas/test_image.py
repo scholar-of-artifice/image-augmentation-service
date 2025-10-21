@@ -8,6 +8,7 @@ from app.schemas.image import (
     ChannelSwapArguments,
     CutoutArguments,
     DarkenArguments,
+    EdgeFilterArguments,
     FlipArguments,
     InvertArguments,
     MuteChannelArguments,
