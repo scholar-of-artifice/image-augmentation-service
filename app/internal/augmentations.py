@@ -53,6 +53,7 @@ def brighten(image_data: numpy.ndarray, amount: int) -> numpy.ndarray:
                 image_data[i][j][k] = min(channel + value, 255)
     return image_data
 
+
 def channel_swap(image_data: numpy.ndarray, a: str, b: str) -> numpy.ndarray:
     """
     Takes two channels and swaps the values.
@@ -115,6 +116,7 @@ def cutout(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
     # return the modified array
     return output_image
 
+
 def darken(image_data: numpy.ndarray, amount: int) -> numpy.ndarray:
     """
     Takes an image and increases the value of every pixel.
@@ -158,6 +160,7 @@ def edge_filter(image_data: numpy.ndarray, image_type: str) -> numpy.ndarray:
         result = numpy.clip(blended, 0, 255).astype(image_data.dtype)
     return result
 
+
 def flip(image_data: numpy.ndarray, axis: str) -> numpy.ndarray:
     """
     Flips image along the specified axis.
@@ -188,12 +191,14 @@ def gaussian_blur(image_data: numpy.ndarray, amount: int) -> numpy.ndarray:
     )
     return result
 
+
 def invert(image_data: numpy.ndarray) -> numpy.ndarray:
     for i, row in enumerate(image_data):
         for j, pixel in enumerate(row):
             for k, channel in enumerate(pixel):
                 image_data[i][j][k] = max(255 - channel, 0)
     return image_data
+
 
 def max_filter(image_data: numpy.ndarray, size: int) -> numpy.ndarray:
     # https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.maximum_filter.html#scipy.ndimage.maximum_filter
@@ -208,6 +213,7 @@ def max_filter(image_data: numpy.ndarray, size: int) -> numpy.ndarray:
     )
     return result
 
+
 def min_filter(image_data: numpy.ndarray, size: int) -> numpy.ndarray:
     # https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.minimum_filter.html#scipy.ndimage.minimum_filter
     channel_dict = split_channels(image_data)
@@ -221,11 +227,13 @@ def min_filter(image_data: numpy.ndarray, size: int) -> numpy.ndarray:
     )
     return result
 
+
 def mute_channel(image_data: numpy.ndarray, channel: str) -> numpy.ndarray:
     for i, row in enumerate(image_data):
         for j, pixel in enumerate(row):
             image_data[i][j][CHANNEL_MAP[channel]] = 0
     return image_data
+
 
 def pepper_noise(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
     """
@@ -272,6 +280,7 @@ def percentile_filter(image_data: numpy.ndarray, percentile: int, size: int) -> 
     )
     return result
 
+
 def rainbow_noise(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
     """
     Applies random noise to a percentage of pixels in the image.
@@ -302,6 +311,7 @@ def rainbow_noise(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
     output_image[rows, columns] = random_colours
     # return the modified array
     return output_image
+
 
 def rotate(image_data: numpy.ndarray, angle: int) -> numpy.ndarray:
     """
@@ -411,6 +421,7 @@ def tint(image_data: numpy.ndarray, channel: str, amount: float) -> numpy.ndarra
                 else:
                     image_data[i][j][k] = max(int(c - (c * amount/2)), 0)
     return image_data
+
 
 def uniform_blur(image_data: numpy.ndarray, size: int) -> numpy.ndarray:
     # https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.uniform_filter.html#scipy.ndimage.uniform_filter
