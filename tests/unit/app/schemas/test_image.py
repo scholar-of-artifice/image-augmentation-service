@@ -12,6 +12,7 @@ from app.schemas.image import (
     MuteChannelArguments,
     RotateArguments,
     ShiftArguments,
+    UniformBlurArguments,
     AugmentationRequestBody,
     ResponseUploadImage
 )
