@@ -231,6 +231,20 @@ def test_flip_y_valid_data_is_correct_result():
 
 # --- invert ---
 
+def test_invert_produces_correct_results():
+    input_image = numpy.array(
+        [
+            [[255,  0,      0], [0,     255,  0], [0,     0,  255]]
+        ], dtype=numpy.uint8
+    )
+    expected_output = numpy.array(
+        [
+            [[0,  255,  255], [255,   0, 255], [255, 255,   0]]
+        ], dtype=numpy.uint8
+    )
+    calculated_output = invert(input_image)
+    assert numpy.array_equal(calculated_output, expected_output)
+
 # --- max_filter ---
 
 # --- min_filter ---
