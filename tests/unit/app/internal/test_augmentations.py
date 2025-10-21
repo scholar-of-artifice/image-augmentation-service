@@ -178,6 +178,8 @@ def test_darken_is_correct_for_8_bit_RGB_image():
     )
     assert numpy.array_equal(calculated_output, expected_output)
 
+# --- edge_filter ---
+
 # --- flip ---
 
 def test_flip_x_valid_data_is_correct_result():
@@ -224,6 +226,15 @@ def test_flip_y_valid_data_is_correct_result():
     )
     assert numpy.array_equal(output_image, expected_image)
 
+# --- gaussian_blur ---
+
+# --- invert ---
+
+# --- max_filter ---
+
+# --- min_filter ---
+
+# --- mute_channel ---
 
 # --- pepper_noise ---
 
@@ -242,6 +253,8 @@ def test_pepper_noise_50_percent_is_correct():
             if not numpy.array_equal(pixel, input_image[i, j]):
                 number_of_changed_pixels = number_of_changed_pixels + 1
     assert number_of_changed_pixels == 2
+
+# --- percentile_filter ---
 
 # --- rainbow_noise ---
 
@@ -322,6 +335,9 @@ def test_rainbow_noise_example_50_percent():
                 number_of_changed_pixels = number_of_changed_pixels + 1
     assert number_of_changed_pixels == 8
 
+# --- rotate ---
+
+# --- salt_noise ---
 
 # --- shift ---
 
@@ -594,3 +610,9 @@ def test_salt_noise_50_percent_is_correct():
                 number_of_changed_pixels = number_of_changed_pixels + 1
     assert number_of_changed_pixels == 2
 
+
+# --- shift ---
+
+# --- tint ---
+
+# --- zoom ---
