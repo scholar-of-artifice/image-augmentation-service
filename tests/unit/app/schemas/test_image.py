@@ -9,6 +9,7 @@ from app.schemas.image import (
     DarkenArguments,
     FlipArguments,
     InvertArguments,
+    MuteChannelArguments,
     RotateArguments,
     ShiftArguments,
     AugmentationRequestBody,
