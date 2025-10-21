@@ -290,6 +290,9 @@ def test_flip_y_valid_data_is_correct_result():
 
 # --- gaussian_blur ---
 
+def test_gaussian_blur_produces_correct_results():
+    pytest.fail('not implemented')
+
 # --- invert ---
 
 def test_invert_produces_correct_results():
@@ -307,6 +310,32 @@ def test_invert_produces_correct_results():
     assert numpy.array_equal(calculated_output, expected_output)
 
 # --- max_filter ---
+
+def test_max_filter_produces_correct_results():
+
+    input_image = numpy.array(
+        object= [
+            [[255, 0, 0], [255, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+            [[255, 0, 0], [255, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+            [[255, 0, 0], [255, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+            [[255, 0, 0], [255, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+        ], dtype=numpy.uint8
+    )
+    expected_output = numpy.array(
+        object= [
+            [[255, 0, 0], [255, 0, 0], [255, 0, 0], [0, 0, 0], [0, 0, 0]],
+            [[255, 0, 0], [255, 0, 0], [255, 0, 0], [0, 0, 0], [0, 0, 0]],
+            [[255, 0, 0], [255, 0, 0], [255, 0, 0], [0, 0, 0], [0, 0, 0]],
+            [[255, 0, 0], [255, 0, 0], [255, 0, 0], [0, 0, 0], [0, 0, 0]],
+        ], dtype=numpy.uint8
+    )
+    calculated_output = max_filter(
+        image_data=input_image,
+        size=3
+    )
+    for row in calculated_output:
+        print(row)
+    assert numpy.array_equal(calculated_output, expected_output)
 
 # --- min_filter ---
 
@@ -428,6 +457,9 @@ def test_pepper_noise_50_percent_is_correct():
     assert number_of_changed_pixels == 2
 
 # --- percentile_filter ---
+
+def test_percentile_filter_produces_correct_results():
+    pytest.fail('not implemented')
 
 # --- rainbow_noise ---
 
@@ -782,6 +814,9 @@ def test_shift_bad_input_dimensions_raises_exception():
 
 
 # --- tint ---
+
+def test_tint_red_channel_50_produces_correct_results():
+    pytest.fail('not implemented')
 
 # --- zoom ---
 
