@@ -150,6 +150,8 @@ def test_cutout_50_percent_is_correct():
                 number_of_changed_pixels = number_of_changed_pixels + 1
     assert number_of_changed_pixels == 1
 
+# TODO: test contiguous
+
 
 # --- darken ---
 
