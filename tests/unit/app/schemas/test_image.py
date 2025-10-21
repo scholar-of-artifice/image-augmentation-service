@@ -12,6 +12,7 @@ from app.schemas.image import (
     FlipArguments,
     GaussianBlurArguments,
     InvertArguments,
+    MaxFilterArguments,
     MinFilterArguments,
     MuteChannelArguments,
     RotateArguments,
