@@ -10,6 +10,7 @@ from app.schemas.image import (
     DarkenArguments,
     EdgeFilterArguments,
     FlipArguments,
+    GaussianBlurArguments,
     InvertArguments,
     MuteChannelArguments,
     RotateArguments,
