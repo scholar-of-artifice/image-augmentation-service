@@ -620,7 +620,6 @@ def test_ShiftArguments_has_docstring():
     assert "A data model for specifying a 'shift' operation." in ShiftArguments.__doc__
 
 
-
 # --- TintArguments ---
 
 def test_TintArguments_is_valid_when_amount_is_in_range():
@@ -659,8 +658,6 @@ def test_ZoomArguments_is_valid_when_amount_is_in_range():
         zoom_args = ZoomArguments(**data)
         assert zoom_args.processing == 'zoom'
         assert zoom_args.amount == i
-
-
 
 
 # --- AugmentationRequestBody ---
