@@ -391,7 +391,6 @@ def test_RainbowNoiseArguments_with_amount_value_of_99_is_valid():
 
 # --- RotateArguments ---
 
-
 def test_RotateArguments_values_between_1_and_359_are_valid_angle():
     """
     GIVEN a valid angle
@@ -461,7 +460,6 @@ def test_SaltNoiseArguments_with_amount_value_of_0_is_valid():
     mute_channel_args.amount = 0
 
 # --- ShiftArguments ---
-
 
 def test_ShiftArguments_up_is_a_valid_direction():
     data = {
