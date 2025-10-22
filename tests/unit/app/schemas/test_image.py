@@ -211,7 +211,7 @@ def test_FlipArguments_axis_of_value_y_is_valid():
 def test_FlipArguments_axis_of_value_z_is_not_valid():
     data = {
         "processing": "flip",
-        "axis": 'y'
+        "axis": 'z'
     }
     with pytest.raises(ValidationError):
         FlipArguments(**data)
