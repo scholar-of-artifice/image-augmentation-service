@@ -155,7 +155,7 @@ def test_CutoutArguments_amount_of_type_float_is_not_valid():
 def test_DarkenArguments_amount_of_value_0_is_valid():
     data = {
         "processing": "darken",
-        "amount": 100
+        "amount": 0
     }
     darken_args = DarkenArguments(**data)
     assert darken_args.processing == "brighten"
