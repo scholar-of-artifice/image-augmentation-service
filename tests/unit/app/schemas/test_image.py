@@ -366,6 +366,7 @@ def test_PepperNoiseArguments_with_amount_value_of_99_is_valid():
     mute_channel_args.amount = 99
 
 # --- PercentileFilterArguments ---
+
 # --- RainbowNoiseArguments ---
 
 def test_RainbowNoiseArguments_with_amount_value_of_99_is_valid():
