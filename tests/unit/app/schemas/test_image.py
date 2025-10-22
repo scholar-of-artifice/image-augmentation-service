@@ -276,6 +276,17 @@ def test_InvertArguments_is_valid():
     invert_args.processing = "invert"
 
 # --- MaxFilterArguments ---
+
+def test_MaxFilterArguments_with_amount_value_of_1_is_valid():
+    data = {
+        "processing": "max_filter",
+        "amount": 1
+    }
+    max_filter_args = MaxFilterArguments(**data)
+    max_filter_args.processing = "max_filter"
+    max_filter_args.amount = 1
+
+
 # --- MinFilterArguments ---
 # --- MuteChannelArguments ---
 # --- PepperNoiseArguments ---
