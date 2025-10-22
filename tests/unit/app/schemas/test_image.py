@@ -203,9 +203,9 @@ def test_FlipArguments_axis_of_value_y_is_valid():
         "processing": "flip",
         "axis": 'y'
     }
-    darken_args = DarkenArguments(**data)
-    assert darken_args.processing == "flip"
-    assert darken_args.axis == 'y'
+    flip_args = FlipArguments(**data)
+    assert flip_args.processing == "flip"
+    assert flip_args.axis == 'y'
 
 
 def test_FlipArguments_axis_of_value_z_is_not_valid():
