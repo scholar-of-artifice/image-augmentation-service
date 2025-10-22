@@ -317,6 +317,16 @@ def test_MinFilterArguments_with_amount_value_of_100_is_valid():
     min_filter_args.amount = 100
 
 # --- MuteChannelArguments ---
+
+def test_MuteChannelArguments_with_channel_value_of_r_is_valid():
+    data = {
+        "processing": "mute_channel",
+        "channel": 'r'
+    }
+    mute_channel_args = MuteChannelArguments(**data)
+    mute_channel_args.processing = "mute_channel"
+    mute_channel_args.channel = 'r'
+
 # --- PepperNoiseArguments ---
 # --- PercentileFilterArguments ---
 # --- RainbowNoiseArguments ---
