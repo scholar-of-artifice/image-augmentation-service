@@ -161,6 +161,15 @@ def test_DarkenArguments_amount_of_value_0_is_valid():
     assert darken_args.processing == "brighten"
     assert darken_args.amount == 100
 
+def test_DarkenArguments_amount_of_value_100_is_valid():
+    data = {
+        "processing": "darken",
+        "amount": 100
+    }
+    darken_args = DarkenArguments(**data)
+    assert darken_args.processing == "brighten"
+    assert darken_args.amount == 100
+
 # --- ShiftArguments ---
 
 
