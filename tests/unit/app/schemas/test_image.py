@@ -224,6 +224,22 @@ def test_FlipArguments_axis_of_type_int_is_not_valid():
     with pytest.raises(ValidationError):
         FlipArguments(**data)
 
+# --- EdgeFilterArguments ---
+# --- GaussianBlurArguments ---
+# --- InvertArguments ---
+# --- MaxFilterArguments ---
+# --- MinFilterArguments ---
+# --- MuteChannelArguments ---
+# --- PepperNoiseArguments ---
+# --- PercentileFilterArguments ---
+# --- RainbowNoiseArguments ---
+# --- RotateArguments ---
+# --- SaltNoiseArguments ---
+# --- ShiftArguments ---
+# --- TintArguments ---
+# --- UniformBlurArguments ---
+# --- ZoomArguments ---
+
 # --- ShiftArguments ---
 
 
