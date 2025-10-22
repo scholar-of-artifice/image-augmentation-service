@@ -222,7 +222,7 @@ def test_FlipArguments_axis_of_type_int_is_not_valid():
         "axis": 1
     }
     with pytest.raises(ValidationError):
-        DarkenArguments(**data)
+        FlipArguments(**data)
 
 # --- ShiftArguments ---
 
