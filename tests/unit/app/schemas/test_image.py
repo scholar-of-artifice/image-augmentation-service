@@ -214,7 +214,7 @@ def test_FlipArguments_axis_of_value_z_is_not_valid():
         "axis": 'y'
     }
     with pytest.raises(ValidationError):
-        DarkenArguments(**data)
+        FlipArguments(**data)
 
 def test_FlipArguments_axis_of_type_int_is_not_valid():
     data = {
