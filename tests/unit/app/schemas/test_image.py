@@ -186,6 +186,17 @@ def test_DarkenArguments_amount_of_value_101_is_not_valid():
     with pytest.raises(ValidationError):
         DarkenArguments(**data)
 
+# --- FlipArguments ---
+
+def test_FlipArguments_axis_of_value_x_is_valid():
+    data = {
+        "processing": "flip",
+        "axis": 'x'
+    }
+    darken_args = DarkenArguments(**data)
+    assert darken_args.processing == "flip"
+    assert darken_args.axis == 'x'
+
 # --- ShiftArguments ---
 
 
