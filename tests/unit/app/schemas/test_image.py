@@ -233,7 +233,68 @@ def test_FlipArguments_axis_of_type_int_is_not_valid():
 # --- PepperNoiseArguments ---
 # --- PercentileFilterArguments ---
 # --- RainbowNoiseArguments ---
+
+
 # --- RotateArguments ---
+
+
+def test_RotateArguments_values_between_1_and_359_are_valid_angle():
+    """
+    GIVEN a valid angle
+    AND a RotateArguments is created
+    WHEN RotateArguments.angle is called
+    THEN it should return the angle specified
+    """
+    valid_angle = list(range(1, 360))
+    for v in valid_angle:
+        data = {"processing": "rotate", "angle": v}
+        assert RotateArguments(**data).angle == v
+
+
+def test_RotateArguments_shift_is_an_invalid_processing_type():
+    """
+    GIVEN an invalid processing_type
+    WHEN a RotateArguments is created
+    THEN it should raise an error
+    """
+    data = {"processing": "shift", "angle": 42}
+    with pytest.raises(ValidationError):
+        RotateArguments(**data)
+
+
+def test_RotateArguments_negative_number_is_invalid_angle():
+    """
+    GIVEN an invalid angle of negative degrees
+    WHEN a RotateArguments is created
+    THEN it should raise an error
+    """
+    data = {"processing": "rotate", "angle": -42}
+    with pytest.raises(ValidationError):
+        RotateArguments(**data)
+
+
+def test_RotateArguments_0_is_invalid_angle():
+    """
+    GIVEN an invalid angle of 0 degrees
+    WHEN a RotateArguments is created
+    THEN it should raise an error
+    """
+    data = {"processing": "rotate", "angle": 0}
+    with pytest.raises(ValidationError):
+        RotateArguments(**data)
+
+
+def test_RotateArguments_360_is_invalid_angle():
+    """
+    GIVEN an invalid angle of 360 degrees
+    WHEN a RotateArguments is created
+    THEN it should raise an error
+    """
+    data = {"processing": "rotate", "angle": 360}
+    with pytest.raises(ValidationError):
+        RotateArguments(**data)
+
+
 # --- SaltNoiseArguments ---
 
 # --- ShiftArguments ---
@@ -402,65 +463,6 @@ def test_ShiftArguments_has_docstring():
 # --- UniformBlurArguments ---
 # --- ZoomArguments ---
 
-
-# --- RotateArguments ---
-
-
-def test_RotateArguments_values_between_1_and_359_are_valid_angle():
-    """
-    GIVEN a valid angle
-    AND a RotateArguments is created
-    WHEN RotateArguments.angle is called
-    THEN it should return the angle specified
-    """
-    valid_angle = list(range(1, 360))
-    for v in valid_angle:
-        data = {"processing": "rotate", "angle": v}
-        assert RotateArguments(**data).angle == v
-
-
-def test_RotateArguments_shift_is_an_invalid_processing_type():
-    """
-    GIVEN an invalid processing_type
-    WHEN a RotateArguments is created
-    THEN it should raise an error
-    """
-    data = {"processing": "shift", "angle": 42}
-    with pytest.raises(ValidationError):
-        RotateArguments(**data)
-
-
-def test_RotateArguments_negative_number_is_invalid_angle():
-    """
-    GIVEN an invalid angle of negative degrees
-    WHEN a RotateArguments is created
-    THEN it should raise an error
-    """
-    data = {"processing": "rotate", "angle": -42}
-    with pytest.raises(ValidationError):
-        RotateArguments(**data)
-
-
-def test_RotateArguments_0_is_invalid_angle():
-    """
-    GIVEN an invalid angle of 0 degrees
-    WHEN a RotateArguments is created
-    THEN it should raise an error
-    """
-    data = {"processing": "rotate", "angle": 0}
-    with pytest.raises(ValidationError):
-        RotateArguments(**data)
-
-
-def test_RotateArguments_360_is_invalid_angle():
-    """
-    GIVEN an invalid angle of 360 degrees
-    WHEN a RotateArguments is created
-    THEN it should raise an error
-    """
-    data = {"processing": "rotate", "angle": 360}
-    with pytest.raises(ValidationError):
-        RotateArguments(**data)
 
 
 # --- AugmentationRequestBody ---
