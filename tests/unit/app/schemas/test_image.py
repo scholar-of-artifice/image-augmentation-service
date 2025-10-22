@@ -286,6 +286,15 @@ def test_MaxFilterArguments_with_amount_value_of_1_is_valid():
     max_filter_args.processing = "max_filter"
     max_filter_args.amount = 1
 
+def test_MaxFilterArguments_with_amount_value_of_100_is_valid():
+    data = {
+        "processing": "max_filter",
+        "amount": 100
+    }
+    max_filter_args = MaxFilterArguments(**data)
+    max_filter_args.processing = "max_filter"
+    max_filter_args.amount = 100
+
 
 # --- MinFilterArguments ---
 # --- MuteChannelArguments ---
