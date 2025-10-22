@@ -207,6 +207,15 @@ def test_FlipArguments_axis_of_value_y_is_valid():
     assert darken_args.processing == "flip"
     assert darken_args.axis == 'y'
 
+
+def test_FlipArguments_axis_of_value_z_is_not_valid():
+    data = {
+        "processing": "flip",
+        "axis": 'y'
+    }
+    with pytest.raises(ValidationError):
+        DarkenArguments(**data)
+
 # --- ShiftArguments ---
 
 
