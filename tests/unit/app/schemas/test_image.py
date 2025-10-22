@@ -122,9 +122,9 @@ def test_CutoutArguments_amount_value_99_is_valid():
         "processing": "cutout",
         "amount": 99
     }
-    channel_swap_args = CutoutArguments(**data)
-    assert channel_swap_args.processing == "cutout"
-    assert channel_swap_args.amount == 99
+    cutout_args = CutoutArguments(**data)
+    assert cutout_args.processing == "cutout"
+    assert cutout_args.amount == 99
 
 def test_CutoutArguments_amount_value_0_is_not_valid():
     data = {
