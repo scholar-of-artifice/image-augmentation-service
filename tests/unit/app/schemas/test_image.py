@@ -637,7 +637,19 @@ def test_TintArguments_is_valid_when_amount_is_in_range():
 
 
 # --- UniformBlurArguments ---
+
 # --- ZoomArguments ---
+
+def test_ZoomArguments_is_valid_when_amount_is_in_range():
+    for i in range(0,101):
+        data = {
+            "processing": "zoom",
+            "amount": i,
+        }
+        zoom_args = ZoomArguments(**data)
+        assert zoom_args.processing == 'zoom'
+        assert zoom_args.amount == i
+
 
 
 
