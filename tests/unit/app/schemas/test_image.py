@@ -622,6 +622,20 @@ def test_ShiftArguments_has_docstring():
 
 
 # --- TintArguments ---
+
+def test_TintArguments_is_valid_when_amount_is_in_range():
+    for i in range(0,101):
+        data = {
+            "processing": "tint",
+            "colour": "r",
+            "amount": i,
+        }
+        tint_args = TintArguments(**data)
+        assert tint_args.processing == 'tint'
+        assert tint_args.colour == "r"
+        assert tint_args.amount == i
+
+
 # --- UniformBlurArguments ---
 # --- ZoomArguments ---
 
