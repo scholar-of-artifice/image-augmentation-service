@@ -178,6 +178,14 @@ def test_DarkenArguments_amount_of_negative_value_is_not_valid():
     with pytest.raises(ValidationError):
         DarkenArguments(**data)
 
+def test_DarkenArguments_amount_of_value_101_is_not_valid():
+    data = {
+        "processing": "darken",
+        "amount": 101
+    }
+    with pytest.raises(ValidationError):
+        DarkenArguments(**data)
+
 # --- ShiftArguments ---
 
 
