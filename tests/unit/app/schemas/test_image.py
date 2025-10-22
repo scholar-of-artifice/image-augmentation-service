@@ -235,10 +235,6 @@ def test_FlipArguments_axis_of_type_int_is_not_valid():
 # --- RainbowNoiseArguments ---
 # --- RotateArguments ---
 # --- SaltNoiseArguments ---
-# --- ShiftArguments ---
-# --- TintArguments ---
-# --- UniformBlurArguments ---
-# --- ZoomArguments ---
 
 # --- ShiftArguments ---
 
@@ -399,6 +395,12 @@ def test_ShiftArguments_has_docstring():
     """
     assert ShiftArguments.__doc__ is not None
     assert "A data model for specifying a 'shift' operation." in ShiftArguments.__doc__
+
+
+
+# --- TintArguments ---
+# --- UniformBlurArguments ---
+# --- ZoomArguments ---
 
 
 # --- RotateArguments ---
