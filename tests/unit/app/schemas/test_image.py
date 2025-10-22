@@ -246,6 +246,16 @@ def test_EdgeFilterArguments_image_type_value_of_edge_enhanced_is_valid():
     edge_filter_args.image_type = 'edge_enhanced'
 
 # --- GaussianBlurArguments ---
+
+def test_GaussianBlurArguments_amount_value_of_1_is_valid():
+    data = {
+        "processing": "gaussian_blur",
+        "amount": 1,
+    }
+    gaussian_blur_args = GaussianBlurArguments(**data)
+    gaussian_blur_args.processing = "gaussian_blur"
+    gaussian_blur_args.amount = 1
+
 # --- InvertArguments ---
 # --- MaxFilterArguments ---
 # --- MinFilterArguments ---
