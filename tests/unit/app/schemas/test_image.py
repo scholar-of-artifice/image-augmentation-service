@@ -256,6 +256,16 @@ def test_GaussianBlurArguments_amount_value_of_1_is_valid():
     gaussian_blur_args.processing = "gaussian_blur"
     gaussian_blur_args.amount = 1
 
+
+def test_GaussianBlurArguments_amount_value_of_100_is_valid():
+    data = {
+        "processing": "gaussian_blur",
+        "amount": 100,
+    }
+    gaussian_blur_args = GaussianBlurArguments(**data)
+    gaussian_blur_args.processing = "gaussian_blur"
+    gaussian_blur_args.amount = 100
+
 # --- InvertArguments ---
 # --- MaxFilterArguments ---
 # --- MinFilterArguments ---
