@@ -369,6 +369,16 @@ def test_PepperNoiseArguments_with_amount_value_of_99_is_valid():
 
 # --- RainbowNoiseArguments ---
 
+def test_RainbowNoiseArguments_with_amount_value_of_1_is_valid():
+    data = {
+        "processing": "rainbow_noise",
+        "amount": 1
+    }
+    mute_channel_args = RainbowNoiseArguments(**data)
+    mute_channel_args.processing = "rainbow_noise"
+    mute_channel_args.amount = 1
+
+
 def test_RainbowNoiseArguments_with_amount_value_of_99_is_valid():
     data = {
         "processing": "rainbow_noise",
