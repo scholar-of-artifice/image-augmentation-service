@@ -346,6 +346,16 @@ def test_MuteChannelArguments_with_channel_value_of_b_is_valid():
     mute_channel_args.channel = 'b'
 
 # --- PepperNoiseArguments ---
+
+def test_PepperNoiseArguments_with_amount_value_of_1_is_valid():
+    data = {
+        "processing": "pepper_noise",
+        "amount": 1
+    }
+    mute_channel_args = PepperNoiseArguments(**data)
+    mute_channel_args.processing = "pepper_noise"
+    mute_channel_args.amount = 1
+
 # --- PercentileFilterArguments ---
 # --- RainbowNoiseArguments ---
 
