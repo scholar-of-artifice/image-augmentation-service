@@ -297,6 +297,16 @@ def test_MaxFilterArguments_with_amount_value_of_100_is_valid():
 
 
 # --- MinFilterArguments ---
+
+def test_MinFilterArguments_with_amount_value_of_1_is_valid():
+    data = {
+        "processing": "min_filter",
+        "amount": 1
+    }
+    min_filter_args = MinFilterArguments(**data)
+    min_filter_args.processing = "min_filter"
+    min_filter_args.amount = 1
+
 # --- MuteChannelArguments ---
 # --- PepperNoiseArguments ---
 # --- PercentileFilterArguments ---
