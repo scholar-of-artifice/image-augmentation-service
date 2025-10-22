@@ -267,6 +267,14 @@ def test_GaussianBlurArguments_amount_value_of_100_is_valid():
     gaussian_blur_args.amount = 100
 
 # --- InvertArguments ---
+
+def test_InvertArguments_is_valid():
+    data = {
+        "processing": "invert",
+    }
+    invert_args = InvertArguments(**data)
+    invert_args.processing = "invert"
+
 # --- MaxFilterArguments ---
 # --- MinFilterArguments ---
 # --- MuteChannelArguments ---
