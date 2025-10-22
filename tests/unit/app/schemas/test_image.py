@@ -451,6 +451,15 @@ def test_RotateArguments_360_is_invalid_angle():
 
 # --- SaltNoiseArguments ---
 
+def test_SaltNoiseArguments_with_amount_value_of_0_is_valid():
+    data = {
+        "processing": "salt_noise",
+        "amount": 0
+    }
+    mute_channel_args = SaltNoiseArguments(**data)
+    mute_channel_args.processing = "salt_noise"
+    mute_channel_args.amount = 0
+
 # --- ShiftArguments ---
 
 
