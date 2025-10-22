@@ -336,6 +336,15 @@ def test_MuteChannelArguments_with_channel_value_of_g_is_valid():
     mute_channel_args.processing = "mute_channel"
     mute_channel_args.channel = 'g'
 
+def test_MuteChannelArguments_with_channel_value_of_b_is_valid():
+    data = {
+        "processing": "mute_channel",
+        "channel": 'b'
+    }
+    mute_channel_args = MuteChannelArguments(**data)
+    mute_channel_args.processing = "mute_channel"
+    mute_channel_args.channel = 'b'
+
 # --- PepperNoiseArguments ---
 # --- PercentileFilterArguments ---
 # --- RainbowNoiseArguments ---
