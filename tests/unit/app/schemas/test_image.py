@@ -150,6 +150,17 @@ def test_CutoutArguments_amount_of_type_float_is_not_valid():
     with pytest.raises(ValidationError):
         CutoutArguments(**data)
 
+# --- DarkenArguments ---
+
+def test_DarkenArguments_amount_of_value_0_is_valid():
+    data = {
+        "processing": "darken",
+        "amount": 100
+    }
+    darken_args = DarkenArguments(**data)
+    assert darken_args.processing == "brighten"
+    assert darken_args.amount == 100
+
 # --- ShiftArguments ---
 
 
