@@ -368,6 +368,15 @@ def test_PepperNoiseArguments_with_amount_value_of_100_is_valid():
 # --- PercentileFilterArguments ---
 # --- RainbowNoiseArguments ---
 
+def test_RainbowNoiseArguments_with_amount_value_of_99_is_valid():
+    data = {
+        "processing": "rainbow_noise",
+        "amount": 99
+    }
+    mute_channel_args = RainbowNoiseArguments(**data)
+    mute_channel_args.processing = "rainbow_noise"
+    mute_channel_args.amount = 99
+
 
 # --- RotateArguments ---
 
