@@ -225,6 +225,17 @@ def test_FlipArguments_axis_of_type_int_is_not_valid():
         FlipArguments(**data)
 
 # --- EdgeFilterArguments ---
+
+def test_EdgeFilterArguments_image_type_value_of_edge_map_is_valid():
+    data = {
+        "processing": "edge_filter",
+        "image_type": 'edge_map',
+    }
+    edge_filter_args = EdgeFilterArguments(**data)
+    edge_filter_args.processing = "edge_filter"
+    edge_filter_args.image_type = 'edge_map'
+
+
 # --- GaussianBlurArguments ---
 # --- InvertArguments ---
 # --- MaxFilterArguments ---
