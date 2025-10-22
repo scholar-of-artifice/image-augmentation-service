@@ -167,7 +167,7 @@ def test_DarkenArguments_amount_of_value_100_is_valid():
         "amount": 100
     }
     darken_args = DarkenArguments(**data)
-    assert darken_args.processing == "brighten"
+    assert darken_args.processing == "darken"
     assert darken_args.amount == 100
 
 def test_DarkenArguments_amount_of_negative_value_is_not_valid():
