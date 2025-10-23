@@ -184,7 +184,7 @@ class UniformBlurArguments(BaseModel):
 
 class ZoomArguments(BaseModel):
     processing: Literal["zoom"]
-    amount: Annotated[int, Field(ge=1), Field(le=100)]
+    amount: Annotated[int, Field(ge=0), Field(le=100)]
 
 # TODO: deprecate
 class UploadRequestBody(BaseModel):
