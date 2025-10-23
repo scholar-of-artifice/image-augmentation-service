@@ -93,7 +93,7 @@ class PepperNoiseArguments(BaseModel):
 
         Attributes:
             processing (Literal["pepper_noise"]): The type of operation. This field is fixed.
-            amount (float): The ratio of pixels to overwrite.
+            amount (int): The percentage of pixels to overwrite.
     """
     # enforce specific value for processing field
     processing: Literal["pepper_noise"]
