@@ -128,11 +128,11 @@ def darken(image_data: numpy.ndarray, amount: int) -> numpy.ndarray:
     Returns:
         numpy.array: The newly processed image.
     """
-    value = int(amount/100 * 255)
+    value = (amount/100) * 255
     for i, row in enumerate(image_data):
         for j, pixel in enumerate(row):
             for k, channel in enumerate(pixel):
-                image_data[i][j][k] = max(channel - value, 0)
+                image_data[i][j][k] = max(int(channel - value), 0)
     return image_data
 
 
