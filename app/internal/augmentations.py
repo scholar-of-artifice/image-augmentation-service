@@ -47,11 +47,11 @@ def brighten(image_data: numpy.ndarray, amount: int) -> numpy.ndarray:
     Returns:
         numpy.array: The newly processed image.
     """
-    value = int(amount/100 * 255)
+    value = (amount/100) * 255
     for i, row in enumerate(image_data):
         for j, pixel in enumerate(row):
             for k, channel in enumerate(pixel):
-                image_data[i][j][k] = min(channel + value, 255)
+                image_data[i][j][k] = min(int(channel + value), 255)
     return image_data
 
 
@@ -439,15 +439,16 @@ def uniform_blur(image_data: numpy.ndarray, size: int) -> numpy.ndarray:
     return result
 
 
-def zoom(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
+def zoom(image_data: numpy.ndarray, amount: int) -> numpy.ndarray:
     # https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.zoom.html#scipy.ndimage.zoom
+    value = amount/100
     width, height = image_data.shape[:2]
     channel_dict = split_channels(image_data)
-    result_r = scipy.ndimage.zoom(channel_dict['r_channel'], zoom=amount).astype(
+    result_r = scipy.ndimage.zoom(channel_dict['r_channel'], zoom=value).astype(
         image_data.dtype)
-    result_g = scipy.ndimage.zoom(channel_dict['g_channel'], zoom=amount).astype(
+    result_g = scipy.ndimage.zoom(channel_dict['g_channel'], zoom=value).astype(
         image_data.dtype)
-    result_b = scipy.ndimage.zoom(channel_dict['b_channel'], zoom=amount).astype(
+    result_b = scipy.ndimage.zoom(channel_dict['b_channel'], zoom=value).astype(
         image_data.dtype)
     result = merge_channels(
         r_channel=result_r,
