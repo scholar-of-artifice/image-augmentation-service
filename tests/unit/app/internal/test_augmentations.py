@@ -460,7 +460,7 @@ def test_pepper_noise_50_percent_is_correct():
             [[255,  255,    0], [255,   0,  255]],
         ], dtype=numpy.uint8
     )
-    calculated_output = pepper_noise(input_image, amount=0.5)
+    calculated_output = pepper_noise(input_image, amount=50)
     # count the number of changed pixels
     number_of_changed_pixels = 0
     for i, row in enumerate(calculated_output):
