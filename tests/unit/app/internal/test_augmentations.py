@@ -472,7 +472,29 @@ def test_pepper_noise_50_percent_is_correct():
 # --- percentile_filter ---
 
 def test_percentile_filter_produces_correct_results():
-    pytest.fail('not implemented')
+
+    input_image = numpy.array(
+        object= [
+            [[255, 0, 0], [255, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+            [[255, 0, 0], [255, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+            [[255, 0, 0], [255, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+            [[255, 0, 0], [255, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+        ], dtype=numpy.uint8
+    )
+    expected_output = numpy.array(
+        object= [
+            [[255, 0, 0], [255, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+            [[255, 0, 0], [255, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+            [[255, 0, 0], [255, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+            [[255, 0, 0], [255, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]],
+        ], dtype=numpy.uint8
+    )
+    calculated_output = percentile_filter(
+        image_data=input_image,
+        percentile=50,
+        size=3
+    )
+    assert numpy.array_equal(calculated_output, expected_output)
 
 # --- rainbow_noise ---
 
