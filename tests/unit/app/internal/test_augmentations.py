@@ -882,6 +882,35 @@ def test_tint_red_channel_50_produces_correct_results():
     calculated_result = tint(input_image, channel='r', amount=50)
     assert numpy.array_equal(calculated_result, expected_result)
 
+
+# --- uniform_blur ---
+
+def test_gaussian_blur_produces_correct_results():
+    input_image = numpy.array(
+        [
+            [[0, 0, 0], [0,   0, 0], [0, 0, 0]],
+            [[0, 0, 0], [0,   0, 0], [0, 0, 0]],
+            [[0, 0, 0], [0, 255, 0], [0, 0, 0]],
+            [[0, 0, 0], [0, 255, 0], [0, 0, 0]],
+            [[0, 0, 0], [0,   0, 0], [0, 0, 0]],
+            [[0, 0, 0], [0,   0, 0], [0, 0, 0]],
+        ], dtype=numpy.uint8
+    )
+    expected_output = numpy.array(
+        [
+            [[0, 0, 0], [0,   0, 0], [0, 0, 0]],
+            [[0, 31, 0], [0,   15, 0], [0, 15, 0]],
+            [[0, 63, 0], [0, 31, 0], [0, 31, 0]],
+            [[0, 63, 0], [0, 31, 0], [0, 31, 0]],
+            [[0, 63, 0], [0, 31, 0], [0, 31, 0]],
+            [[0, 31, 0], [0, 15, 0], [0, 15, 0]],
+        ], dtype=numpy.uint8
+    )
+    calculated_output = uniform_blur(input_image , size=4)
+    for row in calculated_output:
+        print(row)
+    assert numpy.array_equal(calculated_output, expected_output)
+
 # --- zoom ---
 
 def NO_test_zoom_produces_correct_results():
