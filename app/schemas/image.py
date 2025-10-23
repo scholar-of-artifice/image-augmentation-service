@@ -38,7 +38,7 @@ class ChannelSwapArguments(BaseModel):
 
 class CutoutArguments(BaseModel):
     processing: Literal["cutout"]
-    amount: Annotated[float, Field(strict=True, gt=0, lt=1)]
+    amount: Annotated[int, Field(strict=True, ge=0, le=100)]
 
 class DarkenArguments(BaseModel):
     processing: Literal["darken"]
