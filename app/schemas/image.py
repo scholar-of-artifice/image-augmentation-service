@@ -176,6 +176,7 @@ class ShiftArguments(BaseModel):
 
 class TintArguments(BaseModel):
     processing: Literal["tint"]
+    colour: Literal["r"] | Literal["g"] | Literal["b"]
     amount: Annotated[int, Field(ge=0, le=100)]
 
 class UniformBlurArguments(BaseModel):
