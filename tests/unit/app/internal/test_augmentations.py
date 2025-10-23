@@ -442,7 +442,7 @@ def test_mute_channel_B_produces_correct_results():
     )
     calculated_output = mute_channel(
         image_data=input_image,
-        channel='r'
+        channel='b'
     )
     expected_output = numpy.array(
         object= [
