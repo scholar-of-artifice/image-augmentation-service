@@ -287,7 +287,28 @@ def test_flip_y_valid_data_is_correct_result():
 # --- gaussian_blur ---
 
 def test_gaussian_blur_produces_correct_results():
-    pytest.fail('not implemented')
+    input_image = numpy.array(
+        [
+            [[0, 0, 0], [0,   0, 0], [0, 0, 0]],
+            [[0, 0, 0], [0,   0, 0], [0, 0, 0]],
+            [[0, 0, 0], [0, 255, 0], [0, 0, 0]],
+            [[0, 0, 0], [0, 255, 0], [0, 0, 0]],
+            [[0, 0, 0], [0,   0, 0], [0, 0, 0]],
+            [[0, 0, 0], [0,   0, 0], [0, 0, 0]],
+        ], dtype=numpy.uint8
+    )
+    expected_output = numpy.array(
+        [
+            [[0, 4, 0], [0,   6, 0], [0, 4, 0]],
+            [[0, 22, 0], [0,   30, 0], [0, 22, 0]],
+            [[0, 48, 0], [0, 66, 0], [0, 48, 0]],
+            [[0, 48, 0], [0, 66, 0], [0, 48, 0]],
+            [[0, 22, 0], [0,   30, 0], [0, 22, 0]],
+            [[0, 4, 0], [0,   6, 0], [0, 4, 0]],
+        ], dtype=numpy.uint8
+    )
+    calculated_output = gaussian_blur(input_image , amount=100)
+    assert numpy.array_equal(calculated_output, expected_output)
 
 # --- invert ---
 
