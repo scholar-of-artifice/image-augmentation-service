@@ -184,7 +184,7 @@ def test_darken_is_correct_for_8_bit_RGB_image():
     )
     calculated_output = darken(
         image_data=input_image,
-        amount=0.5,
+        amount=50,
     )
     assert numpy.array_equal(calculated_output, expected_output)
 
