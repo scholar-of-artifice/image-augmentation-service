@@ -148,7 +148,7 @@ class SaltNoiseArguments(BaseModel):
     # enforce specific value for processing field
     processing: Literal["salt_noise"]
     # enforce positive integer... 0 is no change
-    amount: Annotated[float, Field(strict=True, gt=0, lt=1)]
+    amount: Annotated[int, Field(strict=True, ge=0, le=100)]
 
 class ShiftArguments(BaseModel):
     """
