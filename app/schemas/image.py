@@ -29,7 +29,8 @@ class ChannelSwapArguments(BaseModel):
 
         Attributes:
             processing (Literal["channel_swap"]): The type of operation. This field is fixed.
-            amount (float): The ratio of pixels to overwrite.
+            a (str): The pixel channel id. Can only be 'r', 'g', 'b'
+            b (str): The pixel channel id. Can only be 'r', 'g', 'b'
     """
     # enforce specific value for processing field
     processing: Literal["channel_swap"]
