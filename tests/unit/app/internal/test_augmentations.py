@@ -515,7 +515,7 @@ def test_rainbow_noise_example_0_percent():
         ], dtype=numpy.uint8
     )
     # this is a random process so we do not check arrays directly
-    calculated_output = rainbow_noise(input_image, amount=0.0)
+    calculated_output = rainbow_noise(input_image, amount=0)
     # count the number of changed pixels
     number_of_changed_pixels = 0
     for i, row in enumerate(calculated_output):
