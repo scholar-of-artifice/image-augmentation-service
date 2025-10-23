@@ -850,7 +850,20 @@ def test_shift_bad_input_dimensions_raises_exception():
 # --- tint ---
 
 def test_tint_red_channel_50_produces_correct_results():
-    pytest.fail('not implemented')
+    input_image = numpy.array(
+        [
+            [[128,    0,    0], [0,     128,   0]],
+            [[128,  128,    0], [128,   0,   128]],
+        ], dtype=numpy.uint8
+    )
+    expected_result = numpy.array(
+        [
+            [[191,    0,    0], [63,     64,   0]],
+            [[191,  64,    0], [191,   0,   64]],
+        ], dtype=numpy.uint8
+    )
+    calculated_result = tint(input_image, channel='r', amount=50)
+    assert numpy.array_equal(calculated_result, expected_result)
 
 # --- zoom ---
 
