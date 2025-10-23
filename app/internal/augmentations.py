@@ -415,7 +415,8 @@ def shift(image_data: numpy.ndarray, direction: str, distance: int) -> numpy.nda
     return numpy.roll(image_data, shift_direction * distance, axis=axis)
 
 
-def tint(image_data: numpy.ndarray, channel: str, amount: float) -> numpy.ndarray:
+def tint(image_data: numpy.ndarray, channel: str, amount: int) -> numpy.ndarray:
+    value = amount / 100
     for i, row in enumerate(image_data):
         for j, pixel in enumerate(row):
             for k, c in enumerate(pixel):
