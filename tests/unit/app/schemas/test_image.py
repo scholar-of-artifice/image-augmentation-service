@@ -29,6 +29,16 @@ from app.schemas.image import (
 
 # --- BrightenArguments ---
 
+def test_BrightenArguments_is_valid_when_amount_is_in_range():
+    for i in range(0, 101):
+        data = {
+            "processing": "brighten",
+            "amount": 100
+        }
+        brighten_args = BrightenArguments(**data)
+        assert brighten_args.processing == "brighten"
+        assert brighten_args.amount == 100
+
 def test_BrightenArguments_amount_of_value_0_is_valid():
     data = {
         "processing": "brighten",
