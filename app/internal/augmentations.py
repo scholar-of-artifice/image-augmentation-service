@@ -421,9 +421,9 @@ def tint(image_data: numpy.ndarray, channel: str, amount: float) -> numpy.ndarra
             for k, c in enumerate(pixel):
                 channel_to_change = CHANNEL_MAP[channel]
                 if k == channel_to_change:
-                    image_data[i][j][k] = min(int(c + (c * amount/2)), 255)
+                    image_data[i][j][k] = min(int(c + (255 * value/2)), 255)
                 else:
-                    image_data[i][j][k] = max(int(c - (c * amount/2)), 0)
+                    image_data[i][j][k] = max(int(c - (255 * value/2)), 0)
     return image_data
 
 
