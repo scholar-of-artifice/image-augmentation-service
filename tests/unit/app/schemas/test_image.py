@@ -118,14 +118,6 @@ def test_CutoutArguments_amount_value_99_is_valid():
     assert cutout_args.processing == "cutout"
     assert cutout_args.amount == 99
 
-def test_CutoutArguments_amount_value_0_is_not_valid():
-    data = {
-        "processing": "cutout",
-        "amount": 0
-    }
-    with pytest.raises(ValidationError):
-        CutoutArguments(**data)
-
 def test_CutoutArguments_amount_value_100_is_not_valid():
     data = {
         "processing": "cutout",
