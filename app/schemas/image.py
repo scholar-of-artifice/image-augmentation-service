@@ -113,7 +113,7 @@ class RainbowNoiseArguments(BaseModel):
 
         Attributes:
             processing (Literal["shift"]): The type of operation. This field is fixed.
-            amount (int): The distance of the shift. Must be a positive integer and greater than 0.
+            amount (int): The percentage of pixels to overwrite.
     """
     # enforce specific value for processing field
     processing: Literal["rainbow_noise"]
