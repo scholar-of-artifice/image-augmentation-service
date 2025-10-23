@@ -617,11 +617,11 @@ def test_UniformBlurArguments_is_valid_when_amount_is_in_range():
     for i in range(0,101):
         data = {
             "processing": "uniform_blur",
-            "amount": i,
+            "size": i,
         }
         uniform_blur_args = UniformBlurArguments(**data)
         assert uniform_blur_args.processing == 'uniform_blur'
-        assert uniform_blur_args.amount == i
+        assert uniform_blur_args.size == i
 
 # --- ZoomArguments ---
 
