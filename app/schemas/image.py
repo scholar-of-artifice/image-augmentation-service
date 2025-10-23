@@ -34,8 +34,8 @@ class ChannelSwapArguments(BaseModel):
     """
     # enforce specific value for processing field
     processing: Literal["channel_swap"]
-    a: Literal["r"]|Literal["g"]|Literal["b"]|Literal["a"]
-    b: Literal["r"]|Literal["g"]|Literal["b"]|Literal["a"]
+    a: Literal["r"]|Literal["g"]|Literal["b"]
+    b: Literal["r"]|Literal["g"]|Literal["b"]
 
 class CutoutArguments(BaseModel):
     processing: Literal["cutout"]
