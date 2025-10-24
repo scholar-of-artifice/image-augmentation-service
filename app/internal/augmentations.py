@@ -460,8 +460,18 @@ def zoom(image_data: numpy.ndarray, amount: int) -> numpy.ndarray:
         g_channel=result_g,
         b_channel=result_b,
     )
-    # TODO: random zoom point?
-    result = result[0:width, 0:height]
+    # make a crop of the correct size but starts at a random point within the image and preserves size
+    new_height, new_width = result.shape[:2]
+    # find the valid max starting indeces for the top left corner
+    max_y_start = (new_height - height)
+    max_x_start = (new_width - width)
+    # select a random starting point within the valid range
+    y_start = random.randint(0, max(0, max_y_start))
+    x_start = random.randint(0, max(0, max_x_start))
+    # mark the end coordinates
+    y_end = y_start + height
+    x_end = x_start + width
+    result = result[ y_start:y_end, x_start:x_end, ]
     return result
 
 # TODO: Shear
