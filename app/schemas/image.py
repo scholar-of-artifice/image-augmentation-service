@@ -79,7 +79,7 @@ class MaxFilterArguments(BaseModel):
 
 class MinFilterArguments(BaseModel):
     processing: Literal["min_filter"]
-    amount: Annotated[int, Field(ge=1), Field(le=128)]
+    size: Annotated[int, Field(ge=1), Field(le=128)]
 
 class MuteChannelArguments(BaseModel):
     processing: Literal["mute_channel"]
