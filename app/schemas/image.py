@@ -219,6 +219,7 @@ class AugmentationRequestBody(BaseModel):
             InvertArguments |
             MaxFilterArguments |
             MinFilterArguments |
+            MuteChannelArguments |
             PepperNoiseArguments |
             PercentileFilterArguments |
             RainbowNoiseArguments |
