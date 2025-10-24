@@ -446,7 +446,7 @@ def uniform_blur(image_data: numpy.ndarray, size: int) -> numpy.ndarray:
 
 def zoom(image_data: numpy.ndarray, amount: int) -> numpy.ndarray:
     # https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.zoom.html#scipy.ndimage.zoom
-    value = amount/100
+    value = 1.0 + amount/100
     width, height = image_data.shape[:2]
     channel_dict = split_channels(image_data)
     result_r = scipy.ndimage.zoom(channel_dict['r_channel'], zoom=value).astype(
