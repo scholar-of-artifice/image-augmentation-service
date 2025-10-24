@@ -68,7 +68,7 @@ class EdgeFilterArguments(BaseModel):
 
 class GaussianBlurArguments(BaseModel):
     processing: Literal["gaussian_blur"]
-    amount: Annotated[int, Field(ge=1), Field(le=100)]
+    amount: Annotated[int, Field(ge=0), Field(le=200)]
 
 class InvertArguments(BaseModel):
     processing: Literal["invert"]
