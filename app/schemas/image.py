@@ -75,7 +75,7 @@ class InvertArguments(BaseModel):
 
 class MaxFilterArguments(BaseModel):
     processing: Literal["max_filter"]
-    amount: Annotated[int, Field(ge=1), Field(le=128)]
+    size: Annotated[int, Field(ge=1), Field(le=128)]
 
 class MinFilterArguments(BaseModel):
     processing: Literal["min_filter"]
