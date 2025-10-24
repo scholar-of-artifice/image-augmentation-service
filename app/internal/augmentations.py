@@ -343,17 +343,18 @@ def rotate(image_data: numpy.ndarray, angle: int) -> numpy.ndarray:
     return scipy.ndimage.rotate(input=image_data, angle=angle, reshape=False)
 
 
-def salt_noise(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
+def salt_noise(image_data: numpy.ndarray, amount: int) -> numpy.ndarray:
     """
     Applies random noise to a percentage of pixels in the image.
     Takes n randomly selected pixels and overwrites the pixel as white.
 
     Args:
         image_data (numpy.array): the image data to process.
-        amount (float): The percentage of pixels to replace with noise, as a float between 0.0 and 1.0 (e.g., 0.1 for 10%).
+        amount (int): The percentage of pixels to replace with noise, as a float between 0 and 100 (e.g., 10 for 10%).
     Returns:
         numpy.array: The newly processed image.
     """
+    value = amount / 100
     output_image = image_data.copy()
     # Get dimensions of image
     width, height = output_image.shape[:2]
@@ -363,7 +364,7 @@ def salt_noise(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
     bit_depth = output_image.dtype
     max_val = numpy.iinfo(bit_depth).max
     # Calculate the number of pixels to change
-    num_pixels = int(amount * height * width)
+    num_pixels = int(value * height * width)
     # Generate a random set of coordinates
     rows = numpy.random.randint(low=0, high=height, size=num_pixels)
     columns = numpy.random.randint(low=0, high=width, size=num_pixels)
