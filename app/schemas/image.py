@@ -103,7 +103,7 @@ class PepperNoiseArguments(BaseModel):
 class PercentileFilterArguments(BaseModel):
     processing: Literal["percentile_filter"]
     percentile: Annotated[int, Field(ge=0), Field(le=100)]
-    amount: Annotated[int, Field(ge=1), Field(le=128)]
+    size: Annotated[int, Field(ge=1), Field(le=128)]
 
 class RainbowNoiseArguments(BaseModel):
     """
