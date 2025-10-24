@@ -80,7 +80,7 @@ def channel_swap(image_data: numpy.ndarray, a: str, b: str) -> numpy.ndarray:
     return output_image
 
 
-def cutout(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
+def cutout(image_data: numpy.ndarray, amount: int) -> numpy.ndarray:
     """
         Takes a subset of contiguous pixels and overwrites the values.
         The cutout is rectangular but not always square.
@@ -91,6 +91,7 @@ def cutout(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
         Returns:
             numpy.array: The newly processed image.
         """
+    value = (amount / 100)
     output_image = image_data.copy()
     # Get dimensions of image
     width, height = output_image.shape[:2]
@@ -100,7 +101,7 @@ def cutout(image_data: numpy.ndarray, amount: float) -> numpy.ndarray:
     bit_depth = output_image.dtype
     max_val = numpy.iinfo(bit_depth).max
     # Calculate the number of pixels to change
-    num_pixels = int(amount * height * width)
+    num_pixels = int(value * height * width)
     is_square = True
     # if is_square:
     censor_mask_width = floor(numpy.sqrt(num_pixels))
