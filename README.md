@@ -4,9 +4,9 @@
 This project is a microservice which can be used to produce augmented versions of image data.
 Here are some examples of what can be done with this service:
 
-Before | Rotate | Noise
----- | ---- | ----
-![Screenshot 2025-09-11 at 19.02.57.png](docs/assets/images/Screenshot%202025-09-11%20at%2019.02.57.png) | ![e253d013-5796-4099-abcf-f20bcf368d78.png](docs/assets/images/e253d013-5796-4099-abcf-f20bcf368d78.png)| ![1b8f49d3-920f-4309-8ff8-0c1f6525a238.png](docs/assets/images/1b8f49d3-920f-4309-8ff8-0c1f6525a238.png)
+| Original                                             | Shift                                           | Noise |
+|------------------------------------------------------|-------------------------------------------------| ---- |
+| ![Original](tests/data/colour-scribbles-256x256.png) | ![shift](docs/assets/images/examples/shift.png) | ![Noise](docs/assets/images/examples/rainbow-noise.png) |
 
 ## 🔮What is `augmentation`?
 `Augmentation` is the process of artificially expanding a dataset by creating modified versions of existing data. It is a technique used to increase the size and diversity of a dataset without collecting new data. This is often to improve generalization and robustness of a neural network or other statistical model.
