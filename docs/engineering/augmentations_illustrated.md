@@ -8,6 +8,8 @@ Here are the original images used in these illustrations.
     <figcaption>The original image.</figcaption>
 </figure>
 
+TODO: might upload another image
+
 ## `brighten`
 ### Model
 ### Example
