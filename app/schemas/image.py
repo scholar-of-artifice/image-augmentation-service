@@ -8,6 +8,147 @@ from pydantic.types import StringConstraints
 Models for: Inputs schema
 endpoint: .../image-api/upload
 """
+# TODO: do not allow floats. all inputs should be clearly defined int values if numeric.
+
+class BrightenArguments(BaseModel):
+    """
+        A data model for specifying a 'brighten' operation.
+
+        Attributes:
+            processing (Literal["brighten"]): The type of operation. This field is fixed.
+            amount (int): The percentage (%) of brightness you want to apply. 0 will keep the image the same. 100 will turn all channels to their maximum value.
+    """
+    processing: Literal["brighten"]
+    amount: Annotated[int, Field(ge=0), Field(le=100)]
+
+class ChannelSwapArguments(BaseModel):
+    """
+        A data model for specifying a 'channel_swap' operation.
+
+        This model is used to define the parameters for applying noise to the image.
+
+        Attributes:
+            processing (Literal["channel_swap"]): The type of operation. This field is fixed.
+            a (str): The pixel channel id. Can only be 'r', 'g', 'b'
+            b (str): The pixel channel id. Can only be 'r', 'g', 'b'
+    """
+    # enforce specific value for processing field
+    processing: Literal["channel_swap"]
+    a: Literal["r"] | Literal["g"] | Literal["b"]
+    b: Literal["r"] | Literal["g"] | Literal["b"]
+
+class CutoutArguments(BaseModel):
+    processing: Literal["cutout"]
+    amount: Annotated[int, Field(strict=True, ge=0, le=100)]
+
+class DarkenArguments(BaseModel):
+    processing: Literal["darken"]
+    amount: Annotated[int, Field(ge=0), Field(le=100)]
+
+class FlipArguments(BaseModel):
+    """
+        A data model for specifying a 'flip' operation.
+
+        This model is used to define the parameters for flipping an image.
+
+        Attributes:
+            processing (Literal["flip"]): The name of the operation. This field is fixed.
+            axis (string): The direction of the flip.
+    """
+    # enforce specific value for processing field
+    processing: Literal["flip"]
+    # enforce the possible values
+    axis: Literal["x"] | Literal["y"]
+
+class EdgeFilterArguments(BaseModel):
+    # enforce specific value for processing field
+    processing: Literal["edge_filter"]
+    # enforce the possible values
+    image_type: Literal["edge_map"] | Literal["edge_enhanced"]
+
+class GaussianBlurArguments(BaseModel):
+    processing: Literal["gaussian_blur"]
+    amount: Annotated[int, Field(ge=0), Field(le=200)]
+
+class InvertArguments(BaseModel):
+    processing: Literal["invert"]
+
+class MaxFilterArguments(BaseModel):
+    processing: Literal["max_filter"]
+    size: Annotated[int, Field(ge=1), Field(le=128)]
+
+class MinFilterArguments(BaseModel):
+    processing: Literal["min_filter"]
+    size: Annotated[int, Field(ge=1), Field(le=128)]
+
+class MuteChannelArguments(BaseModel):
+    processing: Literal["mute_channel"]
+    channel: Literal["r"] | Literal["g"] | Literal["b"]
+
+class PepperNoiseArguments(BaseModel):
+    """
+        A data model for specifying a 'pepper_noise' operation.
+
+        This model is used to define the parameters for applying noise to the image.
+
+        Attributes:
+            processing (Literal["pepper_noise"]): The type of operation. This field is fixed.
+            amount (int): The percentage of pixels to overwrite.
+    """
+    # enforce specific value for processing field
+    processing: Literal["pepper_noise"]
+    # enforce positive integer... 0 is no change
+    amount: Annotated[int, Field(strict=True, ge=0, le=100)]
+
+class PercentileFilterArguments(BaseModel):
+    processing: Literal["percentile_filter"]
+    percentile: Annotated[int, Field(ge=0), Field(le=100)]
+    size: Annotated[int, Field(ge=1), Field(le=128)]
+
+class RainbowNoiseArguments(BaseModel):
+    """
+        A data model for specifying a 'rainbow_noise' operation.
+
+        This model is used to define the parameters for shifting an image.
+
+        Attributes:
+            processing (Literal["shift"]): The type of operation. This field is fixed.
+            amount (int): The percentage of pixels to overwrite.
+    """
+    # enforce specific value for processing field
+    processing: Literal["rainbow_noise"]
+    # enforce positive integer... 0 is no change
+    amount: Annotated[int, Field(strict=True, ge=0, le=100)]
+
+class RotateArguments(BaseModel):
+    """
+        A data model for specifying a 'rotate' operation.
+
+        This model is used to define the parameters for rotating an image.
+
+        Attributes:
+            processing (Literal["rotate"]): The name of the operation. This field is fixed.
+            angle (int): The amount of rotation in degrees. Must be a postive integer between 1 and 359.
+    """
+    # enforce specific value for processing field
+    processing: Literal["rotate"]
+    # enforce integer range
+    angle: Annotated[int, Field(strict=True, gt=0, lt=360)]
+
+class SaltNoiseArguments(BaseModel):
+    """
+        A data model for specifying a 'salt_noise' operation.
+
+        This model is used to define the parameters for making a noisey image.
+
+        Attributes:
+            processing (Literal["salt_noise"]): The type of operation. This field is fixed.
+            amount (int): The percentage of pixels to overwrite.
+    """
+    # enforce specific value for processing field
+    processing: Literal["salt_noise"]
+    # enforce positive integer... 0 is no change
+    amount: Annotated[int, Field(strict=True, ge=0, le=100)]
 
 class ShiftArguments(BaseModel):
     """
@@ -33,37 +174,18 @@ class ShiftArguments(BaseModel):
     # enforce positive integer... 0 is no change
     distance: Annotated[int, Field(strict=True, gt=0)]
 
+class TintArguments(BaseModel):
+    processing: Literal["tint"]
+    channel: Literal["r"] | Literal["g"] | Literal["b"]
+    amount: Annotated[int, Field(ge=0, le=100)]
 
-class RotateArguments(BaseModel):
-    """
-        A data model for specifying a 'rotate' operation.
+class UniformBlurArguments(BaseModel):
+    processing: Literal["uniform_blur"]
+    size: Annotated[int, Field(ge=0), Field(le=100)]
 
-        This model is used to define the parameters for rotating an image.
-
-        Attributes:
-            processing (Literal["rotate"]): The name of the operation. This field is fixed.
-            angle (int): The amount of rotation in degrees. Must be a postive integer between 1 and 359.
-    """
-    # enforce specific value for processing field
-    processing: Literal["rotate"]
-    # enforce integer range
-    angle: Annotated[int, Field(strict=True, gt=0, lt=360)]
-
-
-class RainbowNoiseArguments(BaseModel):
-    """
-        A data model for specifying a 'rainbow_noise' operation.
-
-        This model is used to define the parameters for shifting an image.
-
-        Attributes:
-            processing (Literal["shift"]): The type of operation. This field is fixed.
-            amount (int): The distance of the shift. Must be a positive integer and greater than 0.
-    """
-    # enforce specific value for processing field
-    processing: Literal["rainbow_noise"]
-    # enforce positive integer... 0 is no change
-    amount: Annotated[float, Field(strict=True, gt=0, lt=1)]
+class ZoomArguments(BaseModel):
+    processing: Literal["zoom"]
+    amount: Annotated[int, Field(ge=0), Field(le=100)]
 
 # TODO: deprecate
 class UploadRequestBody(BaseModel):
@@ -80,14 +202,34 @@ class UploadRequestBody(BaseModel):
         )
     ]
 
-
 class AugmentationRequestBody(BaseModel):
     """
     This is the request body for:
         /image-api/augment/...
     """
     arguments: Annotated[
-        ShiftArguments | RotateArguments | RainbowNoiseArguments,
+        (
+            BrightenArguments |
+            ChannelSwapArguments |
+            CutoutArguments |
+            DarkenArguments |
+            EdgeFilterArguments |
+            FlipArguments |
+            GaussianBlurArguments |
+            InvertArguments |
+            MaxFilterArguments |
+            MinFilterArguments |
+            MuteChannelArguments |
+            PepperNoiseArguments |
+            PercentileFilterArguments |
+            RainbowNoiseArguments |
+            RotateArguments |
+            SaltNoiseArguments |
+            ShiftArguments |
+            TintArguments |
+            UniformBlurArguments |
+            ZoomArguments
+        ),
         Field(
             json_schema_extra={
                 "descriminator": "processing"

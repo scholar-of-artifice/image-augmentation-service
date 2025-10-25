@@ -44,6 +44,7 @@ COPY ./app /image-augmentation-service/app
 COPY ./tests/helperfunc.py /image-augmentation-service/tests/helperfunc.py
 COPY ./tests/integration /image-augmentation-service/tests/integration
 COPY ./tests/data/test_image.png /image-augmentation-service/tests/data/test_image.png
+COPY ./tests/data/colour-scribbles-256x256.png /image-augmentation-service/tests/data/colour-scribbles-256x256.png
 
 # --- END-TO-END TEST STAGE ---
 FROM dev AS endtoendtest
@@ -51,6 +52,7 @@ FROM dev AS endtoendtest
 COPY ./pyproject.toml /image-augmentation-service/
 COPY ./app /image-augmentation-service/app
 COPY ./tests/data/test_image.png /image-augmentation-service/tests/data/test_image.png
+COPY ./tests/data/colour-scribbles-256x256.png /image-augmentation-service/tests/data/colour-scribbles-256x256.png
 COPY ./tests/helperfunc.py /image-augmentation-service/tests/helperfunc.py
 COPY ./tests/end_to_end /image-augmentation-service/tests/end_to_end
 

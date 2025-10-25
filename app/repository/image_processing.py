@@ -1,13 +1,51 @@
 import numpy
 
-from app.internal.augmentations import rainbow_noise, rotate, shift
+from app.internal.augmentations import (
+    brighten,
+    channel_swap,
+    cutout,
+    darken,
+    edge_filter,
+    flip,
+    gaussian_blur,
+    invert,
+    max_filter,
+    min_filter,
+    mute_channel,
+    pepper_noise,
+    percentile_filter,
+    rainbow_noise,
+    rotate,
+    salt_noise,
+    shift,
+    tint,
+    uniform_blur,
+    zoom,
+)
 from app.schemas.image import AugmentationRequestBody
 
 # map a string in the input parameter to an augmentation function
 PROCESSING_MAP = {
-    'shift': shift,
-    'rotate': rotate,
+    'brighten': brighten,
+    'channel_swap': channel_swap,
+    'cutout': cutout,
+    'darken': darken,
+    'edge_filter': edge_filter,
+    'flip': flip,
+    'gaussian_blur': gaussian_blur,
+    'invert': invert,
+    'max_filter': max_filter,
+    'min_filter': min_filter,
+    'mute_channel': mute_channel,
+    'pepper_noise': pepper_noise,
+    'percentile_filter': percentile_filter,
     'rainbow_noise': rainbow_noise,
+    'rotate': rotate,
+    'salt_noise': salt_noise,
+    'shift': shift,
+    'tint': tint,
+    'uniform_blur': uniform_blur,
+    'zoom': zoom,
 }
 # TODO: add more functions
 # flip

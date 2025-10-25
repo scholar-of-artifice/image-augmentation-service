@@ -92,7 +92,7 @@ services:
     build:
       context: .
       target: unittest
-    command: uv run pytest --cov=. --cov-report=html:tests/coverage_report/web
+    command: uv run pytest tests/unit --cov=. --cov-report=html:tests/coverage_report/web
     depends_on:
       - db-unit-test # point to the test db
     volumes:
@@ -117,9 +117,11 @@ services:
     build:
       context: .
       target: integrationtest
-    command: uv run pytest --cov=. --cov-report=html:tests/coverage_report/web
+    command: uv run pytest tests/integration --cov=. --cov-report=html:tests/coverage_report/web
     depends_on:
       - db-integration-test # point to the test db
+    volumes:
+      - ./tests/coverage_reports/integration:/image-augmentation-service/tests/coverage_report/web
     environment:
       - PYTHONPATH=/image-augmentation-service
       - DATABASE_HOSTNAME=${INTEGRATION_TEST_DATABASE_HOSTNAME} # override the hostname of the test db
@@ -138,7 +140,9 @@ services:
     build:
       context: .
       target: endtoendtest
-    command: uv run pytest tests/end_to_end
+    command: uv run pytest tests/end_to_end --cov=. --cov-report=html:tests/coverage_report/web
+    volumes:
+      - ./tests/coverage_reports/end_to_end:/image-augmentation-service/tests/coverage_report/web
     depends_on:
       api-end-to-end:
         condition: service_healthy
