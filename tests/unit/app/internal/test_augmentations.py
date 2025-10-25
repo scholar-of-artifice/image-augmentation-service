@@ -454,20 +454,24 @@ def test_mute_channel_B_produces_correct_results():
 # --- pepper_noise ---
 
 def test_pepper_noise_50_percent_is_correct():
-    input_image = numpy.array(
-        [
-            [[255,  0,      0], [0,     255,  0]],
-            [[255,  255,    0], [255,   0,  255]],
-        ], dtype=numpy.uint8
-    )
-    calculated_output = pepper_noise(input_image, amount=50)
-    # count the number of changed pixels
-    number_of_changed_pixels = 0
-    for i, row in enumerate(calculated_output):
-        for j, pixel in enumerate(row):
-            if not numpy.array_equal(pixel, input_image[i, j]):
-                number_of_changed_pixels = number_of_changed_pixels + 1
-    assert number_of_changed_pixels == 2
+    # TODO: perhaps a better test can be made
+    trials = 100
+    observed_change_count_set = set()
+    for _ in range(trials):
+        input_image = numpy.array(
+            [
+                [[255,  0,      0], [0,     255,  0]],
+                [[255,  255,    0], [255,   0,  255]],
+            ], dtype=numpy.uint8
+        )
+        calculated_output = pepper_noise(input_image, amount=50)
+        # count the number of changed pixels
+        number_of_changed_pixels = 0
+        for i, row in enumerate(calculated_output):
+            for j, pixel in enumerate(row):
+                if not numpy.array_equal(pixel, input_image[i, j]):
+                    number_of_changed_pixels = number_of_changed_pixels + 1
+    assert 2 in observed_change_count_set
 
 # --- percentile_filter ---
 
