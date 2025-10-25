@@ -8,6 +8,9 @@ Here are some examples of what can be done with this service:
 |------------------------------------------------------|-------------------------------------------------| ---- |
 | ![Original](tests/data/colour-scribbles-256x256.png) | ![shift](docs/assets/images/examples/shift.png) | ![Noise](docs/assets/images/examples/rainbow-noise.png) |
 
+### Want to see more augmentations?
+Go to this document: [Augmentations Illustrated](docs/engineering/augmentations_illustrated.md)
+
 ## 🔮What is `augmentation`?
 `Augmentation` is the process of artificially expanding a dataset by creating modified versions of existing data. It is a technique used to increase the size and diversity of a dataset without collecting new data. This is often to improve generalization and robustness of a neural network or other statistical model.
 
