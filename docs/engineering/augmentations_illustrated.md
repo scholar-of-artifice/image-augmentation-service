@@ -21,7 +21,7 @@ BrightenArguments(
 )
 </pre>
 <figure>
-    <img src="docs/assets/images/examples/brighten.png"/>
+    <img src="https://github.com/scholar-of-artifice/image-augmentation-service/blob/6fa4311e88517b76f2958e6fcbddc1e739a6cd1c/docs/assets/images/examples/brighten.png"/>
     <figcaption>A brightened version of the image.</figcaption>
 </figure>
 
